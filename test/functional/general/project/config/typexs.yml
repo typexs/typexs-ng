@@ -1,6 +1,6 @@
 
 
 ng:
+  generated: ./build/ng-app
   app: ./src/app
-  generated: ./src/app/generated
   public: ./public

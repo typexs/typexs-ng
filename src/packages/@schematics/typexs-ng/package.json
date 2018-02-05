@@ -1,0 +1,22 @@
+{
+  "name": "@schematics/typexs-ng",
+  "version": "0.0.0",
+  "description": "Schematics specific to typexs-ng",
+  "keywords": [
+    "blueprints",
+    "code generation",
+    "schematics",
+    "schematic"
+  ],
+  "scripts": {
+    "preinstall": "echo DO NOT INSTALL THIS PROJECT, ONLY THE ROOT PROJECT. && exit 1"
+  },
+  "schematics": "./collection.json",
+  "typexs": {
+    "name": "@schematics/typexs-ng"
+  },
+  "peerDependencies": {
+    "@angular-devkit/core": "0.0.0",
+    "@angular-devkit/schematics": "0.0.0"
+  }
+}

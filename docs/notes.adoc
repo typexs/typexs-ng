@@ -1,5 +1,44 @@
 
 
+## Struktur
+
+### App
+
+```
+src/modules/
+    .../
+src/app/
+  assets/
+  enviroments/
+  layouts/
+    default/
+      ... overrides
+  app.module.ts
+  index.html
+  favicon.ico
+  main.ts
+  polyfills.ts
+  style.css
+  test.ts
+  tsconfig.app.json
+  tsconfig.spec.json
+  typings.d.ts
+```
+
+### Module
+
+```
+src/modules/{modulname}/
+  {modulname}.module.ts
+  components/
+  assets/
+  api/
+  views/
+```
+
+
+
+
 ## Angular
 
 Libs:

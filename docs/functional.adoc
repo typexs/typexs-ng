@@ -1,0 +1,78 @@
+## Functional
+
+
+Angular4 verwendet als Standardkompiler "aot" (ahead of time) compiler, also
+müssen benötigte sourcen / objekte vorher deklariert und eingebunden werden.
+
+Es müssen also alle genötigten Bestandteile direkt geladen werden.
+
+(Es besteht zwar die möglichkeit den "jit" (just-in-time) kompiler zu verwenden, jedoch
+nicht ohne weiteres ... siehe template builder sourcen).
+
+Zum Einen wollen wir eine App aus existerienden/entwickelten Komponenten
+(page, user, blog, entity, comments, ...) automatisch zusammenbauen,
+die entweder eigenständig mit eigenen Routen oder integrativ sind und existierende
+Komponenten ergänzen (entity <- comment) und zum Anderen soll auch eine Methode gefunden
+werden ein eigenständiges/projektspezifisches Layout umzusetzen.
+
+
+
+Die App beginnt mit der index.html und main.ts über die die Hauptkomponente geladen
+wird.
+
+
+Routing in der Hauptkomponente deklarieren, zusammenbauen ...
+
+
+Note: mittels ng eject webpack.config.js erzeugen.
+
+
+
+Komponenten bzw. Module gruppieren mehrere Elemente der Präsentation und
+der logischen Verarbeitung zusammen. Das können
+
+- Stylesheets
+- Mediadateien / Schriftarten
+- Html / Templates
+- Komponenten
+
+sein. Ebenfalls TODO
+
+Diese müssen meisten für die eigenen projektspezifischen Bedürfnisse geändert werden, mit
+je nach Voraussetzung mehr oder weniger Aufwand.
+
+* Stylesheets können deaktiviert, ersetzt oder um zusätzliche Formatierungen erweitert werden.
+* Mediendateien können deaktiviert bzw. ersetzt werden.
+* Html / Templates können überschrieben werden.
+*
+
+Der Angular 2< Compile Prozess läuft über webpack, welches über ein AotPlugin den
+Abhängikeitsbaum und die für die App benötigten Komponenten in eine Datei packt.
+Wahrscheinlich können die Übersteuerungen der Elemente integrierter Module so in den
+Compile Prozess integriert werden.
+
+
+Test mittels: Contact bzw. Todo App
+
+
+Note: Projekt mittels templates erweitern / zurückgesetzen (install gulp; update new tasks ...)
+
+
+Aktuell scheint der beste Weg zur dynamischen Integration multipler NgModule der die
+app.module.ts Datei direkt zu generieren und in die main.ts zu integrieren ... .
+
+Hierbei könnten Platzhalter
+
+
+
+
+
+
+
+
+
+
+
+
+
+

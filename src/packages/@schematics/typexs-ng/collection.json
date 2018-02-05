@@ -1,0 +1,9 @@
+{
+  "schematics": {
+    "application": {
+      "factory": "./application",
+      "schema": "./application/schema.json",
+      "description": "Create an typexs-adapted Angular application."
+    }
+  }
+}
