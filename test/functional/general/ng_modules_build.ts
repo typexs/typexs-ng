@@ -27,7 +27,7 @@ class GeneralSpec {
       modules: {
         libs: [{
           topic: C_NG_MODULE,
-          refs: ['modules/*/*.module.*']
+          refs: ['src/modules/*/*.module.*']
         }]
       }
     });
