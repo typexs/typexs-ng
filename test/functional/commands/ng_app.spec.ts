@@ -1,52 +1,101 @@
-
 import {suite, test, timeout} from "mocha-typescript";
-import {NgAppCommand} from "../../../src/commands/NgApp";
-import {Bootstrap} from "typexs-base";
+import * as fs from "fs";
+import {expect} from 'chai';
+import {Bootstrap, PlatformUtils, SchematicsExecutor} from "typexs-base";
 
 
 @suite('functional/commands/ng_app')
 class GeneralSpec {
 
 
-
-  before() {
-    Bootstrap.reset();
-
-  }
-
-  after() {
-    Bootstrap.reset();
-  }
-
-  @test @timeout(20000)
-  async 'try be schematics'() {
-    let bts = await Bootstrap.configure({
-      app:{
-        name: 'project',
-        path: __dirname+'/project'
-      }
-    }).activateErrorHandling()
-    let cmd = new NgAppCommand();
-
-    await cmd.handler({op:'new2'})
-
-
+  static async after() {
+    let directory = __dirname + '/build';
+    try {
+      await PlatformUtils.deleteDirectory(directory);
+    } catch (e) {
+    }
   }
 
 
   @test @timeout(20000)
-  async 'try be init task'() {
-    let bts = await Bootstrap.configure({
-      app:{
-        name: 'project',
-        path: __dirname+'/project'
-      }
-    }).activateErrorHandling()
-    let cmd = new NgAppCommand();
+  async 'create new app'() {
 
-    await cmd.handler({op:'new'})
+    let directory = __dirname + '/build/output';
+    try {
+      await PlatformUtils.deleteDirectory(directory);
+    } catch (e) {
+    }
+    PlatformUtils.mkdir(directory);
+
+    let _argv = {
+      name: 'ng-test',
+      directory: 'ng-app',
+      skipGit: true
+    }
+
+    let executor = new SchematicsExecutor({
+      workdir: directory,
+      basedir: directory,
+      collectionName: __dirname + '/../../../src/packages/@schematics/typexs-ng',
+      schematicName: 'ng-app',
+      argv: _argv
+    });
+
+    try {
+      await executor.run();
+    } catch (e) {
+      // console.error(e);
+    }
+
+    expect(fs.existsSync(directory + `/${_argv.directory}/karma.conf.js`)).to.be.true;
+    expect(fs.existsSync(directory + `/${_argv.directory}/src/modules/app/app.module.ts`)).to.be.true;
+    expect(fs.existsSync(directory + `/${_argv.directory}/src/app/main.ts`)).to.be.true;
+
+  }
+
+  @test
+  async 'upgrade project'() {
+
+    let directory = __dirname + '/build/output/ng-app';
+    if (!fs.existsSync(directory)) {
+      await this['create new app']();
+    }
+
+    try {
+      fs.unlinkSync(directory + '/gulpfile.ts');
+      fs.unlinkSync(directory + '/karma.conf.js');
+    } catch (e) {
+    }
+
+
+    let _argv = {
+      name: 'ng-test',
+      directory: 'ng-app',
+      skipGit: true
+    }
+
+    let executor = new SchematicsExecutor({
+      workdir: directory,
+      basedir: directory,
+      collectionName: __dirname + '/../../../src/packages/@schematics/typexs-ng',
+      schematicName: 'ng-app',
+      argv: _argv
+    });
+
+    try {
+      await executor.run();
+    } catch (e) {
+      // console.error(e);
+    }
+
+
+    expect(fs.existsSync(directory + '/karma.conf.js')).to.be.true;
+    expect(fs.existsSync(directory + '/src/modules/app/app.module.ts')).to.be.true;
+    expect(fs.existsSync(directory + '/src/app/main.ts')).to.be.true;
 
 
   }
+
+
 }
 
