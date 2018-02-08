@@ -1,12 +1,12 @@
 import {Config, ClassesLoader, Inject, RuntimeLoader, PlatformUtils} from "typexs-base";
-import {C_NG_MODULE} from "../../types";
+import {C_NG_MODUL} from "../../types";
 
 import {INgModuleDef} from "./INgModuleDef";
 
 
 export class NgMetaDataCollector {
 
-  @Inject(RuntimeLoader.name)
+  @Inject("RuntimeLoader")
   loader: RuntimeLoader;
 
   private _ngModules: INgModuleDef[] = [];
@@ -22,7 +22,7 @@ export class NgMetaDataCollector {
 
 
   collectNgModules() {
-    let clazzes = this.loader.getClasses(C_NG_MODULE);
+    let clazzes = this.loader.getClasses(C_NG_MODUL);
     this._ngModules = []
     for (let clazz of clazzes) {
       let source = ClassesLoader.getSource(clazz);
