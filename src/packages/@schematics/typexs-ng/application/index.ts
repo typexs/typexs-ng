@@ -34,7 +34,7 @@ import {
 import {Schema as ApplicationOptions} from './schema';
 import {forEach} from "@angular/router/src/utils/collection";
 import * as fs from 'fs';
-import {SimpleRegexCodeModifierHelper, PlatformUtils} from "typexs-base";
+import {SimpleRegexCodeModifierHelper, PlatformUtils, FileUtils} from "typexs-base";
 import {addToViewTree} from "@angular/core/src/render3/instructions";
 
 
@@ -74,13 +74,29 @@ export default function (options: ApplicationOptions): Rule {
       };
  */
     // options.directory = '.'
+    options['typexs_ng_version'] = ">=0.0.2";
+    options['version'] = ">=1.6.8";
+
     let overwrites: any[] = [];
     const virtualRootDir = '/';
     const realRootDir = host.root['_host']['_root'];
 
-    const upgradeProject = PlatformUtils.fileExist(PlatformUtils.join(realRootDir,'package.json'));
+    const upgradeProject = PlatformUtils.fileExist(PlatformUtils.join(realRootDir, 'package.json'));
 
-    //let app
+    if (upgradeProject) {
+      let json = JSON.parse(fs.readFileSync(PlatformUtils.join(realRootDir, 'package.json')).toString('utf-8'));
+      let basename = PlatformUtils.basename(realRootDir);
+      options.name = json.name;
+      options.directory = basename;
+    } else {
+      if (!options.name) {
+        options.name = 'ng-app';
+      }
+      if (!options.directory) {
+        options.directory = 'ng-app';
+      }
+    }
+
 
     options.sourceDir = options.sourceDir || 'src/app';
     const sourceDir = options.sourceDir
@@ -132,7 +148,7 @@ export default function (options: ApplicationOptions): Rule {
             utils: strings,
             ...options,
             'dot': '.',
-            sourcedir: sourceDir,
+            sourcedir: sourceDir
           }),
           (tree: Tree, context: SchematicContext) => {
             tree.visit((path: string, entry) => {
@@ -162,8 +178,8 @@ export default function (options: ApplicationOptions): Rule {
                   let localStr = local.toString('utf-8');
                   let exist = fs.readFileSync(filepath).toString('utf-8');
 
-                  let newContent = SimpleRegexCodeModifierHelper.copyMethods(exist,localStr);
-                  newContent = SimpleRegexCodeModifierHelper.copyImports(newContent,localStr);
+                  let newContent = SimpleRegexCodeModifierHelper.copyMethods(exist, localStr);
+                  newContent = SimpleRegexCodeModifierHelper.copyImports(newContent, localStr);
 
                   if (newContent.length !== exist.length) {
                     overwrites.push({path: path, content: newContent});
@@ -180,7 +196,7 @@ export default function (options: ApplicationOptions): Rule {
           },
           upgradeProject ? noop() : move(options.directory),
         ]), MergeStrategy.AllowCreationConflict),
-      (tree:Tree, context: SchematicContext) => {
+      (tree: Tree, context: SchematicContext) => {
         overwrites.forEach(x => {
           tree.overwrite(x.path, x.content)
         })

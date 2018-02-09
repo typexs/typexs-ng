@@ -1,6 +1,6 @@
 {
   "name": "typexs-ng",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Angular for typexs",
   "main": "index.js",
   "directories": {
@@ -8,7 +8,12 @@
   },
   "scripts": {
     "test": "nyc mocha --opts test/mocha.all.opts",
-    "posttest": "nyc report --reporter=json && codecov -f coverage/*.json"
+    "posttest": "nyc report --reporter=json && codecov -f coverage/*.json",
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build --prod",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
   },
   "repository": {
     "type": "git",
@@ -27,6 +32,8 @@
   "devDependencies": {
     "@angular-devkit/core": "^0.3.1",
     "@angular-devkit/schematics": "^0.3.1",
+    "@angular/compiler-cli": "^5.2.4",
+    "@angular/language-service": "^5.2.4",
     "@schematics/angular": "^0.3.1",
     "@types/chai": "^4.1.2",
     "@types/deepmerge": "^1.3.3",
@@ -34,14 +41,18 @@
     "@types/glob": "^5.0.35",
     "@types/gulp": "^4.0.5",
     "@types/lodash": "^4.14.102",
+    "@types/mocha": "^2.2.48",
     "@types/node": "^9.4.1",
     "@types/string-template": "^1.0.2",
     "@types/superagent": "^3.5.7",
     "@types/supertest": "^2.0.4",
     "@types/supertest-as-promised": "^2.0.35",
     "@types/winston": "^2.3.7",
+    "bootstrap": "^4.0.0",
     "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
     "codecov": "^3.0.0",
+    "codelyzer": "~4.1.0",
     "del": "^3.0.0",
     "express": "^4.16.2",
     "gulp": "^3.9.1",
@@ -54,17 +65,27 @@
     "gulp-util": "^3.0.8",
     "gulp-watch": "^5.0.0",
     "gulpclass": "^0.1.2",
+    "karma": "~2.0.0",
+    "karma-chai": "^0.1.0",
+    "karma-chai-as-promised": "^0.1.2",
+    "karma-chrome-launcher": "~2.2.0",
+    "karma-cli": "~1.0.1",
+    "karma-coverage-istanbul-reporter": "^1.4.1",
+    "karma-mocha": "^1.3.0",
+    "karma-mocha-reporter": "^2.2.5",
     "mocha": "^5.0.0",
     "mocha-typescript": "^1.1.12",
     "nyc": "^11.4.1",
+    "protractor": "~5.3.0",
     "source-map": "^0.7.0",
     "supertest": "^3.0.0",
     "supertest-as-promised": "^4.0.2",
     "ts-node": "^4.1.0",
-    "typescript": "^2.7.1",
-    "typescript-require": "^0.2.9-1",
-    "typexs-base": "^0.3.13",
-    "typexs-server": "^0.1.4"
+    "tslint": "~5.9.1",
+    "typexs-base": ">=0.3.14",
+    "typexs-server": ">=0.1.5",
+    "typescript": "^2.6.2",
+    "typescript-require": "^0.2.9-1"
   },
   "dependencies": {
     "@angular/animations": "^5.2.4",
@@ -77,11 +98,16 @@
     "@angular/platform-browser": "^5.2.4",
     "@angular/platform-browser-dynamic": "^5.2.4",
     "@angular/router": "^5.2.4",
+    "ajv": "^6.1.1",
     "core-js": "^2.5.3",
     "reflect-metadata": "^0.1.12",
     "rxjs": "^5.5.6",
     "string-template": "^1.0.0",
     "zone.js": "^0.8.20"
+  },
+  "peerDependencies": {
+    "typexs-base": ">=0.3.14",
+    "typexs-server": ">=0.1.5"
   },
   "private": true,
   "nyc": {
@@ -102,7 +128,7 @@
     "cache": false
   },
   "typexs": {
-    "name": "ng",
+    "name": "typexs-ng",
     "declareLibs": [
       {
         "topic": "ng.module",

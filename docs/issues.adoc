@@ -1,5 +1,15 @@
 ## Issues
 
 
+**@ISSUE {counter:issue} 20180209** +
+
+Adapt generator files
+
+* in app/tsconfig.*.json correct filepaths
+* support bootstrap in package.json and styles import
+* ng serve für development parallel mit server starten (concurrently) und
+über proxy-conf umleiten
+* add app.used.modules to app module
+
 
 

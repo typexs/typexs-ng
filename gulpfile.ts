@@ -2,6 +2,9 @@ import {Gulpclass, Task, SequenceTask, MergedTask} from "gulpclass";
 
 import * as fs from 'fs';
 import * as glob from 'glob';
+import * as ts from "gulp-typescript";
+import * as gulp from "gulp";
+
 
 const gulp = require("gulp");
 const bump = require('gulp-bump');
