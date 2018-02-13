@@ -16,6 +16,12 @@ export interface Schema {
    * The path of the source directory.
    */
   sourceDir?: string;
+
+  /**
+   * The path of the app module directory.
+   */
+  appmoduledir?:string;
+
   /**
    * The name of the application.
    */
@@ -64,4 +70,8 @@ export interface Schema {
    * Installs the @angular/service-worker.
    */
   serviceWorker?: boolean;
+  /**
+   * add bootstrap css
+   */
+  bootstrapCss?: boolean;
 }

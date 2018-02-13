@@ -5,11 +5,18 @@
 
 Adapt generator files
 
-* in app/tsconfig.*.json correct filepaths
-* support bootstrap in package.json and styles import
+* [.line-through]#in app/tsconfig.*.json correct filepaths#
+* [.line-through]#support bootstrap in package.json and styles import#
 * ng serve für development parallel mit server starten (concurrently) und
 über proxy-conf umleiten
 * add app.used.modules to app module
 
 
+**@ISSUE {counter:issue} 20180213** +
 
+Conceive the override of templates and used of different maybe switchable
+themes. How can be this implemented in an AOT compile enviroment.
+
+**@ISSUE {counter:issue} 20180213** +
+
+Impl. a menu module which displays and controls the navigation path.

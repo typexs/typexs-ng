@@ -1,0 +1,25 @@
+## Module: Admin
+
+
+* App Info
+
+** List routes
+** List modules
+** List entities
+
+
+* Layout as dashboard (look ngx2-admin style is greet)
+
+- Create AdminDashboardComponent and
+AdminWidgetComponent (look at ngx-dashboard) +
+https://github.com/jaumard/ngx-dashboard/tree/master/src
+
+**BuildBoard** - Eingeblendete Leiste mittels der Inhalte gebaut
+werden können
+
+
+* Backend
+** create new entity / change entity
+
+
+Create page with some layout schema

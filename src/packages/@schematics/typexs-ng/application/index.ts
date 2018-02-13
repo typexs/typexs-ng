@@ -9,6 +9,7 @@
 import {join} from 'path';
 import {strings} from '@angular-devkit/core';
 import * as ts from 'typescript';
+import * as _ from 'lodash';
 
 
 import {
@@ -46,34 +47,16 @@ function minimalPathFilter(path: string): boolean {
   return !toRemoveList.some(re => re.test(path));
 }
 
-/*
-function cleanupFilter(path: string): boolean {
-  const toRemoveList: RegExp[] = [/README/, /karma.conf.js/,
-    /protractor.conf.js/];
 
-  return !toRemoveList.some(re => re.test(path));
+function cleanupFilter(path: string): boolean {
+  const toRemoveList: RegExp[] = [/README.md/,
+    /karma\.conf\.js/, /\.angular-cli\.json/, /package\.json/, /protractor\.conf\.js/,/tsconfig\.(app|spec)\.json/,/styles\./,/app\.module\.ts/];
+
+  return toRemoveList.some(re => re.test(path));
 }
-*/
 
 export default function (options: ApplicationOptions): Rule {
   return (host: Tree, context: SchematicContext) => {
-    /*
-    const appRootSelector = `${options.prefix}-root`;
-    const componentOptions = !options.minimal ?
-      {
-        inlineStyle: options.inlineStyle,
-        inlineTemplate: options.inlineTemplate,
-        spec: !options.skipTests,
-        styleext: options.style,
-      } :
-      {
-        inlineStyle: true,
-        inlineTemplate: true,
-        spec: false,
-        styleext: options.style,
-      };
- */
-    // options.directory = '.'
     options['typexs_ng_version'] = ">=0.0.2";
     options['version'] = ">=1.6.8";
 
@@ -97,9 +80,13 @@ export default function (options: ApplicationOptions): Rule {
       }
     }
 
+    options.sourceDir = 'src';
 
-    options.sourceDir = options.sourceDir || 'src/app';
-    const sourceDir = options.sourceDir
+    let optionsOverwrite = _.clone(options);
+    optionsOverwrite.sourceDir = 'src/app';
+    optionsOverwrite.appmoduledir = 'src/modules/app';
+
+
 
     // TODO check if schematics exists ...
 
@@ -113,7 +100,7 @@ export default function (options: ApplicationOptions): Rule {
             upgradeProject ? move(options.directory, virtualRootDir) : noop(),
             (tree: Tree, context: SchematicContext) => {
               tree.visit((path, entry) => {
-                if ([/README.md/, /karma\.conf\.js/, /\.angular-cli\.json/, /package\.json/, /protractor\.conf\.js/].some(r => r.test(path))) {
+                if (cleanupFilter(path)) {
                   tree.delete(path);
                 } else if ([/\/src\/app\/(?!modules\/)/].some(r => r.test(path))) {
                   tree.rename(path, path.replace('/src/app/', '/src/modules/app/'))
@@ -146,9 +133,9 @@ export default function (options: ApplicationOptions): Rule {
           options.minimal ? filter(minimalPathFilter) : noop(),
           template({
             utils: strings,
-            ...options,
+            ...optionsOverwrite,
             'dot': '.',
-            sourcedir: sourceDir
+            sourcedir: optionsOverwrite.sourceDir
           }),
           (tree: Tree, context: SchematicContext) => {
             tree.visit((path: string, entry) => {

@@ -24,14 +24,6 @@
       "default": "app",
       "visible": false
     },
-    "sourceDir": {
-      "type": "string",
-      "format": "path",
-      "description": "The path of the source directory.",
-      "default": "src",
-      "alias": "sd",
-      "visible": false
-    },
     "name": {
       "description": "The name of the application.",
       "type": "string",
@@ -97,6 +89,11 @@
       "description": "Installs the @angular/service-worker.",
       "type": "boolean",
       "default": false
+    },
+    "bootstrapCss": {
+      "description": "Installs the bootstrap.",
+      "type": "boolean",
+      "default": true
     }
   },
   "required": [

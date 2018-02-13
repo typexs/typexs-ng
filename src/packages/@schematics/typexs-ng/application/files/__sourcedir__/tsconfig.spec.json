@@ -1,0 +1,19 @@
+{
+  "extends": "<%= sourcedir.split('/').map(x => '..').join('/') %>/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "<%= sourcedir.split('/').map(x => '..').join('/') %>/build/out-tsc/spec",
+    "baseUrl": "./",
+    "module": "commonjs",
+    "types": [
+      "mocha",
+      "node"
+    ]
+  },
+  "files": [
+    "test.ts"
+  ],
+  "include": [
+    "**/*.spec.ts",
+    "**/*.d.ts"
+  ]
+}
