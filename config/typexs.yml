@@ -11,3 +11,10 @@ logging:
   - console: {}
 
 
+server:
+  default:
+    type: web
+    frameworks: express
+    host: localhost
+    port: 4500
+

@@ -148,13 +148,15 @@ export default function (options: ApplicationOptions): Rule {
                   let json = JSON.parse(fs.readFileSync(filepath).toString('utf-8'));
 
                   let updated = false;
-                  ['dependencies', 'devDependencies', 'scripts'].forEach(_key => {
-                    Object.keys(jsonNew[_key]).forEach(_d => {
-                      if (!json[_key][_d]) {
-                        json[_key][_d] = jsonNew[_key][_d];
-                        updated = true;
-                      }
-                    });
+                  ['dependencies', 'devDependencies', 'scripts','peerDependencies'].forEach(_key => {
+                    if(jsonNew[_key]){
+                      Object.keys(jsonNew[_key]).forEach(_d => {
+                        if (!json[_key][_d]) {
+                          json[_key][_d] = jsonNew[_key][_d];
+                          updated = true;
+                        }
+                      });
+                    }
                   });
 
                   if (updated) {
