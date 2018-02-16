@@ -82,10 +82,10 @@
     "supertest-as-promised": "^4.0.2",
     "ts-node": "^4.1.0",
     "tslint": "~5.9.1",
-    "typexs-base": ">=0.3.14",
-    "typexs-server": ">=0.1.5",
     "typescript": "^2.6.2",
-    "typescript-require": "^0.2.9-1"
+    "typescript-require": "^0.2.9-1",
+    "typexs-base": ">=0.3.14",
+    "typexs-server": ">=0.1.5"
   },
   "dependencies": {
     "@angular/animations": "^5.2.4",
@@ -98,16 +98,19 @@
     "@angular/platform-browser": "^5.2.4",
     "@angular/platform-browser-dynamic": "^5.2.4",
     "@angular/router": "^5.2.4",
+    "@ng-bootstrap/ng-bootstrap": "^1.0.0",
     "ajv": "^6.1.1",
     "core-js": "^2.5.3",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.12.9",
     "reflect-metadata": "^0.1.12",
     "rxjs": "^5.5.6",
     "string-template": "^1.0.0",
     "zone.js": "^0.8.20"
   },
   "peerDependencies": {
-    "typexs-base": ">=0.3.14",
-    "typexs-server": ">=0.1.5"
+    "typexs-base": ">=0.0.1",
+    "typexs-server": ">=0.0.1"
   },
   "private": true,
   "nyc": {
