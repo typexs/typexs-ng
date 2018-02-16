@@ -10,7 +10,7 @@
     "test": "nyc mocha --opts test/mocha.all.opts",
     "posttest": "nyc report --reporter=json && codecov -f coverage/*.json",
     "ng": "ng",
-    "start": "ng serve",
+    "start": "concurrently \"ng serve -pc proxy.conf.json --open\" \"typexs server default\"",
     "build": "ng build --prod",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -138,6 +138,13 @@
         "refs": [
           "modules/*/*.module.*",
           "src/modules/*/*.module.*"
+        ]
+      },
+      {
+        "topic": "server.controllers",
+        "refs": [
+          "modules/*/api",
+          "src/modules/*/api"
         ]
       }
     ]

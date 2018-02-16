@@ -14,7 +14,13 @@ logging:
 server:
   default:
     type: web
-    frameworks: express
+    framework: express
     host: localhost
     port: 4500
 
+    routes:
+    - type: routing_controller
+      context: api
+      routePrefix: api
+
+#    - type: static_files
