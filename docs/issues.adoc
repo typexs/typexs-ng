@@ -7,9 +7,9 @@ Adapt generator files
 
 * [.line-through]#in app/tsconfig.*.json correct filepaths#
 * [.line-through]#support bootstrap in package.json and styles import#
+* [.line-through]#add app.used.modules to app module#
 * ng serve für development parallel mit server starten (concurrently) und
 über proxy-conf umleiten
-* add app.used.modules to app module
 
 
 **@ISSUE {counter:issue} 20180213** +

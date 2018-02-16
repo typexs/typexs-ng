@@ -1,4 +1,8 @@
 
+## Starten
+
+ typexs g ng-app --name app --workdir tmp --directory app
+
 
 ## Struktur
 
