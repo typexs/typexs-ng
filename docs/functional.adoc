@@ -65,6 +65,52 @@ Hierbei könnten Platzhalter
 
 
 
+---
+
+
+
+**Themes / Skins**
+
+
+Differenzierung zwischen Themes und Skins. Skins ändern nicht die
+Struktur und den Aufbau von Komponenten, sondern passen nur das Erscheinungsbild
+welches durch Stylesheets definiert ist an. Themes können dagegen
+den Aufbau von Komponenten übersteuern.
+
+
+Die Struktur der Darstellung von Komponenten wird mittels Templates in
+der Komponentenannotation definiert.
+
+```
+@Component({
+  templateUrl:'x.component.html'
+})
+class X {}
+```
+
+Variante 1 der Übersteuerung bei Erhalt der Funktionalität:
+```
+# Beim Bau wird das Original durch die Übersteuerungen
+# im Verzeichnis views/theme/modulename/x.extend.component.html
+# überschrieben
+
+@Component({
+  selector:'x',
+  templateUrl:'x.extend.component.html'
+})
+class X {}
+```
+
+Variante 2:
+```
+@Component({
+  selector:'x',
+  templateUrl:'y.component.html'
+})
+class Y extends X {}
+```
+
+
 
 
 
