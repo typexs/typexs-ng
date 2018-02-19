@@ -50,8 +50,10 @@ function minimalPathFilter(path: string): boolean {
 
 function cleanupFilter(path: string): boolean {
   const toRemoveList: RegExp[] = [/README.md/,
-    /karma\.conf\.js/, /\.angular-cli\.json/, /package\.json/, /protractor\.conf\.js/,/tsconfig\.(app|spec)\.json/,/styles\./,/app\.module\.ts/];
-
+    /karma\.conf\.js/, /\.angular-cli\.json/, /package\.json/, /protractor\.conf\.js/,
+    /tsconfig\.(app|spec)\.json/,
+    /styles\./,
+    /app\.module\.ts/];
   return toRemoveList.some(re => re.test(path));
 }
 
@@ -71,6 +73,7 @@ export default function (options: ApplicationOptions): Rule {
       let basename = PlatformUtils.basename(realRootDir);
       options.name = json.name;
       options.directory = basename;
+
     } else {
       if (!options.name) {
         options.name = 'ng-app';
@@ -81,12 +84,14 @@ export default function (options: ApplicationOptions): Rule {
     }
 
     options.sourceDir = 'src';
+    // disable module generation in ext. schematic @schematics/angular
+    // options['module'] = false;
 
     let optionsOverwrite = _.clone(options);
     optionsOverwrite.sourceDir = 'src/app';
     optionsOverwrite.appmoduledir = 'src/modules/app';
 
-
+    let externSchematic = externalSchematic('@schematics/angular', 'application', options);
 
     // TODO check if schematics exists ...
 
@@ -94,9 +99,14 @@ export default function (options: ApplicationOptions): Rule {
 
       mergeWith(
         apply(
-          asSource(externalSchematic('@schematics/angular', 'application', options)),
+          asSource(
+            externSchematic
+          ),
           [
-            (tree: Tree, context: SchematicContext) => Tree.optimize(tree),
+            (tree: Tree, context: SchematicContext) => {
+
+              return Tree.optimize(tree);
+            },
             upgradeProject ? move(options.directory, virtualRootDir) : noop(),
             (tree: Tree, context: SchematicContext) => {
               tree.visit((path, entry) => {
@@ -148,8 +158,8 @@ export default function (options: ApplicationOptions): Rule {
                   let json = JSON.parse(fs.readFileSync(filepath).toString('utf-8'));
 
                   let updated = false;
-                  ['dependencies', 'devDependencies', 'scripts','peerDependencies'].forEach(_key => {
-                    if(jsonNew[_key]){
+                  ['dependencies', 'devDependencies', 'scripts', 'peerDependencies'].forEach(_key => {
+                    if (jsonNew[_key]) {
                       Object.keys(jsonNew[_key]).forEach(_d => {
                         if (!json[_key][_d]) {
                           json[_key][_d] = jsonNew[_key][_d];

@@ -9,7 +9,9 @@ import {APP_MODULES} from "./app.used.modules";
   ],
   imports: APP_MODULES,
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule {
 }

@@ -110,7 +110,8 @@
   },
   "peerDependencies": {
     "typexs-base": ">=0.0.1",
-    "typexs-server": ">=0.0.1"
+    "typexs-server": ">=0.0.1",
+    "typexs-ng": ">=0.0.2"
   },
   "private": true,
   "nyc": {
