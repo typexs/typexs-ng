@@ -1,10 +1,9 @@
-import {Log, Storage, Inject, Container, Config, PlatformUtils, RuntimeLoader, MetaArgs,ClassesLoader} from "typexs-base";
-import {C_NG_MODUL, K_NG_ROUTES} from "../types";
+import {Config, Inject} from "typexs-base";
 import {NgMetaDataCollector} from "../libs/angular/NgMetaDataCollector";
 import {NgModuleBuilder} from "../libs/angular/NgModuleBuilder";
 
 
-export class NgServeCommand {
+export class NgBuild {
 
   command = "ng build [op]";
   aliases = "ngb";

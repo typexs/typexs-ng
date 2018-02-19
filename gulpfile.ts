@@ -5,14 +5,11 @@ import * as glob from 'glob';
 import * as ts from "gulp-typescript";
 import * as gulp from "gulp";
 
-
-const gulp = require("gulp");
 const bump = require('gulp-bump');
 const del = require("del");
 const shell = require("gulp-shell");
 const replace = require("gulp-replace");
 const sourcemaps = require("gulp-sourcemaps");
-const ts = require("gulp-typescript");
 
 
 @Gulpclass()
@@ -134,11 +131,7 @@ export class Gulpfile {
    */
   @Task()
   packageCopyBin() {
-    if (require('fs').existsSync('./bin')) {
-      return gulp.src("./bin/*").pipe(gulp.dest("./build/package/bin"));
-    } else {
-      return;
-    }
+    return gulp.src("./bin/*").pipe(gulp.dest("./build/package/bin"));
   }
 
 
