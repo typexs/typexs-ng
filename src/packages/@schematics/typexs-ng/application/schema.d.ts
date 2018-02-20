@@ -1,5 +1,5 @@
 
-export interface Schema {
+export interface Schema  {
   /**
    * The directory name to create the app in.
    */
@@ -59,9 +59,18 @@ export interface Schema {
    */
   skipTests?: boolean;
   /**
+   * Skip installing dependency packages.
+   */
+  skipInstall?: boolean;
+
+  /**
    * Skip initializing a git repository.
    */
   skipGit?: boolean;
+  /**
+   * Initial repository commit information.
+   */
+  // commit?: { name: string, email: string, message?: string };
   /**
    * Create a minimal app (no test structure, inline styles/templates).
    */
