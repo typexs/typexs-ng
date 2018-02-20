@@ -1,56 +1,45 @@
-/**
- * @license
- * Copyright Google Inc. All Rights Reserved.
- *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
- */
-
 import {join} from 'path';
 import {strings} from '@angular-devkit/core';
-import * as ts from 'typescript';
 import * as _ from 'lodash';
 
 
 import {
-  MergeStrategy,
-  Rule,
-  SchematicContext,
-  Tree,
   apply,
+  asSource,
   chain,
+  externalSchematic, FileSystemTree,
   filter,
+  MergeStrategy,
   mergeWith,
   move,
   noop,
-  schematic,
-  externalSchematic,
+  Rule,
+  SchematicContext,
   template,
-  url,
-  FileEntry,
-  FileOperator,
-  forEach as forEachOp, asSource
-
+  Tree,
+  url
 } from '@angular-devkit/schematics';
 import {Schema as ApplicationOptions} from './schema';
-import {forEach} from "@angular/router/src/utils/collection";
 import * as fs from 'fs';
-import {SimpleRegexCodeModifierHelper, PlatformUtils, FileUtils} from "typexs-base";
-import {addToViewTree} from "@angular/core/src/render3/instructions";
+import {PlatformUtils, SimpleRegexCodeModifierHelper} from "typexs-base";
 
 
 function minimalPathFilter(path: string): boolean {
-  const toRemoveList: RegExp[] = [/e2e\//, /editorconfig/, /README/, /karma.conf.js/,
+  const toRemoveList: RegExp[] = [
+    /e2e\//, /editorconfig/, /README/, /karma.conf.js/,
     /protractor.conf.js/, /test.ts/, /tsconfig.spec.json/,
-    /tslint.json/, /favicon.ico/];
+    /tslint.json/, /favicon.ico/
+  ];
 
   return !toRemoveList.some(re => re.test(path));
 }
 
 
 function cleanupFilter(path: string): boolean {
-  const toRemoveList: RegExp[] = [/README.md/,
-    /karma\.conf\.js/, /\.angular-cli\.json/, /package\.json/, /protractor\.conf\.js/,
+  const toRemoveList: RegExp[] = [
+    /README.md/,
+    /karma\.conf\.js/, /\.angular-cli\.json/,
+    /package\.json/, /protractor\.conf\.js/,
     /tsconfig\.(app|spec)\.json/,
     /styles\./,
     /app\.module\.ts/];
@@ -64,7 +53,12 @@ export default function (options: ApplicationOptions): Rule {
 
     let overwrites: any[] = [];
     const virtualRootDir = '/';
-    const realRootDir = host.root['_host']['_root'];
+
+    const realRootDir = process.cwd(); //host.root['_host']['_root'];
+
+    if(!realRootDir){
+      throw new Error('real root dir does not found.')
+    }
 
     const upgradeProject = PlatformUtils.fileExist(PlatformUtils.join(realRootDir, 'package.json'));
 
@@ -73,7 +67,6 @@ export default function (options: ApplicationOptions): Rule {
       let basename = PlatformUtils.basename(realRootDir);
       options.name = json.name;
       options.directory = basename;
-
     } else {
       if (!options.name) {
         options.name = 'ng-app';
@@ -84,6 +77,8 @@ export default function (options: ApplicationOptions): Rule {
     }
 
     options.sourceDir = 'src';
+
+
     // disable module generation in ext. schematic @schematics/angular
     // options['module'] = false;
 
@@ -139,7 +134,6 @@ export default function (options: ApplicationOptions): Rule {
       ),
       mergeWith(
         apply(url('./files'), [
-
           options.minimal ? filter(minimalPathFilter) : noop(),
           template({
             utils: strings,
