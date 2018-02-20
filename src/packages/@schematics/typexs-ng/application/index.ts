@@ -156,6 +156,11 @@ export default function (options: ApplicationOptions): Rule {
                   let updated = false;
                   ['dependencies', 'devDependencies', 'scripts', 'peerDependencies'].forEach(_key => {
                     if (jsonNew[_key]) {
+
+                      if(!json[_key]){
+                        json[_key] = {}
+                      }
+
                       Object.keys(jsonNew[_key]).forEach(_d => {
                         if (!json[_key][_d]) {
                           json[_key][_d] = jsonNew[_key][_d];
