@@ -22,6 +22,7 @@ import {
 import {Schema as ApplicationOptions} from './schema';
 import * as fs from 'fs';
 import {PlatformUtils, SimpleRegexCodeModifierHelper} from "typexs-base";
+import {FileSystemHost} from "@angular-devkit/schematics/tools";
 
 
 function minimalPathFilter(path: string): boolean {
@@ -54,10 +55,12 @@ export default function (options: ApplicationOptions): Rule {
     let overwrites: any[] = [];
     const virtualRootDir = '/';
 
-    const realRootDir = process.cwd(); //host.root['_host']['_root'];
+    // TODO better is to pass workdir in options
+    let delegator:FileSystemHost = (host.root['_host']).delegate;
+    const realRootDir = delegator['_root'];
 
     if(!realRootDir){
-      throw new Error('real root dir does not found.')
+      throw new Error('real root dir does not found. '+realRootDir)
     }
 
     const upgradeProject = PlatformUtils.fileExist(PlatformUtils.join(realRootDir, 'package.json'));
@@ -77,7 +80,6 @@ export default function (options: ApplicationOptions): Rule {
     }
 
     options.sourceDir = 'src';
-
 
     // disable module generation in ext. schematic @schematics/angular
     // options['module'] = false;

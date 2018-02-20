@@ -71,13 +71,18 @@
     "skipTests": {
       "description": "Skip creating spec files.",
       "type": "boolean",
-      "default": false,
+      "default": true,
       "alias": "st"
+    },
+    "skipInstall": {
+      "description": "Skip installing dependency packages.",
+      "type": "boolean",
+      "default": true
     },
     "skipGit": {
       "description": "Skip initializing a git repository.",
       "type": "boolean",
-      "default": false,
+      "default": true,
       "alias": "sg"
     },
     "minimal": {

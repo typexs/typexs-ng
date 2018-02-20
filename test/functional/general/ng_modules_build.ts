@@ -50,7 +50,7 @@ class GeneralSpec {
   async 'build AppModule'() {
     let bts = Bootstrap._().configure({
       ng: {generated: './build/ng-app'},
-      app: {path: __dirname + '/project'},
+      app: {path: __dirname + '/fake_apps/coolapp'},
       modules: {
         libs: [{
           topic: C_NG_MODUL,

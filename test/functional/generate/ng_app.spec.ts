@@ -11,7 +11,7 @@ class GeneralSpec {
   static async after() {
     let directory = __dirname + '/build';
     try {
-      await PlatformUtils.deleteDirectory(directory);
+       await PlatformUtils.deleteDirectory(directory);
     } catch (e) {
     }
   }
@@ -44,7 +44,7 @@ class GeneralSpec {
     try {
       await executor.run();
     } catch (e) {
-      // console.error(e);
+      console.error(e);
     }
 
     expect(fs.existsSync(directory + `/${_argv.directory}/karma.conf.js`)).to.be.true;
