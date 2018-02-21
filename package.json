@@ -147,6 +147,13 @@
           "modules/*/api",
           "src/modules/*/api"
         ]
+      },
+      {
+        "topic": "entity.default",
+        "refs": [
+          "modules/*/entities",
+          "src/modules/*/entities"
+        ]
       }
     ]
   }
