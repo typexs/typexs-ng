@@ -31,7 +31,9 @@
     "dist",
     "node_modules",
     "**/node_modules",
-    "tmp"
+    "tmp",
+    "src/**/__appmoduledir__"
+
   ],
   "compileOnSave": true
 }

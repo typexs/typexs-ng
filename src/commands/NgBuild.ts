@@ -13,6 +13,7 @@ export class NgBuild {
   @Inject()
   collector: NgMetaDataCollector;
 
+
   builder(yargs: any) {
     return yargs
   }
