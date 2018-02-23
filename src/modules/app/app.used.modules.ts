@@ -6,12 +6,11 @@ import {ModuleWithProviders} from '@angular/core';
 import {Type} from '@angular/core';
 import {AdminModule} from '../admin/admin.module';
 import {NavigatorModule} from '../navigator/navigator.module';
-import {UserModule} from "typexs-auth/src/modules/user/user.module";
+
 
 export const APP_MODULES: Array<Type<any> | ModuleWithProviders | any[]> = [
   BrowserModule,
   AdminModule,
   NavigatorModule,
-  UserModule,
   RouterModule.forRoot(APP_ROUTES)
 ]

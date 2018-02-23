@@ -20,3 +20,8 @@ themes. How can be this implemented in an AOT compile enviroment.
 **@ISSUE {counter:issue} 20180213** +
 
 Impl. a menu module which displays and controls the navigation path.
+
+
+**@ISSUE {counter:issue} 20180223** +
+
+Impl. auto generate Angular Services for defined controllers.
