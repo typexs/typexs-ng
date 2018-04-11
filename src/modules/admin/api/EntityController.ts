@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import {Inject, RuntimeLoader,Config} from "typexs-base";
+import {Inject, RuntimeLoader} from "typexs-base";
 import {ContextGroup, JsonController,Get} from "typexs-server";
 
 
@@ -20,12 +20,12 @@ export class AdminController {
     })
   }
 
-  @Get('/config')
-  getConfig():any{
-    let cfg = Config.get();
-
-
-    return cfg;
+  @Get('/entities')
+  listEntities():string[]{
+    let modules = this.loader.registry.modules();
+    return _.map(modules, m => {
+      return m.name;
+    })
   }
 
 }

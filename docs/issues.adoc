@@ -25,3 +25,15 @@ Impl. a menu module which displays and controls the navigation path.
 **@ISSUE {counter:issue} 20180223** +
 
 Impl. auto generate Angular Services for defined controllers.
+
+
+**@ISSUE {counter:issue} 20180411**
+
+Impl. flash or message handler as service so that different
+modules can notify the user about system states.
+
+
+**@ISSUE {counter:issue} 20180411**
+
+Impl. generic form builder which can be interpreted by ng and
+not only displays the form but also supports validation handling.

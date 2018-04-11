@@ -85,7 +85,7 @@
     "typescript": "^2.6.2",
     "typescript-require": "^0.2.9-1",
     "typexs-base": ">=0.3.17",
-    "typexs-server": "file:../packs/typexs-server.tgz"
+    "typexs-server": "file:packs/typexs-server.tgz"
   },
   "dependencies": {
     "@angular/animations": "^5.2.5",
