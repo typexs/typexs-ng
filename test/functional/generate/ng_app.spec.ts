@@ -1,7 +1,16 @@
 import {suite, test, timeout} from "mocha-typescript";
 import * as fs from "fs";
+import * as os from "os";
+import {join} from "path";
 import {expect} from 'chai';
 import {Bootstrap, PlatformUtils, SchematicsExecutor} from "typexs-base";
+
+
+
+
+const TMPDIR = os.tmpdir();
+//const TESTDIR = join(TMPDIR,'ng-'+(new Date()).getTime(),'build') ;
+const TESTDIR = join(__dirname,'build') ;
 
 
 @suite('functional/commands/ng_app')
@@ -9,9 +18,9 @@ class GeneralSpec {
 
 
   static async after() {
-    let directory = __dirname + '/build';
+
     try {
-       await PlatformUtils.deleteDirectory(directory);
+       await PlatformUtils.deleteDirectory(TESTDIR);
     } catch (e) {
     }
   }
@@ -20,7 +29,7 @@ class GeneralSpec {
   @test @timeout(20000)
   async 'create new app'() {
 
-    let directory = __dirname + '/build/output';
+    let directory = join(TESTDIR,'output');
     try {
       await PlatformUtils.deleteDirectory(directory);
     } catch (e) {
@@ -56,7 +65,8 @@ class GeneralSpec {
   @test
   async 'upgrade project'() {
 
-    let directory = __dirname + '/build/output/ng-app';
+    let directory = join(TESTDIR,'output','ng-app');
+
     if (!fs.existsSync(directory)) {
       await this['create new app']();
     }

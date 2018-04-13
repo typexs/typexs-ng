@@ -83,4 +83,8 @@ export interface Schema  {
    * add bootstrap css
    */
   bootstrapCss?: boolean;
+  /**
+   * select test framework
+   */
+  testFramework?: "mocha";
 }

@@ -13,7 +13,7 @@ exports.config = {
   },
   directConnect: true,
   baseUrl: 'http://localhost:4200/',
-  framework: 'mocha',
+  framework: <%= testFramework %>,
   mochaOpts: {
     reporter: "spec",
     slow: 3000
@@ -21,10 +21,9 @@ exports.config = {
     defaultTimeoutInterval: 30000,
     print: function() {}
   },
-  onPrepare() {
+  onPrepare: function() {
     require('ts-node').register({
       project: 'e2e/tsconfig.e2e.json'
     });
-    // jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
   }
 };

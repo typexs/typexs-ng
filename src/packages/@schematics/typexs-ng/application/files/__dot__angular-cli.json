@@ -15,9 +15,8 @@
       "main": "main.ts",
       "polyfills": "polyfills.ts",
       "test": "test.ts",
-      "tsconfig": "tsconfig.app.json",
-      "testTsconfig": "tsconfig.spec.json",
-      "prefix": "<%= prefix %>",
+      "tsconfig": "../../tsconfig.app.json",
+      "testTsconfig": "../../tsconfig.spec.json",
       "styles": [
         "styles.<%= style %>"
       ],
@@ -37,11 +36,11 @@
   },
   "lint": [
     {
-      "project": "<%= sourceDir %>/tsconfig.app.json",
+      "project": "tsconfig.app.json",
       "exclude": "**/node_modules/**"
     },
     {
-      "project": "<%= sourceDir %>/tsconfig.spec.json",
+      "project": "tsconfig.spec.json",
       "exclude": "**/node_modules/**"
     },
     {
