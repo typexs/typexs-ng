@@ -3,7 +3,7 @@ import * as fs from "fs";
 import * as os from "os";
 import {join} from "path";
 import {expect} from 'chai';
-import {Bootstrap, PlatformUtils, SchematicsExecutor} from "typexs-base";
+import {Bootstrap, Log, PlatformUtils, SchematicsExecutor} from "typexs-base";
 
 
 
@@ -28,7 +28,7 @@ class GeneralSpec {
 
   @test @timeout(20000)
   async 'create new app'() {
-
+    Log.info('Create new app');
     let directory = join(TESTDIR,'output');
     try {
       await PlatformUtils.deleteDirectory(directory);
@@ -64,12 +64,13 @@ class GeneralSpec {
 
   @test
   async 'upgrade project'() {
-
     let directory = join(TESTDIR,'output','ng-app');
 
     if (!fs.existsSync(directory)) {
       await this['create new app']();
     }
+
+    Log.info('Upgrade project');
 
     try {
       fs.unlinkSync(directory + '/gulpfile.ts');
