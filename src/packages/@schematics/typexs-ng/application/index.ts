@@ -1,30 +1,28 @@
 import {join} from 'path';
-import {strings, virtualFs} from '@angular-devkit/core';
+import {strings} from '@angular-devkit/core';
 import * as _ from 'lodash';
 
-import {FileUtils} from 'typexs-base';
+import {FileUtils, PlatformUtils} from 'typexs-base';
 import {
   apply,
-  asSource, callRule,
-  chain, empty,
-  externalSchematic, FileSystemTree,
+  chain,
+  empty,
+  externalSchematic,
   filter,
   MergeStrategy,
   mergeWith,
   move,
   noop,
   Rule,
-  SchematicContext, source,
+  SchematicContext,
   template,
   Tree,
   url
 } from '@angular-devkit/schematics';
 import {Schema as ApplicationOptions} from './schema';
 import * as fs from 'fs';
-import {PlatformUtils, SimpleRegexCodeModifierHelper} from "typexs-base";
 import {Schema as WorkspaceSchema} from "@schematics/angular/workspace/schema";
 import {Schema as ApplicationSchema} from "@schematics/angular/application/schema";
-import {merge} from "@angular-devkit/schematics/src/tree/static";
 
 
 function minimalPathFilter(path: string): boolean {

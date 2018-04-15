@@ -1,4 +1,4 @@
-import {IActivator} from "typexs-base";
+import {IActivator, Log} from "typexs-base";
 
 
 export class Activator implements IActivator{
@@ -6,6 +6,7 @@ export class Activator implements IActivator{
 
   startup(){
     this.startupUser();
+
   }
 
   startupUser(){
