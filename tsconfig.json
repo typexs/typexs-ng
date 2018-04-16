@@ -29,11 +29,9 @@
     "archive",
     "build",
     "dist",
-    "node_modules",
-    "**/node_modules",
     "tmp",
-    "src/**/__appmoduledir__"
-
+    "src/**/files"
   ],
+  //"include": ["node_modules/rxjs-compat/*.ts"],
   "compileOnSave": true
 }
