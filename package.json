@@ -110,8 +110,8 @@
     "rxjs": "^5.5.10",
     "semver": "^5.5.0",
     "string-template": "^1.0.0",
-    "typexs-base": "*",
-    "typexs-server": "*",
+    "typexs-base": "latest",
+    "typexs-server": "latest",
     "zone.js": "^0.8.26",
     "@ng-bootstrap/ng-bootstrap": "^1.1.2"
   },

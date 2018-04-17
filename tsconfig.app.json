@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "build/out-tsc/app",
+    "target": "es5",
+    "types": ["node"]
+  },
+  "include":[
+    "src/app/**/*.ts",
+    "src/modules/**/*.ts"
+  ],
+  "exclude": [
+    "src/app/test.ts",
+    "src/modules/**/*.spec.ts",
+    "src/app/**/*.spec.ts"
+  ]
+}
