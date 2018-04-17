@@ -55,7 +55,15 @@ function cleanupFilter(path: string): boolean {
 
 export default function (options: ApplicationOptions): Rule {
   return (host: Tree, context: SchematicContext) => {
-    const txsNgpackageJsonPath = join(__dirname, '..', '..', '..', '..', '..', 'package.json');
+
+
+    let split = __dirname.split('/typexs-ng/');
+    // TODO use file separator
+
+    let subdirs = __dirname.replace(split[0],'').split('/').length - 2;
+    let arr = Array(subdirs).fill( '..');
+
+    const txsNgpackageJsonPath = join(__dirname, ...arr, 'package.json');
     let txsNgJson = FileUtils.getJsonSync(txsNgpackageJsonPath);
     options['typexs_ng_version'] = ">=" + txsNgJson.version;
     options['angular_cli_version'] = ">=1.7.4";
