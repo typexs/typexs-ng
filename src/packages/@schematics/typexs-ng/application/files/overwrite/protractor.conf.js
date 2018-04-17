@@ -13,10 +13,10 @@ exports.config = {
   },
   directConnect: true,
   baseUrl: 'http://localhost:4200/',
-  framework: <%= testFramework %>,
+  framework: "<%= testFramework %>",
   mochaOpts: {
     reporter: "spec",
-    slow: 3000
+    slow: 3000,
     showColors: true,
     defaultTimeoutInterval: 30000,
     print: function() {}

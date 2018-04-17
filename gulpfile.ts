@@ -5,6 +5,8 @@ import * as fs from 'fs';
 import * as glob from 'glob';
 import * as gulp from 'gulp';
 import * as watch from 'gulp-watch';
+//import * as ts from "gulp-typescript";
+
 
 
 const bump = require('gulp-bump');

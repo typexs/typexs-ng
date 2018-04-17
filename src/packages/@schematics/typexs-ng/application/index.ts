@@ -1,8 +1,9 @@
+import * as semver from 'semver';
 import {join} from 'path';
 import {strings} from '@angular-devkit/core';
 import * as _ from 'lodash';
 
-import {FileUtils, PlatformUtils} from 'typexs-base';
+import {FileUtils, PlatformUtils, SimpleRegexCodeModifierHelper} from 'typexs-base';
 import {
   apply,
   chain,
@@ -23,6 +24,7 @@ import {Schema as ApplicationOptions} from './schema';
 import * as fs from 'fs';
 //import {Schema as WorkspaceSchema} from "@schematics/angular/workspace/schema";
 import {Schema as ApplicationSchema} from "@schematics/angular/application/schema";
+import {SimpleFileEntry} from "@angular-devkit/schematics/src/tree/entry";
 
 
 function minimalPathFilter(path: string): boolean {
@@ -88,20 +90,20 @@ export default function (options: ApplicationOptions): Rule {
     }
 
     options.sourceDir = 'src';
-/*
-    let workspaceOptions: WorkspaceSchema = {
-      name: options.name,
-      newProjectRoot: options.workdir || 'projects',
-      skipGit: options.skipGit,
-      skipInstall: options.skipInstall,
-      version: options.version,
-      //commit: null,
-      linkCli: false
+    /*
+        let workspaceOptions: WorkspaceSchema = {
+          name: options.name,
+          newProjectRoot: options.workdir || 'projects',
+          skipGit: options.skipGit,
+          skipInstall: options.skipInstall,
+          version: options.version,
+          //commit: null,
+          linkCli: false
 
 
-      // linkCli:
-    }
-*/
+          // linkCli:
+        }
+    */
     /*
     let angularOptions: ApplicationSchema = {
       name: options.name,
@@ -158,9 +160,9 @@ export default function (options: ApplicationOptions): Rule {
                 '/src/app/tsconfig.spec.json': '/tsconfig.spec.json',
               };
 
-              for(let k in map){
-                if(tree.exists(k)){
-                  tree.rename(k,map[k])
+              for (let k in map) {
+                if (tree.exists(k)) {
+                  tree.rename(k, map[k])
                 }
               }
 
@@ -191,6 +193,7 @@ export default function (options: ApplicationOptions): Rule {
       (tree: Tree, context: SchematicContext) => {
         return tree;
       },
+
       mergeWith(
         apply(
           url('./files/overwrite'),
@@ -203,73 +206,84 @@ export default function (options: ApplicationOptions): Rule {
               sourcedir: optionsOverwrite.sourceDir
             }),
             (tree: Tree, context: SchematicContext) => {
-              return tree;
-            },
-            /*
-            (tree: Tree, context: SchematicContext) => {
-              tree.visit((path: string, entry) => {
-                let filepath = join(realRootDir, path);
-                if (fs.existsSync(filepath)) {
+              let path = '/package.json';
+              let filepath = join(realRootDir, path);
+              if (fs.existsSync(filepath)) {
 
-                  // add dependencies to package.json
-                  if (/package\.json/.test(path)) {
-                    let local = tree.read(path);
-                    let jsonNew = JSON.parse(local.toString('utf-8'));
-                    let json = JSON.parse(fs.readFileSync(filepath).toString('utf-8'));
+                // add dependencies to package.json
+                let local = tree.read(path);
+                let jsonNew = JSON.parse(local.toString('utf-8'));
+                let json = JSON.parse(fs.readFileSync(filepath).toString('utf-8'));
 
-                    let updated = false;
-                    ['dependencies', 'devDependencies', 'scripts', 'peerDependencies'].forEach(_key => {
-                      if (jsonNew[_key]) {
+                let updated = false;
+                ['dependencies', 'devDependencies', 'scripts', 'peerDependencies'].forEach(_key => {
+                  if (jsonNew[_key]) {
 
-                        if (!json[_key]) {
-                          json[_key] = {}
+                    if (!json[_key]) {
+                      json[_key] = {}
+                    }
+
+                    Object.keys(jsonNew[_key]).forEach(_d => {
+                      if (!json[_key][_d]) {
+                        json[_key][_d] = jsonNew[_key][_d];
+                        updated = true;
+                      } else {
+                        let v_n = semver.clean(jsonNew[_key][_d].replace(/[^\d\.]+/, ''));
+                        let v = semver.clean(json[_key][_d].replace(/[^\d\.\-]+/, ''));
+                        if (v_n && v && semver.gt(v_n, v)) {
+                          // compare versions
+                          updated = true;
+                          json[_key][_d] = jsonNew[_key][_d];
+
                         }
-
-                        Object.keys(jsonNew[_key]).forEach(_d => {
-                          if (!json[_key][_d]) {
-                            json[_key][_d] = jsonNew[_key][_d];
-                            updated = true;
-                          }
-                        });
                       }
                     });
-
-                    if (updated) {
-                      overwrites.push({path: path, content: JSON.stringify(json, null, 2)})
-                    }
-                  } else if (/gulpfile\.ts/.test(path)) {
-                    let local = tree.read(path);
-                    let localStr = local.toString('utf-8');
-                    let exist = fs.readFileSync(filepath).toString('utf-8');
-
-                    let newContent = SimpleRegexCodeModifierHelper.copyMethods(exist, localStr);
-                    newContent = SimpleRegexCodeModifierHelper.copyImports(newContent, localStr);
-
-                    if (newContent.length !== exist.length) {
-                      overwrites.push({path: path, content: newContent});
-                    }
                   }
+                });
 
-                  // tree.delete(path);
+                if (updated) {
+                  overwrites.push({path:path, content:JSON.stringify(json, null, 2)});
                 }
-              });
+              }
 
+              path = '/gulpfile.ts';
+              filepath = join(realRootDir, path);
+              if (fs.existsSync(filepath)) {
+
+
+                let local = tree.read(path);
+                let localStr = local.toString('utf-8');
+                let exist = fs.readFileSync(filepath).toString('utf-8');
+
+                let newContent = SimpleRegexCodeModifierHelper.copyMethods(exist, localStr);
+                newContent = SimpleRegexCodeModifierHelper.copyImports(newContent, localStr);
+
+                if (newContent.length !== exist.length) {
+                  overwrites.push({path:path, content:newContent});
+                }
+              }
               tree = Tree.optimize(tree);
               return tree;
             },
-            upgradeProject ? noop() : move(options.directory),
-            */
+
           ]),
         MergeStrategy.Overwrite
       ),
+
       filter((path: string) => {
         let filepath = join(realRootDir, path);
         return !fs.existsSync(filepath);
       }),
+
       // filter existing files
       updatePackageJson(),
       //updateWorkspaceFile(angularOptions, workspaceOptions),
       (tree: Tree, context: SchematicContext) => {
+        //tree._cacheMap.push
+        overwrites.forEach(x => {
+          tree['set'](new SimpleFileEntry(x.path,Buffer.alloc(0)));
+          tree.overwrite(x.path,x.content);
+        })
         return Tree.optimize(tree);
       },
       upgradeProject ? noop() : move(virtualRootDir, options.directory),
@@ -282,6 +296,7 @@ function updatePackageJson() {
     return host;
   }
 }
+
 //
 // function updateWorkspaceFile(options: ApplicationSchema, workspace: WorkspaceSchema) {
 //   return (host: Tree, context: SchematicContext) => {

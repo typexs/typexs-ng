@@ -12,16 +12,16 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^5.2.9",
-    "@angular/common": "^5.2.9",
-    "@angular/compiler": "^5.2.9",
-    "@angular/core": "^5.2.9",
-    "@angular/forms": "^5.2.9",
-    "@angular/http": "^5.2.9",
-    "@angular/platform-browser": "^5.2.9",
-    "@angular/platform-browser-dynamic": "^5.2.9",
-    "@angular/router": "^5.2.9",<% if (serviceWorker) { %>
-    "@angular/service-worker": "^5.2.9",<% } %><% if (bootstrapCss) { %>
+    "@angular/animations": "^5.2.10",
+    "@angular/common": "^5.2.10",
+    "@angular/compiler": "^5.2.10",
+    "@angular/core": "^5.2.10",
+    "@angular/forms": "^5.2.10",
+    "@angular/http": "^5.2.10",
+    "@angular/platform-browser": "^5.2.10",
+    "@angular/platform-browser-dynamic": "^5.2.10",
+    "@angular/router": "^5.2.10",<% if (serviceWorker) { %>
+    "@angular/service-worker": "^5.2.10",<% } %><% if (bootstrapCss) { %>
     "@ng-bootstrap/ng-bootstrap": "^1.1.2",
     "bootstrap": "^4.1.0",<% } %>
     "core-js": "^2.5.5",
@@ -31,8 +31,8 @@
   },
   "devDependencies": {
     "@angular/cli": "<%= angular_cli_version %>",
-    "@angular/compiler-cli": "^5.2.9",
-    "@angular/language-service": "^5.2.9",<% if (!minimal) { %>
+    "@angular/compiler-cli": "^5.2.10",
+    "@angular/language-service": "^5.2.10",<% if (!minimal) { %>
     "@types/node": "~9.4.0",
     "@types/gulp": "^4.0.5",
     "gulp-typescript": "^4.0.2",
