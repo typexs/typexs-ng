@@ -59,7 +59,8 @@ export default function (options: ApplicationOptions): Rule {
     let txsNgJson = FileUtils.getJsonSync(txsNgpackageJsonPath);
     options['typexs_ng_version'] = ">=" + txsNgJson.version;
     options['angular_cli_version'] = ">=1.7.4";
-    options['version'] = options['angular_cli_version'];
+    options['version'] = "1.7.4";
+
 
     let overwrites: any[] = [];
     const virtualRootDir = '/';
@@ -74,11 +75,12 @@ export default function (options: ApplicationOptions): Rule {
 
     const packageJsonPath = join(realRootDir, 'package.json')
     const upgradeProject = PlatformUtils.fileExist(packageJsonPath);
-
+    //options.version = '0.0.1';
     if (upgradeProject) {
       let json = FileUtils.getJsonSync(packageJsonPath);
       let basename = PlatformUtils.basename(realRootDir);
       options.name = json.name;
+      //options.version = json.version;
       options.directory = basename;
     } else {
       if (!options.name) {
