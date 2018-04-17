@@ -113,8 +113,7 @@
     "typexs-base": "*",
     "typexs-server": "*",
     "zone.js": "^0.8.26",
-    "@ng-bootstrap/ng-bootstrap": "^1.1.2",
-    "typexs-ng": ">=0.0.5"
+    "@ng-bootstrap/ng-bootstrap": "^1.1.2"
   },
   "private": true,
   "nyc": {
