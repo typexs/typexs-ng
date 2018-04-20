@@ -1,9 +1,10 @@
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 
 // Theme initialization
-import {themes} from './themes';
+import {THEMES} from './themes';
 import {ThemeRegistry} from "../libs/angular/ThemeRegistry";
-ThemeRegistry.register(themes);
+
+ThemeRegistry.register(THEMES);
 
 import {AppModule} from './../modules/app/app.module';
 import {environment} from './environments/environment';
