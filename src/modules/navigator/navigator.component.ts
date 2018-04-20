@@ -19,6 +19,6 @@ export class NavigatorComponent {
       entry.path = route.path;
       this.routes.push(entry);
     }
-    console.log(this.routes)
+    // console.log(this.routes)
   }
 }

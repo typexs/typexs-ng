@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component ,NgModuleFactory} from '@angular/core';
 
-@Component({
+
+@Component(<any>{
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']

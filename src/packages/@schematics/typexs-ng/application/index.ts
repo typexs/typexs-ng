@@ -218,7 +218,7 @@ export default function (options: ApplicationOptions): Rule {
             (tree: Tree, context: SchematicContext) => {
               let path = '/package.json';
               let filepath = join(realRootDir, path);
-              if (fs.existsSync(filepath)) {
+              if (fs.existsSync(filepath) && tree.exists(path)) {
 
                 // add dependencies to package.json
                 let local = tree.read(path);
@@ -258,7 +258,7 @@ export default function (options: ApplicationOptions): Rule {
 
               path = '/gulpfile.ts';
               filepath = join(realRootDir, path);
-              if (fs.existsSync(filepath)) {
+              if (fs.existsSync(filepath) && tree.exists(path)) {
 
 
                 let local = tree.read(path);

@@ -1,6 +1,11 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
+// Theme initialization
+import {themes} from './themes';
+import {ThemeRegistry} from "typexs-ng";
+ThemeRegistry.register(themes);
+
 import { AppModule } from './../modules/app/app.module';
 import { environment } from './environments/environment';
 
