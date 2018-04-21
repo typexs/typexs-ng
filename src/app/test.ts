@@ -10,6 +10,12 @@ import 'zone.js/dist/mocha-patch';
 
 
 import { getTestBed } from '@angular/core/testing';
+
+// TODO check if theme initialization is necassary at this point
+import {THEMES} from './themes';
+import {ThemeRegistry} from "../libs/angular/ThemeRegistry";
+ThemeRegistry.register(THEMES);
+
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting
