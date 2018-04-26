@@ -5,6 +5,9 @@ import * as fs from 'fs';
 import * as glob from 'glob';
 import * as gulp from 'gulp';
 import * as watch from 'gulp-watch';
+
+
+// const debug = require('gulp-debug');
 //import * as ts from "gulp-typescript";
 
 
@@ -140,7 +143,7 @@ export class Gulpfile {
    */
   @Task()
   packageCopyFiles() {
-    return gulp.src("./src/**/files/*").pipe(gulp.dest("./build/package"));
+    return gulp.src(["./src/**/files/**/*"]).pipe(gulp.dest("./build/package"));
   }
 
   /**
