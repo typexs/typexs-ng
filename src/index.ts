@@ -4,6 +4,7 @@ export * from "./commands/Ng";
 export * from "./decorators/NgRoute";
 export * from "./libs/angular/INgModuleDef";
 export * from "./libs/angular/ITemplateEntry";
+export * from "./libs/angular/IStylesheetEntry";
 export * from "./libs/angular/NgMetaDataCollector";
 export * from "./libs/angular/NgModuleBuilder";
 export * from "./libs/angular/ThemeRegistry";
