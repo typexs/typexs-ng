@@ -1,13 +1,15 @@
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import {enableProdMode} from '@angular/core';
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 
 // Theme initialization
-import {themes} from './themes';
-import {ThemeRegistry} from "typexs-ng";
-ThemeRegistry.register(themes);
+import {ThemeRegistry} from 'typexs-ng';
 
-import { AppModule } from './../modules/app/app.module';
-import { environment } from './environments/environment';
+import {THEMES} from './themes';
+import {STYLES} from './stylesheets';
+ThemeRegistry.register(THEMES, STYLES);
+
+import {AppModule} from './../modules/app/app.module';
+import {environment} from './environments/environment';
 
 if (environment.production) {
   enableProdMode();

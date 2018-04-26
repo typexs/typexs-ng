@@ -37,21 +37,21 @@ function minimalPathFilter(path: string): boolean {
   return !toRemoveList.some(re => re.test(path));
 }
 
-
-function cleanupFilter(path: string): boolean {
-  const toRemoveList: RegExp[] = [
-    /README\.md/,
-    /karma\.conf\.js/,
-    /\.angular-cli\.json/,
-    /package\.json/,
-    /protractor\.conf\.js/,
-    /tsconfig\.(app|spec)\.json/,
-    /styles\./,
-    /app\.module\.ts/,
-    /main\.ts/
-  ];
-  return !toRemoveList.some(re => re.test(path));
-}
+//
+// function cleanupFilter(path: string): boolean {
+//   const toRemoveList: RegExp[] = [
+//     /README\.md/,
+//     /karma\.conf\.js/,
+//     /\.angular-cli\.json/,
+//     /package\.json/,
+//     /protractor\.conf\.js/,
+//     /tsconfig\.(app|spec)\.json/,
+//     /styles\./,
+//     /app\.module\.ts/,
+//     /main\.ts/
+//   ];
+//   return !toRemoveList.some(re => re.test(path));
+// }
 
 export default function (options: ApplicationOptions): Rule {
   return (host: Tree, context: SchematicContext) => {
@@ -152,12 +152,8 @@ export default function (options: ApplicationOptions): Rule {
             (tree: Tree, context: SchematicContext) => {
               return Tree.optimize(tree);
             },
-//            filter(cleanupFilter),
             (tree: Tree, context: SchematicContext) => {
               tree.visit((path, entry) => {
-                // let _path = join(realRootDir,path);
-                // if (cleanupFilter(path) || fs.existsSync(_path)) {
-                //   tree.delete(path);
                 if ([/\/src\/app\/(?!modules\/)/].some(r => r.test(path))) {
                   tree.rename(path, path.replace('/src/app/', '/src/modules/app/'));
                 } else if ([/\/src\/(?!app)/].some(r => r.test(path))) {
@@ -178,7 +174,6 @@ export default function (options: ApplicationOptions): Rule {
 
               return Tree.optimize(tree);
             },
-            // filter(cleanupFilter),
           ])
       ),
       (tree: Tree, context: SchematicContext) => {
@@ -279,6 +274,9 @@ export default function (options: ApplicationOptions): Rule {
           ]),
         MergeStrategy.Overwrite
       ),
+      (tree: Tree, context: SchematicContext) => {
+        return tree;
+      },
 
       filter((path: string) => {
         let filepath = join(realRootDir, path);

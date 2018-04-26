@@ -7,8 +7,6 @@ import 'zone.js/dist/sync-test';
 import 'zone.js/dist/proxy';
 import 'zone.js/dist/mocha-patch';
 
-
-
 import { getTestBed } from '@angular/core/testing';
 import {
   BrowserDynamicTestingModule,
@@ -22,6 +20,7 @@ getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting()
 );
+
 // Then we find all the tests.
 const context = require.context('./../modules/', true, /\.spec\.ts$/);
 // And load the modules.
