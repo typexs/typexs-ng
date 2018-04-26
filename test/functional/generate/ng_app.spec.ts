@@ -75,6 +75,7 @@ class GeneralSpec {
     try {
       fs.unlinkSync(directory + '/gulpfile.ts');
       fs.unlinkSync(directory + '/karma.conf.js');
+      fs.unlinkSync(directory + '/src/app/main.ts');
     } catch (e) {
     }
 

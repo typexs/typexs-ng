@@ -23,8 +23,8 @@ import {
 import {Schema as ApplicationOptions} from './schema';
 import * as fs from 'fs';
 //import {Schema as WorkspaceSchema} from "@schematics/angular/workspace/schema";
-import {Schema as ApplicationSchema} from "@schematics/angular/application/schema";
-import {SimpleFileEntry} from "@angular-devkit/schematics/src/tree/entry";
+import {Schema as ApplicationSchema} from '@schematics/angular/application/schema';
+import {SimpleFileEntry} from '@angular-devkit/schematics/src/tree/entry';
 
 
 function minimalPathFilter(path: string): boolean {
@@ -60,14 +60,14 @@ export default function (options: ApplicationOptions): Rule {
     let split = __dirname.split('/typexs-ng/');
     // TODO use file separator
 
-    let subdirs = __dirname.replace(split[0],'').split('/').length - 2;
-    let arr = Array(subdirs).fill( '..');
+    let subdirs = __dirname.replace(split[0], '').split('/').length - 2;
+    let arr = Array(subdirs).fill('..');
 
     const txsNgpackageJsonPath = join(__dirname, ...arr, 'package.json');
     let txsNgJson = FileUtils.getJsonSync(txsNgpackageJsonPath);
-    options['typexs_ng_version'] = ">=" + txsNgJson.version;
-    options['angular_cli_version'] = ">=1.7.4";
-    options['version'] = "1.7.4";
+    options['typexs_ng_version'] = '>=' + txsNgJson.version;
+    options['angular_cli_version'] = '>=1.7.4';
+    options['version'] = '1.7.4';
 
 
     let overwrites: any[] = [];
@@ -78,10 +78,10 @@ export default function (options: ApplicationOptions): Rule {
     const realRootDir = host['_host']._root;//options['__BASEDIR__'];
 
     if (!realRootDir) {
-      throw new Error('real root dir does not found. ' + realRootDir)
+      throw new Error('real root dir does not found. ' + realRootDir);
     }
 
-    const packageJsonPath = join(realRootDir, 'package.json')
+    const packageJsonPath = join(realRootDir, 'package.json');
     const upgradeProject = PlatformUtils.fileExist(packageJsonPath);
     //options.version = '0.0.1';
     if (upgradeProject) {
@@ -168,7 +168,7 @@ export default function (options: ApplicationOptions): Rule {
 
               for (let k in map) {
                 if (tree.exists(k)) {
-                  tree.rename(k, map[k])
+                  tree.rename(k, map[k]);
                 }
               }
 
@@ -191,7 +191,7 @@ export default function (options: ApplicationOptions): Rule {
               sourcedir: optionsOverwrite.sourceDir
             }),
             (tree: Tree, context: SchematicContext) => {
-              return Tree.optimize(tree)
+              return Tree.optimize(tree);
             }
           ])
       ),
@@ -225,7 +225,7 @@ export default function (options: ApplicationOptions): Rule {
                   if (jsonNew[_key]) {
 
                     if (!json[_key]) {
-                      json[_key] = {}
+                      json[_key] = {};
                     }
 
                     Object.keys(jsonNew[_key]).forEach(_d => {
@@ -247,7 +247,7 @@ export default function (options: ApplicationOptions): Rule {
                 });
 
                 if (updated) {
-                  overwrites.push({path:path, content:JSON.stringify(json, null, 2)});
+                  overwrites.push({path: path, content: JSON.stringify(json, null, 2)});
                 }
               }
 
@@ -264,7 +264,7 @@ export default function (options: ApplicationOptions): Rule {
                 newContent = SimpleRegexCodeModifierHelper.copyImports(newContent, localStr);
 
                 if (newContent.length !== exist.length) {
-                  overwrites.push({path:path, content:newContent});
+                  overwrites.push({path: path, content: newContent});
                 }
               }
               tree = Tree.optimize(tree);
@@ -289,9 +289,9 @@ export default function (options: ApplicationOptions): Rule {
       (tree: Tree, context: SchematicContext) => {
         //tree._cacheMap.push
         overwrites.forEach(x => {
-          tree['set'](new SimpleFileEntry(x.path,Buffer.alloc(0)));
-          tree.overwrite(x.path,x.content);
-        })
+          tree['set'](new SimpleFileEntry(x.path, Buffer.alloc(0)));
+          tree.overwrite(x.path, x.content);
+        });
         return Tree.optimize(tree);
       },
       upgradeProject ? noop() : move(virtualRootDir, options.directory),
@@ -302,7 +302,7 @@ export default function (options: ApplicationOptions): Rule {
 function updatePackageJson() {
   return (host: Tree, context: SchematicContext) => {
     return host;
-  }
+  };
 }
 
 //
