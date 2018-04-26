@@ -39,7 +39,13 @@ Impl. generic form builder which can be interpreted by ng and
 not only displays the form but also supports validation handling.
 
 
-**@ISSUE {counter:issue} 20180412**
+**[.line-through]#@ISSUE {counter:issue} 20180412#**
 
 Adapt ng-app schemata to new schematics version and additionally
 add parameter which defines the testing framework.
+
+**@ISSUE {counter:issue} 20180421**
+
+Extend command line for theme analysis by stylesheet analysis and generation.
+
+

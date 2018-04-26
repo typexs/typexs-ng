@@ -1,10 +1,10 @@
-import {isEmpty} from 'lodash'
 import {Type, TypeDecorator} from "@angular/core";
 import * as core from "@angular/core";
 import {__assign} from "tslib";
 import * as c from 'case';
-import {find, isNull} from 'lodash';
+import {find, isNull, filter, isEmpty} from 'lodash';
 import {ITemplateEntry} from "./ITemplateEntry";
+import {IStylesheetEntry} from "./IStylesheetEntry";
 
 
 /**
@@ -14,21 +14,20 @@ export class ThemeRegistry {
 
   private static $self: ThemeRegistry;
 
-  private readonly themes: ITemplateEntry[] = [];
+  private themes: ITemplateEntry[] = [];
+
+  private styles: IStylesheetEntry[] = [];
 
   private activeTheme: string;
 
-  private constructor(themes: any) {
-    this.themes = themes;
+
+  private constructor() {
   }
 
-  static _(themes: any = {}) {
+
+  static _() {
     if (!this.$self) {
-      this.$self = new ThemeRegistry(themes);
-    } else {
-      if (!isEmpty(themes)) {
-        // TODO inform that nothing happens! themes are ignored, because already instanced
-      }
+      this.$self = new ThemeRegistry();
     }
     return this.$self;
   }
@@ -36,6 +35,16 @@ export class ThemeRegistry {
 
   getActiveTheme(): string {
     return (localStorage && localStorage.getItem('txs.theme')) || 'custom';
+  }
+
+
+  findStylesheet(theme: string, templateName: string, type: string = 'css'): IStylesheetEntry[] {
+    let entry = filter(this.styles, {
+      name: templateName,
+      type: type,
+      theme: theme
+    })
+    return !isEmpty(entry) ? entry : null;
   }
 
 
@@ -49,13 +58,25 @@ export class ThemeRegistry {
   }
 
 
+  private setThemes(themes: ITemplateEntry[] = []) {
+    this.themes = themes;
+    return this;
+  }
+
+  private setStyles(styles: IStylesheetEntry[] = []) {
+    this.styles = styles;
+    return this;
+  }
+
   static normalize(str: string) {
     return c.kebab(str).replace(/^\-/, '').replace(/[^\d\w\-\_]/, '_');
   }
 
 
-  static register(themes: any = {}) {
-    let registry = this._(themes);
+  static register(themes: ITemplateEntry[] = [], styles: IStylesheetEntry[] = []) {
+    let registry = this._();
+    registry.setThemes(themes).setStyles(styles);
+
     let activeUserTheme = registry.getActiveTheme();
 
     let Component = makeDecorator("Component", function (c) {
@@ -66,9 +87,19 @@ export class ThemeRegistry {
     }, core.Directive, null, function (cls: any, annotationInstance: any, decoration: any) {
       annotationInstance.templateName = ThemeRegistry.normalize(annotationInstance.selector);
       let overrideTemplate = registry.findTemplate(activeUserTheme, annotationInstance.templateName);
-
       if (!isNull(overrideTemplate)) {
         annotationInstance.template = overrideTemplate.template;
+      }
+
+      let overrideStylesheets = registry.findStylesheet(activeUserTheme, annotationInstance.templateName);
+      if (!isNull(overrideStylesheets)) {
+        overrideStylesheets.forEach(stylesheet => {
+          if(stylesheet.subcontext === 'append'){
+            annotationInstance.styles.push(stylesheet.stylesheet);
+          }else if(stylesheet.subcontext === 'override'){
+            annotationInstance.styles = [stylesheet.stylesheet];
+          }
+        })
       }
     });
 
@@ -126,6 +157,8 @@ export function makeDecorator(
   (<any>DecoratorFactory).annotationCls = DecoratorFactory;
   return DecoratorFactory as any;
 }
+
+
 
 function makeMetadataCtor(props?: (...args: any[]) => any): any {
   return function ctor(...args: any[]) {
