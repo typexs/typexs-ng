@@ -147,6 +147,15 @@ export class Gulpfile {
   }
 
   /**
+   * Copies README.md into the package.
+   */
+  @Task()
+  packageCopyModulContents() {
+    return gulp.src(["./src/modules/**/*.+(html|css|less|sass|scss)","!./src/modules/app/**" ])
+      .pipe(gulp.dest("./build/package/modules"));
+  }
+
+  /**
    * Copies Bin files.
    */
   @Task()
@@ -179,6 +188,8 @@ export class Gulpfile {
         "packageCopyJsons",
         "packageCopyFiles",
         "packageCopyHtml",
+
+        "packageCopyModulContents",
         "packageReplaceReferences",
         "packagePreparePackageFile",
         "packageCopyReadme",
@@ -200,6 +211,7 @@ export class Gulpfile {
         "packageCopyJsons",
         "packageCopyFiles",
         "packageCopyHtml",
+        "packageCopyModulContents",
         "packageReplaceReferences",
         "packagePreparePackageFile",
         "packageCopyReadme",
