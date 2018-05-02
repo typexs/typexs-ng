@@ -3,7 +3,6 @@ import * as _ from "lodash"
 import {K_NG_ROUTES} from "../types";
 import {Route} from "@angular/router";
 import {Type} from "@angular/core/core";
-import {APP_ROUTES} from "../modules/app/app.routes";
 
 
 export function NgRoute(path: string | Route) {
@@ -16,6 +15,5 @@ export function NgRoute(path: string | Route) {
     }
     r.component = <Type<any>>object;
     MetaArgs.key(K_NG_ROUTES).push(r);
-    APP_ROUTES.push(r);
   };
 }
