@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "build/out-tsc/app",
+    "outDir": "build/app",
     "target": "es5",
     "types": ["node"]
   },
@@ -13,5 +13,10 @@
     "src/app/test.ts",
     "src/modules/**/*.spec.ts",
     "src/app/**/*.spec.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "genDir": "build/app-aot",
+    "skipMetadataEmit" : false,
+    "skipTemplateCodegen" : true
+  }
 }

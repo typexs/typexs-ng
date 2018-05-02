@@ -4,7 +4,6 @@ import {K_NG_ROUTES} from "../types";
 import {Route} from "@angular/router";
 import {Type} from "@angular/core/core";
 
-
 export function NgRoute(path: string | Route) {
   return function (object: Function) {
     let r: Route = {};
@@ -17,3 +16,4 @@ export function NgRoute(path: string | Route) {
     MetaArgs.key(K_NG_ROUTES).push(r);
   };
 }
+
