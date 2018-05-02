@@ -3,12 +3,15 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "test": "nyc mocha --opts test/mocha.all.opts && karma start --single-run --browsers PhantomJS --code-coverage",
+    "posttest": "nyc report --reporter=json && codecov -f coverage/backend/*.json && codecov -f coverage/karma/*.json",
     "ng": "ng",
-    "start": "concurrently \"ng serve -pc proxy.conf.json --open\" \"typexs server start\"",
+    "start": "concurrently \"ng serve -pc proxy.conf.json --open\" \"typexs server default\"",
     "build": "ng build --prod",
-    "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "mocha": "mocha --opts test/mocha.all.opts",
+    "karma": "karma start --single-run --browsers PhantomJS"
   },
   "private": true,
   "dependencies": {
