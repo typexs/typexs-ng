@@ -48,4 +48,35 @@ add parameter which defines the testing framework.
 
 Extend command line for theme analysis by stylesheet analysis and generation.
 
+**@ISSUE {counter:issue} 20180509**
 
+tsconfig.app.json must contain:
+
+```
+  "include": [
+    ...
+    "node_modules/*/modules/**/*.ts"
+  ],
+  "exclude": [
+    ...
+    "node_modules/*/modules/**/*.spec.ts"
+  ]
+```
+
+else packages passed with *.ts files, can't be loaded by ng.
+
+
+**@ISSUE {counter:issue} 20180509**
+
+Find better solution for *.ts integration, it is currently bad packaging.
+
+https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview
+
+
+**@ISSUE {counter:issue} 20180509**
+
+ERROR TypeError: Cannot read property 'label' of undefined
+    at new NavigatorComponent (webpack-internal:///./node_modules/typexs-ng/modules/navigator/navigator.component.ts:21)
+    at createClass (webpack-internal:///./node_modules/@angular/core/esm5/core.js:12697)
+
+data or label can be empty

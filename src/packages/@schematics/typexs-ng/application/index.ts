@@ -66,7 +66,7 @@ export default function (options: ApplicationOptions): Rule {
     const txsNgpackageJsonPath = join(__dirname, ...arr, 'package.json');
     let txsNgJson = FileUtils.getJsonSync(txsNgpackageJsonPath);
     options['typexs_ng_version'] = '>=' + txsNgJson.version;
-    options['angular_cli_version'] = '>=1.7.4';
+    options['angular_cli_version'] = '^1.7.4';
     options['version'] = '1.7.4';
 
 
