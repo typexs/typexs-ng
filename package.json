@@ -10,7 +10,7 @@
     "test": "nyc mocha --opts test/mocha.all.opts",
     "posttest": "nyc report --reporter=json && codecov -f coverage/*.json",
     "ng": "ng",
-    "start": "concurrently \"ng serve -pc proxy.conf.json --open\" \"typexs server default\"",
+    "start": "concurrently \"ng serve -pc proxy.conf.json --open\" \"typexs server\"",
     "build": "ng build --prod",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -110,6 +110,7 @@
     "ajv": "^6.4.0",
     "bootstrap": "^4.1.0",
     "case": "^1.5.4",
+    "class-validator": "^0.8.5",
     "core-js": "^2.5.5",
     "gulp-debug": "^3.2.0",
     "jquery": "^3.3.1",

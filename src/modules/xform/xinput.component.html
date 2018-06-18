@@ -1,0 +1,12 @@
+<div>
+  Input {{ name }} =>  {{value}} => {{data.instance[name]}} {{element | json}}
+
+  <br/>
+
+  <input placeholder="{{name}}" [(ngModel)]="data.instance[name]" name="{{name}}">
+  <div [hidden]="!(data.checked(this.name) && !data.valid(name))" class="alert alert-danger">
+    <ul>
+      <li *ngFor="let message of data.messages(name)">{{ message.type }} - {{ message.content }}</li>
+    </ul>
+  </div>
+</div>

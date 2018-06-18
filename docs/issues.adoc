@@ -63,7 +63,7 @@ tsconfig.app.json must contain:
   ]
 ```
 
-else packages passed with *.ts files, can't be loaded by ng.
+else packages passed with *.ts files, can't be loaded by ng. But this is an workaround
 
 
 **@ISSUE {counter:issue} 20180509**
@@ -80,3 +80,14 @@ ERROR TypeError: Cannot read property 'label' of undefined
     at createClass (webpack-internal:///./node_modules/@angular/core/esm5/core.js:12697)
 
 data or label can be empty
+
+
+**@ISSUE {counter:issue} 20180605** +
+
+Happens on first init of an empty project
+
+[0] ERROR in node_modules/commons-config/utils/Utils.d.ts(1,23): error TS2688: Cannot find type definition file for 'deepmerge'.
+[0] node_modules/typexs-base/libs/logging/ILoggerOptions.d.ts(1,23): error TS2688: Cannot find type definition file for 'winston'.
+[0] node_modules/typexs-base/libs/logging/Log.d.ts(1,23): error TS2688: Cannot find type definition file for 'winston'.
+[0] node_modules/typexs-base/libs/utils/BaseUtils.d.ts(1,23): error TS2688: Cannot find type definition file for 'deepmerge'.
+

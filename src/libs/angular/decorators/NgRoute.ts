@@ -1,8 +1,10 @@
 import {MetaArgs} from "typexs-base/base/MetaArgs";
 import * as _ from "lodash"
-import {K_NG_ROUTES} from "../types";
+
 import {Route} from "@angular/router";
 import {Type} from "@angular/core/core";
+
+export const K_NG_ROUTES = 'ng_routes';
 
 export function NgRoute(path: string | Route) {
   return function (object: Function) {
