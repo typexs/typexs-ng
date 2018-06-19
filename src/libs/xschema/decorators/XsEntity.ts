@@ -1,7 +1,7 @@
 import {XSRegistry} from '../XSRegistry';
 
 
-export function XSEntity() {
+export function XsEntity() {
   return function (object: Function) {
 
     let xsDef = XSRegistry.createEntity(object);

@@ -1,11 +1,6 @@
-
-
-
-import {Component, ComponentFactoryResolver, Injector, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {XSUserTest} from './xstest.defs';
-
-import {XInputComponent} from './xinput.component';
-import {DataContainer} from '../../libs/xschema/DataContainer';
+import {XsForm} from './xform.component';
 
 
 @Component({
@@ -13,34 +8,62 @@ import {DataContainer} from '../../libs/xschema/DataContainer';
   templateUrl: 'xstest.component.html',
 
 })
-export class XSTestComponent implements OnInit{
+export class XSTestComponent implements OnInit {
 
-  user:any;
+  user: any;
 
-
-
-
-  ngOnInit(){
+  ngOnInit() {
     this.user = new XSUserTest();
 
-/*
 
+    let form: any = {
+      name: 'test-form',
+      type: 'form',
+      styles: ['form-container'],
 
-    let xsDef = XSRegistry.getEntityDefFor(this.user);
+      children: [{
+        type: 'tabs',
+        children: [
+          {
+            type: 'tab',
+            children: [{
+              type: 'ref',
+              property: '$this.username'
+            }]
+          },
+          {
+            type: 'tab',
+            label: '$this.password.label',
+            children: [{
+              type: 'ref',
+              property: '$this.password',
+              label: 'PW' // overriding
+            }]
+          }
+        ]
+      }],
 
-    let xsProps = xsDef.getPropertyDefs();
-    console.log(xsDef,xsProps);
+      children2: {
+        $each:{
+          path:'keys($this)',
+          x:'x',
+          do:{
+            type:'tab',
+            label: '$this[x].label',
+            children: [{
+              type: 'ref',
+              property: '$this[x]',
+              label: 'PW' // overriding
+            }]
+          }
+        }
+      }
+    };
+    /*
+    let form = new XsForm('user')
+    form.add()
+    */
 
-    this.workContainer = new DataContainer(this.user);
-
-    let factory = this.r.resolveComponentFactory(XInputComponent);
-    xsProps.forEach(xsProp => {
-
-      let ref = this.vc.createComponent(factory);
-      ref.instance.name = xsProp.name;
-      ref.instance.data = this.workContainer;
-    })
-*/
 
   }
 

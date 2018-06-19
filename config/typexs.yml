@@ -23,4 +23,4 @@ server:
       context: api
       routePrefix: api
 
-#    - type: static_files
+#    - dataType: static_files

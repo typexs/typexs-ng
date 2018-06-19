@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {DataContainer} from '../../libs/xschema/DataContainer';
-import {FormElem} from './xform.component';
+
 
 
 @Component({
@@ -10,7 +10,7 @@ import {FormElem} from './xform.component';
 export class XInputComponent /* implements OnInit, OnChanges */ {
 
 
-  element: FormElem;
+  // element: FormElem;
 
   @Input()
   type: string = 'text';
