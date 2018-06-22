@@ -1,5 +1,5 @@
 import {Routes} from "@angular/router";
-import {XSTestComponent} from '../xform/xstest.component';
+import {XSTestComponent} from '../xsform/xstest.component';
 
 
 

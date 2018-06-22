@@ -1,6 +1,7 @@
 import {validate} from 'class-validator';
 import * as _ from 'lodash';
-import {XSRegistry} from './XSRegistry';
+import {XsRegistry} from './XsRegistry';
+
 
 
 
@@ -34,7 +35,7 @@ export class DataContainer<T> {
 
   constructor(instance: T) {
     this.instance = instance;
-    let entityDef = XSRegistry.getEntityDefFor(this.instance);
+    let entityDef = XsRegistry.getEntityDefFor(this.instance);
     entityDef.getPropertyDefs().forEach(propDef => {
       this.validation[propDef.name] = {
         key: propDef.name,

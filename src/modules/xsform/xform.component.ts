@@ -1,9 +1,8 @@
-import {AfterViewInit, Component, ComponentFactoryResolver, Injector, Input, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import {DataContainer} from '../../libs/xschema/DataContainer';
-import {XSEntityDef, XSPropertyDef, XSRegistry} from '../../libs/xschema/XSRegistry';
-import {XInputComponent} from './xinput.component';
-import * as _ from 'lodash';
-import {XsForm, XsFormRegistry} from './lib/form';
+import {Component, ComponentFactoryResolver, Injector, Input, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {DataContainer} from '../../libs/xsschema/DataContainer';
+import {XsRegistry} from '../../libs/xsschema/XsRegistry';
+import {XsForm} from '../../libs/xsform/xsForm';
+
 
 
 @Component({
@@ -43,9 +42,9 @@ export class XFormComponent implements OnInit {
 
 
 
-    let xsDef = XSRegistry.getEntityDefFor(this.instance);
-    let form = new XsForm(this.name);
-    form.parse(xsDef);
+    let xsDef = XsRegistry.getEntityDefFor(this.instance);
+    let form = new XsForm();
+    //form.parse(xsDef);
 
 
     // TODO restructure form
@@ -55,6 +54,7 @@ export class XFormComponent implements OnInit {
 
 
   build(form:XsForm) {
+    /*
     form.elements.forEach(elem => {
       let def = _.find(XsFormRegistry.components,{type:elem.type});
       let factory = this.r.resolveComponentFactory(def.component);
@@ -63,8 +63,8 @@ export class XFormComponent implements OnInit {
       ref.instance.data = this.dc;
     })
 
-    /*
-      let xsDef = XSRegistry.getEntityDefFor(this.user);
+    / *
+      let xsDef = XsRegistry.getEntityDefFor(this.user);
 
       let xsProps = xsDef.getPropertyDefs();
       console.log(xsDef,xsProps);

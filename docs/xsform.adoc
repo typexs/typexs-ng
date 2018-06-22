@@ -1,0 +1,18 @@
+
+
+Arten und deren Variation:
+
+* Input
+** Text
+** Password
+* Selection
+** single element
+*** as radio
+*** as select box
+*** buttons
+* MultiSelection
+*** as checkbox
+*** multiple buttons
+*** as multi select box
+* Button
+* Checkboxes

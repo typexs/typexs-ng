@@ -1,14 +1,15 @@
 import * as _ from 'lodash';
-import {XInputComponent} from '../xinput.component';
-import {NotYetImplementedError} from '../../../libs/xschema/NotYetImplementedError';
-import {XSEntityDef, XSPropertyDef} from '../../../libs/xschema/XSRegistry';
+import {XsPropertyDef} from '../xsschema/XsPropertyDef';
+import {XsEntityDef} from '../xsschema/XsEntityDef';
+import {NotYetImplementedError} from '../xsschema/NotYetImplementedError';
+
 
 export class XsFormRegistry {
-
+/*
   static components = [
     {type: 'input', component: XInputComponent}
   ];
-
+*/
   private static formHandler: IXsFormHandlerDef[] = [];
 
   static addHandler(typeName: string, klass: Function) {
@@ -27,12 +28,13 @@ export class XsFormRegistry {
 
 }
 
+
 export abstract class FormObject {
 
   readonly type: string;
 
   usedKeys: string[] = [];
-  // property: XSPropertyDef;
+  // property: XsPropertyDef;
 
   id: string;
 
@@ -42,7 +44,7 @@ export abstract class FormObject {
 
   label: string;
 
-  private binding: XSPropertyDef = null;
+  private binding: XsPropertyDef = null;
 
   private parent: FormObject = null;
 
@@ -229,14 +231,14 @@ export class XsFormBuilder<T> {
 
   }
 
-  buildFromXsEntity(entity: XSEntityDef): XsForm<any> {
+  buildFromXsEntity(entity: XsEntityDef): XsForm<any> {
     this.data = entity;
 
     return <XsForm<any>>this._buildFormXs(entity);
 
   }
 
-  private _buildFormXs(entity: XSEntityDef | XSPropertyDef, parent: FormObject = null) {
+  private _buildFormXs(entity: XsEntityDef | XsPropertyDef, parent: FormObject = null) {
 
     let formObject: FormObject = null;
 
@@ -244,7 +246,7 @@ export class XsFormBuilder<T> {
       this.form = formObject = XsFormRegistry.createHandler('form');
       formObject.handle('name', entity.id());
       formObject.handle('binding', entity);
-    } else if (entity instanceof XSPropertyDef) {
+    } else if (entity instanceof XsPropertyDef) {
       // TODO support also other types
       let property = entity;
       let formType = <string>property.getOptions('form') || 'text';
@@ -264,14 +266,14 @@ export class XsFormBuilder<T> {
 
     formObject.setParent(parent);
 
-    if (entity instanceof XSEntityDef) {
+    if (entity instanceof XsEntityDef) {
       let properties = entity.getPropertyDefs();
 
       for (let property of properties) {
         let childObject = this._buildFormXs(property, formObject);
         formObject.insert(childObject);
       }
-    } else if (entity instanceof XSPropertyDef) {
+    } else if (entity instanceof XsPropertyDef) {
       // TODO for properties which points to Entity / Entities
       //property.getEntityDef
       //formObject;

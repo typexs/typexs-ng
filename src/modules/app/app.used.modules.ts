@@ -7,7 +7,7 @@ import {Type} from '@angular/core';
 import {AdminModule} from '../admin/admin.module';
 import {NavigatorModule} from '../navigator/navigator.module';
 import {ThemeModule} from "../theme/theme.module";
-import {XFormsModule} from '../xform/xforms.module';
+import {XFormsModule} from '../xsform/xforms.module';
 
 
 export const APP_MODULES: Array<Type<any> | ModuleWithProviders | any[]> = [
