@@ -1,10 +1,13 @@
-import {EntityDefTreeWorker, XsEntityManager} from '../XsEntityManager';
+
 import {XsEntityDef} from '../XsEntityDef';
 import * as _ from 'lodash';
 import {ConnectionWrapper} from 'typexs-base';
 import {SchemaUtils} from '../SchemaUtils';
 import {XsRefProperty} from '../entity/XsRefProperty';
 import {XsPropertyDef} from '../XsPropertyDef';
+import {XsEntityManager} from '../XsEntityManager';
+import {EntityDefTreeWorker} from './EntityDefTreeWorker';
+
 
 export class SaveOp<T> extends EntityDefTreeWorker {
 
@@ -107,8 +110,7 @@ export class SaveOp<T> extends EntityDefTreeWorker {
         let p = this.saveByEntityDef(entityName, resolveByEntityDef[entityName]);
         promises.push(p);
       }
-      promises.push(this.processGlobalRelations());
-      return Promise.all(promises);
+      return Promise.all(promises).then(x => {return this.processGlobalRelations()});
     });
 
 

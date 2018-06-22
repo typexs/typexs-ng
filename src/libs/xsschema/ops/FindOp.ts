@@ -1,4 +1,4 @@
-import {EntityDefTreeWorker, XsEntityManager} from '../XsEntityManager';
+import {XsEntityManager} from '../XsEntityManager';
 import {XsClassRef} from '../XsClassRef';
 import {XsEntityDef} from '../XsEntityDef';
 import * as _ from 'lodash';
@@ -6,12 +6,14 @@ import {ConnectionWrapper} from 'typexs-base';
 import {SchemaUtils} from '../SchemaUtils';
 import {XsRefProperty} from '../entity/XsRefProperty';
 import {XsPropertyDef} from '../XsPropertyDef';
+import {EntityDefTreeWorker} from './EntityDefTreeWorker';
 
 export class FindOp<T> extends EntityDefTreeWorker {
 
   readonly em: XsEntityManager;
 
   private c: ConnectionWrapper;
+
 
   constructor(em: XsEntityManager) {
     super();
@@ -71,9 +73,7 @@ export class FindOp<T> extends EntityDefTreeWorker {
     if (_.isString(entityName)) {
       entityDef = this.em.schemaDef.getEntity(entityName);
     }
-
     await this.walk(entityDef, objects);
-
     return objects;
   }
 
