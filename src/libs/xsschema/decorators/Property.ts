@@ -4,7 +4,7 @@ import {XsRegistry} from '../XsRegistry';
 import {IXsProperty} from '../IXsProperty';
 
 
-export function XsProperty(typeOrOptions: IXsProperty | string = null) {
+export function Property(typeOrOptions: IXsProperty | string = null) {
   return function (object: any, property: string, _options: any = {}) {
     let options:IXsProperty = {propertyName:property,sourceClass:null};
 

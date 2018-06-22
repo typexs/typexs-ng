@@ -1,21 +1,20 @@
-import {XsPropertyOf} from '../../../../../src/libs/xsschema/decorators/XsPropertyOf';
 import {Book} from './Book';
-import {XsProperty} from '../../../../../src/libs/xsschema/decorators/XsProperty';
+import {PropertyOf} from '../../../../../src/libs/xsschema/decorators/PropertyOf';
+import {Property} from '../../../../../src/libs/xsschema/decorators/Property';
 
-// @XsPropertyOf('Book')
+
 /**
  * - first parameter must be the reference to an other entity (string|Class)
  * - second parameter must be the name of the property, it is also the name
  *   under which the property is attach in the entity by (defineProperty)
  */
-@XsPropertyOf(Book,'summary' /*, {single_or_multiple}*/)
+@PropertyOf(Book, 'summary' /*, {single_or_multiple}*/)
 export class Summary {
 
-  @XsProperty({type:'number'})
-  size:number;
+  @Property({type: 'number'})
+  size: number;
 
-
-  @XsProperty({type:'string'})
+  @Property({type: 'string'})
   content: string;
 
 }

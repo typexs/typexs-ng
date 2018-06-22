@@ -2,7 +2,7 @@ import {Column, Entity} from 'typeorm';
 
 /*
 @Entity('xs_entity')
-export class XsEntity {
+export class Entity {
 
   @Column('bigint')
   id: number;

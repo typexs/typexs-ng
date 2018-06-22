@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {XSUserTest} from './xstest.defs';
-import {XsForm} from './xform.component';
+
 
 
 @Component({

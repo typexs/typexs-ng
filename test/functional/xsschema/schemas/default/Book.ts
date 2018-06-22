@@ -1,17 +1,17 @@
-import {XsEntity} from '../../../../../src/libs/xsschema/decorators/XsEntity';
-import {XsProperty} from '../../../../../src/libs/xsschema/decorators/XsProperty';
+import {Entity} from '../../../../../src/libs/xsschema/decorators/Entity';
+import {Property} from '../../../../../src/libs/xsschema/decorators/Property';
 import {Author} from './Author';
 
-@XsEntity()
+@Entity()
 export class Book {
 
-  @XsProperty({type: 'number',id:true})
+  @Property({type: 'number', id: true})
   id: number;
 
-  @XsProperty({type: 'string'})
+  @Property({type: 'string'})
   content: string;
 
-  @XsProperty({targetClass: Author})
+  @Property({targetClass: Author})
   author: Author;
 
 }

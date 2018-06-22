@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
-import {ConnectionWrapper, IStorageOptions, StorageRef} from 'typexs-base';
-import {getMetadataArgsStorage, Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
+import {IStorageOptions, StorageRef} from 'typexs-base';
+import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 import {XsSchemaDef} from '../XsSchemaDef';
 import {NotYetImplementedError} from '../NotYetImplementedError';
 import {XsEntityDef} from '../XsEntityDef';

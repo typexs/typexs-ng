@@ -53,7 +53,7 @@ export class XFormComponent implements OnInit {
   }
 
 
-  build(form:XsForm) {
+  build(form:XsForm<any>) {
     /*
     form.elements.forEach(elem => {
       let def = _.find(XsFormRegistry.components,{type:elem.type});

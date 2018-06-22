@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import {XsPropertyDef} from './XsPropertyDef';
 import {XsLookupRegistry} from './XsLookupRegistry';
 import {XsDef} from './XsDef';
-import {XS_ID_SEPARATOR, XS_TYPE_ENTITY, XS_TYPE_PROPERTY} from './Constants';
+import {XS_TYPE_ENTITY, XS_TYPE_PROPERTY} from './Constants';
 
 export class XsEntityDef extends XsDef {
 
@@ -52,7 +52,7 @@ export class XsEntityDef extends XsDef {
       return _.get(instance, 'xs:entity_name');
     } else {
 
-      let xsdef:XsEntityDef = XsLookupRegistry.$().find(XS_TYPE_ENTITY, (x: XsEntityDef) => {
+      let xsdef: XsEntityDef = XsLookupRegistry.$().find(XS_TYPE_ENTITY, (x: XsEntityDef) => {
         //console.log(x.name,instance.__proto__.constructor.name,x.name == instance.__proto__.constructor.name)
         return x.name == instance.__proto__.constructor.name;
       });

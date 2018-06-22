@@ -6,7 +6,7 @@ import {IXsProperty} from '../IXsProperty';
 
 
 
-export function XsPropertyOf(entityOrOptions: IXsProperty | string | Function, propertyName:string = null, options:IXsProperty = null) {
+export function PropertyOf(entityOrOptions: IXsProperty | string | Function, propertyName:string = null, options:IXsProperty = null) {
   return function (object: any) {
     if(!options){
       options = {propertyName:null,sourceClass:null};

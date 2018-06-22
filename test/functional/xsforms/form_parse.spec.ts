@@ -1,7 +1,7 @@
 import {suite, test} from 'mocha-typescript';
 
-import {XsEntity} from '../../../src/libs/xsschema/decorators/XsEntity';
-import {XsProperty} from '../../../src/libs/xsschema/decorators/XsProperty';
+import {Entity} from '../../../src/libs/xsschema/decorators/Entity';
+import {Property} from '../../../src/libs/xsschema/decorators/Property';
 import {MaxLength, MinLength} from 'class-validator';
 import {XsRegistry} from '../../../src/libs/xsschema/XsRegistry';
 import {inspect} from 'util';
@@ -9,16 +9,16 @@ import {Log} from 'typexs-base';
 import {XsForm, XsFormBuilder} from '../../../src/libs/xsform/xsForm';
 
 
-@XsEntity()
+@Entity()
 export class TestUser {
 
 
-  @XsProperty({type: 'string', form: 'text'})
+  @Property({type: 'string', form: 'text'})
   @MinLength(8, {message: 'username is too short'})
   @MaxLength(32, {message: 'username is too long'})
   username: string = '';
 
-  @XsProperty({type: 'string', form: 'password'})
+  @Property({type: 'string', form: 'password'})
   @MinLength(8, {message: 'password is too short'})
   @MaxLength(64, {message: 'password is a little too long'})
   password: string = '';
