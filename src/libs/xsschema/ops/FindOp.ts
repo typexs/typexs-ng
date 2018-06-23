@@ -14,7 +14,6 @@ export class FindOp<T> extends EntityDefTreeWorker {
 
   private c: ConnectionWrapper;
 
-
   constructor(em: XsEntityManager) {
     super();
     this.em = em;
@@ -31,9 +30,14 @@ export class FindOp<T> extends EntityDefTreeWorker {
     let results = await this.c.manager.getRepository(XsRefProperty).find({
       where: {
         source_id: objectIds,
-        source_entity_type: entityDef.name,
+        source_type: entityDef.name,
         source_property: propertyDef.name
-      }, order: {source_id: 'ASC', source_rev_id: 'ASC', source_seqnr: 'ASC'}
+      },
+      order: {
+        source_id: 'ASC',
+        source_rev_id: 'ASC',
+        source_seqnr: 'ASC'
+      }
     });
 
     let targetIds: number[] = [];

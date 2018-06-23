@@ -4,7 +4,8 @@ import {IXsProperty} from './IXsProperty';
 import {XsClassRef} from './XsClassRef';
 import {XsLookupRegistry} from './XsLookupRegistry';
 import {XsEntityDef} from './XsEntityDef';
-import {XS_TYPE_ENTITY} from './Constants';
+import {XS_TYPE_ENTITY, XS_TYPE_PROPERTY} from './Constants';
+import {NotYetImplementedError} from './NotYetImplementedError';
 
 export class XsPropertyDef extends XsDef {
 
@@ -21,6 +22,10 @@ export class XsPropertyDef extends XsDef {
   readonly targetRef: XsClassRef = null;
 
   readonly propertyRef: XsClassRef = null;
+
+  readonly identifier: boolean;
+
+  readonly generated: boolean;
 
   constructor(options: IXsProperty) {
     super('property', options.propertyName, options.sourceClass);
@@ -62,12 +67,31 @@ export class XsPropertyDef extends XsDef {
     if (_.isFunction(options.propertyClass)) {
       this.propertyRef = XsClassRef.get(options.propertyClass);
     }
+
+    if (_.isBoolean(options.embedded) && options.embedded) {
+      throw new NotYetImplementedError();
+    }
+
+    if ((_.isBoolean(options.id) && options.id) || (_.isBoolean(options.pk) && options.pk)) {
+      this.identifier = true;
+      if ((_.isBoolean(options.auto))) {
+        this.generated = options.auto;
+      }else{
+        this.generated = this.identifier;
+      }
+    } else {
+      this.identifier = false;
+      this.generated = false;
+    }
+
     //console.log(this.name, this.dataType);
   }
+
 
   isReference(): boolean {
     return this.targetRef != null;
   }
+
 
   isInternal(): boolean {
     return this.propertyRef == null;
@@ -80,6 +104,11 @@ export class XsPropertyDef extends XsDef {
       return entityDef !== null;
     }
     return false;
+  }
+
+
+  getSubPropertyDef(): XsPropertyDef[] {
+    return XsLookupRegistry.$().filter(XS_TYPE_PROPERTY, {entityName: this.propertyRef.className});
   }
 
 

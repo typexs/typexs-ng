@@ -1,15 +1,38 @@
 
+== Datentypen
+
+Primitive Datentypen
+
+|===
+| Type
+
+| string
+
+| integer
+
+| int
+
+| bigint
+
+| double
+
+| float
+
+
+
+|===
+
 == Annotationen
 
-*@XsSchema*
+=== @Schema
 
 * asd
 
-*@XsEntity*
+=== @Entity
 
 * asd
 
-*@XsProperty*
+=== @Property
 
 [cols="1,3"]
 |===
@@ -37,8 +60,40 @@
 | refFieldName : string
 | Übersteuerung des Schlüsselfeldnamens für die referenzierte Tabelle
 
+|===
+
+
+=== @PropertyOf
+
+Erweiterung einer bzw mehrerer Entitätentypen
+durch eine zusätzliche Eigenschaft.
+Entweder durch gesonderte Tabelle oder durch Erweiterung der
+Tabelle der Entität um zusätzliche Felder in dem Fall wird die
+Bezeichnung der Eigenschaft kombiniert mit den Namen der Sub-Eigenschften.
+
+*Über zusätzliche Tabelle*
+
+Zusätzliche Felder als Primärschlüssel hinzufügen:
+|===
+| Name | Type
+
+| source_id | integer
+| source_rev_id | integer
+| source_type | string(64)
+| source_seqnr | integer
 
 |===
+
+
+*Über Integration*
+
+NOTE: @TODO asd
+
+```
+Entity:
+  {propertyName}__{subPropertyName} : {someType}
+```
+
 
 
 

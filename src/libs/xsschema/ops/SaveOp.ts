@@ -62,12 +62,12 @@ export class SaveOp<T> extends EntityDefTreeWorker {
       if (relation.prop.getOptions('linkVariant') == 'global') {
         let rel = new XsRefProperty();
         globalRefs.push(rel);
-        rel.source_property = relation.prop.name;
-        rel.source_entity_type = relation.prop.entityName;
-        rel.source_seqnr = relation.seqnr;
         rel.source_id = relation.source['id'];
+        rel.source_property = relation.prop.name;
+        rel.source_type = relation.prop.entityName;
+        rel.source_seqnr = relation.seqnr;
         rel.target_id = relation.target['id'];
-        rel.target_entity_type = relation.prop.targetRef.className;
+        rel.target_type = relation.prop.targetRef.className;
       }
     }
     return this.c.manager.save(XsRefProperty, globalRefs);

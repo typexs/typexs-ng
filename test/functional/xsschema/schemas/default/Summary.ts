@@ -2,7 +2,6 @@ import {Book} from './Book';
 import {PropertyOf} from '../../../../../src/libs/xsschema/decorators/PropertyOf';
 import {Property} from '../../../../../src/libs/xsschema/decorators/Property';
 
-
 /**
  * - first parameter must be the reference to an other entity (string|Class)
  * - second parameter must be the name of the property, it is also the name

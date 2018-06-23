@@ -13,6 +13,9 @@ export abstract class EntityDefTreeWorker {
     throw new NotYetImplementedError();
   }
 
+  onPropertyOfReference(entityDef: XsEntityDef, property: XsPropertyDef, objects: any[]):void {
+    throw new NotYetImplementedError();
+  }
 
   async walk(entityDef: XsEntityDef, objects: any[]) {
 
@@ -34,6 +37,7 @@ export abstract class EntityDefTreeWorker {
           // throw new NotYetImplementedError();
         }
       } else {
+        await this.onPropertyOfReference(entityDef, propertyDef, objects);
         // throw new NotYetImplementedError();
       }
     }

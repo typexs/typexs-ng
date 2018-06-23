@@ -1,28 +1,22 @@
-import {Index,Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import {Index,Column, Entity, PrimaryColumn} from 'typeorm';
 
 @Entity('p_relations')
 export class XsRefProperty {
 
-  @PrimaryGeneratedColumn()
-  id: number;
 
-  @Index()
-  @Column('integer')
+  @PrimaryColumn('integer')
   source_id: number;
 
-  @Index()
-  @Column('integer',{nullable:true})
-  source_rev_id: number;
+  @PrimaryColumn('integer')
+  source_rev_id: number = 0;
 
-  @Index()
-  @Column('text')
-  source_entity_type: string;
+  @PrimaryColumn({type:'varchar',length:64})
+  source_type: string;
 
-  @Index()
-  @Column('text')
+  @PrimaryColumn('text')
   source_property: string;
 
-  @Column('integer')
+  @PrimaryColumn('integer')
   source_seqnr: number = 0;
 
   @Index()
@@ -31,9 +25,9 @@ export class XsRefProperty {
 
   @Index()
   @Column('integer',{nullable:true})
-  target_rev_id: number;
+  target_rev_id: number = 0;
 
   @Index()
-  @Column('varchar')
-  target_entity_type: string;
+  @Column({type:'varchar',length:64})
+  target_type: string;
 }
