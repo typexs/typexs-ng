@@ -1,4 +1,3 @@
-
 import {XsEntityDef} from '../XsEntityDef';
 import * as _ from 'lodash';
 import {ConnectionWrapper} from 'typexs-base';
@@ -7,6 +6,23 @@ import {XsRefProperty} from '../entity/XsRefProperty';
 import {XsPropertyDef} from '../XsPropertyDef';
 import {XsEntityManager} from '../XsEntityManager';
 import {EntityDefTreeWorker} from './EntityDefTreeWorker';
+import {NotYetImplementedError} from '../NotYetImplementedError';
+
+
+export class PropertyRelationData {
+
+  sourceRef: XsEntityDef;
+
+  propertyRef: XsPropertyDef;
+
+  source: any;
+
+  target: any;
+
+  seqnr: number;
+
+
+}
 
 
 export class SaveOp<T> extends EntityDefTreeWorker {
@@ -19,10 +35,13 @@ export class SaveOp<T> extends EntityDefTreeWorker {
 
   private globalRelations: any[] = [];
 
+  private relations: { className: string, relations: any[] }[] = [];
+
   constructor(em: XsEntityManager) {
     super();
     this.em = em;
   }
+
 
   async onEntityReferenceAsGlobalVariant(entityDef: XsEntityDef, propertyDef: XsPropertyDef, objects: any[]) {
     let innerObjects: any[] = SchemaUtils.get(propertyDef.name, objects);
@@ -56,15 +75,78 @@ export class SaveOp<T> extends EntityDefTreeWorker {
     }
   }
 
-  private processGlobalRelations() : Promise<any[]>{
+
+  onPropertyOfReference(entityDef: XsEntityDef, propertyDef: XsPropertyDef, objects: any[]): void {
+    // if(property.embedded){}
+    let innerObjects: any[] = SchemaUtils.get(propertyDef.name, objects);
+
+    if (!this.relations[propertyDef.propertyRef.className]) {
+      this.relations[propertyDef.propertyRef.className] = [];
+    }
+    let relations = this.relations[propertyDef.propertyRef.className];
+
+    for (let i = 0; i < innerObjects.length; i++) {
+      if (_.isArray(innerObjects[i])) {
+        for (let j = 0; j < innerObjects[i].length; j++) {
+          let rel = new PropertyRelationData();
+          rel.sourceRef = entityDef;
+          rel.propertyRef = propertyDef;
+          rel.source = objects[i];
+          rel.target = innerObjects[i][j];
+          rel.seqnr = j;
+          relations.push(rel);
+        }
+      } else {
+        let rel = new PropertyRelationData();
+        rel.sourceRef = entityDef;
+        rel.propertyRef = propertyDef;
+        rel.source = objects[i];
+        rel.target = innerObjects[i];
+        rel.seqnr = -1;
+        relations.push(rel);
+      }
+    }
+  }
+
+
+  private async processRelations(): Promise<any[]> {
+    let classNames = Object.keys(this.relations);
+    let promises: Promise<any>[] = [];
+
+    for (let className of classNames) {
+      let relations = this.relations[className];
+      let rels: any[] = [];
+      while (relations.length > 0) {
+        let relation = relations.shift();
+        if (relation instanceof PropertyRelationData) {
+          let target = _.clone(relation.target);
+          target.source_type = relation.sourceRef.name;
+          target.source_property = relation.propertyRef.name;
+          target.source_id = relation.source.id;
+          target.source_rev_id = 0;
+          target.source_seqnr = relation.seqnr;
+          rels.push(target);
+        }else{
+          throw new NotYetImplementedError();
+        }
+      }
+      promises.push(this.c.manager.save(className, rels));
+
+    }
+
+    return Promise.all(promises);
+  }
+
+
+  private processGlobalRelations(): Promise<any[]> {
     let globalRefs = [];
     for (let relation of this.globalRelations) {
       if (relation.prop.getOptions('linkVariant') == 'global') {
         let rel = new XsRefProperty();
         globalRefs.push(rel);
-        rel.source_id = relation.source['id'];
         rel.source_property = relation.prop.name;
         rel.source_type = relation.prop.entityName;
+        rel.source_id = relation.source['id'];
         rel.source_seqnr = relation.seqnr;
         rel.target_id = relation.target['id'];
         rel.target_type = relation.prop.targetRef.className;
@@ -110,7 +192,12 @@ export class SaveOp<T> extends EntityDefTreeWorker {
         let p = this.saveByEntityDef(entityName, resolveByEntityDef[entityName]);
         promises.push(p);
       }
-      return Promise.all(promises).then(x => {return this.processGlobalRelations()});
+      return Promise.all(promises)
+        .then(x => {
+          return this.processGlobalRelations();
+        }).then(x => {
+          return this.processRelations();
+        });
     });
 
 

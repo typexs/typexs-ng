@@ -5,7 +5,7 @@ import {Author} from './Author';
 @Entity()
 export class Book {
 
-  @Property({type: 'number', id: true})
+  @Property({type: 'number', auto:true})
   id: number;
 
   @Property({type: 'string'})

@@ -6,6 +6,8 @@ export abstract class XsDef {
 
   private readonly _baseType: XS_TYPE;
 
+
+
   readonly name: string;
 
   private _options: any = {};
@@ -28,14 +30,14 @@ export abstract class XsDef {
     }
   }
 
-  setOption(key:string, value:any){
-    if(!this._options){
-      this._options = {}
+  setOption(key: string, value: any) {
+    if (!this._options) {
+      this._options = {};
     }
-    _.set(this._options,key,value);
+    _.set(this._options, key, value);
   }
 
-  machineName(){
+  machineName() {
     return _.snakeCase(this.name);
   }
 
@@ -43,9 +45,9 @@ export abstract class XsDef {
     return this._baseType;
   }
 
-  getOptions(key: string = null) {
+  getOptions(key: string = null, defaultValue: any = null) {
     if (key) {
-      return _.get(this._options, key,false);
+      return _.get(this._options, key, defaultValue);
     }
     return this._options;
   }

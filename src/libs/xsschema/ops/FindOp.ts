@@ -7,6 +7,7 @@ import {SchemaUtils} from '../SchemaUtils';
 import {XsRefProperty} from '../entity/XsRefProperty';
 import {XsPropertyDef} from '../XsPropertyDef';
 import {EntityDefTreeWorker} from './EntityDefTreeWorker';
+import {NotYetImplementedError} from '../NotYetImplementedError';
 
 export class FindOp<T> extends EntityDefTreeWorker {
 
@@ -71,6 +72,53 @@ export class FindOp<T> extends EntityDefTreeWorker {
     }
   }
 
+
+  async onPropertyOfReference(entityDef: XsEntityDef, propertyDef: XsPropertyDef, objects: any[]) {
+    let propertyClass = propertyDef.propertyRef.getClass();
+
+    // TODO retrieve aso complex primary keys
+    // parent and child must be saved till relations can be inserted
+    let objectIds: number[] = SchemaUtils.get('id', objects);
+
+    // TODO if revision support beachte dies an der stellle
+    let results = await this.c.manager.getRepository(propertyClass).find({
+      where: {
+        source_id: objectIds,
+        source_type: entityDef.name,
+        source_property: propertyDef.name
+      },
+      order: {
+        source_id: 'ASC',
+        source_rev_id: 'ASC',
+        source_seqnr: 'ASC'
+      }
+    });
+
+    for (let object of objects) {
+
+      let _results = _.remove(results, {source_id: (object as any).id}).map(x => {
+        delete x['source_id'];
+        delete x['source_type'];
+        delete x['source_seqnr'];
+        delete x['source_rev_id'];
+        delete x['source_property'];
+        return x;
+      });
+
+      if (propertyDef.cardinality == 0) {
+        object[propertyDef.name] = _results;
+      } else if (propertyDef.cardinality > 1) {
+        if (_results.length <= propertyDef.cardinality) {
+          object[propertyDef.name] = _results;
+        } else {
+          // TODO change error message
+          throw new Error('cardinality limit reached ... ' + propertyDef.name + ' ' + propertyDef.cardinality);
+        }
+      } else {
+        object[propertyDef.name] = _results.length == 1 ? _results.shift() : null;
+      }
+    }
+  }
 
   private async loadEntityDef<T>(entityName: string | XsEntityDef, objects: T[]): Promise<T[]> {
     let entityDef: XsEntityDef = <XsEntityDef>entityName;

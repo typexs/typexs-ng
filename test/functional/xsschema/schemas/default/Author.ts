@@ -5,7 +5,7 @@ import {Entity} from '../../../../../src/libs/xsschema/decorators/Entity';
 @Entity()
 export class Author {
 
-  @Property({type: 'number', id: true})
+  @Property({type: 'number', auto: true})
   id: number;
 
   @Property({type: 'string'})

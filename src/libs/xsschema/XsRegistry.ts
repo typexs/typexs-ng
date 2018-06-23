@@ -8,6 +8,7 @@ import {XsLookupRegistry} from './XsLookupRegistry';
 import {XsDef} from './XsDef';
 import {XsEntityDef} from './XsEntityDef';
 import {IXsProperty} from './IXsProperty';
+import {IXsEntity} from './IXsEntity';
 
 
 export class XsRegistry {
@@ -64,8 +65,8 @@ export class XsRegistry {
   }
 
 
-  static createEntity(fn: Function): XsEntityDef {
-    return new XsEntityDef(fn);
+  static createEntity(fn: Function,options:IXsEntity = {}): XsEntityDef {
+    return new XsEntityDef(fn,options);
   }
 
 

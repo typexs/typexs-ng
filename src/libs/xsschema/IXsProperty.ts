@@ -4,7 +4,15 @@ export interface IXsProperty {
 
   sourceClass?: string | Function;
 
+  /**
+   * data type
+   */
   type?: string
+
+  /**
+   * size of data type
+   */
+  length?: number
 
   form?: string
 
@@ -31,6 +39,13 @@ export interface IXsProperty {
    */
   auto?:boolean;
 
+  /**
+   * The members to lookup on the referencing entities or entity
+   */
+  refMembers?: string | string[]
 
-
+  /**
+   * The local members to use for mapping the referencing entity
+   */
+  localMembers?: string | string[]
 }

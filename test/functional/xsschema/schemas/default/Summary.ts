@@ -7,7 +7,7 @@ import {Property} from '../../../../../src/libs/xsschema/decorators/Property';
  * - second parameter must be the name of the property, it is also the name
  *   under which the property is attach in the entity by (defineProperty)
  */
-@PropertyOf(Book, 'summary' /*, {single_or_multiple}*/)
+@PropertyOf('summary',Book /*, {single_or_multiple}*/)
 export class Summary {
 
   @Property({type: 'number'})

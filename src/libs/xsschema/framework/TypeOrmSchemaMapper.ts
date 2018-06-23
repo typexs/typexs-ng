@@ -7,6 +7,11 @@ import {XsEntityDef} from '../XsEntityDef';
 import {XsRefProperty} from '../entity/XsRefProperty';
 import {XsPropertyDef} from '../XsPropertyDef';
 
+interface DBType {
+  type: string;
+  length?: number;
+}
+
 export class TypeOrmSchemaMapper {
 
   private storageRef: StorageRef;
@@ -51,9 +56,6 @@ export class TypeOrmSchemaMapper {
 
     // TODO add p_relations
     this.storageRef.addEntityType(entityClass);
-
-    // TODO
-
 
     // TODO identifier, complex primary keys
     let props = entityDef.getPropertyDefs();
@@ -128,16 +130,18 @@ export class TypeOrmSchemaMapper {
 
   private onLocalProperty(prop: XsPropertyDef, entityClass: Function) {
     let propClass = {constructor: entityClass};
-    let type = this.detectDataTypeFromProperty(prop);
+
+    let orm = prop.getOptions('typeorm', {});
+    orm = _.merge(orm, this.detectDataTypeFromProperty(prop));
     if (prop.identifier) {
       if (prop.generated) {
         // TODO resolve strategy for generation
         PrimaryGeneratedColumn()(propClass, prop.name);
       } else {
-        PrimaryColumn(type)(propClass, prop.name);
+        PrimaryColumn(orm)(propClass, prop.name);
       }
     } else {
-      Column(type)(propClass, prop.name);
+      Column(orm)(propClass, prop.name);
     }
 
   }
@@ -154,9 +158,10 @@ export class TypeOrmSchemaMapper {
     // TODO what is with inner references
 
     let propEntityConstrut = {constructor: propClass};
+    PrimaryColumn({type: 'varchar', length: 64})(propEntityConstrut, 'source_type');
+    PrimaryColumn({type: 'varchar', length: 64})(propEntityConstrut, 'source_property');
     PrimaryColumn('int')(propEntityConstrut, 'source_id');
     PrimaryColumn('int')(propEntityConstrut, 'source_rev_id');
-    PrimaryColumn({type: 'varchar', length: 64})(propEntityConstrut, 'source_type');
     PrimaryColumn('int')(propEntityConstrut, 'source_seqnr');
 
     for (let subProp of prop.getSubPropertyDef()) {
@@ -172,15 +177,15 @@ export class TypeOrmSchemaMapper {
     return this.storageRef['options'];
   }
 
-  private detectDataTypeFromProperty(prop: XsPropertyDef): string {
+  private detectDataTypeFromProperty(prop: XsPropertyDef): DBType {
     // TODO type map for default table types
-    let type = 'text';
+    let type = {type: 'text'};
     switch (prop.dataType) {
       case 'string':
-        type = 'text';
+        type.type = 'text';
         break;
       case 'number':
-        type = 'int';
+        type.type = 'int';
         break;
     }
     return type;

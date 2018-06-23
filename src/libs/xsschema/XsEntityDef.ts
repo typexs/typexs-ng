@@ -3,6 +3,7 @@ import {XsPropertyDef} from './XsPropertyDef';
 import {XsLookupRegistry} from './XsLookupRegistry';
 import {XsDef} from './XsDef';
 import {XS_TYPE_ENTITY, XS_TYPE_PROPERTY} from './Constants';
+import {IXsEntity} from './IXsEntity';
 
 export class XsEntityDef extends XsDef {
 
@@ -11,8 +12,9 @@ export class XsEntityDef extends XsDef {
   schemaName: string = 'default';
 
 
-  constructor(fn: Function) {
+  constructor(fn: Function, options: IXsEntity = {}) {
     super('entity', fn.name, fn);
+    this.setOptions(options);
   }
 
 
@@ -20,12 +22,35 @@ export class XsEntityDef extends XsDef {
     return XsLookupRegistry.$().filter(XS_TYPE_PROPERTY, {entityName: this.name});
   }
 
-  getPropertyDefWithTarget() {
+  getPropertyDefWithTarget(): XsPropertyDef[] {
     return XsLookupRegistry.$().filter(XS_TYPE_PROPERTY, (e: XsPropertyDef) => e.entityName == this.name && e.isReference());
   }
 
-  getPropertyDefNotInternal() {
+  getPropertyDefNotInternal(): XsPropertyDef[] {
     return XsLookupRegistry.$().filter(XS_TYPE_PROPERTY, (e: XsPropertyDef) => e.entityName == this.name && !e.isInternal());
+  }
+
+  /**
+   * get properties which contain identifier
+   *
+   * @returns {any[]}
+   */
+  getPropertyDefIdentifier(): XsPropertyDef[] {
+    return XsLookupRegistry.$().filter(XS_TYPE_PROPERTY, (e: XsPropertyDef) => e.entityName == this.name && e.identifier);
+  }
+
+  resolveId(instance: any) {
+    let id: any;
+    let propIds = this.getPropertyDefIdentifier();
+    if (propIds.length == 1) {
+      id = propIds.shift().get(instance);
+    } else {
+      id = {};
+      for(let prop of propIds){
+        id[prop.name] = prop.get(instance);
+      }
+    }
+    return id;
   }
 
   new<T>(): T {

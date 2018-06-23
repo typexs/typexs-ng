@@ -3,8 +3,7 @@ import {XsDef} from './XsDef';
 import {IXsProperty} from './IXsProperty';
 import {XsClassRef} from './XsClassRef';
 import {XsLookupRegistry} from './XsLookupRegistry';
-import {XsEntityDef} from './XsEntityDef';
-import {XS_TYPE_ENTITY, XS_TYPE_PROPERTY} from './Constants';
+import {XS_TYPE_PROPERTY} from './Constants';
 import {NotYetImplementedError} from './NotYetImplementedError';
 
 export class XsPropertyDef extends XsDef {
@@ -32,7 +31,7 @@ export class XsPropertyDef extends XsDef {
     this.setOptions(options);
     this.entityName = this.object.className;
 
-    if (options && !options.type) {
+    if (!options.type) {
 
       // TODO find a better way to detect the type
       if (_.isFunction(options.sourceClass)) {
@@ -54,6 +53,8 @@ export class XsPropertyDef extends XsDef {
           // }
         }
       }
+    } else {
+      this.dataType = options.type;
     }
 
     if (_.isNumber(options.cardinality)) {
@@ -72,12 +73,12 @@ export class XsPropertyDef extends XsDef {
       throw new NotYetImplementedError();
     }
 
-    if ((_.isBoolean(options.id) && options.id) || (_.isBoolean(options.pk) && options.pk)) {
+    if ((_.isBoolean(options.id) && options.id) || (_.isBoolean(options.pk) && options.pk) || (_.isBoolean(options.auto) && options.auto)) {
       this.identifier = true;
       if ((_.isBoolean(options.auto))) {
         this.generated = options.auto;
-      }else{
-        this.generated = this.identifier;
+      } else {
+        this.generated = false;
       }
     } else {
       this.identifier = false;
@@ -109,6 +110,14 @@ export class XsPropertyDef extends XsDef {
 
   getSubPropertyDef(): XsPropertyDef[] {
     return XsLookupRegistry.$().filter(XS_TYPE_PROPERTY, {entityName: this.propertyRef.className});
+  }
+
+  /**
+   * retrieve propetry from an instance
+   * @param instance
+   */
+  get(instance: any) {
+    return _.get(instance, this.name);
   }
 
 

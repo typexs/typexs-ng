@@ -1,4 +1,10 @@
 
+Unterschied zwischen Entity und Property:
+
+* Entity hat eigene eindeutige Identifikation,
+ Property nicht und unterliegt einem Kontext
+
+
 == Datentypen
 
 Primitive Datentypen
