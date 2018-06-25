@@ -1,18 +1,18 @@
 import {XS_ID_SEPARATOR, XS_TYPE} from './Constants';
 import * as _ from 'lodash';
 import {XsClassRef} from './XsClassRef';
+//import {XsEntityDef} from './XsEntityDef';
+//import {XsPropertyDef} from './XsPropertyDef';
+
 
 export abstract class XsDef {
 
   private readonly _baseType: XS_TYPE;
 
 
-
   readonly name: string;
 
   private _options: any = {};
-
-  readonly idKeys: string[];
 
   readonly object: XsClassRef;
 
@@ -37,9 +37,21 @@ export abstract class XsDef {
     _.set(this._options, key, value);
   }
 
+
   machineName() {
     return _.snakeCase(this.name);
   }
+
+
+  storingName() {
+    let name = this.getOptions('name');
+    if (!name) {
+      name = _.snakeCase(this.name);
+    }
+    return name;
+  }
+
+
 
   get baseType() {
     return this._baseType;
@@ -53,7 +65,18 @@ export abstract class XsDef {
   }
 
   id(): string {
-    return _.map(this.idKeys, (k): string => this[k]).join(XS_ID_SEPARATOR).toLocaleLowerCase();
+    let idKeys: string[] = [];
+    if (_.has(this,'schemaName')) {
+      if(_.has(this,'entityName')){
+        idKeys = ['schemaName', 'entityName', 'name'];
+      }else{
+        idKeys = ['schemaName', 'name'];
+      }
+
+    } else {
+      idKeys = ['name'];
+    }
+    return _.map(idKeys, (k): string => this[k]).join(XS_ID_SEPARATOR).toLocaleLowerCase();
   }
 
 

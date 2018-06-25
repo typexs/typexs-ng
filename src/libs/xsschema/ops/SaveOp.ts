@@ -7,9 +7,29 @@ import {XsPropertyDef} from '../XsPropertyDef';
 import {XsEntityManager} from '../XsEntityManager';
 import {EntityDefTreeWorker} from './EntityDefTreeWorker';
 import {NotYetImplementedError} from '../NotYetImplementedError';
+import {XS_REL_SOURCE_PREFIX} from '../Constants';
 
 
-export class PropertyRelationData {
+export interface IRelation {
+
+}
+
+export class EntityRefenceRelation implements IRelation {
+
+  sourceRef: XsEntityDef;
+
+  propertyRef: XsPropertyDef;
+
+  source: any;
+
+  target: any;
+
+  seqnr: number;
+
+
+}
+
+export class PropertyRefenceRelation implements IRelation {
 
   sourceRef: XsEntityDef;
 
@@ -33,17 +53,15 @@ export class SaveOp<T> extends EntityDefTreeWorker {
 
   private c: ConnectionWrapper;
 
-  private globalRelations: any[] = [];
+  private relations: { [className: string]: IRelation[] } = {};
 
-  private relations: { className: string, relations: any[] }[] = [];
 
   constructor(em: XsEntityManager) {
     super();
     this.em = em;
   }
 
-
-  async onEntityReferenceAsGlobalVariant(entityDef: XsEntityDef, propertyDef: XsPropertyDef, objects: any[]) {
+  extractPropertyObjects(propertyDef: XsPropertyDef, objects: any[]): [number[][], any[]] {
     let innerObjects: any[] = SchemaUtils.get(propertyDef.name, objects);
     let map: number[][] = [];
     let flattenObjects: any[] = [];
@@ -58,8 +76,24 @@ export class SaveOp<T> extends EntityDefTreeWorker {
         flattenObjects.push(innerObjects[i]);
       }
     }
+    return [map, flattenObjects];
+  }
+
+  async onEntityReference(entityDef: XsEntityDef, propertyDef: XsPropertyDef, objects: any[]) {
+    let [map, flattenObjects] = this.extractPropertyObjects(propertyDef, objects);
     flattenObjects = await this.saveByEntityDef(propertyDef.targetRef.getEntity(), flattenObjects);
     // TODO write back
+
+    let className = propertyDef.joinRef.className;
+    this.createBindingRelation(EntityRefenceRelation, entityDef, propertyDef, className, flattenObjects, map, objects);
+
+  }
+
+  createBindingRelation(klazz: Function, entityDef: XsEntityDef, propertyDef: XsPropertyDef, className: string, flattenObjects: any[], map: number[][], objects: any[]) {
+    if (!this.relations[className]) {
+      this.relations[className] = [];
+    }
+
     for (let i = 0; i < flattenObjects.length; i++) {
       let mapping = map[i];
       let sourceIdx = mapping[0];
@@ -67,17 +101,84 @@ export class SaveOp<T> extends EntityDefTreeWorker {
         let posIdx = mapping[1];
         _.set(<any>objects[sourceIdx], propertyDef.name + '[' + posIdx + ']', flattenObjects[i]);
         // caching relation
-        this.globalRelations.push({source: objects[sourceIdx], target: flattenObjects[i], seqnr: posIdx, prop: propertyDef});
+//        this.globalRelations.push({source: objects[sourceIdx], target: flattenObjects[i], seqnr: posIdx, prop: propertyDef});
+
+        let rel = Reflect.construct(klazz, []);
+        rel.sourceRef = entityDef;
+        rel.propertyRef = propertyDef;
+        rel.source = objects[sourceIdx];
+        rel.target = flattenObjects[i];
+        rel.seqnr = posIdx;
+        this.relations[className].push(rel);
+
       } else {
         _.set(<any>objects[sourceIdx], propertyDef.name, flattenObjects[i]);
-        this.globalRelations.push({source: objects[sourceIdx], target: flattenObjects[i], seqnr: -1, prop: propertyDef});
+        // this.globalRelations.push({source: objects[sourceIdx], target: flattenObjects[i], seqnr: -1, prop: propertyDef});
+
+        let rel = Reflect.construct(klazz, []);
+        rel.sourceRef = entityDef;
+        rel.propertyRef = propertyDef;
+        rel.source = objects[sourceIdx];
+        rel.target = flattenObjects[i];
+        rel.seqnr = 0;
+        this.relations[className].push(rel);
+      }
+    }
+  }
+
+  createBindingRelation2(propertyDef: XsPropertyDef,
+                         flattenObjects: any[], map: number[][], objects: any[]) {
+
+    for (let i = 0; i < flattenObjects.length; i++) {
+      let mapping = map[i];
+      let sourceIdx = mapping[0];
+      if (mapping[1]) {
+        let posIdx = mapping[1];
+        _.set(<any>objects[sourceIdx], propertyDef.name + '[' + posIdx + ']', flattenObjects[i]);
+      } else {
+        _.set(<any>objects[sourceIdx], propertyDef.name, flattenObjects[i]);
+        // this.globalRelations.push({source: objects[sourceIdx], target: flattenObjects[i], seqnr: -1, prop: propertyDef});
       }
     }
   }
 
 
+  async onPropertyReference(entityDef: XsEntityDef, propertyDef: XsPropertyDef, objects: any[]): Promise<void> {
+    let targetRefClass = propertyDef.targetRef.getClass();
+    let [map, propertyObjects] = this.extractPropertyObjects(propertyDef, objects);
+
+    let properties = this.em.schema().getPropertiesFor(targetRefClass);
+    for (let property of properties) {
+
+      if (property.isInternal()) {
+        if (property.isReference()) {
+          if (property.isEntityReference()) {
+            if (property.cardinality == 1) {
+              let [subMap, subFlattenObjects] = this.extractPropertyObjects(property, propertyObjects);
+              subFlattenObjects = await this.saveByEntityDef(property.targetRef.getEntity(), subFlattenObjects);
+              this.createBindingRelation2(property, subFlattenObjects, subMap, propertyObjects);
+              // this.attachTargetPrefixedKeys(property.machineName(), property.targetRef.getEntity(), targetRefClass);
+            } else {
+              throw new Error('not supported; entity reference; cardinality > 1 ');
+            }
+          } else {
+            throw new Error('not supported; embedding reference ');
+          }
+        }
+
+      } else {
+        throw new Error('not supported; shouldn\'t happen');
+      }
+    }
+    this.createBindingRelation(PropertyRefenceRelation, entityDef, propertyDef, targetRefClass.name, propertyObjects, map, objects);
+
+
+  }
+
+
   onPropertyOfReference(entityDef: XsEntityDef, propertyDef: XsPropertyDef, objects: any[]): void {
     // if(property.embedded){}
+    /*
     let innerObjects: any[] = SchemaUtils.get(propertyDef.name, objects);
 
     if (!this.relations[propertyDef.propertyRef.className]) {
@@ -106,10 +207,12 @@ export class SaveOp<T> extends EntityDefTreeWorker {
         relations.push(rel);
       }
     }
+    */
   }
 
 
   private async processRelations(): Promise<any[]> {
+
     let classNames = Object.keys(this.relations);
     let promises: Promise<any>[] = [];
 
@@ -118,15 +221,70 @@ export class SaveOp<T> extends EntityDefTreeWorker {
       let rels: any[] = [];
       while (relations.length > 0) {
         let relation = relations.shift();
-        if (relation instanceof PropertyRelationData) {
-          let target = _.clone(relation.target);
-          target.source_type = relation.sourceRef.name;
-          target.source_property = relation.propertyRef.name;
-          target.source_id = relation.source.id;
-          target.source_rev_id = 0;
-          target.source_seqnr = relation.seqnr;
-          rels.push(target);
-        }else{
+        if (relation instanceof EntityRefenceRelation) {
+
+          if (relation.propertyRef.isEntityReference()) {
+            let joinObj = Reflect.construct(relation.propertyRef.joinRef.getClass(), []);
+            let [id, name] = this.em.nameResolver().forSource('type');
+            joinObj[id] = relation.sourceRef.name;
+
+            relation.sourceRef.getPropertyDefIdentifier().forEach(prop => {
+              [id, name] = this.em.nameResolver().forSource(prop);
+              joinObj[id] = prop.get((<EntityRefenceRelation>relation).source);
+            });
+
+            [id, name] = this.em.nameResolver().forSource('seqnr');
+            joinObj[id] = relation.seqnr;
+
+            relation.propertyRef.targetRef.getEntity().getPropertyDefIdentifier().forEach(prop => {
+              [id, name] = this.em.nameResolver().forTarget(prop);
+              joinObj[id] = prop.get((<EntityRefenceRelation>relation).target);
+            });
+
+
+            // TODO if revision ass id
+            rels.push(joinObj);
+          } else {
+            throw new NotYetImplementedError();
+          }
+        } else if (relation instanceof PropertyRefenceRelation) {
+          let targetRefClass = relation.propertyRef.targetRef.getClass();
+          let joinObj = Reflect.construct(targetRefClass, []);
+          let [id, name] = this.em.nameResolver().forSource('type');
+          joinObj[id] = relation.sourceRef.name;
+
+          relation.sourceRef.getPropertyDefIdentifier().forEach(prop => {
+            [id, name] = this.em.nameResolver().forSource(prop);
+            joinObj[id] = prop.get((<PropertyRefenceRelation>relation).source);
+          });
+
+          [id, name] = this.em.nameResolver().forSource('seqnr');
+          joinObj[id] = relation.seqnr;
+
+          let properties = this.em.schema().getPropertiesFor(targetRefClass);
+          for (let prop of properties) {
+
+            if (prop.isInternal()) {
+              if (prop.isReference()) {
+                if (prop.isEntityReference()) {
+                  prop.targetRef.getEntity().getPropertyDefIdentifier().forEach(_prop => {
+                    [id, name] = this.em.nameResolver().for(prop.machineName(), _prop);
+                    joinObj[id] = _prop.get((<PropertyRefenceRelation>relation).target[prop.name]);
+                  });
+                } else {
+                  throw new Error('not supported; AAA');
+                }
+              } else {
+                joinObj[prop.name] = prop.get((<PropertyRefenceRelation>relation).target);
+              }
+            }
+
+          }
+
+          // TODO if revision ass id
+          rels.push(joinObj);
+
+        } else {
           throw new NotYetImplementedError();
         }
       }
@@ -138,29 +296,10 @@ export class SaveOp<T> extends EntityDefTreeWorker {
   }
 
 
-  private processGlobalRelations(): Promise<any[]> {
-    let globalRefs = [];
-    for (let relation of this.globalRelations) {
-      if (relation.prop.getOptions('linkVariant') == 'global') {
-        let rel = new XsRefProperty();
-        globalRefs.push(rel);
-        rel.source_property = relation.prop.name;
-        rel.source_type = relation.prop.entityName;
-        rel.source_id = relation.source['id'];
-        rel.source_seqnr = relation.seqnr;
-        rel.target_id = relation.target['id'];
-        rel.target_type = relation.prop.targetRef.className;
-      }
-    }
-    return this.c.manager.save(XsRefProperty, globalRefs);
-  }
-
-
   private async saveByEntityDef<T>(entityName: string | XsEntityDef, objects: T[]): Promise<T[]> {
     let entityDef = SchemaUtils.resolve(this.em.schemaDef, entityName);
     await this.walk(entityDef, objects);
     objects = await this.c.manager.save(entityDef.object.getClass(), objects);
-
     return objects;
   }
 
@@ -178,7 +317,7 @@ export class SaveOp<T> extends EntityDefTreeWorker {
 
   async run(object: T | T[]): Promise<T | T[]> {
     let isArray = _.isArray(object);
-    this.globalRelations = [];
+    this.relations = {};
     this.objects = this.prepare(object);
 
     let resolveByEntityDef = XsEntityManager.resolveByEntityDef(this.objects);
@@ -193,9 +332,10 @@ export class SaveOp<T> extends EntityDefTreeWorker {
         promises.push(p);
       }
       return Promise.all(promises)
+      //        .then(x => {
+      //  return this.processGlobalRelations();
+      //  })
         .then(x => {
-          return this.processGlobalRelations();
-        }).then(x => {
           return this.processRelations();
         });
     });

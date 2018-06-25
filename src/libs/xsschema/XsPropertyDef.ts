@@ -8,7 +8,6 @@ import {NotYetImplementedError} from './NotYetImplementedError';
 
 export class XsPropertyDef extends XsDef {
 
-  idKeys = ['schemaName', 'entityName', 'name'];
 
   schemaName: string = 'default';
 
@@ -21,6 +20,8 @@ export class XsPropertyDef extends XsDef {
   readonly targetRef: XsClassRef = null;
 
   readonly propertyRef: XsClassRef = null;
+
+  joinRef: XsClassRef = null;
 
   readonly identifier: boolean;
 
@@ -102,7 +103,7 @@ export class XsPropertyDef extends XsDef {
   isEntityReference(): boolean {
     if (this.isReference()) {
       let entityDef = this.targetRef.getEntity();
-      return entityDef !== null;
+      return !(_.isNull(entityDef) || _.isUndefined(entityDef));
     }
     return false;
   }
@@ -112,12 +113,35 @@ export class XsPropertyDef extends XsDef {
     return XsLookupRegistry.$().filter(XS_TYPE_PROPERTY, {entityName: this.propertyRef.className});
   }
 
+
+  storingName() {
+    let name = this.getOptions('name');
+    if (!name) {
+      if (this.isReference()) {
+        if (this.isEntityReference()) {
+          name = ['p', _.snakeCase(this.name), this.targetRef.getEntity().storingName()].join('_');
+        } else {
+          name = ['p', _.snakeCase(this.name), this.targetRef.machineName()].join('_');
+        }
+      } else {
+        name = _.snakeCase(this.name);
+      }
+    }
+    return name;
+  }
+
+
   /**
    * retrieve propetry from an instance
    * @param instance
    */
   get(instance: any) {
-    return _.get(instance, this.name);
+    if(instance){
+      return _.get(instance, this.name);
+    }else {
+      return null;
+    }
+
   }
 
 
@@ -129,7 +153,7 @@ export class XsPropertyDef extends XsDef {
     }
 
     if (!label) {
-      label = _.startCase(this.name);
+      label = _.capitalize(this.name);
     } else {
       label = 'None';
     }

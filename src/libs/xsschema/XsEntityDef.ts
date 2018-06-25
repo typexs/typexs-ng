@@ -2,12 +2,12 @@ import * as _ from 'lodash';
 import {XsPropertyDef} from './XsPropertyDef';
 import {XsLookupRegistry} from './XsLookupRegistry';
 import {XsDef} from './XsDef';
-import {XS_TYPE_ENTITY, XS_TYPE_PROPERTY} from './Constants';
+import {XS_TYPE_BINDING_SCHEMA_ENTITY, XS_TYPE_ENTITY, XS_TYPE_PROPERTY} from './Constants';
 import {IXsEntity} from './IXsEntity';
+import {XsSchemaDef} from './XsSchemaDef';
 
 export class XsEntityDef extends XsDef {
 
-  idKeys = ['schemaName', 'name'];
 
   schemaName: string = 'default';
 
@@ -15,6 +15,16 @@ export class XsEntityDef extends XsDef {
   constructor(fn: Function, options: IXsEntity = {}) {
     super('entity', fn.name, fn);
     this.setOptions(options);
+    let schema = <XsSchemaDef>XsLookupRegistry.$().find(XS_TYPE_BINDING_SCHEMA_ENTITY,{targetName:fn.name});
+    if(schema){
+      this.schemaName = schema.name;
+    }
+  }
+
+
+  // not implemented yet
+  areRevisionsEnabled() {
+    return false;
   }
 
 
@@ -46,7 +56,7 @@ export class XsEntityDef extends XsDef {
       id = propIds.shift().get(instance);
     } else {
       id = {};
-      for(let prop of propIds){
+      for (let prop of propIds) {
         id[prop.name] = prop.get(instance);
       }
     }
@@ -69,7 +79,6 @@ export class XsEntityDef extends XsDef {
       return _.get(instance, 'xs:entity_id');
     }
     return null;
-
   }
 
   static resolveName(instance: any): string {
@@ -81,10 +90,8 @@ export class XsEntityDef extends XsDef {
         //console.log(x.name,instance.__proto__.constructor.name,x.name == instance.__proto__.constructor.name)
         return x.name == instance.__proto__.constructor.name;
       });
-
       return xsdef ? xsdef.name : null;
     }
-
   }
 
   static resolve(instance: any) {

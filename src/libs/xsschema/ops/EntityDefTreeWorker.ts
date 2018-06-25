@@ -9,7 +9,11 @@ export abstract class EntityDefTreeWorker {
   }
 
 
-  onEntityReferenceAsGlobalVariant(entityDef: XsEntityDef, property: XsPropertyDef, objects: any[]): void {
+  onEntityReference(entityDef: XsEntityDef, property: XsPropertyDef, objects: any[]): void {
+    throw new NotYetImplementedError();
+  }
+
+  onPropertyReference(entityDef: XsEntityDef, property: XsPropertyDef, objects: any[]): void {
     throw new NotYetImplementedError();
   }
 
@@ -24,14 +28,9 @@ export abstract class EntityDefTreeWorker {
       if (propertyDef.isInternal()) {
         if (propertyDef.isReference()) {
           if (propertyDef.isEntityReference()) {
-
-            let variant = propertyDef.getOptions('linkVariant');
-            //let propEntityDef = propertyDef.targetRef.getEntity();
-            if (variant === 'global') {
-              await this.onEntityReferenceAsGlobalVariant(entityDef, propertyDef, objects);
-            }
+            await this.onEntityReference(entityDef, propertyDef, objects);
           } else {
-            throw new NotYetImplementedError();
+            await this.onPropertyReference(entityDef, propertyDef, objects);
           }
         } else {
           // throw new NotYetImplementedError();

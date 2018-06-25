@@ -21,54 +21,70 @@ export class FindOp<T> extends EntityDefTreeWorker {
   }
 
 
-  async onEntityReferenceAsGlobalVariant(entityDef: XsEntityDef, propertyDef: XsPropertyDef, objects: any[]) {
+  async onEntityReference(entityDef: XsEntityDef, propertyDef: XsPropertyDef, objects: any[]) {
     let propEntityDef = propertyDef.targetRef.getEntity();
 
+    let conditions: any[] = [];
+
     // parent and child must be saved till relations can be inserted
-    let objectIds: number[] = SchemaUtils.get('id', objects);
+    //let objectIds: number[] = SchemaUtils.get('id', objects);
+    for (let object of objects) {
+      let condition: any = {};
+      condition['source_type'] = entityDef.name;
+      condition['source_seqnr'] = entityDef.name;
+      entityDef.getPropertyDefIdentifier().forEach(x => {
+        condition['source_' + x.machineName()] = x.get(object);
+      });
+      conditions.push(condition);
+    }
+
+    let repo = this.c.manager.getRepository(propertyDef.joinRef.getClass());
 
     // TODO if revision support beachte dies an der stellle
-    let results = await this.c.manager.getRepository(XsRefProperty).find({
-      where: {
-        source_id: objectIds,
-        source_type: entityDef.name,
-        source_property: propertyDef.name
-      },
-      order: {
-        source_id: 'ASC',
-        source_rev_id: 'ASC',
-        source_seqnr: 'ASC'
-      }
-    });
+    let results = await repo.createQueryBuilder()
+      .where(conditions).orderBy('source_seqnr', 'ASC').getMany();
 
-    let targetIds: number[] = [];
+    conditions = [];
 
     for (let result of results) {
       // TODO revision support!
-      targetIds.push(result.target_id);
+      let condition: any = {};
+      entityDef.getPropertyDefIdentifier().forEach(x => {
+        condition['target_' + x.machineName()] = x.get(result);
+      });
+      conditions.push(condition);
     }
 
-    let targets = await this.c.manager.getRepository(propEntityDef.object.getClass()).find({
-      where: {
-        id: targetIds,
-      }
-    });
+    let targets = await this.c.manager.getRepository(propEntityDef.object.getClass()).createQueryBuilder()
+      .where(conditions).getMany();
 
     targets = await this.loadEntityDef(propEntityDef, targets);
 
     for (let object of objects) {
-      let _results = _.remove(results, {source_id: (object as any).id});
+      let condition: any = {};
+      entityDef.getPropertyDefIdentifier().forEach(x => {
+        condition['source' + _.capitalize(x.name)] = x.get(object);
+      });
+      let _results = _.remove(results, condition);
 
-      // TODO revisions
-      objectIds = SchemaUtils.get('target_id', _results);
+      let pIds = propEntityDef.getPropertyDefIdentifier().map(x => x.name);
 
-      // TODO create setter in property
-      let objectTargets = _.remove(targets, target => objectIds.indexOf((target as any).id) > -1);
+      let objectTargets: any[] = [];
+      _results.forEach(r => {
+        let _cond: any = {};
+        pIds.forEach(id => {
+          _cond[id] = r['target' + _.capitalize(id)];
+        });
+        let entry = _.remove(targets, _cond);
+        objectTargets.push(entry.shift());
+      });
+
       if (propertyDef.cardinality > 1) {
         object[propertyDef.name] = objectTargets;
       } else {
         object[propertyDef.name] = objectTargets.length == 1 ? objectTargets.shift() : null;
       }
+
     }
   }
 

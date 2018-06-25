@@ -2,6 +2,13 @@ export interface IXsProperty {
 
   propertyName?: string;
 
+
+  /**
+   * rename the property for storing name
+   */
+  name?: string
+
+
   sourceClass?: string | Function;
 
   /**
@@ -32,12 +39,12 @@ export interface IXsProperty {
    * If a property is embedded then the subProperties must be integrated in the bound entity, default is false.
    * TODO implement this
    */
-  embedded?:boolean;
+  embedded?: boolean;
 
   /**
    * Only if id or pk is set then the type determine the id should be automatic (autoinc or uuid generation) else an id must be providen, default will be true
    */
-  auto?:boolean;
+  auto?: boolean;
 
   /**
    * The members to lookup on the referencing entities or entity
@@ -48,4 +55,8 @@ export interface IXsProperty {
    * The local members to use for mapping the referencing entity
    */
   localMembers?: string | string[]
+
+
+
+
 }

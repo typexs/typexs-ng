@@ -34,18 +34,43 @@ class Xsschema_scenario_00_simpleSpec {
     let xsem = new XsEntityManager(schemaDef, ref);
     await xsem.initialize();
 
+
     // console.log(ref['options'],getMetadataArgsStorage());
 
     let c = await ref.connect();
-    let data = await c.connection.query('PRAGMA table_info(\'e_author\')');
-
-    //console.log(data);
+    let tables: any[] = await c.connection.query('SELECT * FROM sqlite_master WHERE type=\'table\';');
+    let tableNames = tables.map(x => x.name);
+    expect(tableNames).to.contain('author');
+    let data = await c.connection.query('PRAGMA table_info(\'author\')');
     expect(data).to.have.length(3);
     expect(_.find(data, {name: 'last_name'})).to.deep.include({name: 'last_name', type: 'text'});
     await c.close();
     XsRegistry.reset();
   }
 
+  @test
+  async 'initializing a simple schema but use other names'() {
+    XsRegistry.reset();
+    require('./schemas/default/AuthorRename');
+
+    let ref = new StorageRef(TEST_STORAGE_OPTIONS);
+    await ref.prepare();
+    let schemaDef = XsRegistry.getSchema(TEST_STORAGE_OPTIONS.name);
+
+    let xsem = new XsEntityManager(schemaDef, ref);
+    await xsem.initialize();
+    let c = await ref.connect();
+    let tables: any[] = await c.connection.query('SELECT * FROM sqlite_master WHERE type=\'table\';');
+
+    let tableNames = tables.map(x => x.name);
+    expect(tableNames).to.contain('author_with_new_name');
+    let data = await c.connection.query('PRAGMA table_info(\'author_with_new_name\')');
+    expect(data).to.have.length(3);
+
+    expect(_.find(data, {name: 'id_new_name'})).to.deep.include({type: 'integer', pk: 1});
+    await c.close();
+    XsRegistry.reset();
+  }
 
 }
 

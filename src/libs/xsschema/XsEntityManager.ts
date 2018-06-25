@@ -6,6 +6,7 @@ import {TypeOrmSchemaMapper} from './framework/TypeOrmSchemaMapper';
 import {XsPropertyDef} from './XsPropertyDef';
 import {SaveOp} from './ops/SaveOp';
 import {FindOp} from './ops/FindOp';
+import {TypeOrmNameResolver} from './framework/TypeOrmNameResolver';
 
 
 /**
@@ -22,12 +23,20 @@ export class XsEntityManager {
 
   readonly mapper: TypeOrmSchemaMapper;
 
+
   constructor(schema: XsSchemaDef = null, storageRef: StorageRef = null) {
     this.storageRef = storageRef;
     this.schemaDef = schema;
     this.mapper = new TypeOrmSchemaMapper(this.storageRef, this.schemaDef);
   }
 
+  nameResolver(): TypeOrmNameResolver {
+    return this.mapper.nameResolver;
+  }
+
+  schema(): XsSchemaDef {
+    return this.schemaDef;
+  }
 
   async initialize() {
     await this.mapper.initialize();
