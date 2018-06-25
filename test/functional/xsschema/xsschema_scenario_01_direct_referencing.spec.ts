@@ -5,6 +5,7 @@ import {XsRegistry} from '../../../src/libs/xsschema/XsRegistry';
 import {XsEntityManager} from '../../../src/libs/xsschema/XsEntityManager';
 import {IStorageOptions, StorageRef} from 'typexs-base';
 import {SqliteConnectionOptions} from 'typeorm/driver/sqlite/SqliteConnectionOptions';
+import {inspect} from 'util';
 
 export const TEST_STORAGE_OPTIONS: IStorageOptions = <SqliteConnectionOptions>{
   name: 'default',
@@ -138,6 +139,9 @@ class Xsschema_scenario_01_direct_referencingSpec {
 
     car = await xsem.save(car);
     console.log(car);
+
+    let car2 = await xsem.find(Car,{id:1});
+    console.log(inspect(car2,false,10));
 
     await c.close();
     XsRegistry.reset();

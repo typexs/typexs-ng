@@ -8,6 +8,8 @@ import {XsRefProperty} from '../entity/XsRefProperty';
 import {XsPropertyDef} from '../XsPropertyDef';
 import {EntityDefTreeWorker} from './EntityDefTreeWorker';
 import {NotYetImplementedError} from '../NotYetImplementedError';
+import {XS_REL_TARGET_PREFIX} from '../Constants';
+import {NotSupportedError} from '../NotSupportedError';
 
 export class FindOp<T> extends EntityDefTreeWorker {
 
@@ -28,12 +30,17 @@ export class FindOp<T> extends EntityDefTreeWorker {
 
     // parent and child must be saved till relations can be inserted
     //let objectIds: number[] = SchemaUtils.get('id', objects);
+    let [, sourceTypeName] = this.em.nameResolver().forSource('type');
+    let [, sourceSeqNrName] = this.em.nameResolver().forSource('seqNr');
+
     for (let object of objects) {
       let condition: any = {};
-      condition['source_type'] = entityDef.name;
-      condition['source_seqnr'] = entityDef.name;
+
+      condition[sourceTypeName] = entityDef.name;
+      // TODO revision ID
       entityDef.getPropertyDefIdentifier().forEach(x => {
-        condition['source_' + x.machineName()] = x.get(object);
+        let [, sourceName] = this.em.nameResolver().forSource(x);
+        condition[sourceName] = x.get(object);
       });
       conditions.push(condition);
     }
@@ -42,7 +49,7 @@ export class FindOp<T> extends EntityDefTreeWorker {
 
     // TODO if revision support beachte dies an der stellle
     let results = await repo.createQueryBuilder()
-      .where(conditions).orderBy('source_seqnr', 'ASC').getMany();
+      .where(conditions).orderBy(sourceSeqNrName, 'ASC').getMany();
 
     conditions = [];
 
@@ -50,7 +57,8 @@ export class FindOp<T> extends EntityDefTreeWorker {
       // TODO revision support!
       let condition: any = {};
       entityDef.getPropertyDefIdentifier().forEach(x => {
-        condition['target_' + x.machineName()] = x.get(result);
+        let [, targetName] = this.em.nameResolver().forTarget(x);
+        condition[targetName] = x.get(result);
       });
       conditions.push(condition);
     }
@@ -63,7 +71,8 @@ export class FindOp<T> extends EntityDefTreeWorker {
     for (let object of objects) {
       let condition: any = {};
       entityDef.getPropertyDefIdentifier().forEach(x => {
-        condition['source' + _.capitalize(x.name)] = x.get(object);
+        let [, sourceName] = this.em.nameResolver().forSource(x);
+        condition[sourceName] = x.get(object);
       });
       let _results = _.remove(results, condition);
 
@@ -73,9 +82,10 @@ export class FindOp<T> extends EntityDefTreeWorker {
       _results.forEach(r => {
         let _cond: any = {};
         pIds.forEach(id => {
-          _cond[id] = r['target' + _.capitalize(id)];
+          let [targetId,] = this.em.nameResolver().for(XS_REL_TARGET_PREFIX, id);
+          _cond[id] = r[targetId];
         });
-        let entry = _.remove(targets, _cond);
+        let entry = _.filter(targets, _cond);
         objectTargets.push(entry.shift());
       });
 
@@ -86,6 +96,121 @@ export class FindOp<T> extends EntityDefTreeWorker {
       }
 
     }
+  }
+
+
+  async onPropertyReference(entityDef: XsEntityDef, propertyDef: XsPropertyDef, objects: any[]) {
+    let propClass = propertyDef.targetRef.getClass();
+
+    let conditions: any[] = [];
+
+    // parent and child must be saved till relations can be inserted
+    //let objectIds: number[] = SchemaUtils.get('id', objects);
+    let [sourceTypeId, sourceTypeName] = this.em.nameResolver().forSource('type');
+    let [sourceSeqNrId, sourceSeqNrName] = this.em.nameResolver().forSource('seqNr');
+
+
+    let idProperties = entityDef.getPropertyDefIdentifier();
+
+    let repo = this.c.manager.getRepository(propClass);
+    let queryBuilder = repo.createQueryBuilder();
+
+    for (let object of objects) {
+      let condition: any = {};
+      condition[sourceTypeName] = entityDef.name;
+      idProperties.forEach(x => {
+        let [, sourceName] = this.em.nameResolver().forSource(x);
+        condition[sourceName] = x.get(object);
+      });
+      queryBuilder.orWhere(Object.keys(condition).map(k => `${k} = '${condition[k]}'`).join(' AND '));
+    }
+
+    // TODO if revision support beachte dies an der stellle
+    let results = await queryBuilder.orderBy(sourceSeqNrName, 'ASC').getMany();
+
+    conditions = [];
+
+    let subPropertyDefs = this.em.schemaDef.getPropertiesFor(propClass);
+    for (let subPropertyDef of subPropertyDefs) {
+      if (subPropertyDef.isInternal()) {
+        if (subPropertyDef.isReference()) {
+          if (subPropertyDef.isEntityReference()) {
+            let targetEntity = subPropertyDef.targetRef.getEntity();
+            let subIdProperties = targetEntity.getPropertyDefIdentifier();
+            let repo = this.c.manager.getRepository(targetEntity.object.getClass());
+            let queryBuilder = repo.createQueryBuilder();
+
+            results.map(result => {
+              let condition: any = {};
+              subIdProperties.forEach(idProp => {
+                let [targetId, targetName] = this.em.nameResolver().for(subPropertyDef.machineName(), idProp);
+                condition[idProp.name] = result[targetId];
+              });
+              queryBuilder.orWhere(Object.keys(condition).map(k => `${k} = '${condition[k]}'`).join(' AND '));
+            });
+
+
+            let targets = await queryBuilder.getMany();
+            targets = await this.loadEntityDef(targetEntity, targets);
+
+            results.map(result => {
+              let condition: any = {};
+              subIdProperties.forEach(idProp => {
+                let [targetId, targetName] = this.em.nameResolver().for(subPropertyDef.machineName(), idProp);
+                condition[idProp.name] = result[targetId];
+              });
+              let subResults = _.filter(targets, condition);
+
+
+              // cleanup
+              delete result[sourceTypeId];
+              delete result[sourceSeqNrId];
+
+              subIdProperties.forEach(idProp => {
+                let [targetId, ] = this.em.nameResolver().for(subPropertyDef.machineName(), idProp);
+                delete result[targetId];
+              });
+
+
+              if (propertyDef.cardinality > 1) {
+                result[subPropertyDef.name] = subResults;
+              } else {
+                result[subPropertyDef.name] = subResults.length == 1 ? subResults.shift() : null;
+              }
+            });
+
+          } else {
+            throw new NotSupportedError('other then direct entity integration not allowed in property referencing ... ' + subPropertyDef.name);
+          }
+        }
+      } else {
+        throw new NotSupportedError('only internal properties allowed ' + subPropertyDef.name);
+      }
+    }
+
+    objects.map(object => {
+      let condition: any = {};
+      idProperties.forEach(idProp => {
+        let [targetId, targetName] = this.em.nameResolver().forSource(idProp);
+        condition[targetId] = object[idProp.name];
+      });
+      let subResults = _.filter(results, condition);
+
+      // cleanup
+      subResults.map(sub => {
+        idProperties.map( idProp => {
+          let [sourceId,] = this.em.nameResolver().forSource(idProp);
+          delete sub[sourceId];
+        })
+      });
+
+      if (propertyDef.cardinality > 1) {
+        object[propertyDef.name] = subResults;
+      } else {
+        object[propertyDef.name] = subResults.length == 1 ? subResults.shift() : null;
+      }
+    });
+
   }
 
 
@@ -137,11 +262,13 @@ export class FindOp<T> extends EntityDefTreeWorker {
   }
 
   private async loadEntityDef<T>(entityName: string | XsEntityDef, objects: T[]): Promise<T[]> {
-    let entityDef: XsEntityDef = <XsEntityDef>entityName;
-    if (_.isString(entityName)) {
-      entityDef = this.em.schemaDef.getEntity(entityName);
+    if (objects.length > 0) {
+      let entityDef: XsEntityDef = <XsEntityDef>entityName;
+      if (_.isString(entityName)) {
+        entityDef = this.em.schemaDef.getEntity(entityName);
+      }
+      await this.walk(entityDef, objects);
     }
-    await this.walk(entityDef, objects);
     return objects;
   }
 
