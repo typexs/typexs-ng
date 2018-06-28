@@ -5,13 +5,16 @@ import {Author} from './Author';
 @Entity()
 export class Book {
 
-  @Property({type: 'number', auto:true})
+  @Property({type: 'number', auto: true})
   id: number;
 
-  @Property({type: 'string'})
+  @Property({type: 'string', nullable: true})
+  label: string;
+
+  @Property({type: 'string', nullable: true})
   content: string;
 
-  @Property({targetClass: Author})
+  @Property({targetClass: Author, nullable: true})
   author: Author;
 
 }

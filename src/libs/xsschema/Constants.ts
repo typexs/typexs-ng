@@ -13,3 +13,10 @@ export const XS_RELATION_TYPE_GLOBAL = 'global';
 
 export const XS_REL_SOURCE_PREFIX = 'source';
 export const XS_REL_TARGET_PREFIX = 'target';
+
+export const XS_P_TYPE = 'type';
+export const XS_P_REV_ID = 'revId';
+export const XS_P_SEQ_NR = 'seqNr';
+export const XS_P_PROPERTY = 'property';
+
+

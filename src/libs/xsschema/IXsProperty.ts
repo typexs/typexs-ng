@@ -29,6 +29,8 @@ export interface IXsProperty {
 
   propertyClass?: string | Function;
 
+  nullable?: boolean;
+
   /**
    * Marks if property is an identifier for the entity.
    */
@@ -55,8 +57,6 @@ export interface IXsProperty {
    * The local members to use for mapping the referencing entity
    */
   localMembers?: string | string[]
-
-
 
 
 }

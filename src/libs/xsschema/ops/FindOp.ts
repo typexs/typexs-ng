@@ -8,7 +8,7 @@ import {XsRefProperty} from '../entity/XsRefProperty';
 import {XsPropertyDef} from '../XsPropertyDef';
 import {EntityDefTreeWorker} from './EntityDefTreeWorker';
 import {NotYetImplementedError} from '../NotYetImplementedError';
-import {XS_REL_TARGET_PREFIX} from '../Constants';
+import {XS_P_PROPERTY, XS_P_SEQ_NR, XS_P_TYPE, XS_REL_TARGET_PREFIX} from '../Constants';
 import {NotSupportedError} from '../NotSupportedError';
 
 export class FindOp<T> extends EntityDefTreeWorker {
@@ -30,8 +30,8 @@ export class FindOp<T> extends EntityDefTreeWorker {
 
     // parent and child must be saved till relations can be inserted
     //let objectIds: number[] = SchemaUtils.get('id', objects);
-    let [, sourceTypeName] = this.em.nameResolver().forSource('type');
-    let [, sourceSeqNrName] = this.em.nameResolver().forSource('seqNr');
+    let [, sourceTypeName] = this.em.nameResolver().forSource(XS_P_TYPE);
+    let [, sourceSeqNrName] = this.em.nameResolver().forSource(XS_P_SEQ_NR);
 
     for (let object of objects) {
       let condition: any = {};
@@ -71,8 +71,8 @@ export class FindOp<T> extends EntityDefTreeWorker {
     for (let object of objects) {
       let condition: any = {};
       entityDef.getPropertyDefIdentifier().forEach(x => {
-        let [, sourceName] = this.em.nameResolver().forSource(x);
-        condition[sourceName] = x.get(object);
+        let [sourceId, ] = this.em.nameResolver().forSource(x);
+        condition[sourceId] = x.get(object);
       });
       let _results = _.remove(results, condition);
 
@@ -82,37 +82,48 @@ export class FindOp<T> extends EntityDefTreeWorker {
       _results.forEach(r => {
         let _cond: any = {};
         pIds.forEach(id => {
-          let [targetId,] = this.em.nameResolver().for(XS_REL_TARGET_PREFIX, id);
+          let [targetId,] = this.em.nameResolver().forTarget( id);
           _cond[id] = r[targetId];
         });
         let entry = _.filter(targets, _cond);
         objectTargets.push(entry.shift());
       });
 
-      if (propertyDef.cardinality > 1) {
+      if (propertyDef.isCollection()) {
         object[propertyDef.name] = objectTargets;
       } else {
         object[propertyDef.name] = objectTargets.length == 1 ? objectTargets.shift() : null;
       }
-
     }
   }
 
 
   async onPropertyReference(entityDef: XsEntityDef, propertyDef: XsPropertyDef, objects: any[]) {
     let propClass = propertyDef.targetRef.getClass();
+    await this._onPropertyRefGeneral(propClass, entityDef, propertyDef, objects);
 
+  }
+
+
+  async onPropertyOfReference(entityDef: XsEntityDef, propertyDef: XsPropertyDef, objects: any[]) {
+    let propertyClass = propertyDef.propertyRef.getClass();
+    await this._onPropertyRefGeneral(propertyClass, entityDef, propertyDef, objects);
+  }
+
+
+  private async _onPropertyRefGeneral(propClass: Function, entityDef: XsEntityDef, propertyDef: XsPropertyDef, objects: any[]) {
     let conditions: any[] = [];
+    let storeClass = propertyDef.joinRef.getClass();
 
     // parent and child must be saved till relations can be inserted
     //let objectIds: number[] = SchemaUtils.get('id', objects);
-    let [sourceTypeId, sourceTypeName] = this.em.nameResolver().forSource('type');
-    let [sourceSeqNrId, sourceSeqNrName] = this.em.nameResolver().forSource('seqNr');
+    let [sourceTypeId, sourceTypeName] = this.em.nameResolver().forSource(XS_P_TYPE);
+    let [sourceSeqNrId, sourceSeqNrName] = this.em.nameResolver().forSource(XS_P_SEQ_NR);
 
 
     let idProperties = entityDef.getPropertyDefIdentifier();
 
-    let repo = this.c.manager.getRepository(propClass);
+    let repo = this.c.manager.getRepository(storeClass);
     let queryBuilder = repo.createQueryBuilder();
 
     for (let object of objects) {
@@ -127,7 +138,9 @@ export class FindOp<T> extends EntityDefTreeWorker {
 
     // TODO if revision support beachte dies an der stellle
     let results = await queryBuilder.orderBy(sourceSeqNrName, 'ASC').getMany();
-
+    if(results.length == 0){
+      return;
+    }
     conditions = [];
 
     let subPropertyDefs = this.em.schemaDef.getPropertiesFor(propClass);
@@ -149,9 +162,12 @@ export class FindOp<T> extends EntityDefTreeWorker {
               queryBuilder.orWhere(Object.keys(condition).map(k => `${k} = '${condition[k]}'`).join(' AND '));
             });
 
-
             let targets = await queryBuilder.getMany();
             targets = await this.loadEntityDef(targetEntity, targets);
+
+            if(targets.length == 0){
+              continue;
+            }
 
             results.map(result => {
               let condition: any = {};
@@ -161,18 +177,17 @@ export class FindOp<T> extends EntityDefTreeWorker {
               });
               let subResults = _.filter(targets, condition);
 
-
               // cleanup
               delete result[sourceTypeId];
               delete result[sourceSeqNrId];
 
               subIdProperties.forEach(idProp => {
-                let [targetId, ] = this.em.nameResolver().for(subPropertyDef.machineName(), idProp);
+                let [targetId,] = this.em.nameResolver().for(subPropertyDef.machineName(), idProp);
                 delete result[targetId];
               });
 
 
-              if (propertyDef.cardinality > 1) {
+              if (subPropertyDef.isCollection()) {
                 result[subPropertyDef.name] = subResults;
               } else {
                 result[subPropertyDef.name] = subResults.length == 1 ? subResults.shift() : null;
@@ -198,13 +213,17 @@ export class FindOp<T> extends EntityDefTreeWorker {
 
       // cleanup
       subResults.map(sub => {
-        idProperties.map( idProp => {
+        [XS_P_TYPE,XS_P_SEQ_NR,XS_P_PROPERTY].forEach(prop => {
+          let [sourceId,] = this.em.nameResolver().forSource(prop);
+          delete sub[sourceId];
+        });
+        idProperties.map(idProp => {
           let [sourceId,] = this.em.nameResolver().forSource(idProp);
           delete sub[sourceId];
-        })
+        });
       });
 
-      if (propertyDef.cardinality > 1) {
+      if (propertyDef.isCollection()) {
         object[propertyDef.name] = subResults;
       } else {
         object[propertyDef.name] = subResults.length == 1 ? subResults.shift() : null;
@@ -213,52 +232,8 @@ export class FindOp<T> extends EntityDefTreeWorker {
 
   }
 
-
-  async onPropertyOfReference(entityDef: XsEntityDef, propertyDef: XsPropertyDef, objects: any[]) {
-    let propertyClass = propertyDef.propertyRef.getClass();
-
-    // TODO retrieve aso complex primary keys
-    // parent and child must be saved till relations can be inserted
-    let objectIds: number[] = SchemaUtils.get('id', objects);
-
-    // TODO if revision support beachte dies an der stellle
-    let results = await this.c.manager.getRepository(propertyClass).find({
-      where: {
-        source_id: objectIds,
-        source_type: entityDef.name,
-        source_property: propertyDef.name
-      },
-      order: {
-        source_id: 'ASC',
-        source_rev_id: 'ASC',
-        source_seqnr: 'ASC'
-      }
-    });
-
-    for (let object of objects) {
-
-      let _results = _.remove(results, {source_id: (object as any).id}).map(x => {
-        delete x['source_id'];
-        delete x['source_type'];
-        delete x['source_seqnr'];
-        delete x['source_rev_id'];
-        delete x['source_property'];
-        return x;
-      });
-
-      if (propertyDef.cardinality == 0) {
-        object[propertyDef.name] = _results;
-      } else if (propertyDef.cardinality > 1) {
-        if (_results.length <= propertyDef.cardinality) {
-          object[propertyDef.name] = _results;
-        } else {
-          // TODO change error message
-          throw new Error('cardinality limit reached ... ' + propertyDef.name + ' ' + propertyDef.cardinality);
-        }
-      } else {
-        object[propertyDef.name] = _results.length == 1 ? _results.shift() : null;
-      }
-    }
+  private static conditionToQuery(condition:any):string{
+    return Object.keys(condition).map(k => `${k} = '${condition[k]}'`).join(' AND ')
   }
 
   private async loadEntityDef<T>(entityName: string | XsEntityDef, objects: T[]): Promise<T[]> {
@@ -273,10 +248,22 @@ export class FindOp<T> extends EntityDefTreeWorker {
   }
 
 
-  async run(entityType: Function | string, findConditions: any): Promise<T[]> {
+  async run(entityType: Function | string, findConditions: any = null, limit:number = 100): Promise<T[]> {
     let xsEntityDef = XsClassRef.get(entityType).getEntity();
     this.c = await this.em.storageRef.connect();
-    let results = <any[]>await this.c.manager.find(xsEntityDef.object.getClass(), {where: findConditions});
+    let qb = this.c.manager.getRepository(xsEntityDef.object.getClass()).createQueryBuilder();
+    if(_.isArray(findConditions)){
+      findConditions.forEach(c => {
+        qb.orWhere(FindOp.conditionToQuery(c));
+      })
+    }else if(findConditions){
+      qb.where(FindOp.conditionToQuery(findConditions));
+    }
+    xsEntityDef.getPropertyDefIdentifier().forEach(x => {
+      qb.addOrderBy(x.storingName(),'ASC');
+    })
+    let results = <any[]>await qb.limit(limit).getMany();
+    //let results = <any[]>await this.c.manager.find(xsEntityDef.object.getClass(), {where: findConditions});
     return this.loadEntityDef(xsEntityDef, results);
   }
 

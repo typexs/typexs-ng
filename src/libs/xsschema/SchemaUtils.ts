@@ -7,8 +7,12 @@ export class SchemaUtils {
   static get<X, Y>(property: string, objects: X[]): Y[] {
     let y: Y[] = [];
     for (let object of objects) {
-      let values = _.get(object, property);
-      y.push(values);
+      if (object) {
+        let values = _.get(object, property, null);
+        y.push(values);
+      } else {
+        y.push(null);
+      }
     }
 
     return y;

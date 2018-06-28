@@ -3,7 +3,7 @@ import {XsDef} from './XsDef';
 import {IXsProperty} from './IXsProperty';
 import {XsClassRef} from './XsClassRef';
 import {XsLookupRegistry} from './XsLookupRegistry';
-import {XS_TYPE_PROPERTY} from './Constants';
+import {XS_ID_SEPARATOR, XS_TYPE_PROPERTY} from './Constants';
 import {NotYetImplementedError} from './NotYetImplementedError';
 
 export class XsPropertyDef extends XsDef {
@@ -22,6 +22,7 @@ export class XsPropertyDef extends XsDef {
   readonly propertyRef: XsClassRef = null;
 
   joinRef: XsClassRef = null;
+
 
   readonly identifier: boolean;
 
@@ -114,6 +115,18 @@ export class XsPropertyDef extends XsDef {
   }
 
 
+  isOutOfSize(x: number) {
+    if (this.cardinality == 0) return false;
+    if (this.cardinality < x) {
+      return true;
+    }
+    return false;
+  }
+
+  isCollection() {
+    return this.cardinality == 0 || this.cardinality > 1;
+  }
+
   storingName() {
     let name = this.getOptions('name');
     if (!name) {
@@ -123,22 +136,28 @@ export class XsPropertyDef extends XsDef {
         } else {
           name = ['p', _.snakeCase(this.name), this.targetRef.machineName()].join('_');
         }
+      } else if (this.propertyRef) {
+        name = ['p', _.snakeCase(this.name)].join('_');
       } else {
-        name = _.snakeCase(this.name);
+        name = [_.snakeCase(this.name)].join('_');
       }
     }
     return name;
   }
 
 
+  isNullable() {
+    return this.getOptions('nullable', false);
+  }
+
   /**
    * retrieve propetry from an instance
    * @param instance
    */
   get(instance: any) {
-    if(instance){
+    if (instance) {
       return _.get(instance, this.name);
-    }else {
+    } else {
       return null;
     }
 

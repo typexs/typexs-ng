@@ -15,8 +15,11 @@ export class Car {
   @Property({type: 'string'})
   producer: string;
 
-  @Property({targetClass: Driver})
+  @Property({targetClass: Driver, nullable: true})
   driver: Driver;
+
+  @Property({targetClass: Driver, nullable: true, cardinality: 0})
+  drivers: Driver[];
 
 }
 

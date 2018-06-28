@@ -49,8 +49,8 @@ export class XsEntityManager {
   }
 
 
-  async find<T>(fn: Function, conditions: any): Promise<T[]> {
-    return new FindOp<T>(this).run(fn, conditions);
+  async find<T>(fn: Function, conditions: any = null, limit:number=100): Promise<T[]> {
+    return new FindOp<T>(this).run(fn, conditions,limit);
   }
 
 
