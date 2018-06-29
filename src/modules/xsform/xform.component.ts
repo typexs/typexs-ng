@@ -1,8 +1,11 @@
 import {Component, ComponentFactoryResolver, Injector, Input, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import {DataContainer} from '../../libs/xsschema/DataContainer';
-import {XsRegistry} from '../../libs/xsschema/XsRegistry';
-import {XsForm} from '../../libs/xsform/xsForm';
 
+
+import {XsForm} from '../../libs/xsform/xsForm';
+import {PropertyDef, PropertyDef as XsPropertyDef, EntityDef as XsEntityDef,
+  Registry as XsRegistry,
+  DataContainer
+} from 'typexs-schema';
 
 
 @Component({

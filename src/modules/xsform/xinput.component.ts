@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {DataContainer} from '../../libs/xsschema/DataContainer';
+import {DataContainer} from 'typexs-schema/libs/DataContainer'
 
 
 

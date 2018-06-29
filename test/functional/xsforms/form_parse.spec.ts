@@ -1,12 +1,10 @@
 import {suite, test} from 'mocha-typescript';
 
-import {Entity} from '../../../src/libs/xsschema/decorators/Entity';
-import {Property} from '../../../src/libs/xsschema/decorators/Property';
 import {MaxLength, MinLength} from 'class-validator';
-import {XsRegistry} from '../../../src/libs/xsschema/XsRegistry';
 import {inspect} from 'util';
 import {Log} from 'typexs-base';
 import {XsForm, XsFormBuilder} from '../../../src/libs/xsform/xsForm';
+import {Entity, Property, Registry} from 'typexs-schema';
 
 
 @Entity()
@@ -76,7 +74,7 @@ class Form_parseSpec {
     let form = builder1.buildFromJSON(formJSON);
     // console.log(form);
 
-    let entityDef = XsRegistry.getEntityDefFor('TestUser');
+    let entityDef = Registry.getEntityDefFor('TestUser');
 
     let builder2 = new XsFormBuilder();
     let form2 = builder2.buildFromXsEntity(entityDef);

@@ -1,7 +1,6 @@
 import * as _ from 'lodash';
-import {XsPropertyDef} from '../xsschema/XsPropertyDef';
-import {XsEntityDef} from '../xsschema/XsEntityDef';
-import {NotYetImplementedError} from '../xsschema/NotYetImplementedError';
+import {NotYetImplementedError} from 'typexs-base';
+import {PropertyDef, PropertyDef as XsPropertyDef, EntityDef as XsEntityDef} from 'typexs-schema';
 
 
 export class XsFormRegistry {
@@ -44,7 +43,7 @@ export abstract class FormObject {
 
   label: string;
 
-  private binding: XsPropertyDef = null;
+  private binding: PropertyDef = null;
 
   private parent: FormObject = null;
 
