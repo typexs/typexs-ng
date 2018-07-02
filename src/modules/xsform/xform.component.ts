@@ -1,18 +1,15 @@
 import {Component, ComponentFactoryResolver, Injector, Input, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 
 
-import {XsForm} from '../../libs/xsform/xsForm';
-import {PropertyDef, PropertyDef as XsPropertyDef, EntityDef as XsEntityDef,
-  Registry as XsRegistry,
-  DataContainer
-} from 'typexs-schema';
+import {DataContainer, Registry as XsRegistry} from 'typexs-schema';
+import {Form} from '../../libs/xsform/elements/Form';
 
 
 @Component({
   selector: 'xform',
   templateUrl: './xform.component.html',
 })
-export class XFormComponent implements OnInit {
+export class xFormComponent implements OnInit {
 
   @Input()
   name: string;
@@ -38,15 +35,14 @@ export class XFormComponent implements OnInit {
   // ngOnInit(){}
 
   //ngAfterViewInit() {
-  ngOnInit(){
+  ngOnInit() {
     console.log(this.name);
     // TODO instance must be present
     this.dc = new DataContainer(this.instance);
 
 
-
     let xsDef = XsRegistry.getEntityDefFor(this.instance);
-    let form = new XsForm();
+    let form = new Form();
     //form.parse(xsDef);
 
 
@@ -56,7 +52,7 @@ export class XFormComponent implements OnInit {
   }
 
 
-  build(form:XsForm<any>) {
+  build(form: Form<any>) {
     /*
     form.elements.forEach(elem => {
       let def = _.find(XsFormRegistry.components,{type:elem.type});

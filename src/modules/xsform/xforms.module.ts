@@ -1,27 +1,27 @@
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {XInputComponent} from './xinput.component';
+
 import {BrowserModule} from '@angular/platform-browser';
-import {XFormComponent} from './xform.component';
+import {xFormComponent} from './xform.component';
+import {xInputComponent} from './xinput.component';
 
 
 @NgModule({
   declarations: [
-    XFormComponent,
-    XInputComponent
+    xFormComponent,
+    xInputComponent
   ],
   imports: [
     FormsModule,
     BrowserModule
   ],
-  entryComponents:[
-    XFormComponent,
-    XInputComponent
+  entryComponents: [
+    xFormComponent,
+    xInputComponent
   ],
-  exports:[
-    XFormComponent,
-    XInputComponent
-
+  exports: [
+    xFormComponent,
+    xInputComponent
   ],
   providers: []
 })

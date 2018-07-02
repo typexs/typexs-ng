@@ -3,8 +3,9 @@ import {suite, test} from 'mocha-typescript';
 import {MaxLength, MinLength} from 'class-validator';
 import {inspect} from 'util';
 import {Log} from 'typexs-base';
-import {XsForm, XsFormBuilder} from '../../../src/libs/xsform/xsForm';
 import {Entity, Property, Registry} from 'typexs-schema';
+import {FormBuilder} from '../../../src/libs/xsform/FormBuilder';
+import {Form} from '../../../src/libs/xsform/elements/Form';
 
 
 @Entity()
@@ -70,20 +71,20 @@ class Form_parseSpec {
     };
 
 
-    let builder1 = new XsFormBuilder();
+    let builder1 = new FormBuilder();
     let form = builder1.buildFromJSON(formJSON);
     // console.log(form);
 
     let entityDef = Registry.getEntityDefFor('TestUser');
 
-    let builder2 = new XsFormBuilder();
+    let builder2 = new FormBuilder();
     let form2 = builder2.buildFromXsEntity(entityDef);
 
 
     // todo let form2JSON = form2.toJSON();
     //Log.info(inspect(form2,null,10));
 
-    let form3 = (<XsForm<any>>form).combine(form2);
+    let form3 = (<Form<any>>form).combine(form2);
     Log.info(inspect(form3, null, 10));
 
   }

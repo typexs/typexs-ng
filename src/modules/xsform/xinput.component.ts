@@ -7,10 +7,7 @@ import {DataContainer} from 'typexs-schema/libs/DataContainer'
   selector: 'xinput',
   templateUrl: './xinput.component.html',
 })
-export class XInputComponent /* implements OnInit, OnChanges */ {
-
-
-  // element: FormElem;
+export class xInputComponent /* implements OnInit, OnChanges */ {
 
   @Input()
   type: string = 'text';

@@ -5,7 +5,6 @@ import {Entity, Property} from 'typexs-schema';
 @Entity()
 export class XSUserTest {
 
-
   @Property({type: 'string', form: 'text'})
   @MinLength(8, {message: 'username is too short'})
   @MaxLength(32, {message: 'username is too long'})
