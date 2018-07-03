@@ -27,7 +27,7 @@ export class ResolveDataValue implements IResolver {
   }
 
 
-  resolve(form: Form<any>) {
+  resolve(form: Form) {
     let elem = form.get(this.path.join('.'));
     if (elem) {
       this.object[this.property] = elem[this.fetchKey];

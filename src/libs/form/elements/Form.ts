@@ -1,18 +1,19 @@
 import * as _ from 'lodash';
 import {IResolver} from '../IResolver';
-import {Element} from '../decorators/Element';
 import {FormObject} from '../FormObject';
 import {ResolveDataValue} from '../ResolveDataValue';
 import {Ref} from './Ref';
+import {FormPart} from '../decorators/FormPart';
 
-@Element('form')
-export class Form<T> extends FormObject {
 
-  dataContainer: T;
+@FormPart('form')
+export class Form extends FormObject {
+
+  dataContainer: any;
 
   resolver: IResolver[] = [];
 
-  combine(otherForm: Form<T>) {
+  combine(otherForm: Form) {
     let resolverCache: IResolver[] = [];
 
     while (this.resolver.length > 0) {

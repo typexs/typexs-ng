@@ -3,6 +3,7 @@ import {XSUserTest} from './xstest.defs';
 
 
 
+
 @Component({
   selector: 'xstest',
   templateUrl: 'xstest.component.html',

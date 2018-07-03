@@ -1,16 +1,17 @@
-import {PropertyDef} from 'typexs-schema';
+import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
 import * as _ from 'lodash';
-import {Form} from './elements/Form';
+
 import {ResolveDataValue} from './ResolveDataValue';
+
+
 
 export abstract class FormObject {
 
   readonly type: string;
 
-  usedKeys: string[] = [];
-  // property: XsPropertyDef;
-
   id: string;
+
+  usedKeys: string[] = [];
 
   index: number;
 
@@ -51,11 +52,11 @@ export abstract class FormObject {
   }
 
 
-  getForm(): Form<any> {
+  getForm(): FormObject {
     if (this.parent) {
       return this.parent.getForm();
-    } else if (this instanceof Form) {
-      return <Form<any>>this;
+    } else if (this.type == 'form') {
+      return this;
     } else {
       // TODO throw error this should never happen
       return null;
@@ -64,7 +65,8 @@ export abstract class FormObject {
 
   handle(key: string, value: any) {
     if (value instanceof ResolveDataValue) {
-      this.getForm().resolver.push(value);
+      let form = this.getForm(); //
+      form['resolver'].push(value);
     }
 
     this.usedKeys.push(key);

@@ -1,34 +1,36 @@
-import {NotYetImplementedError} from 'typexs-base';
-import {EntityDef as XsEntityDef, PropertyDef as XsPropertyDef} from 'typexs-schema';
+import {NotYetImplementedError} from 'typexs-base/libs/exceptions/NotYetImplementedError';
+//import {EntityDef as XsEntityDef, PropertyDef as XsPropertyDef} from 'typexs-schema';
 import * as _ from 'lodash';
 import {FormObject} from './FormObject';
-import {Form} from './elements/Form';
+import {Form} from './elements';
 import {FormRegistry} from './FormRegistry';
 import {NoFormTypeDefinedError} from './exceptions/NoFormTypeDefinedError';
 import {ResolveDataValue} from './ResolveDataValue';
+import {EntityDef} from 'typexs-schema/libs/EntityDef';
+import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
 
-export class FormBuilder<T> {
+export class FormBuilder {
 
   private data: any;
 
   private form: FormObject;
 
 
-  buildFromJSON(data: any): Form<any> {
+  buildFromJSON(data: any): Form {
     this.data = data;
 
-    return <Form<any>>this._buildForm(data);
+    return <Form>this._buildForm(data);
 
   }
 
-  buildFromXsEntity(entity: XsEntityDef): Form<any> {
+  buildFromXsEntity(entity: EntityDef): Form {
     this.data = entity;
 
-    return <Form<any>>this._buildFormXs(entity);
+    return <Form>this._buildFormXs(entity);
 
   }
 
-  private _buildFormXs(entity: XsEntityDef | XsPropertyDef, parent: FormObject = null) {
+  private _buildFormXs(entity: EntityDef | PropertyDef, parent: FormObject = null) {
 
     let formObject: FormObject = null;
 
@@ -36,7 +38,7 @@ export class FormBuilder<T> {
       this.form = formObject = FormRegistry.createHandler('form');
       formObject.handle('name', entity.id());
       formObject.handle('binding', entity);
-    } else if (entity instanceof XsPropertyDef) {
+    } else if (entity instanceof PropertyDef) {
       // TODO support also other types
       let property = entity;
       let formType = <string>property.getOptions('form') || 'text';
@@ -56,14 +58,14 @@ export class FormBuilder<T> {
 
     formObject.setParent(parent);
 
-    if (entity instanceof XsEntityDef) {
+    if (entity instanceof EntityDef) {
       let properties = entity.getPropertyDefs();
 
       for (let property of properties) {
         let childObject = this._buildFormXs(property, formObject);
         formObject.insert(childObject);
       }
-    } else if (entity instanceof XsPropertyDef) {
+    } else if (entity instanceof PropertyDef) {
       // TODO for properties which points to Entity / Entities
       //property.getEntityDef
       //formObject;

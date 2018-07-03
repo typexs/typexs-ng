@@ -3,20 +3,24 @@
   "compilerOptions": {
     "outDir": "build/app",
     "target": "es5",
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
-  "include":[
+  "include": [
     "src/app/**/*.ts",
     "src/modules/**/*.ts"
   ],
   "exclude": [
     "src/app/test.ts",
+    "src/modules/**/api/*.ts",
     "src/modules/**/*.spec.ts",
     "src/app/**/*.spec.ts"
   ],
   "angularCompilerOptions": {
     "genDir": "build/app-aot",
-    "skipMetadataEmit" : false,
-    "skipTemplateCodegen" : true
+    "skipMetadataEmit": false,
+    "skipTemplateCodegen": false
+    //"aot":false
   }
 }

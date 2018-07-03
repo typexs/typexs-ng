@@ -4,8 +4,11 @@ import {MaxLength, MinLength} from 'class-validator';
 import {inspect} from 'util';
 import {Log} from 'typexs-base';
 import {Entity, Property, Registry} from 'typexs-schema';
-import {FormBuilder} from '../../../src/libs/xsform/FormBuilder';
-import {Form} from '../../../src/libs/xsform/elements/Form';
+import {FormBuilder} from '../../../src/libs/form/FormBuilder';
+import {Form} from '../../../src/libs/form/elements/Form';
+import {FORM_ELEMENTS} from '../../../src/libs/form/elements';
+FORM_ELEMENTS;
+
 
 
 @Entity()
@@ -24,6 +27,8 @@ export class TestUser {
 
 
 }
+
+
 
 
 @suite('functional/forms/form_parse')
@@ -71,9 +76,14 @@ class Form_parseSpec {
     };
 
 
+    let entities = Registry.getSchema('default').getEntities();
+
+
     let builder1 = new FormBuilder();
     let form = builder1.buildFromJSON(formJSON);
     // console.log(form);
+
+
 
     let entityDef = Registry.getEntityDefFor('TestUser');
 
@@ -84,12 +94,12 @@ class Form_parseSpec {
     // todo let form2JSON = form2.toJSON();
     //Log.info(inspect(form2,null,10));
 
-    let form3 = (<Form<any>>form).combine(form2);
+    let form3 = (<Form>form).combine(form2);
     Log.info(inspect(form3, null, 10));
 
   }
 
-  @test.skip
+  @test.skip()
   async 'parse json form over template'() {
 
     // Idee für den test

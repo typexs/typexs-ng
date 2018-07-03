@@ -1,15 +1,20 @@
 import {Component, ComponentFactoryResolver, Injector, Input, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 
 
-import {DataContainer, Registry as XsRegistry} from 'typexs-schema';
-import {Form} from '../../libs/xsform/elements/Form';
+import {Registry} from 'typexs-schema/libs/Registry';
+import {DataContainer} from 'typexs-schema/libs/DataContainer';
+import {Form as xForm} from '../../libs/form/elements/Form';
+import {FormBuilder} from '../../libs/form/FormBuilder';
+import {FormComponent} from '../../libs/form/decorators/FormComponent';
 
-
+@FormComponent('form')
 @Component({
   selector: 'xform',
   templateUrl: './xform.component.html',
 })
 export class xFormComponent implements OnInit {
+
+  elem: xForm;
 
   @Input()
   name: string;
@@ -41,18 +46,19 @@ export class xFormComponent implements OnInit {
     this.dc = new DataContainer(this.instance);
 
 
-    let xsDef = XsRegistry.getEntityDefFor(this.instance);
-    let form = new Form();
+    let entityDef = Registry.getEntityDefFor(this.instance);
+    let builder2 = new FormBuilder();
+    this.elem = builder2.buildFromXsEntity(entityDef);
+
     //form.parse(xsDef);
 
-
     // TODO restructure form
-    this.build(form);
-
+    this.build(this.elem);
   }
 
 
-  build(form: Form<any>) {
+  build(form: xForm) {
+    console.log(form);
     /*
     form.elements.forEach(elem => {
       let def = _.find(XsFormRegistry.components,{type:elem.type});

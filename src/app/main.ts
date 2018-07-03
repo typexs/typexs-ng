@@ -1,3 +1,4 @@
+import {enableProdMode} from '@angular/core';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 
 // Theme initialization
@@ -8,7 +9,8 @@ ThemeRegistry.register(THEMES, STYLES);
 
 import {AppModule} from './../modules/app/app.module';
 import {environment} from './environments/environment';
-import {enableProdMode} from "@angular/core";
+// import {FORM_ELEMENTS} from '../libs/form/elements';
+
 
 if (environment.production) {
   enableProdMode();
@@ -23,6 +25,4 @@ if (environment.production) {
  * -
  */
 
-
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.log(err));
+platformBrowserDynamic().bootstrapModule(AppModule).catch(err => console.error(err));

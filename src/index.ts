@@ -11,7 +11,7 @@ export * from "./libs/angular/ThemeRegistry";
 
 export * from "./modules/admin/admin.component";
 export * from "./modules/admin/admin.module";
-export * from "./modules/admin/api/AdminController";
+
 export * from "./modules/navigator/NavEntry";
 export * from "./modules/navigator/navigator.component";
 export * from "./modules/navigator/navigator.module";

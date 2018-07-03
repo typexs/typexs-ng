@@ -1,5 +1,6 @@
 import {MaxLength, MinLength} from 'class-validator';
-import {Entity, Property} from 'typexs-schema';
+import {Entity} from 'typexs-schema/libs/decorators/Entity';
+import {Property} from 'typexs-schema/libs/decorators/Property';
 
 
 @Entity()

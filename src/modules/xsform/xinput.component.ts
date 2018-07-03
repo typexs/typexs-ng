@@ -1,13 +1,17 @@
 import {Component, Input} from '@angular/core';
-import {DataContainer} from 'typexs-schema/libs/DataContainer'
+import {DataContainer} from 'typexs-schema/libs/DataContainer';
+import {FormComponent} from '../../libs/form/decorators/FormComponent';
+import {Input as xInput} from '../../libs/form/elements';
 
 
-
+@FormComponent('input')
 @Component({
   selector: 'xinput',
   templateUrl: './xinput.component.html',
 })
 export class xInputComponent /* implements OnInit, OnChanges */ {
+
+  elem: xInput;
 
   @Input()
   type: string = 'text';
@@ -19,7 +23,6 @@ export class xInputComponent /* implements OnInit, OnChanges */ {
   data: DataContainer<any>;
 
   /*
-
   value: any;
 
   ngOnInit(){
