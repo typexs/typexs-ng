@@ -19,7 +19,7 @@ export class FormRegistry {
     return this.$self;
   }
 
-  private getOrCreateDef(typeName: string): IElementDef {
+  getOrCreateDef(typeName: string): IElementDef {
     let exists = _.find(this.formHandler, {type: typeName});
     if (!exists) {
       exists = {type: typeName};

@@ -2,11 +2,12 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {APP_MODULES} from './app.used.modules';
 import {XFORMCOMPONENT} from '../xsform/xforms.elements';
-import {XSTestComponent} from '../xsform/xstest.component';
+import {XSTestComponent} from './xstest.component';
+
 
 @NgModule({
   declarations: [
-    AppComponent,XSTestComponent
+    AppComponent, XSTestComponent
   ],
   entryComponents: XFORMCOMPONENT,
   imports: APP_MODULES,

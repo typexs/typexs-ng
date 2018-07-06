@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {DataContainer} from 'typexs-schema/libs/DataContainer';
 import {FormComponent} from '../../libs/form/decorators/FormComponent';
 import {Input as xInput} from '../../libs/form/elements';
+import {AbstractFormComponent} from './AbstractFormComponent';
 
 
 @FormComponent('input')
@@ -9,9 +10,8 @@ import {Input as xInput} from '../../libs/form/elements';
   selector: 'xinput',
   templateUrl: './xinput.component.html',
 })
-export class xInputComponent /* implements OnInit, OnChanges */ {
+export class xInputComponent extends AbstractFormComponent/* implements OnInit, OnChanges */ {
 
-  elem: xInput;
 
   @Input()
   type: string = 'text';
@@ -20,7 +20,8 @@ export class xInputComponent /* implements OnInit, OnChanges */ {
   name: string = 'noname';
 
 
-  data: DataContainer<any>;
+
+
 
   /*
   value: any;

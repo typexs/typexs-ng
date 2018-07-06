@@ -3,8 +3,18 @@ import {Entity} from 'typexs-schema/libs/decorators/Entity';
 import {Property} from 'typexs-schema/libs/decorators/Property';
 
 
-@Entity()
-export class XSUserTest {
+export class AuthVariant {
+
+  label: string;
+
+  icon: string;
+
+  type: string;
+
+
+}
+
+export class LocalAuthVariant extends AuthVariant {
 
   @Property({type: 'string', form: 'text'})
   @MinLength(8, {message: 'username is too short'})
@@ -16,6 +26,17 @@ export class XSUserTest {
   @MaxLength(64, {message: 'password is a little too long'})
   password: string;
 
+}
 
+
+@Entity(<any>{storeable: false})
+export class XSUserTest {
+
+
+  @Property(<any>{storeable: false, targetClass: AuthVariant, form: 'select', valueOf: 'variants'})
+  variant: AuthVariant;
+
+
+  variants: AuthVariant[] = [];
 }
 

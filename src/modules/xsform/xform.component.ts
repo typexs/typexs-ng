@@ -1,20 +1,17 @@
-import {Component, ComponentFactoryResolver, Injector, Input, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-
-
-import {Registry} from 'typexs-schema/libs/Registry';
+import {Component, ComponentFactoryResolver, Inject, Injector, Input, OnInit} from '@angular/core';
 import {DataContainer} from 'typexs-schema/libs/DataContainer';
-import {Form as xForm} from '../../libs/form/elements/Form';
-import {FormBuilder} from '../../libs/form/FormBuilder';
 import {FormComponent} from '../../libs/form/decorators/FormComponent';
+import {AbstractFormComponent} from './AbstractFormComponent';
+import {xFormService} from './xform.service';
 
 @FormComponent('form')
 @Component({
   selector: 'xform',
   templateUrl: './xform.component.html',
 })
-export class xFormComponent implements OnInit {
+export class xFormComponent extends AbstractFormComponent implements OnInit {
 
-  elem: xForm;
+
 
   @Input()
   name: string;
@@ -22,74 +19,28 @@ export class xFormComponent implements OnInit {
   @Input()
   instance: any;
 
-  dc: DataContainer<any>;
 
-  @ViewChild('content', {read: ViewContainerRef}) vc: ViewContainerRef;
-
-
-  constructor(private injector: Injector,
-              private r: ComponentFactoryResolver) {
-    /*
-    let factory = this.r.resolveComponentFactory(ColorComponent);
-    let componentRef = factory.create(injector);
-    let view = componentRef.hostView;
-    */
+  constructor(@Inject(xFormService) private formService: xFormService,
+              @Inject(Injector) protected injector: Injector,
+              @Inject(ComponentFactoryResolver) protected   r: ComponentFactoryResolver) {
+    super(injector, r);
   }
 
 
-  // ngOnInit(){}
-
-  //ngAfterViewInit() {
   ngOnInit() {
     console.log(this.name);
+
     // TODO instance must be present
-    this.dc = new DataContainer(this.instance);
-
-
-    let entityDef = Registry.getEntityDefFor(this.instance);
-    let builder2 = new FormBuilder();
-    this.elem = builder2.buildFromXsEntity(entityDef);
-
-    //form.parse(xsDef);
+    this.data = new DataContainer(this.instance);
+    this.elem = this.formService.get(this.name, this.instance);
 
     // TODO restructure form
     this.build(this.elem);
   }
 
 
-  build(form: xForm) {
-    console.log(form);
-    /*
-    form.elements.forEach(elem => {
-      let def = _.find(XsFormRegistry.components,{type:elem.type});
-      let factory = this.r.resolveComponentFactory(def.component);
-      let ref = this.vc.createComponent(factory);
-      ref.instance.element = elem;
-      ref.instance.data = this.dc;
-    })
-
-    / *
-      let xsDef = XsRegistry.getEntityDefFor(this.user);
-
-      let xsProps = xsDef.getPropertyDefs();
-      console.log(xsDef,xsProps);
-
-      this.workContainer = new DataContainer(this.user);
-
-      let factory = this.r.resolveComponentFactory(XInputComponent);
-      xsProps.forEach(xsProp => {
-
-        let ref = this.vc.createComponent(factory);
-        ref.instance.name = xsProp.name;
-        ref.instance.data = this.workContainer;
-      })
-  */
-
-  }
-
-
   async onSubmit() {
-    await this.dc.validate();
+    await this.data.validate();
   }
 
 

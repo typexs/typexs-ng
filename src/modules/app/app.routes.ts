@@ -1,5 +1,5 @@
 import {Routes} from '@angular/router';
-import {XSTestComponent} from '../xsform/xstest.component';
+import {XSTestComponent} from './xstest.component';
 
 
 export const APP_ROUTES: Routes = [

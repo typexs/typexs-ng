@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {XSUserTest} from './xstest.defs';
+import {AuthVariant, LocalAuthVariant, XSUserTest} from './xstest.defs';
+import {Registry} from 'typexs-schema';
 
 
 
@@ -11,12 +12,54 @@ import {XSUserTest} from './xstest.defs';
 })
 export class XSTestComponent implements OnInit {
 
-  user: any;
+  userLogin: any;
 
   ngOnInit() {
-    this.user = new XSUserTest();
+    this.userLogin = new XSUserTest();
+
+    let variant = new LocalAuthVariant();
+    variant.label = 'Google';
+    variant.icon = null;
+    variant.type = 'oauth2';
+    this.userLogin.variants.push(variant);
+
+    let variant2 = new AuthVariant();
+    variant.label = 'Google';
+    variant.icon = null;
+    variant.type = 'oauth2';
+    this.userLogin.variants.push(variant);
+
+    variant2 = new AuthVariant();
+    variant.label = 'Facebook';
+    variant.icon = null;
+    variant.type = 'oauth2';
+    this.userLogin.variants.push(variant);
 
 
+
+
+
+
+
+    /**
+     *
+     * username
+     *
+     * password
+     *
+     *
+     * other selection methods
+     *
+     * - facebook
+     *
+     * - google
+     *
+     * - saml
+     *
+     */
+
+
+/*
     let form: any = {
       name: 'test-form',
       type: 'form',
@@ -60,6 +103,7 @@ export class XSTestComponent implements OnInit {
         }
       }
     };
+    */
     /*
     let form = new XsForm('user')
     form.add()
