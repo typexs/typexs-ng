@@ -39,8 +39,18 @@ export class InputDemoObject01 {
   allowAccess: boolean;
 
   // HTML Type checkbox
-  @Property(<any>{type: 'boolean', form: 'checkbox', label:'Allow no access'})
+  @Property(<any>{type: 'boolean', form: 'checkbox', label: 'Allow no access'})
   allowNoAccess: boolean = true;
+
+  // HTML Type radio
+  @Property(<any>{type: 'boolean', form: 'radio', label: 'Use radio'})
+  useRadio: boolean;
+
+  // HTML Type radio
+  // Enum or Service or ComplexEnum or Reference!
+  @Property(<any>{type: 'string', form: 'select', label: 'Favored color', enum: ['Blue', 'Green', 'Red']})
+  favoredColor: string;
+
 
 }
 

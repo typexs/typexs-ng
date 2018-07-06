@@ -5,6 +5,8 @@ import {Ref} from './Ref';
 import {Input} from './Input';
 import {Form} from './Form';
 import {Checkbox} from './Checkbox';
+import {Radio} from './Radio';
+import {Select} from './Select';
 
 
 export * from './Form';
@@ -13,6 +15,7 @@ export * from './Ref';
 export * from './Tab';
 export * from './Tabs';
 export * from './Checkbox';
+export * from './Select';
 
 export const FORM_ELEMENTS = [
   Form,
@@ -20,5 +23,7 @@ export const FORM_ELEMENTS = [
   Ref,
   Tab,
   Tabs,
-  Checkbox
+  Checkbox,
+  Radio,
+  Select
 ];

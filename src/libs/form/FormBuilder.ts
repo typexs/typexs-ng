@@ -46,7 +46,7 @@ export class FormBuilder {
       if (this[methodName]) {
         formObject = this[methodName](formType, property);
       } else {
-        throw new NoFormTypeDefinedError(formType);
+        formObject = this.forDefault(formType,property);
       }
     }
 
@@ -70,6 +70,15 @@ export class FormBuilder {
 
   }
 
+  private forDefault(formType: string, property: PropertyDef){
+    let formObject = FormRegistry.createHandler(formType);
+    if(formObject){
+      formObject.handle('variant', formType);
+      this._applyValues(formObject, property);
+      return formObject;
+    }
+    throw new NoFormTypeDefinedError(formType);
+  }
 
   private forText(formType: string, property: PropertyDef) {
     return this._forInput(formType, property);
@@ -83,12 +92,6 @@ export class FormBuilder {
     return this._forInput(formType, property);
   }
 
-  private forCheckbox(formType: string, property: PropertyDef) {
-    let formObject = FormRegistry.createHandler('checkbox');
-    formObject.handle('variant', formType);
-    this._applyValues(formObject, property);
-    return formObject;
-  }
 
   private _forInput(formType: string, property: PropertyDef) {
     let formObject = FormRegistry.createHandler('input');

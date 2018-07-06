@@ -1,6 +1,6 @@
 {
   "name": "typexs-ng",
-  "version": "0.0.22",
+  "version": "0.1.0",
   "description": "Angular for typexs",
   "main": "index.js",
   "directories": {
