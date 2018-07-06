@@ -4,5 +4,12 @@ import {FormPart} from '../decorators/FormPart';
 
 @FormPart('input')
 export class Input extends FormObject {
+
   variant: string = 'text';
+
+
+  handleVariant(value: string) {
+    this.variant = value;
+  }
+
 }

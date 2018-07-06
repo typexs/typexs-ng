@@ -4,7 +4,6 @@ import * as _ from 'lodash';
 import {ResolveDataValue} from './ResolveDataValue';
 
 
-
 export abstract class FormObject {
 
   readonly type: string;
@@ -18,6 +17,10 @@ export abstract class FormObject {
   name: string;
 
   label: string;
+
+  help: string;
+
+  readonly: false;
 
   private binding: PropertyDef = null;
 
@@ -64,18 +67,26 @@ export abstract class FormObject {
   }
 
   handle(key: string, value: any) {
+
     if (value instanceof ResolveDataValue) {
       let form = this.getForm(); //
       form['resolver'].push(value);
     }
 
     this.usedKeys.push(key);
-    let methodName = 'handle' + _.startCase(key);
+    let methodName = 'handle' + _.capitalize(key);
     if (this[methodName]) {
       this[methodName](value);
     } else {
       this[key] = value;
     }
+  }
+
+  /**
+   * Don't override type
+   * @param {string} value
+   */
+  handleType(value: string) {
   }
 
 

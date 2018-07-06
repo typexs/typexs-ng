@@ -3,14 +3,17 @@ import {Form as xForm} from '../../libs/form/elements/Form';
 import {FormRegistry} from '../../libs/form/FormRegistry';
 import {NoFormTypeDefinedError} from '../../libs/form/exceptions/NoFormTypeDefinedError';
 import {DataContainer} from 'typexs-schema/libs/DataContainer';
+import {FormObject} from '../../libs/form/FormObject';
 
-export abstract class AbstractFormComponent {
+export abstract class AbstractFormComponent<T extends FormObject> {
 
-  elem: any;
+  static inc: number = 0;
+
+  elem: T;
 
   data: DataContainer<any>;
 
-
+  idx: number = 0;
 
 
 
@@ -18,7 +21,36 @@ export abstract class AbstractFormComponent {
 
 
   constructor(@Inject(Injector) protected injector: Injector,
-              @Inject(ComponentFactoryResolver) protected r: ComponentFactoryResolver){
+              @Inject(ComponentFactoryResolver) protected r: ComponentFactoryResolver) {
+    this.idx = AbstractFormComponent.inc++;
+  }
+
+  get id(){
+    return this.elem.id;
+  }
+
+  get name(){
+    return this.elem.name;
+  }
+
+  get label(){
+    return this.elem.label;
+  }
+
+  get help(){
+    return this.elem.help;
+  }
+
+  get isReadOnly(){
+    return this.elem.readonly;
+  }
+
+  get isValid(){
+    return this.data.checked(this.name) && this.data.valid(this.name)
+  }
+
+  setFormObject(elem: T) {
+    this.elem = elem;
   }
 
   build(form: xForm) {
@@ -30,17 +62,17 @@ export abstract class AbstractFormComponent {
       if (handle && handle.component) {
         let factory = this.r.resolveComponentFactory(<any>handle.component);
         let ref = this.vc.createComponent(factory);
-        let instance = <AbstractFormComponent>ref.instance;
-        instance.elem = formObject;
+        let instance = <AbstractFormComponent<any>>ref.instance;
+        instance.setFormObject(formObject);
         instance.data = this.data;
+        console.log(instance);
 
         // TODO check if build deeper ...
 
       } else {
-        throw new NoFormTypeDefinedError();
+        throw new NoFormTypeDefinedError(formObject.type);
       }
     });
-
 
 
     /*

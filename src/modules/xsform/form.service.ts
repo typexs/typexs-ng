@@ -5,7 +5,7 @@ import {Form} from '../../libs/form/elements';
 
 
 @Injectable()
-export class xFormService {
+export class FormService {
 
   cache: any = {};
 

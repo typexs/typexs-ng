@@ -1,26 +1,26 @@
 import {Component, ComponentFactoryResolver, Inject, Injector, Input, OnInit} from '@angular/core';
 import {DataContainer} from 'typexs-schema/libs/DataContainer';
-import {FormComponent} from '../../libs/form/decorators/FormComponent';
+import {FormComp} from '../../libs/form/decorators/FormComp';
 import {AbstractFormComponent} from './AbstractFormComponent';
-import {xFormService} from './xform.service';
+import {FormService} from './form.service';
+import {Form} from '../../libs/form/elements/Form';
 
-@FormComponent('form')
+@FormComp('form')
 @Component({
   selector: 'xform',
-  templateUrl: './xform.component.html',
+  templateUrl: './form.component.html',
 })
-export class xFormComponent extends AbstractFormComponent implements OnInit {
-
+export class FormComponent extends AbstractFormComponent<Form> implements OnInit {
 
 
   @Input()
-  name: string;
+  formName: string;
 
   @Input()
   instance: any;
 
 
-  constructor(@Inject(xFormService) private formService: xFormService,
+  constructor(@Inject(FormService) private formService: FormService,
               @Inject(Injector) protected injector: Injector,
               @Inject(ComponentFactoryResolver) protected   r: ComponentFactoryResolver) {
     super(injector, r);
@@ -28,11 +28,11 @@ export class xFormComponent extends AbstractFormComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log(this.name);
+    console.log(this.formName);
 
     // TODO instance must be present
     this.data = new DataContainer(this.instance);
-    this.elem = this.formService.get(this.name, this.instance);
+    this.elem = this.formService.get(this.formName, this.instance);
 
     // TODO restructure form
     this.build(this.elem);
@@ -41,6 +41,7 @@ export class xFormComponent extends AbstractFormComponent implements OnInit {
 
   async onSubmit() {
     await this.data.validate();
+    console.log(this.data)
   }
 
 

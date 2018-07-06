@@ -42,15 +42,9 @@ export class FormBuilder {
       // TODO support also other types
       let property = entity;
       let formType = <string>property.getOptions('form') || 'text';
-      if (formType === 'text' || formType === 'password') {
-        // lookup handler
-        formObject = FormRegistry.createHandler('input');
-        formObject.handle('name', property.name);
-        formObject.handle('id', property.id());
-        formObject.handle('label', property.label);
-        formObject.handle('variant', formType);
-        formObject.handle('binding', property);
-
+      let methodName = 'for' + _.capitalize(formType);
+      if (this[methodName]) {
+        formObject = this[methodName](formType, property);
       } else {
         throw new NoFormTypeDefinedError(formType);
       }
@@ -73,6 +67,53 @@ export class FormBuilder {
 
     formObject.postProcess();
     return formObject;
+
+  }
+
+
+  private forText(formType: string, property: PropertyDef) {
+    return this._forInput(formType, property);
+  }
+
+  private forPassword(formType: string, property: PropertyDef) {
+    return this._forInput(formType, property);
+  }
+
+  private forEmail(formType: string, property: PropertyDef) {
+    return this._forInput(formType, property);
+  }
+
+  private forCheckbox(formType: string, property: PropertyDef) {
+    let formObject = FormRegistry.createHandler('checkbox');
+    formObject.handle('variant', formType);
+    this._applyValues(formObject, property);
+    return formObject;
+  }
+
+  private _forInput(formType: string, property: PropertyDef) {
+    let formObject = FormRegistry.createHandler('input');
+    formObject.handle('variant', formType);
+    this._applyValues(formObject, property);
+    return formObject;
+  }
+
+  private _applyValues(formObject: FormObject, property: PropertyDef) {
+    formObject.handle('name', property.name);
+    formObject.handle('id', property.id());
+    formObject.handle('label', property.label ? property.label : _.capitalize(property.name));
+    formObject.handle('binding', property);
+
+    let options = property.getOptions();
+    if (options) {
+      Object.keys(options).forEach(opt => {
+        if (/^(source|target)/.test(opt)) return;
+        let value = options[opt];
+        if (!_.isFunction(value)) {
+          formObject.handle(opt, value);
+        }
+
+      });
+    }
 
   }
 
