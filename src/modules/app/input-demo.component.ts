@@ -1,9 +1,23 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Injectable, OnInit} from '@angular/core';
 import {Property} from 'typexs-schema/libs/decorators/Property';
 import {Entity} from 'typexs-schema/libs/decorators/Entity';
 import {MaxLength, MinLength, IsEmail} from 'class-validator';
 import {EqualWith} from '../../libs/validators/EqualWith';
 
+
+@Injectable()
+export class OptionsService {
+
+  favoredMusicTypes: any[] = [
+    {'label': 'Indie', 'value': 'indie'},
+    {'label': 'Blues', 'value': 'Blues'}
+  ];
+
+  get(propertyName: string = null) {
+    return this.favoredMusicTypes;
+  }
+
+}
 
 @Entity()
 export class InputDemoObject01 {
@@ -46,10 +60,78 @@ export class InputDemoObject01 {
   @Property(<any>{type: 'boolean', form: 'radio', label: 'Use radio'})
   useRadio: boolean;
 
-  // HTML Type radio
-  // Enum or Service or ComplexEnum or Reference!
+
+  /**
+   * TODO: HTML5 types to implement
+
+   color
+   date
+   datetime-local
+   DONE: email
+   month
+   number
+   range
+   search
+   tel
+   time
+   url
+   week
+   */
+
+    // TODO multiple select!
+
+    // HTML Type select
+    // Enum or Service or ComplexEnum or Reference!
   @Property(<any>{type: 'string', form: 'select', label: 'Favored color', enum: ['Blue', 'Green', 'Red']})
   favoredColor: string;
+
+  // HTML Type select
+  // Option Enum
+  @Property(<any>{
+    type: 'string',
+    form: 'select',
+    label: 'Favored color',
+    enum: [{value: 'blue1', label: 'Blue'}, {value: 'green2', label: 'Green'}, {value: 'red3', label: 'Red'}]
+  })
+  favoredColorCode: string;
+
+  // Reference to proprety
+  @Property(<any>{
+    type: 'string',
+    form: 'select',
+    label: 'Favored music',
+    enum: 'favoredMusicTypes'
+  })
+  favoredMusic: string;
+
+  favoredMusicTypes: any[] = [
+    {'label': 'Rock', 'value': 'rock'},
+    {'label': 'Punk', 'value': 'punk'},
+    {'label': 'Pop', 'value': 'pop'},
+    {'label': 'Classic', 'value': 'classic'}
+  ];
+
+  // Reference to service
+  // TODO analyse observable
+  @Property(<any>{
+    type: 'string',
+    form: 'select',
+    label: 'Favored music from service',
+    enum: OptionsService
+  })
+  favoredMusicService: string;
+
+
+  // TODO grouping, alignment (inline, top)
+  //
+  @Property(<any>{
+    type: 'string',
+    cardinality: 0,
+    form: 'select',
+    label: 'Favored music',
+    enum: 'favoredMusicTypes'
+  })
+  favoredMusicMulti: string[];
 
 
 }

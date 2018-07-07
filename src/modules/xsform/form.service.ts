@@ -13,7 +13,7 @@ export class FormService {
     // TODO lookup for form modifications
     let entityDef = Registry.getEntityDefFor(instance);
     let builder2 = new FormBuilder();
-    return builder2.buildFromXsEntity(entityDef);
+    return builder2.buildFromEntity(entityDef);
   }
 
 }

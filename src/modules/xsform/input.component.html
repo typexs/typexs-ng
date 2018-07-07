@@ -3,8 +3,8 @@
   <input id="{{id}}"
          type="{{type}}"
          class="form-control {{data.checked(name) ? data.valid(name) ? 'is-valid' : 'is-invalid' : '' }}"
-         placeholder="{{name}}"
-         [(ngModel)]="data.instance[name]"
+         placeholder="{{name}} => {{naming.path()}}"
+         [(ngModel)]="value"
          name="{{ name }}"
          [attr.readonly]="isReadOnly"
   >

@@ -1,5 +1,4 @@
 import {NotYetImplementedError} from 'typexs-base/libs/exceptions/NotYetImplementedError';
-//import {EntityDef as XsEntityDef, PropertyDef as XsPropertyDef} from 'typexs-schema';
 import * as _ from 'lodash';
 import {FormObject} from './FormObject';
 import {Form} from './elements';
@@ -8,6 +7,9 @@ import {NoFormTypeDefinedError} from './exceptions/NoFormTypeDefinedError';
 import {ResolveDataValue} from './ResolveDataValue';
 import {EntityDef} from 'typexs-schema/libs/EntityDef';
 import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
+import {SchemaDef} from 'typexs-schema/libs/SchemaDef';
+import {Registry} from 'typexs-schema/libs/Registry';
+
 
 export class FormBuilder {
 
@@ -15,26 +17,26 @@ export class FormBuilder {
 
   private form: FormObject;
 
+  private schema: SchemaDef;
 
   buildFromJSON(data: any): Form {
     this.data = data;
-
+    this.schema = Registry.getSchema('default');
     return <Form>this._buildForm(data);
-
   }
 
-  buildFromXsEntity(entity: EntityDef): Form {
+  buildFromEntity(entity: EntityDef): Form {
     this.data = entity;
-
-    return <Form>this._buildFormXs(entity);
-
+    return <Form>this._buildFormObject(entity);
   }
 
-  private _buildFormXs(entity: EntityDef | PropertyDef, parent: FormObject = null) {
+
+  private _buildFormObject(entity: EntityDef | PropertyDef, parent: FormObject = null) {
 
     let formObject: FormObject = null;
 
     if (!this.form) {
+      this.schema = Registry.getSchema(entity.schemaName);
       this.form = formObject = FormRegistry.createHandler('form');
       formObject.handle('name', entity.id());
       formObject.handle('binding', entity);
@@ -46,23 +48,45 @@ export class FormBuilder {
       if (this[methodName]) {
         formObject = this[methodName](formType, property);
       } else {
-        formObject = this.forDefault(formType,property);
+        formObject = this.forDefault(formType, property);
       }
+    } else if (entity instanceof EntityDef) {
+
     }
 
-    formObject.setParent(parent);
+    if (formObject != null) {
+      formObject.setParent(parent);
+    } else {
+      // if formObject no created but parent is passed then use it as formobject further (grid <- add furter elements)
+      formObject = parent;
+    }
+
 
     if (entity instanceof EntityDef) {
       let properties = entity.getPropertyDefs();
 
       for (let property of properties) {
-        let childObject = this._buildFormXs(property, formObject);
+        let childObject = this._buildFormObject(property, formObject);
         formObject.insert(childObject);
       }
     } else if (entity instanceof PropertyDef) {
       // TODO for properties which points to Entity / Entities
       //property.getEntityDef
       //formObject;
+      let property = <PropertyDef>entity;
+      if (property.isReference()) {
+        if (property.isEntityReference()) {
+          let entity = property.targetRef.getEntity();
+          let childObject = this._buildFormObject(entity, formObject);
+          formObject.insert(childObject);
+        } else {
+          let properties = this.schema.getPropertiesFor(property.targetRef.getClass());
+          for (let property of properties) {
+            let childObject = this._buildFormObject(property, formObject);
+            formObject.insert(childObject);
+          }
+        }
+      }
     }
 
     formObject.postProcess();
@@ -70,9 +94,9 @@ export class FormBuilder {
 
   }
 
-  private forDefault(formType: string, property: PropertyDef){
+  private forDefault(formType: string, property: PropertyDef) {
     let formObject = FormRegistry.createHandler(formType);
-    if(formObject){
+    if (formObject) {
       formObject.handle('variant', formType);
       this._applyValues(formObject, property);
       return formObject;
@@ -109,12 +133,9 @@ export class FormBuilder {
     let options = property.getOptions();
     if (options) {
       Object.keys(options).forEach(opt => {
-        if (/^(source|target)/.test(opt)) return;
+        if (/^(source|target|property)/.test(opt)) return;
         let value = options[opt];
-        if (!_.isFunction(value)) {
-          formObject.handle(opt, value);
-        }
-
+        formObject.handle(opt, value);
       });
     }
 

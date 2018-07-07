@@ -29,6 +29,10 @@ export abstract class FormObject {
   private children: FormObject[] = [];
 
 
+  getBinding() {
+    return this.binding;
+  }
+
   insert(object: FormObject) {
     object.parent = this;
     object.index = this.children.length;
@@ -52,6 +56,21 @@ export abstract class FormObject {
 
   getChildren() {
     return this.children;
+  }
+
+  getPath(): string {
+    let arr = [];
+
+    if (this.getBinding() instanceof PropertyDef) {
+      if (this.getParent()) {
+        arr.push(this.getParent().getPath());
+      }
+      arr.push(this.name);
+      if (this.getBinding().isCollection()) {
+        arr.push('$idx');
+      }
+    }
+    return _.filter(arr,x => x.trim() != "").join('.');
   }
 
 

@@ -88,7 +88,7 @@ class Form_parseSpec {
     let entityDef = Registry.getEntityDefFor('TestUser');
 
     let builder2 = new FormBuilder();
-    let form2 = builder2.buildFromXsEntity(entityDef);
+    let form2 = builder2.buildFromEntity(entityDef);
 
 
     // todo let form2JSON = form2.toJSON();
