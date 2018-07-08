@@ -8,6 +8,8 @@ export * from "./libs/angular/IStylesheetEntry";
 export * from "./libs/angular/NgMetaDataCollector";
 export * from "./libs/angular/NgModuleBuilder";
 export * from "./libs/angular/ThemeRegistry";
+export * from "./libs/validators/EqualWith";
+export * from "./libs/validators/IsUrl";
 
 export * from "./modules/admin/admin.component";
 export * from "./modules/admin/admin.module";
