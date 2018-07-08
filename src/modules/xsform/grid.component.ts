@@ -16,6 +16,8 @@ export class GridComponent extends AbstractFormComponent<Grid> implements OnInit
 
   entries: ComponentRef<GridRowComponent>[] = [];
 
+  header:string[] = [];
+
 
   ngOnInit() {
   }
@@ -26,30 +28,28 @@ export class GridComponent extends AbstractFormComponent<Grid> implements OnInit
     let cGridRow = this.vc.createComponent(factory);
     cGridRow.instance.data = this.data;
     cGridRow.instance.setGridComponent(this);
-    cGridRow.instance.setData(this.elem, this.naming, this.entries.length);
+    cGridRow.instance.setData(this.elem, this.context, this.entries.length);
     this.entries.push(cGridRow);
 
     let object = Reflect.construct(this.elem.getBinding().targetRef.getClass(), []);
-    let path = this.naming.path();
-    console.log('add row', path);
+    let path = this.context.path();
     if (this.elem.getBinding().isCollection()) {
       let arraySetted = _.get(this.data.instance, path, null);
       if (!arraySetted) {
         arraySetted = [];
       }
-      arraySetted[cGridRow.instance.naming.idx] = object;
+      arraySetted[cGridRow.instance.context.idx] = object;
       _.set(this.data.instance, path, arraySetted);
     } else {
       _.set(this.data.instance, path, object);
     }
-
     cGridRow.instance.build(this.elem);
   }
 
 
   removeRow(idx: number) {
     // TODO check if exists
-    let path = this.naming.path();
+    let path = this.context.path();
     console.log('remove', idx, path);
     let components = this.entries.splice(idx, 1);
     let component = components.shift();
@@ -68,14 +68,21 @@ export class GridComponent extends AbstractFormComponent<Grid> implements OnInit
     }
 
     for (let i = this.entries.length - 1; i >= 0; i--) {
-      this.entries[i].instance.naming.idx = i;
+      this.entries[i].instance.context.idx = i;
     }
-
+    component.destroy();
     console.log('remove data', this.data.instance);
   }
 
 
   build(form: FormObject) {
+    this.context.labelDisplay = 'none';
+
+
+    form.getChildren().forEach(obj => {
+      this.header.push(obj.label);
+    });
+
 
     let dataEntries = this.elem.getBinding().get(this.data.instance);
 

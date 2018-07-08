@@ -13,6 +13,12 @@ export class Places {
   @Property({type: 'string', form: 'text'})
   city: string;
 
+  @Property(<any>{type: 'string', form: 'select', label: 'Continent', enum: 'continents'})
+  continent: string;
+
+  continents: string[] = ['Africa', 'Europa', 'Asia', 'Australia', 'North america', 'South america', 'Antarctica'];
+
+
 }
 
 

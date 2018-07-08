@@ -72,9 +72,16 @@ export class SelectComponent extends AbstractFormComponent<Select> implements On
       return this.injector.get(this.elem.enum).get(this.name);
     } else if (_.isString(this.elem.enum)) {
       // check if an entry with the propertyname exists
-      if (_.has(this.data.instance, this.elem.enum)) {
+      let lookupPath: string | string[] = [];
+      if (this.context.parent) {
+        lookupPath.push(this.context.parent.path());
+      }
+      lookupPath.push(this.elem.enum)
+      lookupPath = (<string[]>lookupPath).join('.');
+
+      if (_.has(this.data.instance, lookupPath)) {
         // TODO observe if property is changed, if it does then reset enum
-        return _.get(this.data.instance, this.elem.enum, []);
+        return _.get(this.data.instance, lookupPath, []);
       } else {
         throw new Error('not found enum reference');
       }

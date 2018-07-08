@@ -1,6 +1,13 @@
 <div class="form-group">
-<p>GRID</p>
-  <ng-container #content></ng-container>
+  <div>
+    <div class="form-row">
+      <div class="col-1">Nr</div>
+      <div class="col" *ngFor="let head of header"><strong>{{head}}</strong></div>
+      <div class="col-1">Ops</div>
+    </div>
+    <ng-container #content></ng-container>
+
+  </div>
 
   <button (click)="addRow()" class="btn btn-primary">Add row</button>
 </div>

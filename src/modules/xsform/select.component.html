@@ -1,8 +1,8 @@
-<div class="form-group">
-  <label for="{{id}}">{{label}}</label>
+<div class="form-group" [ngSwitch]="labelDisplay">
+  <label *ngSwitchCase="'top'" for="{{id}}">{{label}}</label>
   <select id="{{id}}"
           class="form-control {{data.checked(name) ? data.valid(name) ? 'is-valid' : 'is-invalid' : '' }}"
-          [(ngModel)]="data.instance[name]"
+          [(ngModel)]="value"
           name="{{ name }}"
           [attr.readonly]="isReadOnly"
           [multiple]="supportsMultiple"
@@ -18,4 +18,3 @@
     </ul>
   </div>
 </div>
-

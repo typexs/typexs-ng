@@ -3,27 +3,22 @@ import {FormRegistry} from '../../libs/form/FormRegistry';
 import {NoFormTypeDefinedError} from '../../libs/form/exceptions/NoFormTypeDefinedError';
 import {DataContainer} from 'typexs-schema/libs/DataContainer';
 import {FormObject} from '../../libs/form/FormObject';
-import {get as _get, set as _set, isEmpty as _isEmpty, filter as _filter} from 'lodash';
+import {get as _get, set as _set} from 'lodash';
 import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
-import {Name} from './Name';
-
+import {Context} from './Context';
 
 
 export abstract class AbstractFormComponent<T extends FormObject> {
 
   static _inc: number = 0;
 
-  naming: Name;
+  context: Context;
 
   elem: T;
 
   data: DataContainer<any>;
 
-//  dataPath: string;
-
   inc: number = 0;
-
-//  idx: number = -1;
 
 
   @ViewChild('content', {read: ViewContainerRef}) vc: ViewContainerRef;
@@ -50,6 +45,11 @@ export abstract class AbstractFormComponent<T extends FormObject> {
   }
 
 
+  get labelDisplay() {
+    return  this.context.get('labelDisplay','top');
+  }
+
+
   get help() {
     return this.elem.help;
   }
@@ -70,28 +70,28 @@ export abstract class AbstractFormComponent<T extends FormObject> {
   }
 
 
-  setData(elem: T, parent: Name, idx: number = -1) {
+  setData(elem: T, parent: Context, idx: number = -1) {
     this.setFormObject(elem);
     if (parent) {
-      this.naming = parent.child(elem.name, idx);
+      this.context = parent.child(elem.name, idx);
     } else {
-      this.naming = new Name();
+      this.context = new Context();
       if (elem.getBinding() instanceof PropertyDef) {
-        this.naming.name = elem.name;
-        this.naming.idx = idx;
+        this.context.name = elem.name;
+        this.context.idx = idx;
       }
     }
   }
 
 
   get value() {
-    let path = this.naming.path();
+    let path = this.context.path();
     return _get(this.data.instance, path, null);
   }
 
 
   set value(v: any) {
-    let path = this.naming.path();
+    let path = this.context.path();
     _set(this.data.instance, path, v);
   }
 
@@ -105,7 +105,7 @@ export abstract class AbstractFormComponent<T extends FormObject> {
           let ref = this.vc.createComponent(factory);
           let instance = <AbstractFormComponent<any>>ref.instance;
           instance.data = this.data;
-          instance.setData(formObject, this.naming);
+          instance.setData(formObject, this.context);
           instance.build(formObject);
         } else {
           console.error('No view content setted');

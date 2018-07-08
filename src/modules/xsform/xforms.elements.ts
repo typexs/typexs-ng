@@ -10,6 +10,7 @@ import {RadioComponent} from './radio.component';
 import {SelectComponent} from './select.component';
 import {GridComponent} from './grid.component';
 import {GridRowComponent} from './grid-row.component';
+import {GridCellComponent} from './grid-cell.component';
 
 
 export const XFORMCOMPONENT = [
@@ -19,6 +20,7 @@ export const XFORMCOMPONENT = [
   RadioComponent,
   SelectComponent,
   GridComponent,
-  GridRowComponent
+  GridRowComponent,
+  GridCellComponent
 ]
 
