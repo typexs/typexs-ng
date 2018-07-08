@@ -1,5 +1,5 @@
 <div class="form-container">
-  <form (ngSubmit)="onSubmit()" [name]="name">
+  <form (ngSubmit)="onSubmit($event)" [name]="name">
     <ng-container #content></ng-container>
 
     <button type="submit" class="btn btn-primary">Submit</button>

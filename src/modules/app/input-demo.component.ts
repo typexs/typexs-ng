@@ -150,4 +150,8 @@ export class InputDemoComponent implements OnInit {
     this.object01 = new InputDemoObject01();
   }
 
+
+  onSubmit($event:any){
+    console.log($event);
+  }
 }

@@ -50,7 +50,7 @@ export class GridComponent extends AbstractFormComponent<Grid> implements OnInit
   removeRow(idx: number) {
     // TODO check if exists
     let path = this.context.path();
-    console.log('remove', idx, path);
+
     let components = this.entries.splice(idx, 1);
     let component = components.shift();
 
@@ -71,7 +71,6 @@ export class GridComponent extends AbstractFormComponent<Grid> implements OnInit
       this.entries[i].instance.context.idx = i;
     }
     component.destroy();
-    console.log('remove data', this.data.instance);
   }
 
 

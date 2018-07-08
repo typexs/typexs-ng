@@ -1,4 +1,4 @@
-import {Component, ComponentFactoryResolver, Inject, Injector, Input, OnInit} from '@angular/core';
+import {Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, Input, OnInit, Output} from '@angular/core';
 import {DataContainer} from 'typexs-schema/libs/DataContainer';
 import {FormComp} from '../../libs/form/decorators/FormComp';
 import {AbstractFormComponent} from './AbstractFormComponent';
@@ -9,9 +9,13 @@ import {Form} from '../../libs/form/elements/Form';
 @Component({
   selector: 'xform',
   templateUrl: './form.component.html',
+  //host: {'(submit)': 'onSubmit($event)', '(reset)': 'onReset()'},
+  //outputs: ['ngSubmit'],
 })
 export class FormComponent extends AbstractFormComponent<Form> implements OnInit {
 
+  @Output()
+  ngSubmit = new EventEmitter();
 
   @Input()
   formName: string;
@@ -28,7 +32,6 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
 
 
   ngOnInit() {
-    console.log(this.formName);
 
     // TODO instance must be present
     this.data = new DataContainer(this.instance);
@@ -39,9 +42,10 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
   }
 
 
-  async onSubmit() {
+  async onSubmit($event: Event): Promise<boolean> {
     await this.data.validate();
-    console.log(this.data)
+    this.ngSubmit.emit({event:$event, data:this.data});
+    return false;
   }
 
 

@@ -10,10 +10,12 @@ import {AdminModule} from '../admin/admin.module';
 import {NavigatorModule} from '../navigator/navigator.module';
 import {ThemeModule} from '../theme/theme.module';
 import {xFormsModule} from '../xsform/xforms.module';
+import {FormsModule} from '@angular/forms';
 
 
 export const APP_MODULES: Array<Type<any> | ModuleWithProviders | any[]> = [
   BrowserModule,
+  FormsModule,
   xFormsModule,
   AdminModule,
   NavigatorModule,
