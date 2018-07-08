@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormComp} from '../../libs/form/decorators/FormComp';
 import {AbstractFormComponent} from './AbstractFormComponent';
 import {Select} from '../../libs/form/elements';
-import * as _ from 'lodash';
+import * as _ from '../../libs/LoDash';
 import {Observable} from 'rxjs/Observable';
 
 export class Option {

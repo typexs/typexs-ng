@@ -1,6 +1,5 @@
-import {filter as _filter, isEmpty as _isEmpty, has as _has, get as _get} from 'lodash';
 
-
+import * as _ from '../../libs/LoDash';
 export type ALIGNMENT = 'vertical' | 'horizontal'
 
 export type LABEL_DISPLAY = 'top' | 'inline' | 'none'
@@ -39,13 +38,13 @@ export class Context {
       arr.push(this.name);
     }
     //  console.log(arr);
-    return _filter(arr, x => !_isEmpty(x)).join('.');
+    return _.filter(arr, (x: string) => !_.isEmpty(x)).join('.');
   }
 
 
   get(key: string, _default: any = null): any {
-    if (_has(this, key)) {
-      return _get(this, key, _default);
+    if (_.has(this, key)) {
+      return _.get(this, key, _default);
     } else if (this.parent) {
       return this.parent.get(key);
     }

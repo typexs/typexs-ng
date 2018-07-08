@@ -4,8 +4,8 @@ import {AbstractFormComponent} from './AbstractFormComponent';
 import {Grid} from '../../libs/form/elements/Grid';
 import {FormObject} from '../../libs/form/FormObject';
 import {GridRowComponent} from './grid-row.component';
-import * as _ from 'lodash';
 
+import * as _ from '../../libs/LoDash';
 @FormComp('grid')
 @Component({
   selector: 'xgrid',

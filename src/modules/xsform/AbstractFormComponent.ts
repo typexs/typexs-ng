@@ -3,7 +3,8 @@ import {FormRegistry} from '../../libs/form/FormRegistry';
 import {NoFormTypeDefinedError} from '../../libs/form/exceptions/NoFormTypeDefinedError';
 import {DataContainer} from 'typexs-schema/libs/DataContainer';
 import {FormObject} from '../../libs/form/FormObject';
-import {get as _get, set as _set} from 'lodash';
+
+import * as _ from '../../libs/LoDash';
 import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
 import {Context} from './Context';
 
@@ -86,13 +87,13 @@ export abstract class AbstractFormComponent<T extends FormObject> {
 
   get value() {
     let path = this.context.path();
-    return _get(this.data.instance, path, null);
+    return _.get(this.data.instance, path, null);
   }
 
 
   set value(v: any) {
     let path = this.context.path();
-    _set(this.data.instance, path, v);
+    _.set(this.data.instance, path, v);
   }
 
 

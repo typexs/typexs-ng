@@ -1,5 +1,4 @@
 import {NotYetImplementedError} from 'typexs-base/libs/exceptions/NotYetImplementedError';
-import * as _ from 'lodash';
 import {FormObject} from './FormObject';
 import {Form} from './elements';
 import {FormRegistry} from './FormRegistry';
@@ -9,6 +8,7 @@ import {EntityDef} from 'typexs-schema/libs/EntityDef';
 import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
 import {SchemaDef} from 'typexs-schema/libs/SchemaDef';
 import {Registry} from 'typexs-schema/libs/Registry';
+import * as _ from '../LoDash';
 
 
 export class FormBuilder {
@@ -143,7 +143,7 @@ export class FormBuilder {
 
 
   private _buildForm(data: any, parent: FormObject = null) {
-    let keys = _.remove(Object.keys(data), (e) => ['children', 'type'].indexOf(e) === -1);
+    let keys = _.remove(Object.keys(data), (e: string) => ['children', 'type'].indexOf(e) === -1);
 
     let formObject: FormObject = null;
     if (data.type) {

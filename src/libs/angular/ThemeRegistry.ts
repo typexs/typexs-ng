@@ -1,10 +1,11 @@
-import {Type, TypeDecorator} from "@angular/core";
-import * as core from "@angular/core";
-import {__assign} from "tslib";
+import * as core from '@angular/core';
+import {Type, TypeDecorator} from '@angular/core';
+import {__assign} from 'tslib';
 import * as c from 'case';
-import {find, isNull, filter, isEmpty} from 'lodash';
-import {ITemplateEntry} from "./ITemplateEntry";
-import {IStylesheetEntry} from "./IStylesheetEntry";
+
+import * as _ from '../LoDash';
+import {ITemplateEntry} from './ITemplateEntry';
+import {IStylesheetEntry} from './IStylesheetEntry';
 
 
 /**
@@ -39,17 +40,17 @@ export class ThemeRegistry {
 
 
   findStylesheet(theme: string, templateName: string, type: string = 'css'): IStylesheetEntry[] {
-    let entry = filter(this.styles, {
+    let entry = _.filter(this.styles, {
       name: templateName,
       type: type,
       theme: theme
     })
-    return !isEmpty(entry) ? entry : null;
+    return !_.isEmpty(entry) ? entry : null;
   }
 
 
   findTemplate(theme: string, templateName: string, type: string = 'component'): ITemplateEntry {
-    let entry = find(this.themes, {
+    let entry = _.find(this.themes, {
       name: templateName,
       type: type,
       theme: theme
@@ -87,12 +88,12 @@ export class ThemeRegistry {
     }, core.Directive, null, function (cls: any, annotationInstance: any, decoration: any) {
       annotationInstance.templateName = ThemeRegistry.normalize(annotationInstance.selector);
       let overrideTemplate = registry.findTemplate(activeUserTheme, annotationInstance.templateName);
-      if (!isNull(overrideTemplate)) {
+      if (!_.isNull(overrideTemplate)) {
         annotationInstance.template = overrideTemplate.template;
       }
 
       let overrideStylesheets = registry.findStylesheet(activeUserTheme, annotationInstance.templateName);
-      if (!isNull(overrideStylesheets)) {
+      if (!_.isNull(overrideStylesheets)) {
         overrideStylesheets.forEach(stylesheet => {
           if(stylesheet.subcontext === 'append'){
             annotationInstance.styles.push(stylesheet.stylesheet);

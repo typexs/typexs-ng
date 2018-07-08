@@ -1,7 +1,6 @@
-import * as _ from 'lodash';
 import {NoFormHandlerDefinedForTypeError} from './exceptions/NoFormHandlerDefinedForTypeError';
 import {IElementDef} from './IElementDef';
-
+import * as _ from '../../libs/LoDash';
 
 export class FormRegistry {
 

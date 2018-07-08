@@ -1,6 +1,6 @@
 import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
-import * as _ from 'lodash';
 
+import * as _ from '../LoDash';
 import {ResolveDataValue} from './ResolveDataValue';
 
 
@@ -70,7 +70,7 @@ export abstract class FormObject {
         arr.push('$idx');
       }
     }
-    return _.filter(arr,x => x.trim() != "").join('.');
+    return _.filter(arr, (x: string) => x.trim() != '').join('.');
   }
 
 
