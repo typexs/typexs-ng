@@ -1,32 +1,30 @@
 import {ComponentFactoryResolver, Inject, Injector, ViewChild, ViewContainerRef} from '@angular/core';
-import {FormRegistry} from '../../libs/form/FormRegistry';
-import {NoFormTypeDefinedError} from '../../libs/form/exceptions/NoFormTypeDefinedError';
 import {DataContainer} from 'typexs-schema/libs/DataContainer';
-import {FormObject} from '../../libs/form/FormObject';
+import {FormObject, isFormObject} from '../../libs/form/FormObject';
 
 import * as _ from '../../libs/LoDash';
 import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
 import {Context} from './Context';
+import {ContentComponentRegistry} from '../../libs/content/ContentComponentRegistry';
+import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
+import {AbstractComponent} from '../../libs/content/AbstractComponent';
 
 
-export abstract class AbstractFormComponent<T extends FormObject> {
+export abstract class AbstractFormComponent<T  extends FormObject> extends AbstractComponent<T> {
 
   static _inc: number = 0;
 
-  context: Context;
 
-  elem: T;
 
   data: DataContainer<any>;
 
   inc: number = 0;
 
 
-  @ViewChild('content', {read: ViewContainerRef}) vc: ViewContainerRef;
-
 
   constructor(@Inject(Injector) protected injector: Injector,
               @Inject(ComponentFactoryResolver) protected r: ComponentFactoryResolver) {
+    super(injector, r);
     this.inc = AbstractFormComponent._inc++;
   }
 
@@ -98,21 +96,26 @@ export abstract class AbstractFormComponent<T extends FormObject> {
 
 
   build(form: FormObject) {
+
     form.getChildren().forEach(formObject => {
-      let handle = FormRegistry.$().getOrCreateDef(formObject.type);
-      if (handle && handle.component) {
-        if (this.vc) {
-          let factory = this.r.resolveComponentFactory(<any>handle.component);
-          let ref = this.vc.createComponent(factory);
-          let instance = <AbstractFormComponent<any>>ref.instance;
-          instance.data = this.data;
-          instance.setData(formObject, this.context);
-          instance.build(formObject);
+      if(isFormObject(formObject)){
+
+        let handle = ContentComponentRegistry.$().getOrCreateDef(formObject.type);
+        if (handle && handle.component) {
+          if (this.vc) {
+            let factory = this.r.resolveComponentFactory(<any>handle.component);
+            let ref = this.vc.createComponent(factory);
+            let instance = <AbstractFormComponent<any>>ref.instance;
+            instance.data = this.data;
+            instance.setData(formObject, this.context);
+            instance.build(formObject);
+          } else {
+            console.error('No view content setted');
+          }
         } else {
-          console.error('No view content setted');
+          throw new NoFormTypeDefinedError(formObject.type);
         }
-      } else {
-        throw new NoFormTypeDefinedError(formObject.type);
+
       }
     });
   }

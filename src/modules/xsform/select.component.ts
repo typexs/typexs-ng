@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormComp} from '../../libs/form/decorators/FormComp';
+
 import {AbstractFormComponent} from './AbstractFormComponent';
 import {Select} from '../../libs/form/elements';
 import * as _ from '../../libs/LoDash';
 import {Observable} from 'rxjs/Observable';
+import {ContentComponent} from '../../libs/content/decorators/ContentComponent';
 
 export class Option {
   value: string = '';
@@ -11,7 +12,7 @@ export class Option {
   default: boolean;
 }
 
-@FormComp('select')
+@ContentComponent('select')
 @Component({
   selector: 'xselect',
   templateUrl: './select.component.html',

@@ -1,12 +1,12 @@
 import {Component, ComponentRef, OnInit} from '@angular/core';
-import {FormComp} from '../../libs/form/decorators/FormComp';
 import {AbstractFormComponent} from './AbstractFormComponent';
 import {Grid} from '../../libs/form/elements/Grid';
-import {FormObject} from '../../libs/form/FormObject';
+import {FormObject, isFormObject} from '../../libs/form/FormObject';
 import {GridRowComponent} from './grid-row.component';
 
 import * as _ from '../../libs/LoDash';
-@FormComp('grid')
+import {ContentComponent} from '../../libs/content/decorators/ContentComponent';
+@ContentComponent('grid')
 @Component({
   selector: 'xgrid',
   templateUrl: './grid.component.html',
@@ -79,7 +79,9 @@ export class GridComponent extends AbstractFormComponent<Grid> implements OnInit
 
 
     form.getChildren().forEach(obj => {
-      this.header.push(obj.label);
+      if(isFormObject(obj)){
+        this.header.push(obj.label);
+      }
     });
 
 

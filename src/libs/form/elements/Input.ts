@@ -1,8 +1,8 @@
 
 import {FormObject} from '../FormObject';
-import {FormPart} from '../decorators/FormPart';
+import {ContentPart} from '../../content/decorators/ContentPart';
 
-@FormPart('input')
+@ContentPart('input')
 export class Input extends FormObject {
 
   variant: string = 'text';

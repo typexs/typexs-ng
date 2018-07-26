@@ -1,8 +1,8 @@
 
 import {FormObject} from '../FormObject';
-import {FormPart} from '../decorators/FormPart';
+import {ContentPart} from '../../content/decorators/ContentPart';
 
-@FormPart('tab')
+@ContentPart('tab')
 export class Tab extends FormObject {
 
 }

@@ -1,9 +1,6 @@
 import {Component, HostBinding} from '@angular/core';
 import {AbstractFormComponent} from './AbstractFormComponent';
 import {GridComponent} from './grid.component';
-import {FormObject} from '../../libs/form/FormObject';
-import {FormRegistry} from '../../libs/form/FormRegistry';
-import {NoFormTypeDefinedError} from '../../libs/form/exceptions/NoFormTypeDefinedError';
 
 
 @Component({

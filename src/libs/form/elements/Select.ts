@@ -1,8 +1,8 @@
 import {FormObject} from '../FormObject';
-import {FormPart} from '../decorators/FormPart';
 import {Input} from './Input';
+import {ContentPart} from '../../content/decorators/ContentPart';
 
-@FormPart('select')
+@ContentPart('select')
 export class Select extends FormObject {
 
   enum: any;

@@ -1,13 +1,14 @@
-
 import * as _ from '../../LoDash';
 import {IResolver} from '../IResolver';
-import {FormObject} from '../FormObject';
+import {FormObject, isFormObject} from '../FormObject';
 import {ResolveDataValue} from '../ResolveDataValue';
 import {Ref} from './Ref';
-import {FormPart} from '../decorators/FormPart';
+
+import {ContentPart} from '../../content/decorators/ContentPart';
+import {TreeObject} from '../../content/TreeObject';
 
 
-@FormPart('form')
+@ContentPart('form')
 export class Form extends FormObject {
 
   dataContainer: any;
@@ -43,15 +44,19 @@ export class Form extends FormObject {
     let element = null;
     while (_path.length > 0) {
       let _p = _path.shift();
-      tmpElem = _.find(tmpElem.getChildren(), {name: _p});
+      let ret = _.find(<FormObject[]>tmpElem.getChildren(), {name: _p});
+      //if(isFormObject(ret)){
+      tmpElem = ret;
       if (!tmpElem) {
         break;
       } else {
         element = tmpElem;
       }
+      //}
     }
     return _path.length == 0 && element ? element : null;
 
   }
+
 
 }

@@ -1,19 +1,19 @@
-import {NoFormHandlerDefinedForTypeError} from './exceptions/NoFormHandlerDefinedForTypeError';
+import {NoFormHandlerDefinedForTypeError} from './../exceptions/NoFormHandlerDefinedForTypeError';
 import {IElementDef} from './IElementDef';
 import * as _ from '../../libs/LoDash';
 
-export class FormRegistry {
+export class ContentComponentRegistry {
 
-  private static $self: FormRegistry;
+  private static $self: ContentComponentRegistry;
 
   private formHandler: IElementDef[] = [];
 
   private constructor() {
   }
 
-  static $(): FormRegistry {
+  static $(): ContentComponentRegistry {
     if (!this.$self) {
-      this.$self = new FormRegistry();
+      this.$self = new ContentComponentRegistry();
     }
     return this.$self;
   }

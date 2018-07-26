@@ -2,17 +2,21 @@ import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
 
 import * as _ from '../LoDash';
 import {ResolveDataValue} from './ResolveDataValue';
+import {TreeObject} from '../content/TreeObject';
 
 
-export abstract class FormObject {
+export function isFormObject(obj: TreeObject | FormObject): obj is FormObject {
+  return obj instanceof FormObject;
+}
 
-  readonly type: string;
+export abstract class FormObject extends TreeObject {
+
 
   id: string;
 
   usedKeys: string[] = [];
 
-  index: number;
+
 
   name: string;
 
@@ -24,46 +28,30 @@ export abstract class FormObject {
 
   private binding: PropertyDef = null;
 
-  private parent: FormObject = null;
-
-  private children: FormObject[] = [];
-
 
   getBinding() {
     return this.binding;
   }
 
-  insert(object: FormObject) {
-    object.parent = this;
-    object.index = this.children.length;
-    this.children.push(object);
-  }
+
 
   getUsedKeys() {
     return this.usedKeys;
   }
 
-  getParent() {
-    return this.parent;
-  }
 
-  setParent(parent: FormObject) {
-    if (parent) {
-      this.parent = parent;
-      this.index = this.parent.children.indexOf(this);
-    }
-  }
-
-  getChildren() {
-    return this.children;
-  }
 
   getPath(): string {
     let arr = [];
 
     if (this.getBinding() instanceof PropertyDef) {
       if (this.getParent()) {
-        arr.push(this.getParent().getPath());
+        const parent = this.getParent();
+        if(isFormObject(parent)){
+          arr.push(parent.getPath());
+        }else{
+         //  throw new Error('parent is not a form object');
+        }
       }
       arr.push(this.name);
       if (this.getBinding().isCollection()) {
@@ -75,7 +63,7 @@ export abstract class FormObject {
 
 
   getForm(): FormObject {
-    if (this.parent) {
+    if (this.parent && isFormObject(this.parent)) {
       return this.parent.getForm();
     } else if (this.type == 'form') {
       return this;

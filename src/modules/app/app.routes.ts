@@ -1,6 +1,7 @@
 import {Routes} from '@angular/router';
 import {InputDemoComponent} from './input-demo.component';
 import {GroupDemoComponent} from './group-demo.component';
+import {ContentDemoComponent} from './content-demo.component';
 
 
 export const APP_ROUTES: Routes = [
@@ -13,6 +14,11 @@ export const APP_ROUTES: Routes = [
     path: 'groupDemos',
     component: GroupDemoComponent,
     data: {label: 'Group Demo'}
+  },
+  {
+    path: 'contentDemos',
+    component: ContentDemoComponent,
+    data: {label: 'Content Demo'}
   }
 
 ];

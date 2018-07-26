@@ -1,11 +1,11 @@
 import {Component, Input} from '@angular/core';
-import {FormComp} from '../../libs/form/decorators/FormComp';
 import {Checkbox} from '../../libs/form/elements/Checkbox';
 import {AbstractFormComponent} from './AbstractFormComponent';
 import {Radio} from '../../libs/form/elements/Radio';
+import {ContentComponent} from '../../libs/content/decorators/ContentComponent';
 
 
-@FormComp('radio')
+@ContentComponent('radio')
 @Component({
   selector: 'xradio',
   templateUrl: './radio.component.html',

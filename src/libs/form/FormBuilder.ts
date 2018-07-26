@@ -1,14 +1,15 @@
 import {NotYetImplementedError} from 'typexs-base/libs/exceptions/NotYetImplementedError';
 import {FormObject} from './FormObject';
 import {Form} from './elements';
-import {FormRegistry} from './FormRegistry';
-import {NoFormTypeDefinedError} from './exceptions/NoFormTypeDefinedError';
+
 import {ResolveDataValue} from './ResolveDataValue';
 import {EntityDef} from 'typexs-schema/libs/EntityDef';
 import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
 import {SchemaDef} from 'typexs-schema/libs/SchemaDef';
 import {Registry} from 'typexs-schema/libs/Registry';
 import * as _ from '../LoDash';
+import {ContentComponentRegistry} from '../content/ContentComponentRegistry';
+import {NoFormTypeDefinedError} from '../exceptions/NoFormTypeDefinedError';
 
 
 export class FormBuilder {
@@ -37,7 +38,7 @@ export class FormBuilder {
 
     if (!this.form) {
       this.schema = Registry.getSchema(entity.schemaName);
-      this.form = formObject = FormRegistry.createHandler('form');
+      this.form = formObject = ContentComponentRegistry.createHandler('form');
       formObject.handle('name', entity.id());
       formObject.handle('binding', entity);
     } else if (entity instanceof PropertyDef) {
@@ -95,7 +96,7 @@ export class FormBuilder {
   }
 
   private forDefault(formType: string, property: PropertyDef) {
-    let formObject = FormRegistry.createHandler(formType);
+    let formObject = ContentComponentRegistry.createHandler(formType);
     if (formObject) {
       formObject.handle('variant', formType);
       this._applyValues(formObject, property);
@@ -118,7 +119,7 @@ export class FormBuilder {
 
 
   private _forInput(formType: string, property: PropertyDef) {
-    let formObject = FormRegistry.createHandler('input');
+    let formObject = ContentComponentRegistry.createHandler('input');
     formObject.handle('variant', formType);
     this._applyValues(formObject, property);
     return formObject;
@@ -148,7 +149,7 @@ export class FormBuilder {
     let formObject: FormObject = null;
     if (data.type) {
       // lookup handler
-      formObject = FormRegistry.createHandler(data.type);
+      formObject = ContentComponentRegistry.createHandler(data.type);
     } else {
       throw new NoFormTypeDefinedError();
     }

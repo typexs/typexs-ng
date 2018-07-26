@@ -1,7 +1,7 @@
 import {FormObject} from '../FormObject';
-import {FormPart} from '../decorators/FormPart';
+import {ContentPart} from '../../content/decorators/ContentPart';
 
-@FormPart('grid')
+@ContentPart('grid')
 export class Grid extends FormObject {
 
 

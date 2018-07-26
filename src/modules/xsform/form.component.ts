@@ -1,11 +1,11 @@
 import {Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, Input, OnInit, Output} from '@angular/core';
 import {DataContainer} from 'typexs-schema/libs/DataContainer';
-import {FormComp} from '../../libs/form/decorators/FormComp';
 import {AbstractFormComponent} from './AbstractFormComponent';
 import {FormService} from './form.service';
 import {Form} from '../../libs/form/elements/Form';
+import {ContentComponent} from '../../libs/content/decorators/ContentComponent';
 
-@FormComp('form')
+@ContentComponent('form')
 @Component({
   selector: 'xform',
   templateUrl: './form.component.html',

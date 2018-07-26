@@ -1,9 +1,8 @@
 
-import {FormObject} from '../FormObject';
-import {FormPart} from '../decorators/FormPart';
 import {Input} from './Input';
+import {ContentPart} from '../../content/decorators/ContentPart';
 
-@FormPart('radio')
+@ContentPart('radio')
 export class Radio extends Input {
 
 
