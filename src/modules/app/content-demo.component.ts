@@ -1,12 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ContentPart} from '../../libs/content/decorators/ContentPart';
-import {TreeObject} from '../../libs/content/TreeObject';
 import {SearchEntry} from './search/search-entry.component';
+import {SearchResult} from './search/search-result.component';
 
-@ContentPart('search-result')
-export class SearchResult extends TreeObject {
-  type = 'search-result';
-}
 
 @Component({
   selector: 'contentDemo',

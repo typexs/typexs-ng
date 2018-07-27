@@ -25,8 +25,8 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
 
 
   constructor(@Inject(FormService) private formService: FormService,
-              @Inject(Injector) protected injector: Injector,
-              @Inject(ComponentFactoryResolver) protected   r: ComponentFactoryResolver) {
+              @Inject(Injector) public injector: Injector,
+              @Inject(ComponentFactoryResolver) public r: ComponentFactoryResolver) {
     super(injector, r);
   }
 

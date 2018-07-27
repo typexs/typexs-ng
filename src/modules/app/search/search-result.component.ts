@@ -1,7 +1,14 @@
 import {Component} from '@angular/core';
 import {ContentComponent} from '../../../libs/content/decorators/ContentComponent';
-import {AbstractComponent} from '../../../libs/content/AbstractComponent';
-import {SearchResult} from '../content-demo.component';
+import {ContentPart} from '../../../libs/content/decorators/ContentPart';
+import {TreeObject} from '../../../libs/content/TreeObject';
+import {AbstractComponent} from '../../xsview/AbstractComponent';
+
+
+@ContentPart('search-result')
+export class SearchResult extends TreeObject {
+  type = 'search-result';
+}
 
 @ContentComponent('search-result')
 @Component({

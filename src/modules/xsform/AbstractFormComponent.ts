@@ -1,4 +1,4 @@
-import {ComponentFactoryResolver, Inject, Injector, ViewChild, ViewContainerRef} from '@angular/core';
+import {ComponentFactoryResolver, Inject, Injector} from '@angular/core';
 import {DataContainer} from 'typexs-schema/libs/DataContainer';
 import {FormObject, isFormObject} from '../../libs/form/FormObject';
 
@@ -7,13 +7,14 @@ import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
 import {Context} from './Context';
 import {ContentComponentRegistry} from '../../libs/content/ContentComponentRegistry';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
-import {AbstractComponent} from '../../libs/content/AbstractComponent';
+import {AbstractComponent} from '../xsview/AbstractComponent';
 
 
-export abstract class AbstractFormComponent<T  extends FormObject> extends AbstractComponent<T> {
+
+
+export abstract class AbstractFormComponent<T extends FormObject> extends AbstractComponent<T> {
 
   static _inc: number = 0;
-
 
 
   data: DataContainer<any>;
@@ -21,9 +22,8 @@ export abstract class AbstractFormComponent<T  extends FormObject> extends Abstr
   inc: number = 0;
 
 
-
-  constructor(@Inject(Injector) protected injector: Injector,
-              @Inject(ComponentFactoryResolver) protected r: ComponentFactoryResolver) {
+  constructor(@Inject(Injector) public injector: Injector,
+              @Inject(ComponentFactoryResolver) public r: ComponentFactoryResolver) {
     super(injector, r);
     this.inc = AbstractFormComponent._inc++;
   }
@@ -45,7 +45,7 @@ export abstract class AbstractFormComponent<T  extends FormObject> extends Abstr
 
 
   get labelDisplay() {
-    return  this.context.get('labelDisplay','top');
+    return this.context.get('labelDisplay', 'top');
   }
 
 
@@ -98,7 +98,7 @@ export abstract class AbstractFormComponent<T  extends FormObject> extends Abstr
   build(form: FormObject) {
 
     form.getChildren().forEach(formObject => {
-      if(isFormObject(formObject)){
+      if (isFormObject(formObject)) {
 
         let handle = ContentComponentRegistry.$().getOrCreateDef(formObject.type);
         if (handle && handle.component) {

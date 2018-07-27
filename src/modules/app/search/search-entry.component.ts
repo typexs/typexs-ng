@@ -1,9 +1,11 @@
 import {Component} from '@angular/core';
 import {ContentComponent} from '../../../libs/content/decorators/ContentComponent';
-import {AbstractComponent} from '../../../libs/content/AbstractComponent';
+
 
 import {ContentPart} from '../../../libs/content/decorators/ContentPart';
 import {TreeObject} from '../../../libs/content/TreeObject';
+import {AbstractComponent} from '../../xsview/AbstractComponent';
+
 
 
 @ContentPart('search-entry')
