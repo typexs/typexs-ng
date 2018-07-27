@@ -1,8 +1,8 @@
 import {ComponentFactoryResolver, Inject, Injector, ViewChild, ViewContainerRef} from '@angular/core';
 import {Context} from '../../modules/xsform/Context';
-import {TreeObject} from '../../libs/content/TreeObject';
-import {ContentComponentRegistry} from '../../libs/content/ContentComponentRegistry';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
+import {TreeObject} from './TreeObject';
+import {ContentComponentRegistry} from './ContentComponentRegistry';
 
 
 

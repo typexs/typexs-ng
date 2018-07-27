@@ -1,13 +1,13 @@
 import {ComponentFactoryResolver, Inject, Injector} from '@angular/core';
 import {DataContainer} from 'typexs-schema/libs/DataContainer';
-import {FormObject, isFormObject} from '../../libs/form/FormObject';
 
 import * as _ from '../../libs/LoDash';
 import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
 import {Context} from './Context';
-import {ContentComponentRegistry} from '../../libs/content/ContentComponentRegistry';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
 import {AbstractComponent} from '../xsview/AbstractComponent';
+import {FormObject, isFormObject} from './FormObject';
+import {ContentComponentRegistry} from '../xsview/ContentComponentRegistry';
 
 
 

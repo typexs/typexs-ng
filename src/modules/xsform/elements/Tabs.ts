@@ -1,9 +1,9 @@
 
 import {FormObject} from '../FormObject';
 
-import {ContentPart} from '../../content/decorators/ContentPart';
+import {ViewContent} from '../../xsview/decorators/ViewContent';
 
-@ContentPart('tabs')
+@ViewContent('tabs')
 export class Tabs extends FormObject {
 
 }

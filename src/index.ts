@@ -16,6 +16,10 @@ export * from "./libs/angular/ThemeRegistry";
 export * from "./libs/exceptions/NoFormHandlerDefinedForTypeError";
 export * from "./libs/exceptions/NoFormTypeDefinedError";
 
+export * from "./libs/validators/EqualWith";
+export * from "./libs/validators/IsUrl";
+/*
+
 export * from "./libs/form/elements/Checkbox";
 export * from "./libs/form/elements/Form";
 export * from "./libs/form/elements/Grid";
@@ -30,9 +34,6 @@ export * from "./libs/form/FormBuilder";
 export * from "./libs/form/FormObject";
 export * from "./libs/form/IResolver";
 export * from "./libs/form/ResolveDataValue";
-export * from "./libs/validators/EqualWith";
-export * from "./libs/validators/IsUrl";
-/*
 export * from "./modules/admin/admin.component";
 export * from "./modules/admin/admin.module";
 

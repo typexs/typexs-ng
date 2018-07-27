@@ -1,16 +1,16 @@
 import {Component} from '@angular/core';
-import {ContentComponent} from '../../../libs/content/decorators/ContentComponent';
-import {ContentPart} from '../../../libs/content/decorators/ContentPart';
-import {TreeObject} from '../../../libs/content/TreeObject';
 import {AbstractComponent} from '../../xsview/AbstractComponent';
+import {TreeObject} from '../../xsview/TreeObject';
+import {ViewContent} from '../../xsview/decorators/ViewContent';
+import {ViewComponent} from '../../xsview/decorators/ViewComponent';
 
 
-@ContentPart('search-result')
+@ViewContent('search-result')
 export class SearchResult extends TreeObject {
   type = 'search-result';
 }
 
-@ContentComponent('search-result')
+@ViewComponent('search-result')
 @Component({
   selector: 'search-result',
   templateUrl: 'search-result.component.html',

@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 
 import {AbstractFormComponent} from './AbstractFormComponent';
-import {Select} from '../../libs/form/elements';
 import * as _ from '../../libs/LoDash';
 import {Observable} from 'rxjs/Observable';
-import {ContentComponent} from '../../libs/content/decorators/ContentComponent';
+import {ViewComponent} from '../xsview/decorators/ViewComponent';
+import {Select} from './elements';
 
 export class Option {
   value: string = '';
@@ -12,7 +12,7 @@ export class Option {
   default: boolean;
 }
 
-@ContentComponent('select')
+@ViewComponent('select')
 @Component({
   selector: 'xselect',
   templateUrl: './select.component.html',

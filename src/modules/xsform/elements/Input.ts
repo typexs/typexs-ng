@@ -1,8 +1,8 @@
 
 import {FormObject} from '../FormObject';
-import {ContentPart} from '../../content/decorators/ContentPart';
+import {ViewContent} from '../../xsview/decorators/ViewContent';
 
-@ContentPart('input')
+@ViewContent('input')
 export class Input extends FormObject {
 
   variant: string = 'text';

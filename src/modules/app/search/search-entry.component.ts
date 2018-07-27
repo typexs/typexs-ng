@@ -1,14 +1,12 @@
 import {Component} from '@angular/core';
-import {ContentComponent} from '../../../libs/content/decorators/ContentComponent';
-
-
-import {ContentPart} from '../../../libs/content/decorators/ContentPart';
-import {TreeObject} from '../../../libs/content/TreeObject';
 import {AbstractComponent} from '../../xsview/AbstractComponent';
+import {ViewContent} from '../../xsview/decorators/ViewContent';
+import {ViewComponent} from '../../xsview/decorators/ViewComponent';
+import {TreeObject} from '../../xsview/TreeObject';
 
 
 
-@ContentPart('search-entry')
+@ViewContent('search-entry')
 export class SearchEntry extends TreeObject {
   type:string = 'search-entry';
 
@@ -22,7 +20,7 @@ export class SearchEntry extends TreeObject {
 }
 
 
-@ContentComponent('search-entry')
+@ViewComponent('search-entry')
 @Component({
   selector: 'search-entry',
   templateUrl: 'search-entry.component.html',

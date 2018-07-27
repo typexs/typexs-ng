@@ -1,4 +1,4 @@
-import {FORM_ELEMENTS} from '../../libs/form/elements';
+import {FORM_ELEMENTS} from './elements';
 
 // to integrate the elements
 FORM_ELEMENTS;

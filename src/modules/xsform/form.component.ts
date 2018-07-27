@@ -2,10 +2,10 @@ import {Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, Inp
 import {DataContainer} from 'typexs-schema/libs/DataContainer';
 import {AbstractFormComponent} from './AbstractFormComponent';
 import {FormService} from './form.service';
-import {Form} from '../../libs/form/elements/Form';
-import {ContentComponent} from '../../libs/content/decorators/ContentComponent';
+import {ViewComponent} from '../xsview/decorators/ViewComponent';
+import {Form} from './elements';
 
-@ContentComponent('form')
+@ViewComponent('form')
 @Component({
   selector: 'xform',
   templateUrl: './form.component.html',

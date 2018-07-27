@@ -1,10 +1,10 @@
 import {Component, Input} from '@angular/core';
-import {Checkbox } from '../../libs/form/elements/Checkbox';
 import {AbstractFormComponent} from './AbstractFormComponent';
-import {ContentComponent} from '../../libs/content/decorators/ContentComponent';
+import {ViewComponent} from '../xsview/decorators/ViewComponent';
+import {Checkbox} from './elements';
 
 
-@ContentComponent('checkbox')
+@ViewComponent('checkbox')
 @Component({
   selector: 'xcheckbox',
   templateUrl: './checkbox.component.html',

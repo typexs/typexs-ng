@@ -1,14 +1,13 @@
-import * as _ from '../../LoDash';
+import * as _ from '../../../libs/LoDash';
 import {IResolver} from '../IResolver';
-import {FormObject, isFormObject} from '../FormObject';
+import {FormObject} from '../FormObject';
 import {ResolveDataValue} from '../ResolveDataValue';
 import {Ref} from './Ref';
 
-import {ContentPart} from '../../content/decorators/ContentPart';
-import {TreeObject} from '../../content/TreeObject';
+import {ViewContent} from '../../xsview/decorators/ViewContent';
 
 
-@ContentPart('form')
+@ViewContent('form')
 export class Form extends FormObject {
 
   dataContainer: any;

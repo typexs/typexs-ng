@@ -1,7 +1,7 @@
 import {ContentComponentRegistry} from '../ContentComponentRegistry';
 
 
-export function ContentComponent(typeName: string) {
+export function ViewComponent(typeName: string) {
   return function (object: Function) {
     ContentComponentRegistry.addComponent(typeName, object);
   };

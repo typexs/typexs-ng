@@ -2,10 +2,10 @@ import {FormObject, isFormObject} from '../FormObject';
 import {IResolver} from '../IResolver';
 import {Form} from './Form';
 
-import * as _ from '../../LoDash';
-import {ContentPart} from '../../content/decorators/ContentPart';
+import * as _ from '../../../libs/LoDash';
+import {ViewContent} from '../../xsview/decorators/ViewContent';
 
-@ContentPart('ref')
+@ViewContent('ref')
 export class Ref extends FormObject implements IResolver {
 
   use: string;

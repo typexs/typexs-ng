@@ -1,7 +1,7 @@
 import {FormObject} from '../FormObject';
-import {ContentPart} from '../../content/decorators/ContentPart';
+import {ViewContent} from '../../xsview/decorators/ViewContent';
 
-@ContentPart('grid')
+@ViewContent('grid')
 export class Grid extends FormObject {
 
 

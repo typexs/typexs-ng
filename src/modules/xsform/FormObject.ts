@@ -1,8 +1,8 @@
 import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
 
-import * as _ from '../LoDash';
+import * as _ from '../../libs/LoDash';
 import {ResolveDataValue} from './ResolveDataValue';
-import {TreeObject} from '../content/TreeObject';
+import {TreeObject} from '../xsview/TreeObject';
 
 
 export function isFormObject(obj: TreeObject | FormObject): obj is FormObject {
@@ -11,12 +11,9 @@ export function isFormObject(obj: TreeObject | FormObject): obj is FormObject {
 
 export abstract class FormObject extends TreeObject {
 
-
   id: string;
 
   usedKeys: string[] = [];
-
-
 
   name: string;
 

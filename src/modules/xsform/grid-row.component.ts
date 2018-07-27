@@ -1,10 +1,10 @@
 import {Component, HostBinding} from '@angular/core';
 import {AbstractFormComponent} from './AbstractFormComponent';
 import {GridComponent} from './grid.component';
-import {FormObject, isFormObject} from '../../libs/form/FormObject';
 import {GridCellComponent} from './grid-cell.component';
-import {ContentComponentRegistry} from '../../libs/content/ContentComponentRegistry';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
+import {FormObject, isFormObject} from './FormObject';
+import {ContentComponentRegistry} from '../xsview/ContentComponentRegistry';
 
 
 @Component({
