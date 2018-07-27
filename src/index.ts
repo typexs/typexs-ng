@@ -32,7 +32,6 @@ export * from "./libs/form/IResolver";
 export * from "./libs/form/ResolveDataValue";
 export * from "./libs/validators/EqualWith";
 export * from "./libs/validators/IsUrl";
-
 /*
 export * from "./modules/admin/admin.component";
 export * from "./modules/admin/admin.module";
@@ -60,5 +59,4 @@ export * from "./modules/xsform/xforms.module";
 export * from "./modules/xsview/AbstractComponent";
 export * from "./modules/xsview/xviews.module";
 */
-
 export * from "./types";
