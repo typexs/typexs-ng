@@ -25,12 +25,12 @@ export abstract class AbstractComponent<T extends TreeObject> {
 
 
   buildSingle(content: T) {
-    let handle = ContentComponentRegistry.$().getOrCreateDef(content.type);
+    const handle = ContentComponentRegistry.$().getOrCreateDef(content.type);
     if (handle && handle.component) {
       if (this.vc) {
-        let factory = this.r.resolveComponentFactory(<any>handle.component);
-        let ref = this.vc.createComponent(factory);
-        let instance = <AbstractComponent<T>>ref.instance;
+        const factory = this.r.resolveComponentFactory(<any>handle.component);
+        const ref = this.vc.createComponent(factory);
+        const instance = <AbstractComponent<T>>ref.instance;
         instance.elem = content;
 
         /*

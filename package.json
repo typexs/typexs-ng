@@ -110,6 +110,7 @@
     "ajv": "^6.4.0",
     "bootstrap": "^4.1.0",
     "case": "^1.5.4",
+    "concurrently": "^3.6.1",
     "core-js": "^2.5.5",
     "gulp-debug": "^3.2.0",
     "jquery": "^3.3.1",
@@ -119,8 +120,8 @@
     "semver": "^5.5.0",
     "string-template": "^1.0.0",
     "typexs-base": "latest",
-    "typexs-server": "latest",
     "typexs-schema": "latest",
+    "typexs-server": "latest",
     "zone.js": "^0.8.26"
   },
   "private": true,
