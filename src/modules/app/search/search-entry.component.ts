@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {AbstractComponent} from '../../xsview/AbstractComponent';
 import {ViewContent} from '../../xsview/decorators/ViewContent';
 import {ViewComponent} from '../../xsview/decorators/ViewComponent';
@@ -31,7 +31,12 @@ export class SearchEntryComponent extends AbstractComponent<SearchEntry> {
   title = 'SuperSearch';
 
 
+
   get nr() {
-    return this.elem.nr;
+    if(this.elem){
+      return this.elem.nr;
+    }
+    return -999;
+
   }
 }

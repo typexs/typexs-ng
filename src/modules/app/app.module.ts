@@ -7,6 +7,8 @@ import {GroupDemoComponent} from './group-demo.component';
 import {ContentDemoComponent} from './content-demo.component';
 import {SearchResultComponent} from './search/search-result.component';
 import {SearchEntryComponent} from './search/search-entry.component';
+import {ViewParentComponent} from './search/view-parent.component';
+import {ContentViewChildDemoComponent} from './content-view-child-demo.component';
 
 
 @NgModule({
@@ -16,11 +18,14 @@ import {SearchEntryComponent} from './search/search-entry.component';
     GroupDemoComponent,
     ContentDemoComponent,
     SearchResultComponent,
-    SearchEntryComponent
+    SearchEntryComponent,
+    ViewParentComponent,
+    ContentViewChildDemoComponent
   ],
   entryComponents: [...XFORMCOMPONENT,
     SearchResultComponent,
-    SearchEntryComponent
+    SearchEntryComponent,
+    ViewParentComponent
   ],
   imports: APP_MODULES,
   providers: [

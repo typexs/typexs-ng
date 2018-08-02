@@ -5,6 +5,7 @@ import {GridCellComponent} from './grid-cell.component';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
 import {FormObject, isFormObject} from './FormObject';
 import {ContentComponentRegistry} from '../xsview/ContentComponentRegistry';
+import {AbstractComponent} from '../xsview/AbstractComponent';
 
 
 @Component({
@@ -35,7 +36,8 @@ export class GridRowComponent extends AbstractFormComponent<any> {
     this.grid.removeRow(this.context.idx);
   }
 
-  build(form: FormObject) {
+  build(form: FormObject):AbstractComponent<any>[] {
+    let comp:AbstractComponent<any>[] = []
     form.getChildren().forEach(formObject => {
 
       if (isFormObject(formObject)) {
@@ -55,6 +57,7 @@ export class GridRowComponent extends AbstractFormComponent<any> {
             instance.data = this.data;
             instance.setData(formObject, this.context);
             instance.build(formObject);
+            comp.push(instance);
           } else {
             console.error('No view content setted');
           }
@@ -63,6 +66,7 @@ export class GridRowComponent extends AbstractFormComponent<any> {
         }
       }
     });
+    return comp;
   }
 
 }

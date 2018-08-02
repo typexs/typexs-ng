@@ -1,6 +1,7 @@
 import {Context} from '../../modules/xsform/Context';
 
 export abstract class TreeObject {
+
   readonly type: string;
 
   context: Context;

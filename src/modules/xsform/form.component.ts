@@ -1,4 +1,4 @@
-import {Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, Input, OnInit, Output} from '@angular/core';
 import {DataContainer} from 'typexs-schema/libs/DataContainer';
 import {AbstractFormComponent} from './AbstractFormComponent';
 import {FormService} from './form.service';

@@ -27,6 +27,9 @@ export class ContentComponentRegistry {
     return exists;
   }
 
+  getDef(typeName: string): IElementDef {
+    return _.find(this.formHandler, {type: typeName});
+  }
 
   static addHandler(typeName: string, klass: Function) {
     let def = this.$().getOrCreateDef(typeName);

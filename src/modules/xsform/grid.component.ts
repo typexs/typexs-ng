@@ -6,6 +6,7 @@ import * as _ from '../../libs/LoDash';
 import {ViewComponent} from '../xsview/decorators/ViewComponent';
 import {Grid} from './elements';
 import {FormObject, isFormObject} from './FormObject';
+import {AbstractComponent} from '../xsview/AbstractComponent';
 @ViewComponent('grid')
 @Component({
   selector: 'xgrid',
@@ -44,6 +45,7 @@ export class GridComponent extends AbstractFormComponent<Grid> implements OnInit
       _.set(this.data.instance, path, object);
     }
     cGridRow.instance.build(this.elem);
+    return cGridRow.instance;
   }
 
 
@@ -74,7 +76,7 @@ export class GridComponent extends AbstractFormComponent<Grid> implements OnInit
   }
 
 
-  build(form: FormObject) {
+  build(form: FormObject):AbstractComponent<any>[] {
     this.context.labelDisplay = 'none';
 
 
@@ -87,8 +89,8 @@ export class GridComponent extends AbstractFormComponent<Grid> implements OnInit
 
     let dataEntries = this.elem.getBinding().get(this.data.instance);
 
-    this.addRow();
-
+    let c = this.addRow();
+    return [c];
   }
 
 }

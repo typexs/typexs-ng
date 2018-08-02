@@ -1,4 +1,4 @@
-import {ComponentFactoryResolver, Inject, Injector} from '@angular/core';
+import {ChangeDetectorRef, ComponentFactoryResolver, Inject, Injector} from '@angular/core';
 import {DataContainer} from 'typexs-schema/libs/DataContainer';
 
 import * as _ from '../../libs/LoDash';
@@ -8,8 +8,6 @@ import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedErr
 import {AbstractComponent} from '../xsview/AbstractComponent';
 import {FormObject, isFormObject} from './FormObject';
 import {ContentComponentRegistry} from '../xsview/ContentComponentRegistry';
-
-
 
 
 export abstract class AbstractFormComponent<T extends FormObject> extends AbstractComponent<T> {
@@ -22,12 +20,10 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
   inc: number = 0;
 
 
-  constructor(@Inject(Injector) public injector: Injector,
-              @Inject(ComponentFactoryResolver) public r: ComponentFactoryResolver) {
-    super(injector, r);
+
+  construct(){
     this.inc = AbstractFormComponent._inc++;
   }
-
 
   get id() {
     return this.elem.id;
@@ -65,7 +61,7 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
 
 
   protected setFormObject(elem: T) {
-    this.elem = elem;
+    this.setElem(elem);
   }
 
 
@@ -95,8 +91,8 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
   }
 
 
-  build(form: FormObject) {
-
+  build(form: FormObject) : AbstractComponent<T>[] {
+    let comp:AbstractComponent<T>[] = []
     form.getChildren().forEach(formObject => {
       if (isFormObject(formObject)) {
 
@@ -109,15 +105,16 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
             instance.data = this.data;
             instance.setData(formObject, this.context);
             instance.build(formObject);
+            comp.push(instance);
           } else {
             console.error('No view content setted');
           }
         } else {
           throw new NoFormTypeDefinedError(formObject.type);
         }
-
       }
     });
+    return comp;
   }
 
 }

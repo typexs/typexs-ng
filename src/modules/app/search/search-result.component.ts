@@ -18,5 +18,6 @@ export class SearchResult extends TreeObject {
 })
 export class SearchResultComponent extends AbstractComponent<SearchResult> {
 
+
   title = 'SuperSearch'
 }

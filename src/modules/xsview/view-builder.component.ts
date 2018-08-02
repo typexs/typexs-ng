@@ -12,14 +12,16 @@ import {TreeObject} from './TreeObject';
   // outputs: ['ngSubmit'],
 })
 export class ViewBuilderComponent<T extends TreeObject> extends AbstractComponent<T> implements OnInit {
+
+  private _build:boolean = false;
+
+
   _instance: any;
 
   @Input() set instance(value: any) {
     this._instance = value;
-
-    this.vc.clear();
-
-    this.buildSingle(this._instance);
+    this._build = false;
+    this.__build();
   }
 
   get instance(): any {
@@ -27,9 +29,15 @@ export class ViewBuilderComponent<T extends TreeObject> extends AbstractComponen
   }
 
   ngOnInit() {
-    this.vc.clear();
+    this.__build();
+  }
 
-    this.buildSingle(this._instance);
+  private __build(){
+    if(!this._build){
+      this.vc.clear();
+      this.buildSingle(this._instance);
+      this._build = true;
+    }
   }
 }
 
