@@ -1,8 +1,0 @@
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-export class NoFormTypeDefinedError extends Error {
-}
-
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiTm9Gb3JtVHlwZURlZmluZWRFcnJvci5qcyIsInNvdXJjZVJvb3QiOiJuZzovL0B0eXBleHMtbmcvYmFzZS8iLCJzb3VyY2VzIjpbImxpYnMvZXhjZXB0aW9ucy9Ob0Zvcm1UeXBlRGVmaW5lZEVycm9yLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7QUFBQSxNQUFNLDZCQUE4QixTQUFRLEtBQUs7Q0FDaEQiLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgY2xhc3MgTm9Gb3JtVHlwZURlZmluZWRFcnJvciBleHRlbmRzIEVycm9yIHtcbn1cbiJdfQ==

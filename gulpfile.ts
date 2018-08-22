@@ -110,8 +110,11 @@ export class Gulpfile {
   }
 
   @Task()
-  async packageNgCompile() {
-    return await ngc(['-p', 'tsconfig.app.json']);
+  packageNgCompile() {
+    return gulp.src('bundles/package.json', {read: false})
+      .pipe(shell([
+        'ng-packagr -p bundles/package.json'
+      ]));
   }
 
   @Task()
@@ -218,6 +221,7 @@ export class Gulpfile {
     return [
       'clean',
       'packageCompile',
+      'packageNgCompile',
       [
         'packageCopyBin',
         'packageCopyJsons',
@@ -238,6 +242,7 @@ export class Gulpfile {
   packageNoClean() {
     return [
       'packageCompile',
+      'packageNgCompile',
       [
         'packageCopyBin',
         'packageCopyJsons',
@@ -270,7 +275,15 @@ export class Gulpfile {
   packagePublish() {
     return gulp.src('package.json', {read: false})
       .pipe(shell([
-        'cd ./build/package && npm publish'
+        'cd ./build/package && npm publish --access=public'
+      ]));
+  }
+
+  @Task()
+  packageNgPublish() {
+    return gulp.src('build/ngPackage/package.json', {read: false})
+      .pipe(shell([
+        'cd ./build/ngPackage && npm publish --access=public'
       ]));
   }
 
