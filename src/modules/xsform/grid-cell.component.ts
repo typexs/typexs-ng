@@ -1,6 +1,6 @@
 import {Component, HostBinding} from '@angular/core';
-import {AbstractFormComponent} from './AbstractFormComponent';
 import {GridComponent} from './grid.component';
+import {AbstractFormComponent} from '../../libs/xsform/AbstractFormComponent';
 
 
 @Component({

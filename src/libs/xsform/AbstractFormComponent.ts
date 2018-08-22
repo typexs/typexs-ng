@@ -1,13 +1,13 @@
-import {ChangeDetectorRef, ComponentFactoryResolver, Inject, Injector} from '@angular/core';
 import {DataContainer} from 'typexs-schema/libs/DataContainer';
 
 import * as _ from '../../libs/LoDash';
 import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
-import {Context} from './Context';
+
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
 import {AbstractComponent} from '../xsview/AbstractComponent';
 import {FormObject, isFormObject} from './FormObject';
 import {ContentComponentRegistry} from '../xsview/ContentComponentRegistry';
+import {Context} from '../xsview/Context';
 
 
 export abstract class AbstractFormComponent<T extends FormObject> extends AbstractComponent<T> {

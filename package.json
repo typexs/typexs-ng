@@ -1,6 +1,6 @@
 {
   "name": "typexs-ng",
-  "version": "0.3.3",
+  "version": "0.3.6",
   "description": "Angular for typexs",
   "main": "index.js",
   "directories": {
@@ -13,7 +13,8 @@
     "start": "concurrently \"ng serve -pc proxy.conf.json --open\" \"typexs server\"",
     "build": "ng build --prod",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build:lib": "ng-packagr -p bundles/package.json"
   },
   "repository": {
     "type": "git",
@@ -80,6 +81,7 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "mocha": "^5.1.1",
     "mocha-typescript": "^1.1.12",
+    "ng-packagr": "^4.1.0",
     "ngc-webpack": "^4.1.2",
     "nyc": "^11.7.1",
     "protractor": "~5.3.1",

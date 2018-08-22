@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {TreeObject} from '../../libs/xsview/TreeObject';
+import {AbstractComponent} from '../../libs/xsview/AbstractComponent';
 
 
-import {AbstractComponent} from './AbstractComponent';
-import {TreeObject} from './TreeObject';
 
 
 @Component({

@@ -1,4 +1,5 @@
-import {Context} from '../../modules/xsform/Context';
+import {Context} from './Context';
+
 
 export abstract class TreeObject {
 

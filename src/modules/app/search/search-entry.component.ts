@@ -1,8 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
-import {AbstractComponent} from '../../xsview/AbstractComponent';
-import {ViewContent} from '../../xsview/decorators/ViewContent';
-import {ViewComponent} from '../../xsview/decorators/ViewComponent';
-import {TreeObject} from '../../xsview/TreeObject';
+import {TreeObject} from '../../../libs/xsview/TreeObject';
+import {ViewComponent} from '../../../libs/xsview/decorators/ViewComponent';
+import {AbstractComponent} from '../../../libs/xsview/AbstractComponent';
+import {ViewContent} from '../../../libs/xsview/decorators/ViewContent';
 
 
 

@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
-import {AbstractFormComponent} from './AbstractFormComponent';
-import {ViewComponent} from '../xsview/decorators/ViewComponent';
-import {Checkbox} from './elements';
+import {ViewComponent} from '../../libs/xsview/decorators/ViewComponent';
+import {AbstractFormComponent} from '../../libs/xsform/AbstractFormComponent';
+import {Checkbox} from '../../libs/xsform/elements';
 
 
 @ViewComponent('checkbox')

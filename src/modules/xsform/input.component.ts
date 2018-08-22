@@ -1,7 +1,7 @@
-import {Component, Input} from '@angular/core';
-import {Input as xInput} from './elements/Input';
-import {AbstractFormComponent} from './AbstractFormComponent';
-import {ViewComponent} from '../xsview/decorators/ViewComponent';
+import {Component} from '@angular/core';
+import {ViewComponent} from '../../libs/xsview/decorators/ViewComponent';
+import {AbstractFormComponent} from '../../libs/xsform/AbstractFormComponent';
+import {Input} from '../../libs/xsform/elements';
 
 
 
@@ -10,7 +10,7 @@ import {ViewComponent} from '../xsview/decorators/ViewComponent';
   selector: 'xinput',
   templateUrl: './input.component.html',
 })
-export class InputComponent extends AbstractFormComponent<xInput>/* implements OnInit, OnChanges */ {
+export class InputComponent extends AbstractFormComponent<Input>/* implements OnInit, OnChanges */ {
 
   get type(){
     return this.elem.variant;

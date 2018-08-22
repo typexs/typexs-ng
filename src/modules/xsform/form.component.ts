@@ -1,9 +1,9 @@
 import {ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, Input, OnInit, Output} from '@angular/core';
 import {DataContainer} from 'typexs-schema/libs/DataContainer';
-import {AbstractFormComponent} from './AbstractFormComponent';
 import {FormService} from './form.service';
-import {ViewComponent} from '../xsview/decorators/ViewComponent';
-import {Form} from './elements';
+import {ViewComponent} from '../../libs/xsview/decorators/ViewComponent';
+import {AbstractFormComponent} from '../../libs/xsform/AbstractFormComponent';
+import {Form} from '../../libs/xsform/elements';
 
 @ViewComponent('form')
 @Component({

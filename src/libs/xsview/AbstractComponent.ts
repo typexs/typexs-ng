@@ -1,6 +1,6 @@
 import * as _ from '../../libs/LoDash';
 import {ComponentFactoryResolver, Inject, Injector, ViewChild, ViewContainerRef} from '@angular/core';
-import {Context} from '../../modules/xsform/Context';
+import {Context} from './Context';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
 import {TreeObject} from './TreeObject';
 import {ContentComponentRegistry} from './ContentComponentRegistry';

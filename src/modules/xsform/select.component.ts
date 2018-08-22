@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 
-import {AbstractFormComponent} from './AbstractFormComponent';
 import * as _ from '../../libs/LoDash';
 import {Observable} from 'rxjs/Observable';
-import {ViewComponent} from '../xsview/decorators/ViewComponent';
-import {Select} from './elements';
+import {AbstractFormComponent} from '../../libs/xsform/AbstractFormComponent';
+import {Select} from '../../libs/xsform/elements';
+import {ViewComponent} from '../../libs/xsview/decorators/ViewComponent';
 
 export class Option {
   value: string = '';

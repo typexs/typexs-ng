@@ -88,7 +88,6 @@ export abstract class FormObject extends TreeObject {
 
   /**
    * Don't override type
-   * @param {string} value
    */
   handleType(value: string) {
   }

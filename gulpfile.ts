@@ -1,4 +1,4 @@
-import {Gulpclass, Task, SequenceTask, MergedTask} from "gulpclass";
+import {Gulpclass, Task, SequenceTask, MergedTask} from 'gulpclass';
 
 
 import * as fs from 'fs';
@@ -12,12 +12,12 @@ import {main as ngc} from '@angular/compiler-cli/src/main';
 
 
 const bump = require('gulp-bump');
-const del = require("del");
-const shell = require("gulp-shell");
-const replace = require("gulp-replace");
-const sourcemaps = require("gulp-sourcemaps");
-const ts = require("gulp-typescript");
-const debug = require("gulp-debug");
+const del = require('del');
+const shell = require('gulp-shell');
+const replace = require('gulp-replace');
+const sourcemaps = require('gulp-sourcemaps');
+const ts = require('gulp-typescript');
+const debug = require('gulp-debug');
 const sequence = require('run-sequence');
 const webpack = require('webpack-stream');
 
@@ -34,7 +34,7 @@ export class Gulpfile {
    */
   @Task()
   clean(cb: Function) {
-    return del(["./build/**"], cb);
+    return del(['./build/**'], cb);
   }
 
   /**
@@ -42,8 +42,8 @@ export class Gulpfile {
    */
   @Task()
   compile() {
-    return gulp.src("package.json", {read: false})
-      .pipe(shell(["tsc"]));
+    return gulp.src('package.json', {read: false})
+      .pipe(shell(['tsc']));
   }
 
   // -------------------------------------------------------------------------
@@ -64,7 +64,7 @@ export class Gulpfile {
       if (settings.packageExports) {
         settings.packageExports.forEach((f: string) => {
           forIndexTs.push(`export * from "${f}";`);
-        })
+        });
       }
     }
     _glob.forEach((f: string) => {
@@ -86,45 +86,45 @@ export class Gulpfile {
    */
   @MergedTask()
   packageCompile() {
-    const tsProject = ts.createProject("tsconfig.json");
+    const tsProject = ts.createProject('tsconfig.json');
     const tsResult = gulp.src([
-      "./src/**/*.ts",
-      "!./src/**/files/*.ts",
-      "!./src/**/files/**/*.ts",
-      "!./src/app/**",
-      "!./src/modules/*/*.ts",
-      "!./src/modules/*/!(api|entities)/*.ts",
-      "!./src/modules/*/!(api|entities)/**/*.ts",
-      "./src/modules/*/+(api|entities)/*.ts",
-      "./src/modules/*/+(api|entities)/**/*.ts",
-      "./node_modules/@types/**/*.ts"])
+      './src/**/*.ts',
+      '!./src/**/files/*.ts',
+      '!./src/**/files/**/*.ts',
+      '!./src/app/**',
+      '!./src/modules/*/*.ts',
+      '!./src/modules/*/!(api|entities)/*.ts',
+      '!./src/modules/*/!(api|entities)/**/*.ts',
+      './src/modules/*/+(api|entities)/*.ts',
+      './src/modules/*/+(api|entities)/**/*.ts',
+      './node_modules/@types/**/*.ts'])
       .pipe(sourcemaps.init())
       .pipe(tsProject());
 
     return [
-      tsResult.dts.pipe(gulp.dest("./build/package")),
+      tsResult.dts.pipe(gulp.dest('./build/package')),
       tsResult.js
-        .pipe(sourcemaps.write(".", {sourceRoot: "", includeContent: true}))
-        .pipe(gulp.dest("./build/package"))
+        .pipe(sourcemaps.write('.', {sourceRoot: '', includeContent: true}))
+        .pipe(gulp.dest('./build/package'))
     ];
   }
 
   @Task()
   async packageNgCompile() {
-    return await ngc(['-p','tsconfig.app.json'])
+    return await ngc(['-p', 'tsconfig.app.json']);
   }
 
   @Task()
   packageNgCopy() {
     return gulp.src([
-      "./src/modules/**/*.+(html|css|less|sass|scss|ts)",
-      "!./src/modules/*/api/**",
-      "!./src/modules/*/entities/**",
+      './src/modules/**/*.+(html|css|less|sass|scss|ts)',
+      '!./src/modules/*/api/**',
+      '!./src/modules/*/entities/**',
       // "./build/app/src/modules/**/*",
       // "!./build/app/src/modules/app/**",
-      "!./src/modules/app/**" ])
+      '!./src/modules/app/**'])
     //  .pipe(debug())
-         .pipe(gulp.dest("./build/package/modules"));
+      .pipe(gulp.dest('./build/package/modules'));
   }
 
   // @Task()
@@ -141,10 +141,10 @@ export class Gulpfile {
    */
   @Task()
   packageReplaceReferences() {
-    return gulp.src("./build/package/**/*.d.ts")
-      .pipe(replace(`/// <reference types="node" />`, ""))
-      .pipe(replace(`/// <reference types="chai" />`, ""))
-      .pipe(gulp.dest("./build/package"));
+    return gulp.src('./build/package/**/*.d.ts')
+      .pipe(replace(`/// <reference types="node" />`, ''))
+      .pipe(replace(`/// <reference types="chai" />`, ''))
+      .pipe(gulp.dest('./build/package'));
   }
 
   /**
@@ -152,9 +152,9 @@ export class Gulpfile {
    */
   @Task()
   packageCopyReadme() {
-    return gulp.src("./README.md")
-      .pipe(replace(/```typescript([\s\S]*?)```/g, "```javascript$1```"))
-      .pipe(gulp.dest("./build/package"));
+    return gulp.src('./README.md')
+      .pipe(replace(/```typescript([\s\S]*?)```/g, '```javascript$1```'))
+      .pipe(gulp.dest('./build/package'));
   }
 
   /**
@@ -162,7 +162,7 @@ export class Gulpfile {
    */
   @Task()
   packageCopyJsons() {
-    return gulp.src(["./src/**/*.json","!./src/app/**","!./src/modules/**"]).pipe(gulp.dest("./build/package"));
+    return gulp.src(['./src/**/*.json', '!./src/app/**', '!./src/modules/**']).pipe(gulp.dest('./build/package'));
   }
 
   /**
@@ -170,7 +170,7 @@ export class Gulpfile {
    */
   @Task()
   packageCopyHtml() {
-    return gulp.src(["./src/app/themes/**/*.html"]).pipe(gulp.dest("./build/package/app/themes"));
+    return gulp.src(['./src/app/themes/**/*.html']).pipe(gulp.dest('./build/package/app/themes'));
   }
 
   /**
@@ -178,7 +178,7 @@ export class Gulpfile {
    */
   @Task()
   packageCopyFiles() {
-    return gulp.src(["./src/**/files/**/*"]).pipe(gulp.dest("./build/package"));
+    return gulp.src(['./src/**/files/**/*']).pipe(gulp.dest('./build/package'));
   }
 
   /**
@@ -195,7 +195,7 @@ export class Gulpfile {
    */
   @Task()
   packageCopyBin() {
-    return gulp.src("./bin/*").pipe(gulp.dest("./build/package/bin"));
+    return gulp.src('./bin/*').pipe(gulp.dest('./build/package/bin'));
   }
 
 
@@ -204,9 +204,9 @@ export class Gulpfile {
    */
   @Task()
   packagePreparePackageFile() {
-    return gulp.src("./package.json")
-      .pipe(replace("\"private\": true,", "\"private\": false,"))
-      .pipe(gulp.dest("./build/package"));
+    return gulp.src('./package.json')
+      .pipe(replace('"private": true,', '"private": false,'))
+      .pipe(gulp.dest('./build/package'));
   }
 
 
@@ -216,17 +216,16 @@ export class Gulpfile {
   @SequenceTask()
   package() {
     return [
-      "clean",
-      "packageCompile",
+      'clean',
+      'packageCompile',
       [
-        "packageNgCopy",
-        "packageCopyBin",
-        "packageCopyJsons",
-        "packageCopyFiles",
-        "packageCopyHtml",
-        "packageReplaceReferences",
-        "packagePreparePackageFile",
-        "packageCopyReadme",
+        'packageCopyBin',
+        'packageCopyJsons',
+        'packageCopyFiles',
+        'packageCopyHtml',
+        'packageReplaceReferences',
+        'packagePreparePackageFile',
+        'packageCopyReadme',
       ],
     ];
   }
@@ -238,26 +237,25 @@ export class Gulpfile {
   @SequenceTask()
   packageNoClean() {
     return [
-      "packageCompile",
+      'packageCompile',
       [
-        "packageNgCopy",
-        "packageCopyBin",
-        "packageCopyJsons",
-        "packageCopyFiles",
-        "packageCopyHtml",
-        "packageReplaceReferences",
-        "packagePreparePackageFile",
-        "packageCopyReadme",
+        'packageCopyBin',
+        'packageCopyJsons',
+        'packageCopyFiles',
+        'packageCopyHtml',
+        'packageReplaceReferences',
+        'packagePreparePackageFile',
+        'packageCopyReadme',
       ],
     ];
   }
 
 
-  @SequenceTask("watchPackage")
+  @SequenceTask('watchPackage')
   watchPackage(): any {
-    return watch(["src/**/*.(ts|json|css|scss)"], {ignoreInitial: false, read: false}, (file: any) => {
-      sequence([ "packageNoClean"]);
-    })
+    return watch(['src/**/*.(ts|json|css|scss)'], {ignoreInitial: false, read: false}, (file: any) => {
+      sequence(['packageNoClean']);
+    });
 
   }
 
@@ -270,9 +268,9 @@ export class Gulpfile {
    */
   @Task()
   packagePublish() {
-    return gulp.src("package.json", {read: false})
+    return gulp.src('package.json', {read: false})
       .pipe(shell([
-        "cd ./build/package && npm publish"
+        'cd ./build/package && npm publish'
       ]));
   }
 
@@ -281,9 +279,9 @@ export class Gulpfile {
    */
   @Task()
   packagePublishNext() {
-    return gulp.src("package.json", {read: false})
+    return gulp.src('package.json', {read: false})
       .pipe(shell([
-        "cd ./build/package && npm publish --tag next"
+        'cd ./build/package && npm publish --tag next'
       ]));
   }
 
@@ -294,23 +292,30 @@ export class Gulpfile {
 
   @Task()
   vpatch() {
-    return gulp.src('package.json')
-      .pipe(bump({type: "patch"}))
-      .pipe(gulp.dest('./'));
+    return Gulpfile._bump('patch');
   }
 
   @Task()
   vminor() {
-    return gulp.src('package.json')
-      .pipe(bump({type: "minor"}))
-      .pipe(gulp.dest('./'));
+    return Gulpfile._bump('minor');
   }
 
   @Task()
   vmajor() {
-    return gulp.src('package.json')
-      .pipe(bump({type: "major"}))
-      .pipe(gulp.dest('./'));
+    return Gulpfile._bump('major');
+  }
+
+
+  static _bump(src: string) {
+    return [
+      gulp.src('package.json')
+        .pipe(bump({type: src}))
+        .pipe(gulp.dest('./')),
+      gulp.src('bundles/package.json')
+        .pipe(bump({type: src}))
+        .pipe(gulp.dest('./bundles'))]
+      ;
+
   }
 
 

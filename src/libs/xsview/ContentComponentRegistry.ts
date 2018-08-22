@@ -4,7 +4,7 @@ import * as _ from '../../libs/LoDash';
 
 export class ContentComponentRegistry {
 
-  private static $self: ContentComponentRegistry;
+  private static $self: ContentComponentRegistry = null;
 
   private formHandler: IElementDef[] = [];
 
