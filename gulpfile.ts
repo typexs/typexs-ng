@@ -38,6 +38,15 @@ export class Gulpfile {
   }
 
   /**
+   * ngCleans build folder.
+   */
+  @Task()
+  ngClean(cb: Function) {
+    return del(['./build/ngPackage/**'], cb);
+  }
+
+
+  /**
    * Runs typescript files compilation.
    */
   @Task()
@@ -120,15 +129,23 @@ export class Gulpfile {
   @Task()
   packageNgCopy() {
     return gulp.src([
-      './src/modules/**/*.+(html|css|less|sass|scss|ts)',
+      './src/modules/**/*.+(html|css|less|sass|scss)',
       '!./src/modules/*/api/**',
       '!./src/modules/*/entities/**',
       // "./build/app/src/modules/**/*",
       // "!./build/app/src/modules/app/**",
       '!./src/modules/app/**'])
     //  .pipe(debug())
-      .pipe(gulp.dest('./build/package/modules'));
+      .pipe(gulp.dest('./build/ngPackage/modules'));
   }
+
+  @Task()
+  packageNgMetadataCopy() {
+    return gulp.src([
+      './src/*.metadata.json'])
+      .pipe(gulp.dest('./build/ngPackage'));
+  }
+
 
   // @Task()
   // packageNgWebpack() {
@@ -220,8 +237,8 @@ export class Gulpfile {
   package() {
     return [
       'clean',
+      'packageNg',
       'packageCompile',
-      'packageNgCompile',
       [
         'packageCopyBin',
         'packageCopyJsons',
@@ -234,6 +251,16 @@ export class Gulpfile {
     ];
   }
 
+  /**
+   * Creates a package that can be published to npm.
+   */
+  @SequenceTask()
+  packageNg() {
+    return [
+      'ngClean',
+      'packageNgCompile'
+    ];
+  }
 
   /**
    * Creates a package that can be published to npm.

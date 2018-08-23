@@ -10,7 +10,7 @@ import {FormObject, isFormObject} from '../../libs/xsform/FormObject';
 @ViewComponent('grid')
 @Component({
   selector: 'xgrid',
-  templateUrl: './grid.component.html',
+  templateUrl: 'grid.component.html',
 })
 export class GridComponent extends AbstractFormComponent<Grid> implements OnInit {
 

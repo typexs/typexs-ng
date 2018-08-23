@@ -12,52 +12,32 @@ export * from "./libs/angular/ITemplateEntry";
 export * from "./libs/angular/NgMetaDataCollector";
 export * from "./libs/angular/NgModuleBuilder";
 export * from "./libs/angular/ThemeRegistry";
-
 export * from "./libs/exceptions/NoFormHandlerDefinedForTypeError";
 export * from "./libs/exceptions/NoFormTypeDefinedError";
-
+export * from "./libs/LoDash";
 export * from "./libs/validators/EqualWith";
 export * from "./libs/validators/IsUrl";
-/*
+export * from "./libs/xsform/AbstractFormComponent";
+export * from "./libs/xsform/elements/Checkbox";
+export * from "./libs/xsform/elements/Form";
+export * from "./libs/xsform/elements/Grid";
+export * from "./libs/xsform/elements/index";
+export * from "./libs/xsform/elements/Input";
+export * from "./libs/xsform/elements/Radio";
+export * from "./libs/xsform/elements/Ref";
+export * from "./libs/xsform/elements/Select";
+export * from "./libs/xsform/elements/Tab";
+export * from "./libs/xsform/elements/Tabs";
+export * from "./libs/xsform/FormBuilder";
+export * from "./libs/xsform/FormObject";
+export * from "./libs/xsform/IResolver";
+export * from "./libs/xsform/ResolveDataValue";
+export * from "./libs/xsview/AbstractComponent";
+export * from "./libs/xsview/ContentComponentRegistry";
+export * from "./libs/xsview/Context";
+export * from "./libs/xsview/decorators/ViewComponent";
+export * from "./libs/xsview/decorators/ViewContent";
+export * from "./libs/xsview/IElementDef";
+export * from "./libs/xsview/TreeObject";
 
-export * from "./libs/form/elements/Checkbox";
-export * from "./libs/form/elements/Form";
-export * from "./libs/form/elements/Grid";
-export * from "./libs/form/elements/index";
-export * from "./libs/form/elements/Input";
-export * from "./libs/form/elements/Radio";
-export * from "./libs/form/elements/Ref";
-export * from "./libs/form/elements/Select";
-export * from "./libs/form/elements/Tab";
-export * from "./libs/form/elements/Tabs";
-export * from "./libs/form/FormBuilder";
-export * from "./libs/form/FormObject";
-export * from "./libs/form/IResolver";
-export * from "./libs/form/ResolveDataValue";
-export * from "./modules/admin/admin.component";
-export * from "./modules/admin/admin.module";
-
-export * from "./modules/navigator/NavEntry";
-export * from "./modules/navigator/navigator.component";
-export * from "./modules/navigator/navigator.module";
-
-export * from "./modules/theme/theme.module";
-
-export * from "./modules/xsform/AbstractFormComponent";
-export * from "./modules/xsform/checkbox.component";
-export * from "./modules/xsform/Context";
-export * from "./modules/xsform/form.component";
-export * from "./modules/xsform/form.service";
-export * from "./modules/xsform/grid-cell.component";
-export * from "./modules/xsform/grid-row.component";
-export * from "./modules/xsform/grid.component";
-export * from "./modules/xsform/input.component";
-export * from "./modules/xsform/radio.component";
-export * from "./modules/xsform/select.component";
-export * from "./modules/xsform/xforms.elements";
-export * from "./modules/xsform/xforms.module";
-
-export * from "./modules/xsview/AbstractComponent";
-export * from "./modules/xsview/xviews.module";
-*/
 export * from "./types";

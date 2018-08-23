@@ -1,6 +1,6 @@
 {
   "name": "typexs-ng",
-  "version": "0.3.6",
+  "version": "0.3.8",
   "description": "Angular for typexs",
   "main": "index.js",
   "directories": {
@@ -81,7 +81,7 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "mocha": "^5.1.1",
     "mocha-typescript": "^1.1.12",
-    "ng-packagr": "^4.1.0",
+    "ng-packagr": "^3.0.6",
     "ngc-webpack": "^4.1.2",
     "nyc": "^11.7.1",
     "protractor": "~5.3.1",

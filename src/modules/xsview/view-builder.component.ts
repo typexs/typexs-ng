@@ -7,7 +7,7 @@ import {AbstractComponent} from '../../libs/xsview/AbstractComponent';
 
 @Component({
   selector: 'view-builder',
-  templateUrl: './view-builder.component.html',
+  templateUrl: 'view-builder.component.html',
   // host: {'(submit)': 'onSubmit($event)', '(reset)': 'onReset()'},
   // outputs: ['ngSubmit'],
 })
