@@ -20,7 +20,7 @@
   "angularCompilerOptions": {
     "genDir": "build/app-aot",
     "skipMetadataEmit": false,
-    "skipTemplateCodegen": true
+    "skipTemplateCodegen": false
     //"aot":false
   }
 }

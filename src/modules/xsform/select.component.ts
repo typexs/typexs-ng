@@ -12,6 +12,7 @@ export class Option {
   default: boolean;
 }
 
+
 @ViewComponent('select')
 @Component({
   selector: 'xselect',

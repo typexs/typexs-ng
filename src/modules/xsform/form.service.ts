@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Registry} from 'typexs-schema/libs/Registry';
+import {EntityRegistry} from 'typexs-schema/libs/EntityRegistry';
 import {Form} from '../../libs/xsform/elements';
 import {FormBuilder} from '../../libs/xsform/FormBuilder';
 
@@ -11,7 +11,7 @@ export class FormService {
 
   get(name: string, instance: any): Form {
     // TODO lookup for form modifications
-    let entityDef = Registry.getEntityDefFor(instance);
+    let entityDef = EntityRegistry.getEntityDefFor(instance);
     let builder2 = new FormBuilder();
     return builder2.buildFromEntity(entityDef);
   }

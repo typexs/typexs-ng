@@ -3,7 +3,7 @@ import {suite, test} from 'mocha-typescript';
 import {MaxLength, MinLength} from 'class-validator';
 import {inspect} from 'util';
 import {Log} from 'typexs-base';
-import {Entity, Property, Registry} from 'typexs-schema';
+import {Entity, Property, EntityRegistry} from 'typexs-schema';
 import {Form, FORM_ELEMENTS} from '../../../src/libs/xsform/elements';
 import {FormBuilder} from '../../../src/libs/xsform/FormBuilder';
 
@@ -76,7 +76,7 @@ class Form_parseSpec {
     };
 
 
-    let entities = Registry.getSchema('default').getEntities();
+    let entities = EntityRegistry.getSchema('default').getEntities();
 
 
     let builder1 = new FormBuilder();
@@ -85,7 +85,7 @@ class Form_parseSpec {
 
 
 
-    let entityDef = Registry.getEntityDefFor('TestUser');
+    let entityDef = EntityRegistry.getEntityDefFor('TestUser');
 
     let builder2 = new FormBuilder();
     let form2 = builder2.buildFromEntity(entityDef);
@@ -101,6 +101,7 @@ class Form_parseSpec {
 
   @test.skip()
   async 'parse json form over template'() {
+
 
     // Idee für den test
     let formJSONTemplate: any = {

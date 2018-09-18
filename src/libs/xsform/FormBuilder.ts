@@ -6,7 +6,7 @@ import {ResolveDataValue} from './ResolveDataValue';
 import {EntityDef} from 'typexs-schema/libs/EntityDef';
 import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
 import {SchemaDef} from 'typexs-schema/libs/SchemaDef';
-import {Registry} from 'typexs-schema/libs/Registry';
+import {EntityRegistry} from 'typexs-schema/libs/EntityRegistry';
 import * as _ from '../../libs/LoDash';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
 import {ContentComponentRegistry} from '../xsview/ContentComponentRegistry';
@@ -22,7 +22,7 @@ export class FormBuilder {
 
   buildFromJSON(data: any): Form {
     this.data = data;
-    this.schema = Registry.getSchema('default');
+    this.schema = EntityRegistry.getSchema('default');
     return <Form>this._buildForm(data);
   }
 
@@ -37,7 +37,7 @@ export class FormBuilder {
     let formObject: FormObject = null;
 
     if (!this.form) {
-      this.schema = Registry.getSchema(entity.schemaName);
+      this.schema = EntityRegistry.getSchema(entity.schemaName);
       this.form = formObject = ContentComponentRegistry.createHandler('form');
       formObject.handle('name', entity.id());
       formObject.handle('binding', entity);
