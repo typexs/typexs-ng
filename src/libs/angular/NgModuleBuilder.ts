@@ -19,7 +19,7 @@ export class NgModuleBuilder {
   private imports: any[] = [
     {
       elem: 'APP_ROUTES',
-      from: './app.routes'
+      from: './app.entries'
     },
     {
       elem: 'BrowserModule',

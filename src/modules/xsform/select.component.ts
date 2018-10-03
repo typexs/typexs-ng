@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-import * as _ from '../../libs/LoDash';
+import * as _ from 'lodash';
 import {Observable} from 'rxjs/Observable';
 import {AbstractFormComponent} from '../../libs/xsform/AbstractFormComponent';
 import {Select} from '../../libs/xsform/elements';

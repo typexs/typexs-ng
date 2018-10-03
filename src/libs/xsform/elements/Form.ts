@@ -1,4 +1,4 @@
-import * as _ from '../../../libs/LoDash';
+import * as _ from 'lodash';
 import {IResolver} from '../IResolver';
 import {FormObject} from '../FormObject';
 import {ResolveDataValue} from '../ResolveDataValue';

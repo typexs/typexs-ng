@@ -3,9 +3,6 @@ export * from "./Activator";
 
 export * from "./commands/Ng";
 
-export * from "./controllers/AdminController";
-
-export * from "./libs/angular/decorators/NgRoute";
 export * from "./libs/angular/INgModuleDef";
 export * from "./libs/angular/IStylesheetEntry";
 export * from "./libs/angular/ITemplateEntry";
@@ -14,7 +11,6 @@ export * from "./libs/angular/NgModuleBuilder";
 export * from "./libs/angular/ThemeRegistry";
 export * from "./libs/exceptions/NoFormHandlerDefinedForTypeError";
 export * from "./libs/exceptions/NoFormTypeDefinedError";
-export * from "./libs/LoDash";
 export * from "./libs/validators/EqualWith";
 export * from "./libs/validators/IsUrl";
 export * from "./libs/xsform/AbstractFormComponent";

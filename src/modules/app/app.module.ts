@@ -9,11 +9,13 @@ import {SearchResultComponent} from './search/search-result.component';
 import {SearchEntryComponent} from './search/search-entry.component';
 import {ViewParentComponent} from './search/view-parent.component';
 import {ContentViewChildDemoComponent} from './content-view-child-demo.component';
+import {DemosComponent} from './demos.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    DemosComponent,
     InputDemoComponent,
     GroupDemoComponent,
     ContentDemoComponent,

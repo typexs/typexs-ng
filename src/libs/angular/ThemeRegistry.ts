@@ -1,9 +1,8 @@
 import * as core from '@angular/core';
 import {Type, TypeDecorator} from '@angular/core';
 import {__assign} from 'tslib';
-import * as c from 'case';
 
-import * as _ from '../LoDash';
+import * as _ from 'lodash';
 import {ITemplateEntry} from './ITemplateEntry';
 import {IStylesheetEntry} from './IStylesheetEntry';
 
@@ -70,7 +69,7 @@ export class ThemeRegistry {
   }
 
   static normalize(str: string) {
-    return c.kebab(str).replace(/^\-/, '').replace(/[^\d\w\-\_]/, '_');
+    return _.kebabCase(str).replace(/^\-/, '').replace(/[^\d\w\-\_]/, '_');
   }
 
 

@@ -6,10 +6,12 @@ import {ITemplateEntry} from '../libs/angular/ITemplateEntry';
 
 export const THEMES: ITemplateEntry[] =
 [
+  /*
   {
     "theme": "custom",
     "name": "nav-root",
     "type": "component",
     "template": require('./themes/custom/nav-root.component.html')
   }
+  */
 ];

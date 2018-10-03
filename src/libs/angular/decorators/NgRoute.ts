@@ -1,5 +1,5 @@
 import {MetaArgs} from "typexs-base/base/MetaArgs";
-import * as _ from '../../LoDash';
+import * as _ from 'lodash';
 import {Route} from "@angular/router";
 import {Type} from "@angular/core/core";
 

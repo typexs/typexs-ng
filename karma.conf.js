@@ -7,14 +7,14 @@ module.exports = function (config) {
   config.set({
     basePath: 'src',
     exclude: ['test/**'],
-    frameworks: ['mocha', 'chai', 'sinon-chai', '@angular/cli'],
+    frameworks: ['es6-shim','mocha', 'chai', 'sinon-chai', '@angular/cli'],
     plugins: [
       require('karma-mocha'),
       require('karma-chai'),
+      require('karma-es6-shim'),
       require('karma-sinon'),
       require('karma-sinon-chai'),
       require('karma-chrome-launcher'),
-      require('karma-firefox-launcher'),
       require('karma-phantomjs-launcher'),
       require('karma-mocha-reporter'),
       require('@angular/cli/plugins/karma')

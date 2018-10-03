@@ -1,5 +1,5 @@
 
-import * as _ from '../../libs/LoDash';
+import * as _ from 'lodash';
 export type ALIGNMENT = 'vertical' | 'horizontal'
 
 export type LABEL_DISPLAY = 'top' | 'inline' | 'none'

@@ -7,7 +7,7 @@ import {EntityDef} from 'typexs-schema/libs/EntityDef';
 import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
 import {SchemaDef} from 'typexs-schema/libs/SchemaDef';
 import {EntityRegistry} from 'typexs-schema/libs/EntityRegistry';
-import * as _ from '../../libs/LoDash';
+import * as _ from 'lodash';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
 import {ContentComponentRegistry} from '../xsview/ContentComponentRegistry';
 

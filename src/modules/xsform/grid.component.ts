@@ -1,7 +1,7 @@
 import {Component, ComponentRef, OnInit} from '@angular/core';
 import {GridRowComponent} from './grid-row.component';
 
-import * as _ from '../../libs/LoDash';
+import * as _ from 'lodash';
 import {ViewComponent} from '../../libs/xsview/decorators/ViewComponent';
 import {AbstractFormComponent} from '../../libs/xsform/AbstractFormComponent';
 import {Grid} from '../../libs/xsform/elements';

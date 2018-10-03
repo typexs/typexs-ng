@@ -1,6 +1,6 @@
 import {NoFormHandlerDefinedForTypeError} from './../../libs/exceptions/NoFormHandlerDefinedForTypeError';
 import {IElementDef} from './IElementDef';
-import * as _ from '../../libs/LoDash';
+import * as _ from 'lodash';
 
 export class ContentComponentRegistry {
 

@@ -5,7 +5,6 @@ export * from './modules/xsform/xforms.module';
 
 export * from "./libs/exceptions/NoFormHandlerDefinedForTypeError";
 export * from "./libs/exceptions/NoFormTypeDefinedError";
-export * from "./libs/LoDash";
 export * from "./libs/validators/EqualWith";
 export * from "./libs/validators/IsUrl";
 export * from "./libs/xsform/AbstractFormComponent";

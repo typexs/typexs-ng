@@ -2,7 +2,7 @@ import {FormObject, isFormObject} from '../FormObject';
 import {IResolver} from '../IResolver';
 import {Form} from './Form';
 
-import * as _ from '../../../libs/LoDash';
+import * as _ from 'lodash';
 import {ViewContent} from '../../xsview/decorators/ViewContent';
 
 @ViewContent('ref')

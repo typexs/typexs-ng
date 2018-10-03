@@ -1,6 +1,6 @@
 import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
 
-import * as _ from '../../libs/LoDash';
+import * as _ from 'lodash';
 import {ResolveDataValue} from './ResolveDataValue';
 import {TreeObject} from '../xsview/TreeObject';
 

@@ -1,4 +1,4 @@
-import * as _ from '../../libs/LoDash';
+import * as _ from 'lodash';
 import {ComponentFactoryResolver, Inject, Injector, ViewChild, ViewContainerRef} from '@angular/core';
 import {Context} from './Context';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
