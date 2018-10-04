@@ -1,18 +1,19 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {IModule} from 'typexs-base/api/IModule';
+import {IRoute} from 'typexs-server/libs/server/IRoute';
+
 import * as _ from 'lodash';
 
 
-const API_URL = '/api/modules';
+const API_URL = '/api/routes';
 
 @Component({
-  selector: 'system-modules',
-  templateUrl: './system-modules.component.html'
+  selector: 'system-routes',
+  templateUrl: './system-routes.component.html'
 })
-export class SystemModulesComponent implements OnInit {
+export class SystemRoutesComponent implements OnInit {
 
-  systemMmodules: IModule[] = [];
+  systemRoutes: IRoute[] = [];
 
 
   constructor(private httpService: HttpClient) {
@@ -22,9 +23,9 @@ export class SystemModulesComponent implements OnInit {
     return _.keys(obj);
   }
 
-  loadModules() {
-    this.httpService.get<IModule[]>(API_URL).subscribe(res => {
-        this.systemMmodules = res;
+  load() {
+    this.httpService.get<IRoute[]>(API_URL).subscribe(res => {
+        this.systemRoutes = res;
       },
       (err: HttpErrorResponse) => {
         console.log(err.error);
@@ -36,6 +37,6 @@ export class SystemModulesComponent implements OnInit {
 
 
   ngOnInit() {
-    this.loadModules();
+    this.load();
   }
 }

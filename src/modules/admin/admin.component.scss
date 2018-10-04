@@ -1,82 +1,89 @@
+@import "scss/variables";
+@import "scss/mixins";
+@import "scss/scrollbar";
+
+html,body {
+  @include resetMarginPading;
+}
+
 body {
-  margin: 0;
-  font-family: -apple-system,BlinkMacSystemFont,segoe ui,Roboto,helvetica neue,Arial,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol,noto color emoji;
-  font-size: .875rem;
-  font-weight: 400;
-  line-height: 1.5;
   color: #23282c;
   text-align: left;
   background-color: #e4e5e6;
-
 }
 
+.wrapper {
+  @include resetMarginPading;
+}
 
 .admin-header {
-  -ms-flex-direction: row;
-  flex-direction: row;
-  height: 55px;
-  padding: 0;
-  margin: 0;
+  position: fixed;
+  @include resetMarginPading;
+  height: $header-height;
   background-color: #fff;
   border-bottom: 1px solid #c8ced3;
-  position: fixed;
   z-index: 1020;
   width: 100%;
-  -ms-flex: 0 0 55px;
-  flex: 0 0 55px;
 }
 
+
+.admin-body {
+
+}
+
+
 .sidebar {
-  position: relative;
-  -ms-flex: 1;
-  flex: 1;
+  position: fixed;
+  height: calc(100vh - 55px);
+  // @include flex;
+  margin-top: $header-height;
   overflow-x: hidden;
   overflow-y: auto;
-  width: 200px;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  padding: 0;
+  width: $sidebar-width;
   color: #fff;
   background: #2f353a;
+  margin-left: 0;
+
+  -ms-flex: 0 0 200px;
+  flex: 0 0 200px;
+
+  -ms-flex-order: -1;
+  order: -1;
 
   nav {
     transition: width .25s;
   }
-}
 
-.admin-body {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  overflow-x: hidden;
-  margin-top: 55px;
-
-  .sidebar {
-    -ms-flex: 0 0 200px;
-    flex: 0 0 200px;
-    -ms-flex-order: -1;
-    order: -1;
+  .nav-link {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: #fff;
+    text-decoration: none;
+    background: transparent;
   }
 }
 
-.breadcrumb {
-  transition: left .25s, right .25s, width .25s;
+
+.main {
+  margin-left: $sidebar-width;
+
+  .container-fluid {
+    padding: 0 30px;
+  }
+}
+
+
+
+.breadcrumbs {
   position: relative;
+  display: flex;
   border-radius: 0;
   border-bottom: 1px solid #c8ced3;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
   padding: .75rem 1rem;
   margin-bottom: 1.5rem;
   list-style: none;
   background-color: #fff;
   border-radius: 0;
+
 }
 

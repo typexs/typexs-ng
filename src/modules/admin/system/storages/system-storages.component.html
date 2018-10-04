@@ -1,0 +1,27 @@
+
+
+<div class="card">
+  <div class="card-header">
+    <h3>Storages</h3>
+  </div>
+  <div class="card-body">
+    <table class="table table-responsive-lg">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>JSON</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr *ngFor="let storage of storages">
+        <td>{{storage.name}}</td>
+        <td>{{storage.type}}</td>
+        <td>{{storage | json}}</td>
+      </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="card">
+  <div class="card-header">
+    <h3>Routes</h3>
+  </div>
+  <div class="card-body">
+    <table class="table table-responsive-lg">
+      <thead>
+      <tr>
+        <th>Context</th>
+        <th>Route</th>
+        <th>Method</th>
+        <th>Authenticate</th>
+        <th>Credentials</th>
+        <th>Controller</th>
+        <th>Params</th>
+        <!--<th>JSON</th>-->
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr *ngFor="let systemRoute of systemRoutes">
+        <td>{{systemRoute.context}}</td>
+        <td>{{systemRoute.route}}</td>
+        <td>{{systemRoute.method}}</td>
+        <td>{{systemRoute.authorized}}</td>
+        <td>{{systemRoute.credential}}</td>
+        <td>{{systemRoute.controller}}->{{systemRoute.controllerMethod}}</td>
+        <td>{{systemRoute.params | json}}</td>
+        <!---td>{{systemRoute | json}}</td>-->
+      </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
