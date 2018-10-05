@@ -30,19 +30,19 @@ export class Gulpfile {
 
 
   /**
-   * Cleans build folder.
+   * Cleans readRoutes folder.
    */
   @Task()
   clean(cb: Function) {
-    return del(['./build/**'], cb);
+    return del(['./readRoutes/**'], cb);
   }
 
   /**
-   * ngCleans build folder.
+   * ngCleans readRoutes folder.
    */
   @Task()
   ngClean(cb: Function) {
-    return del(['./build/ngPackage/**'], cb);
+    return del(['./readRoutes/ngPackage/**'], cb);
   }
 
 
@@ -111,10 +111,10 @@ export class Gulpfile {
       .pipe(tsProject());
 
     return [
-      tsResult.dts.pipe(gulp.dest('./build/package')),
+      tsResult.dts.pipe(gulp.dest('./readRoutes/package')),
       tsResult.js
         .pipe(sourcemaps.write('.', {sourceRoot: '', includeContent: true}))
-        .pipe(gulp.dest('./build/package'))
+        .pipe(gulp.dest('./readRoutes/package'))
     ];
   }
 
@@ -132,27 +132,27 @@ export class Gulpfile {
       './src/modules/**/*.+(html|css|less|sass|scss)',
       '!./src/modules/*/api/**',
       '!./src/modules/*/entities/**',
-      // "./build/app/src/modules/**/*",
-      // "!./build/app/src/modules/app/**",
+      // "./readRoutes/app/src/modules/**/*",
+      // "!./readRoutes/app/src/modules/app/**",
       '!./src/modules/app/**'])
     //  .pipe(debug())
-      .pipe(gulp.dest('./build/ngPackage/modules'));
+      .pipe(gulp.dest('./readRoutes/ngPackage/modules'));
   }
 
   @Task()
   packageNgMetadataCopy() {
     return gulp.src([
       './src/*.metadata.json'])
-      .pipe(gulp.dest('./build/ngPackage'));
+      .pipe(gulp.dest('./readRoutes/ngPackage'));
   }
 
 
   // @Task()
   // packageNgWebpack() {
-  //   return gulp.src(['./build/app/src/modules/**/*.component.js','!./src/modules/app/**'])
+  //   return gulp.src(['./readRoutes/app/src/modules/**/*.component.js','!./src/modules/app/**'])
   //     .pipe(debug())
   //     .pipe(webpack( require('./webpack.config.js') ))
-  //     .pipe(gulp.dest('./build/prebuild'));
+  //     .pipe(gulp.dest('./readRoutes/prebuild'));
   // }
 
 
@@ -161,10 +161,10 @@ export class Gulpfile {
    */
   @Task()
   packageReplaceReferences() {
-    return gulp.src('./build/package/**/*.d.ts')
+    return gulp.src('./readRoutes/package/**/*.d.ts')
       .pipe(replace(`/// <reference types="node" />`, ''))
       .pipe(replace(`/// <reference types="chai" />`, ''))
-      .pipe(gulp.dest('./build/package'));
+      .pipe(gulp.dest('./readRoutes/package'));
   }
 
   /**
@@ -174,7 +174,7 @@ export class Gulpfile {
   packageCopyReadme() {
     return gulp.src('./README.md')
       .pipe(replace(/```typescript([\s\S]*?)```/g, '```javascript$1```'))
-      .pipe(gulp.dest('./build/package'));
+      .pipe(gulp.dest('./readRoutes/package'));
   }
 
   /**
@@ -182,7 +182,7 @@ export class Gulpfile {
    */
   @Task()
   packageCopyJsons() {
-    return gulp.src(['./src/**/*.json', '!./src/app/**', '!./src/modules/**']).pipe(gulp.dest('./build/package'));
+    return gulp.src(['./src/**/*.json', '!./src/app/**', '!./src/modules/**']).pipe(gulp.dest('./readRoutes/package'));
   }
 
   /**
@@ -190,7 +190,7 @@ export class Gulpfile {
    */
   @Task()
   packageCopyHtml() {
-    return gulp.src(['./src/app/themes/**/*.html']).pipe(gulp.dest('./build/package/app/themes'));
+    return gulp.src(['./src/app/themes/**/*.html']).pipe(gulp.dest('./readRoutes/package/app/themes'));
   }
 
   /**
@@ -198,7 +198,7 @@ export class Gulpfile {
    */
   @Task()
   packageCopyFiles() {
-    return gulp.src(['./src/**/files/**/*']).pipe(gulp.dest('./build/package'));
+    return gulp.src(['./src/**/files/**/*']).pipe(gulp.dest('./readRoutes/package'));
   }
 
   /**
@@ -207,7 +207,7 @@ export class Gulpfile {
   // @Task()
   // packageCopyModulContents() {
   //   return gulp.src(["./src/modules/**/*.+(html|css|less|sass|scss|ts)","!./src/modules/app/**" ,"!./src/modules/**/*.spec.ts"])
-  //     .pipe(gulp.dest("./build/package/modules"));
+  //     .pipe(gulp.dest("./readRoutes/package/modules"));
   // }
 
   /**
@@ -215,7 +215,7 @@ export class Gulpfile {
    */
   @Task()
   packageCopyBin() {
-    return gulp.src('./bin/*').pipe(gulp.dest('./build/package/bin'));
+    return gulp.src('./bin/*').pipe(gulp.dest('./readRoutes/package/bin'));
   }
 
 
@@ -226,7 +226,7 @@ export class Gulpfile {
   packagePreparePackageFile() {
     return gulp.src('./package.json')
       .pipe(replace('"private": true,', '"private": false,'))
-      .pipe(gulp.dest('./build/package'));
+      .pipe(gulp.dest('./readRoutes/package'));
   }
 
 
@@ -296,32 +296,32 @@ export class Gulpfile {
   // -------------------------------------------------------------------------
 
   /**
-   * Publishes a package to npm from ./build/package directory.
+   * Publishes a package to npm from ./readRoutes/package directory.
    */
   @Task()
   packagePublish() {
     return gulp.src('package.json', {read: false})
       .pipe(shell([
-        'cd ./build/package && npm publish --access=public'
+        'cd ./readRoutes/package && npm publish --access=public'
       ]));
   }
 
   @Task()
   packageNgPublish() {
-    return gulp.src('build/ngPackage/package.json', {read: false})
+    return gulp.src('readRoutes/ngPackage/package.json', {read: false})
       .pipe(shell([
-        'cd ./build/ngPackage && npm publish --access=public'
+        'cd ./readRoutes/ngPackage && npm publish --access=public'
       ]));
   }
 
   /**
-   * Publishes a package to npm from ./build/package directory with @next tag.
+   * Publishes a package to npm from ./readRoutes/package directory with @next tag.
    */
   @Task()
   packagePublishNext() {
     return gulp.src('package.json', {read: false})
       .pipe(shell([
-        'cd ./build/package && npm publish --tag next'
+        'cd ./readRoutes/package && npm publish --tag next'
       ]));
   }
 

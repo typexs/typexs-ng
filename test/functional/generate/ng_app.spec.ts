@@ -9,7 +9,7 @@ import {Bootstrap, Log, PlatformUtils, SchematicsExecutor} from "typexs-base";
 
 
 const TMPDIR = os.tmpdir();
-//const TESTDIR = join(TMPDIR,'ng-'+(new Date()).getTime(),'build') ;
+//const TESTDIR = join(TMPDIR,'ng-'+(new Date()).getTime(),'readRoutes') ;
 const TESTDIR = join(__dirname,'build') ;
 
 
