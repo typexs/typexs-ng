@@ -10,7 +10,7 @@ import {Observable} from '../../../node_modules/rxjs';
 
 describe('Service: NavigatorService', () => {
 
-  describe('readRoutes navigation graph', () => {
+  describe('build navigation graph', () => {
     let service: NavigatorService;
 
     class MockRouter {
