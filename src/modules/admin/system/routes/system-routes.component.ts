@@ -3,6 +3,7 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {IRoute} from 'typexs-server/libs/server/IRoute';
 
 import * as _ from 'lodash';
+import {SystemInfoService} from '../system-info.service';
 
 
 const API_URL = '/api/routes';
@@ -13,30 +14,19 @@ const API_URL = '/api/routes';
 })
 export class SystemRoutesComponent implements OnInit {
 
-  systemRoutes: IRoute[] = [];
+  routes: IRoute[] = [];
 
 
-  constructor(private httpService: HttpClient) {
+  constructor(private infoService: SystemInfoService) {
   }
 
   objectKeys(obj: any) {
     return _.keys(obj);
   }
 
-  load() {
-    this.httpService.get<IRoute[]>(API_URL).subscribe(res => {
-        this.systemRoutes = res;
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.error);
-        console.log(err.name);
-        console.log(err.message);
-        console.log(err.status);
-      });
-  }
-
-
   ngOnInit() {
-    this.load();
+    this.infoService.loadRoutes(x => {
+      this.routes = x;
+    });
   }
 }

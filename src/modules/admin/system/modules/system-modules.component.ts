@@ -1,10 +1,7 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
 import {IModule} from 'typexs-base/api/IModule';
 import * as _ from 'lodash';
-
-
-const API_URL = '/api/modules';
+import {SystemInfoService} from '../system-info.service';
 
 @Component({
   selector: 'system-modules',
@@ -12,30 +9,19 @@ const API_URL = '/api/modules';
 })
 export class SystemModulesComponent implements OnInit {
 
-  systemMmodules: IModule[] = [];
+  modules: IModule[] = [];
 
-
-  constructor(private httpService: HttpClient) {
+  constructor(private infoService: SystemInfoService) {
   }
 
   objectKeys(obj: any) {
     return _.keys(obj);
   }
 
-  loadModules() {
-    this.httpService.get<IModule[]>(API_URL).subscribe(res => {
-        this.systemMmodules = res;
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.error);
-        console.log(err.name);
-        console.log(err.message);
-        console.log(err.status);
-      });
-  }
-
 
   ngOnInit() {
-    this.loadModules();
+    this.infoService.loadModules(x => {
+      this.modules = x;
+    });
   }
 }

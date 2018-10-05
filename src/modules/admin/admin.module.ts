@@ -8,6 +8,8 @@ import {HttpClientModule} from '@angular/common/http';
 import {BrowserModule} from '@angular/platform-browser';
 import {SystemRoutesComponent} from './system/routes/system-routes.component';
 import {SystemStoragesComponent} from './system/storages/system-storages.component';
+import {SystemInfoService} from './system/system-info.service';
+import {SystemConfigComponent} from './system/config/system-config.component';
 
 
 @NgModule({
@@ -15,7 +17,8 @@ import {SystemStoragesComponent} from './system/storages/system-storages.compone
     AdminComponent,
     SystemModulesComponent,
     SystemRoutesComponent,
-    SystemStoragesComponent
+    SystemStoragesComponent,
+    SystemConfigComponent
   ],
   imports: [
     NavigatorModule,
@@ -23,7 +26,9 @@ import {SystemStoragesComponent} from './system/storages/system-storages.compone
     HttpClientModule,
     RouterModule.forChild(ADMIN_ROUTES)
   ],
-  exports: []
+  exports: [],
+  providers:[SystemInfoService]
+
 })
 export class AdminModule {
 
