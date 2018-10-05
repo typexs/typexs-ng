@@ -5,6 +5,12 @@ export class NavEntry {
 
   path: string;
 
+  realPath: string = null;
+
+  route: Route = null;
+
+  paths: string[] = [];
+
   label: string;
 
   parent: NavEntry = null;
@@ -17,15 +23,14 @@ export class NavEntry {
 
   outlet: string = null;
 
-  parse(route: Route, parent:NavEntry = null) {
-    this.path = route.path;
-    this.parent = this.parent;
-
-    const pathSplit = this.path.split('/');
+  parse(route: Route) {
+    this.route = route;
+    this.path = this.realPath = route.path;
+    this.paths = this.path.split('/');
     let fixedPath = [];
 
-    for (let i = 0; i < pathSplit.length; i++) {
-      const entry = pathSplit[i];
+    for (let i = 0; i < this.paths.length; i++) {
+      const entry = this.paths[i];
       if (entry.startsWith(':')) {
         // is placeholder
         this.params[entry.replace(/^:/, '')] = i;
@@ -56,7 +61,26 @@ export class NavEntry {
     // TODO has level
   }
 
-  getPath() {
+  setParent(route: NavEntry) {
+    this.parent = route;
+  }
+
+  setRealPath(s :string){
+    this.realPath = s;
+  }
+
+  getRealPath() {
+    return this.realPath;
+  }
+
+  getFullPath(): string {
+    let path = [];
+    if (this.parent) {
+      path.push(this.parent.getFullPath());
+    }
+    path.push(this.path);
+    return path.join('/');
+    /*
     if (this.outlet && false) {
       let outlets = {};
       outlets[this.outlet] = '/'+this.path;
@@ -66,12 +90,15 @@ export class NavEntry {
     } else {
       return this.path;
     }
+    */
   }
 
-  parentPath() {
-    let split = this.path.split('/');
-    split.pop();
-    return split.join('/');
+  getParentPath(): string {
+    let path = this.getFullPath();
+    let f = path.split('/');
+    f.pop();
+    return f.join('/');
   }
+
 
 }

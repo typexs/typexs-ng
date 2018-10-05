@@ -10,7 +10,7 @@ import {Observable} from '../../../node_modules/rxjs';
 
 describe('Service: NavigatorService', () => {
 
-  describe('build navigation graph', () => {
+  describe('readRoutes navigation graph', () => {
     let service: NavigatorService;
 
     class MockRouter {
@@ -24,6 +24,10 @@ describe('Service: NavigatorService', () => {
 
       events: Observable<any> = new Observable<any>(() => {
       });
+
+      resetConfig(routes:Routes){
+        this.config = routes;
+      }
     }
 
     beforeEach(() => {
@@ -40,9 +44,19 @@ describe('Service: NavigatorService', () => {
       });
     });
 
-    it('#get', () => {
+
+    it('auto grouping paths', () => {
       service = TestBed.get(NavigatorService);
-      expect(service.entries).to.have.length(5);
+      expect(service.getEntries()).to.have.length(5);
+      let tree = service.getRebuildRoutes();
+      expect(tree).to.have.length(1);
+      expect(tree[0].children).to.have.length(2);
+    });
+
+    it('add group label', () => {
+      service = TestBed.get(NavigatorService);
+      expect(service.getEntries()).to.have.length(5);
+      // service.addGroupLabel('admin')
     });
 
   });

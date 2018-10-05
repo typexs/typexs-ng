@@ -1,7 +1,7 @@
 <nav>
   <ul class="nav">
     <li *ngFor="let route of entries()" class="nav-item">
-      <a [routerLink]="route.getPath()" routerLinkActive="active" class="nav-link">{{route.label}}</a>
+      <a [routerLink]="route.getFullPath()" routerLinkActive="active" class="nav-link">{{route.label}}</a>
     </li>
   </ul>
 </nav>
