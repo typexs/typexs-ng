@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {NavigatorService} from '../navigator/navigator.service';
+import {AdminService} from './admin.service';
 
 @Component({
   selector: 'admin',
@@ -7,14 +8,10 @@ import {NavigatorService} from '../navigator/navigator.service';
   styleUrls: ['./admin.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class AdminComponent implements OnInit{
+export class AdminComponent  {
 
-  constructor(private navigator: NavigatorService){
+  constructor(private adminInitService: AdminService) {
 
-  }
-
-  ngOnInit(){
-    this.navigator.addGroupLabel(/admin\/system/,'System');
   }
 
 

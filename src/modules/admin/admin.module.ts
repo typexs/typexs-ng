@@ -10,6 +10,7 @@ import {SystemRoutesComponent} from './system/routes/system-routes.component';
 import {SystemStoragesComponent} from './system/storages/system-storages.component';
 import {SystemInfoService} from './system/system-info.service';
 import {SystemConfigComponent} from './system/config/system-config.component';
+import {AdminService} from './admin.service';
 
 
 @NgModule({
@@ -27,7 +28,7 @@ import {SystemConfigComponent} from './system/config/system-config.component';
     RouterModule.forChild(ADMIN_ROUTES)
   ],
   exports: [],
-  providers:[SystemInfoService]
+  providers: [SystemInfoService, AdminService]
 
 })
 export class AdminModule {

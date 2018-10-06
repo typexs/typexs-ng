@@ -23,6 +23,8 @@ export class NavEntry {
 
   outlet: string = null;
 
+  groupPattern: string = null;
+
   parse(route: Route) {
     this.route = route;
     this.path = this.realPath = route.path;
@@ -62,7 +64,9 @@ export class NavEntry {
   }
 
   setParent(route: NavEntry) {
-    this.parent = route;
+    if(this.parent != route){
+      this.parent = route;
+    }
   }
 
   setRealPath(s :string){
@@ -91,6 +95,13 @@ export class NavEntry {
       return this.path;
     }
     */
+  }
+
+  isRedirect(){
+    if(this.route && this.route.redirectTo){
+      return true;
+    }
+    return false;
   }
 
   getParentPath(): string {

@@ -1,0 +1,11 @@
+<li [ngClass]="{'nav-item': !entry.isGroup, 'nav-title':entry.isGroup}">
+  <div *ngIf="entry.isGroup">{{entry.label}}</div>
+  <a *ngIf="!entry.isGroup" [routerLink]="'/'+entry.path" routerLinkActive="active" class="nav-link">{{entry.label}}</a>
+  <div class="nav-sub" *ngIf="hasChildren()">
+    <ul>
+      <ng-container *ngFor="let subEntry of entry.children">
+        <menu-link [entry]="subEntry"></menu-link>
+      </ng-container>
+    </ul>
+  </div>
+</li>

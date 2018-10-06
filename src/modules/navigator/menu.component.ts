@@ -1,30 +1,39 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {NavigatorService} from './navigator.service';
-import _ = require('lodash');
+import {INavTreeEntry} from './INavTreeEntry';
+import {NavEntry} from './NavEntry';
 
 @Component({
   selector: 'menu',
   templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss']
+  styleUrls: ['./menu.component.scss'],
 })
-export class MenuComponent {
+export class MenuComponent implements OnInit {
 
   @Input()
   label: string = null;
 
   @Input()
+  base: string = null;
+
+  @Input()
   group: string = null;
 
-  @Input()
-  regex: string = null;
-
-  @Input()
-  outlet: string = null;
+  tree: INavTreeEntry[] = [];
 
   constructor(private navigator: NavigatorService) {
   }
 
+  ngOnInit() {
+    this.tree = this.navigator.getTree(this.base, (e: NavEntry) => {
+      if (this.group) {
+        return e.group == this.group;
+      }
+      return true;
+    });
+  }
 
+  /*
   entries() {
     let entries = this.navigator.getEntries();
     console.log(entries);
@@ -46,6 +55,6 @@ export class MenuComponent {
     console.log(entries);
     return entries;
   }
-
+*/
 
 }
