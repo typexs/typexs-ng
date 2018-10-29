@@ -1,15 +1,10 @@
-import {Gulpclass, Task, SequenceTask, MergedTask} from 'gulpclass';
+import {Gulpclass, MergedTask, SequenceTask, Task} from 'gulpclass';
 
 
 import * as fs from 'fs';
 import * as glob from 'glob';
 import * as gulp from 'gulp';
 import * as watch from 'gulp-watch';
-import {main as ngc} from '@angular/compiler-cli/src/main';
-
-// const debug = require('gulp-debug');
-//import * as ts from "gulp-typescript";
-
 
 const bump = require('gulp-bump');
 const del = require('del');
@@ -17,7 +12,6 @@ const shell = require('gulp-shell');
 const replace = require('gulp-replace');
 const sourcemaps = require('gulp-sourcemaps');
 const ts = require('gulp-typescript');
-
 const sequence = require('run-sequence');
 
 
