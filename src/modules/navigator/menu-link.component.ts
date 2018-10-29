@@ -1,8 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NavigatorService} from './navigator.service';
-import _ = require('lodash');
 import {INavTreeEntry} from './INavTreeEntry';
-import {NavEntry} from './NavEntry';
 
 @Component({
   selector: 'menu-link',

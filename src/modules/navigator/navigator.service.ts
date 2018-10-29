@@ -1,8 +1,8 @@
 import {Inject, Injectable} from '@angular/core';
 import {NavEntry} from './NavEntry';
-import {Route, Router, Routes} from '@angular/router';
-import _ = require('lodash');
+import {Router, Routes} from '@angular/router';
 import {INavTreeEntry} from './INavTreeEntry';
+import * as _ from 'lodash';
 
 
 @Injectable()
