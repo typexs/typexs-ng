@@ -11,6 +11,7 @@ import {SystemStoragesComponent} from './system/storages/system-storages.compone
 import {SystemInfoService} from './system/system-info.service';
 import {SystemConfigComponent} from './system/config/system-config.component';
 import {AdminService} from './admin.service';
+import {NgRoutesComponent} from './ng/routes/ng-routes.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import {AdminService} from './admin.service';
     SystemModulesComponent,
     SystemRoutesComponent,
     SystemStoragesComponent,
-    SystemConfigComponent
+    SystemConfigComponent,
+    NgRoutesComponent
   ],
   imports: [
     NavigatorModule,

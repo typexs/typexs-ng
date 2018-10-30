@@ -101,13 +101,14 @@ export class NavigatorService {
     let navEntry = new NavEntry();
     navEntry.label = data.label;
     navEntry.group = data.group;
+    navEntry.groupRegex = pattern;
 
     let split = pattern.split('/');
     let length = split.length;
-    let pathBase: string[] = [];
     let base = this.findMatch(pattern);
 
     if (base) {
+      let regex = new RegExp(pattern);
       const idx = this.entries.indexOf(base);
       //_.insert(this.entries)
       this.entries.splice(idx + 1, 0, navEntry);
@@ -116,7 +117,7 @@ export class NavigatorService {
       let children = _.filter(this.entries, e =>
         e.route != null &&
         e.getRealPath().split('/').length == length &&
-        e.getRealPath().startsWith(base.getRealPath())
+        regex.test(e.getRealPath())
       );
       _.map(children, c => c.setParent(navEntry));
     } else {

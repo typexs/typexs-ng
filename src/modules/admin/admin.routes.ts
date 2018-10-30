@@ -4,6 +4,7 @@ import {SystemModulesComponent} from './system/modules/system-modules.component'
 import {SystemRoutesComponent} from './system/routes/system-routes.component';
 import {SystemStoragesComponent} from './system/storages/system-storages.component';
 import {SystemConfigComponent} from './system/config/system-config.component';
+import {NgRoutesComponent} from './ng/routes/ng-routes.component';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -20,6 +21,9 @@ export const ADMIN_ROUTES: Routes = [
       },
       {
         path: 'system/config', component: SystemConfigComponent, data: {label: 'Config', group: 'admin'}
+      },
+      {
+        path: 'ng/routes', component: NgRoutesComponent, data: {label: 'Routes', group: 'admin'}
       }
 
     ]

@@ -3,6 +3,10 @@ import * as _ from 'lodash';
 
 export class NavEntry {
 
+  static inc: number = 0;
+
+  readonly id: number = 0;
+
   path: string;
 
   realPath: string = null;
@@ -19,11 +23,17 @@ export class NavEntry {
 
   group?: string;
 
-  level: number = 0;
+  groupRegex?: string = null;
+
+  // level: number = 0;
 
   outlet: string = null;
 
-  groupPattern: string = null;
+  //groupPattern: string = null;
+
+  constructor() {
+    this.id = NavEntry.inc++;
+  }
 
   parse(route: Route) {
     this.route = route;
@@ -64,12 +74,22 @@ export class NavEntry {
   }
 
   setParent(route: NavEntry) {
-    if(this.parent != route){
+    if (this.parent != route) {
       this.parent = route;
     }
   }
 
-  setRealPath(s :string){
+  getParentId() {
+    if (this.parent) return this.parent.id;
+    return -1;
+  }
+
+  getComponentName() {
+    if (this.route && this.route.component) return this.route.component.name;
+    return null;
+  }
+
+  setRealPath(s: string) {
     this.realPath = s;
   }
 
@@ -97,8 +117,8 @@ export class NavEntry {
     */
   }
 
-  isRedirect(){
-    if(this.route && this.route.redirectTo){
+  isRedirect() {
+    if (this.route && this.route.redirectTo) {
       return true;
     }
     return false;

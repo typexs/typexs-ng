@@ -6,6 +6,11 @@ import {NavigatorService} from '../navigator/navigator.service';
 export class AdminService {
   constructor(private navigator: NavigatorService) {
     // Startup stuff should be done once!
-    this.navigator.addGroupEntry('admin/system/*', {label: 'System', group: 'admin'});
+    this.navigator.addGroupEntry('admin/system/.*', {label: 'System', group: 'admin'});
+    this.navigator.addGroupEntry('admin/ng/.*', {label: 'Angular', group: 'admin'});
+  }
+
+  getNavigatorService(){
+    return this.navigator;
   }
 }
