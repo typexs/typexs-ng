@@ -27,7 +27,7 @@ import {AdminService} from './admin.service';
     HttpClientModule,
     RouterModule.forChild(ADMIN_ROUTES)
   ],
-  exports: [],
+  exports: [AdminComponent],
   providers: [SystemInfoService, AdminService]
 
 })

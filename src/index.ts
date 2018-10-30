@@ -9,10 +9,13 @@ export * from "./libs/angular/ITemplateEntry";
 export * from "./libs/angular/NgMetaDataCollector";
 export * from "./libs/angular/NgModuleBuilder";
 export * from "./libs/angular/ThemeRegistry";
+
 export * from "./libs/exceptions/NoFormHandlerDefinedForTypeError";
 export * from "./libs/exceptions/NoFormTypeDefinedError";
+
 export * from "./libs/validators/EqualWith";
 export * from "./libs/validators/IsUrl";
+
 export * from "./libs/xsform/AbstractFormComponent";
 export * from "./libs/xsform/elements/Checkbox";
 export * from "./libs/xsform/elements/Form";
@@ -28,6 +31,7 @@ export * from "./libs/xsform/FormBuilder";
 export * from "./libs/xsform/FormObject";
 export * from "./libs/xsform/IResolver";
 export * from "./libs/xsform/ResolveDataValue";
+
 export * from "./libs/xsview/AbstractComponent";
 export * from "./libs/xsview/ContentComponentRegistry";
 export * from "./libs/xsview/Context";
