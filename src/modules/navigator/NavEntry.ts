@@ -21,7 +21,7 @@ export class NavEntry {
 
   params: any = {};
 
-  group?: string;
+  groups?: string[];
 
   groupRegex?: string = null;
 
@@ -55,13 +55,7 @@ export class NavEntry {
       this.outlet = route.outlet;
     }
 
-    if (route.data) {
-      ['label', 'group', 'outlet'].forEach(k => {
-        if (_.has(route.data, k)) {
-          this[k] = route.data[k];
-        }
-      });
-    }
+    this.parseData(route.data);
 
     if (!this.label) {
       this.label = !_.isEmpty(fixedPath) ? _.capitalize(_.last(fixedPath)) : 'Undefined';
@@ -72,11 +66,30 @@ export class NavEntry {
     // TODO has path placeholder
     // TODO has level
   }
+  
+  parseData(data:any){
+    if (data) {
+      if (_.has(data, 'label')) {
+        this.label = data.label;
+      }
+      if (_.has(data, 'group') || _.has(data, 'groups')) {
+        let groups = _.get(data, 'group', _.get(data, 'groups'));
+        this.groups = _.isArray(groups) ? groups : [groups];
+      }
+    }
+  }
 
   setParent(route: NavEntry) {
     if (this.parent != route) {
       this.parent = route;
     }
+  }
+
+  getLevel(): number {
+    if (this.parent) {
+      return this.parent.getLevel() + 1;
+    }
+    return 0;
   }
 
   getParentId() {
@@ -97,6 +110,7 @@ export class NavEntry {
     return this.realPath;
   }
 
+
   getFullPath(): string {
     let path = [];
     if (this.parent) {
@@ -104,18 +118,8 @@ export class NavEntry {
     }
     path.push(this.path);
     return path.join('/');
-    /*
-    if (this.outlet && false) {
-      let outlets = {};
-      outlets[this.outlet] = '/'+this.path;
-      let str = {outlets: outlets};
-      console.log(str);
-      return str;
-    } else {
-      return this.path;
-    }
-    */
   }
+
 
   isRedirect() {
     if (this.route && this.route.redirectTo) {

@@ -11,3 +11,5 @@ before_install:
   - npm install -g codecov
   - npm install -g phantomjs
 
+addons:
+  chrome: stable # have Travis install Chrome stable.

@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {NavigatorService} from './navigator.service';
 import {INavTreeEntry} from './INavTreeEntry';
 import {NavEntry} from './NavEntry';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'menu',
@@ -19,42 +20,31 @@ export class MenuComponent implements OnInit {
   @Input()
   group: string = null;
 
+  @Input()
+  level: number = null;
+
+
+  @Input()
+  filter: (e:NavEntry) => boolean = (e: NavEntry) => {
+    let ret = true;
+    if (!_.isNull(this.group)) {
+      ret = ret && e.groups.indexOf(this.group) !== -1;
+    }
+
+    if (!_.isNull(this.level)) {
+      ret = ret && e.getLevel() <= this.level;
+    }
+
+    return ret;
+  };
+
   tree: INavTreeEntry[] = [];
 
   constructor(private navigator: NavigatorService) {
   }
 
   ngOnInit() {
-    this.tree = this.navigator.getTree(this.base, (e: NavEntry) => {
-      if (this.group) {
-        return e.group == this.group;
-      }
-      return true;
-    });
+    this.tree = this.navigator.getTree(this.base, this.filter.bind(this));
   }
-
-  /*
-  entries() {
-    let entries = this.navigator.getEntries();
-    console.log(entries);
-    if (this.group) {
-      entries = this.navigator.getEntriesByGroup(this.group);
-    }
-
-    if (this.regex) {
-      const regex = new RegExp(this.regex);
-      entries = _.filter(entries,e => regex.test(e.path));
-    }
-
-    entries = _.clone(entries);
-    if(this.outlet){
-      // override outlet
-      entries.map(e => {e.outlet = this.outlet});
-    }
-
-    console.log(entries);
-    return entries;
-  }
-*/
 
 }

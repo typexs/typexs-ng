@@ -46,19 +46,11 @@ export class NavigatorService {
 
     for (let entry of this.entries) {
       const realPath = entry.getRealPath();
-      if(_.isEmpty(realPath) || entry.isRedirect()){
+      if (_.isEmpty(realPath) || entry.isRedirect()) {
         continue;
       }
-      let split = realPath.split('/');
+//      let split = realPath.split('/');
       let parentEntry = this.findMatch(realPath);
-      /*
-      while (split.length > 0 && parentEntry == null) {
-        split.pop();
-        const s = split.join('/');
-        parentEntry = _.find(this.entries, e => e.getRealPath() == s && !e.isRedirect());
-      }
-      */
-
       if (parentEntry && parentEntry != entry) {
         entry.setParent(parentEntry);
       }
@@ -78,12 +70,11 @@ export class NavigatorService {
       if (parent) {
         r.path = r.path.replace(parent.path + '/', '');
       }
-      if(!route.isRedirect()){
+      if (!route.isRedirect()) {
         r.children = this.rebuildRoutes(route);
       }
       return r;
     });
-
     return routes;
   }
 
@@ -97,10 +88,10 @@ export class NavigatorService {
     return _.find(this.entries, e => e.getRealPath() == path);
   }
 
+
   addGroupEntry(pattern: string, data: any) {
     let navEntry = new NavEntry();
-    navEntry.label = data.label;
-    navEntry.group = data.group;
+    navEntry.parseData(data);
     navEntry.groupRegex = pattern;
 
     let split = pattern.split('/');
@@ -124,7 +115,6 @@ export class NavigatorService {
       // TODO
     }
 
-
   }
 
 
@@ -132,16 +122,15 @@ export class NavigatorService {
     let fromEntry = !_.isNull(from) ? (from instanceof NavEntry ? from : this.getEntry(from)) : null;
     let _routes: NavEntry[] = _.filter(this.entries, e => e.parent == fromEntry && (filter ? filter(e) : true) && !e.isRedirect());
     let routes = _.map(_routes, route => {
-      let r: INavTreeEntry = {label: route.label, group: route.group, isGroup: false};
+      let r: INavTreeEntry = {label: route.label, groups: route.groups, isGroup: false};
       if (route.route) {
         r.path = route.getRealPath();
       } else {
         r.isGroup = true;
       }
-      r.children = this.getTree(route);
+      r.children = this.getTree(route, filter);
       return r;
     });
-
     return routes;
   }
 
@@ -156,13 +145,14 @@ export class NavigatorService {
     return base;
   }
 
+
   getEntries() {
     return this.entries;
   }
 
 
   getEntriesByGroup(group: string) {
-    return _.filter(this.entries, e => e.group == group);
+    return _.filter(this.entries, e => e.groups.indexOf(group) !== -1);
   }
 
 

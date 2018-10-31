@@ -1,6 +1,6 @@
 export interface INavTreeEntry {
   label: string;
-  group: string;
+  groups: string[];
   path?: string;
   isGroup: boolean;
   children?: INavTreeEntry[];
