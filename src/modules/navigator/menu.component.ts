@@ -28,7 +28,7 @@ export class MenuComponent implements OnInit {
   filter: (e:NavEntry) => boolean = (e: NavEntry) => {
     let ret = true;
     if (!_.isNull(this.group)) {
-      ret = ret && e.groups.indexOf(this.group) !== -1;
+      ret = ret && e.groups && e.groups.indexOf(this.group) !== -1;
     }
 
     if (!_.isNull(this.level)) {

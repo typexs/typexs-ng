@@ -101,8 +101,8 @@ describe('Service: NavigatorService', () => {
           'children': [
             {
               'label': 'System',
-              'group': 'admin',
               'isGroup': true,
+              'groups': ['admin'],
               'children': [
                 {
                   'label': 'Configure',
@@ -140,8 +140,8 @@ describe('Service: NavigatorService', () => {
       expect(JSON.stringify(treeAdmin)).to.deep.eq(JSON.stringify([
         {
           'label': 'System',
-          'group': 'admin',
           'isGroup': true,
+          'groups': ['admin'],
           'children': [
             {
               'label': 'Configure',
@@ -258,7 +258,7 @@ describe('Service: NavigatorService', () => {
       let roots = service.getRoots();
       expect(roots).to.have.length(1);
 
-      service.addGroupEntry('admin/*', {
+      service.addGroupEntry('admin/.*', {
         label: 'System',
         group: 'admin'
       });
@@ -274,8 +274,8 @@ describe('Service: NavigatorService', () => {
           'children': [
             {
               'label': 'System',
-              'group': 'admin',
               'isGroup': true,
+              'groups': ['admin'],
               'children': [
                 {
                   'label': 'Config',
@@ -314,8 +314,8 @@ describe('Service: NavigatorService', () => {
       expect(JSON.stringify(treeAdmin)).to.deep.eq(JSON.stringify([
         {
           'label': 'System',
-          'group': 'admin',
           'isGroup': true,
+          'groups': ['admin'],
           'children': [
             {
               'label': 'Config',
@@ -345,9 +345,7 @@ describe('Service: NavigatorService', () => {
           ]
         }
       ]));
-
     });
-
   });
 
 });
