@@ -102,6 +102,8 @@ describe('Component: Menu', () => {
   });
 
 
+  it.skip('create submenu by with exclude', () => { })
+
 });
 
 

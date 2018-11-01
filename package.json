@@ -33,9 +33,9 @@
   },
   "homepage": "https://github.com/typexs/typexs-ng#readme",
   "devDependencies": {
-    "@angular-devkit/core": "^0.3.2",
-    "@angular-devkit/schematics": "^0.3.2",
-    "@angular/cli": "^1.7.4",
+    "@angular-devkit/core": "0.3.2",
+    "@angular-devkit/schematics": "0.3.2",
+    "@angular/cli": "1.7.4",
     "@angular/compiler": "^5.2.10",
     "@angular/compiler-cli": "^5.2.10",
     "@angular/language-service": "^5.2.10",
@@ -94,11 +94,12 @@
     "protractor": "~5.4.1",
     "sinon": "^6.3.4",
     "sinon-chai": "^3.2.0",
+    "source-map": "^0.7.3",
     "sqlite3": "^4.0.2",
     "supertest": "^3.3.0",
     "supertest-as-promised": "^4.0.2",
     "ts-node": "^7.0.1",
-    "typescript": "^3.1.1",
+    "typescript": "3.1.1",
     "typescript-require": "^0.2.10"
   },
   "dependencies": {

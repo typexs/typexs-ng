@@ -8,9 +8,10 @@ export class AdminService {
     // Startup stuff should be done once!
     this.navigator.addGroupEntry('admin/system/.*', {label: 'System', group: 'admin'});
     this.navigator.addGroupEntry('admin/ng/.*', {label: 'Angular', group: 'admin'});
+    this.navigator.addGroupEntry('admin/entity/.*', {label: 'Entity', group: 'admin'});
   }
 
-  getNavigatorService(){
+  getNavigatorService() {
     return this.navigator;
   }
 }

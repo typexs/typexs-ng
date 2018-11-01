@@ -96,3 +96,10 @@ Happens on first init of an empty project
 **@ISSUE {counter:issue} 20181031** +
 
 Upgrade/modify to/for angular 6.
+
+
+
+**@ISSUE {counter:issue} 20181101** +
+
+Direct storage data modification in admin mode.
+Create an storage modul and an entity modul.

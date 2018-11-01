@@ -1,0 +1,32 @@
+<div class="card">
+  <div class="card-header">
+    <h3>Entity Types</h3>
+  </div>
+  <div class="card-body">
+    <table class="table table-responsive-lg">
+      <thead>
+      <tr>
+        <th>Schema</th>
+        <th>Name</th>
+        <th>machineName</th>
+        <th>Ops</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr *ngFor="let entityDef of getEntityDefs()">
+        <td>{{entityDef.getClassRef().getSchema()}}</td>
+        <td>{{entityDef.name}}</td>
+        <td>{{entityDef.machineName}}</td>
+        <td>
+          <button class="btn btn-primary">List</button>
+          <a class="btn btn-success" [routerLink]="['/admin/entity',entityDef.machineName,'create']">New</a>
+          <button class="btn btn-warning">Edit</button>
+          <!-- <button class="btn btn-danger">Delete</button> -->
+        </td>
+      </tr>
+      </tbody>
+
+    </table>
+  </div>
+</div>

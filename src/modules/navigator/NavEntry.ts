@@ -7,6 +7,8 @@ export class NavEntry {
 
   readonly id: number = 0;
 
+  ignore: boolean = false;
+
   path: string;
 
   realPath: string = null;
@@ -76,6 +78,9 @@ export class NavEntry {
         let groups = _.get(data, 'group', _.get(data, 'groups'));
         this.groups = _.isArray(groups) ? groups : [groups];
       }
+      if (_.has(data, 'skip')) {
+        this.ignore = data.skip;
+      }
     }
   }
 
@@ -126,6 +131,10 @@ export class NavEntry {
       return true;
     }
     return false;
+  }
+
+  toIgnore() {
+    return this.ignore;
   }
 
   getParentPath(): string {

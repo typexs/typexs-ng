@@ -21,9 +21,11 @@ export class NavigatorService {
     this.read(this.router.config);
   }
 
+
   onRouterEvent(event: any) {
     // TODO
   }
+
 
   readRoutes(config: Routes, parent: NavEntry = null) {
     for (let route of config) {
@@ -40,16 +42,16 @@ export class NavigatorService {
     }
   }
 
+
   read(routes: Routes) {
     this.entries = [];
     this.readRoutes(routes);
 
     for (let entry of this.entries) {
       const realPath = entry.getRealPath();
-      if (_.isEmpty(realPath) || entry.isRedirect()) {
+      if (_.isEmpty(realPath) || entry.isRedirect() ) {
         continue;
       }
-//      let split = realPath.split('/');
       let parentEntry = this.findMatch(realPath);
       if (parentEntry && parentEntry != entry) {
         entry.setParent(parentEntry);
@@ -120,7 +122,7 @@ export class NavigatorService {
 
   getTree(from: string | NavEntry = null, filter?: (entry: NavEntry) => boolean): INavTreeEntry[] {
     let fromEntry = !_.isNull(from) ? (from instanceof NavEntry ? from : this.getEntry(from)) : null;
-    let _routes: NavEntry[] = _.filter(this.entries, e => e.parent == fromEntry && (filter ? filter(e) : true) && !e.isRedirect());
+    let _routes: NavEntry[] = _.filter(this.entries, e => e.parent == fromEntry && (filter ? filter(e) : true) && !e.isRedirect() && !e.toIgnore());
     let routes = _.map(_routes, route => {
       let r: INavTreeEntry = {label: route.label, isGroup: false};
       if (route.route) {
@@ -143,7 +145,7 @@ export class NavigatorService {
     let base = null;
     while (split.length > 0 && base == null) {
       split.pop();
-      base = _.find(this.entries, e => e.route != null && e.getRealPath() == split.join('/') && !e.isRedirect());
+      base = _.find(this.entries, e => e.route != null && e.getRealPath() == split.join('/') && !e.isRedirect() && !e.toIgnore());
     }
     return base;
   }

@@ -23,7 +23,6 @@ export class MenuComponent implements OnInit {
   @Input()
   level: number = null;
 
-
   @Input()
   filter: (e:NavEntry) => boolean = (e: NavEntry) => {
     let ret = true;
@@ -40,8 +39,9 @@ export class MenuComponent implements OnInit {
 
   tree: INavTreeEntry[] = [];
 
-  constructor(private navigator: NavigatorService) {
-  }
+
+  constructor(private navigator: NavigatorService) {}
+
 
   ngOnInit() {
     this.tree = this.navigator.getTree(this.base, this.filter.bind(this));

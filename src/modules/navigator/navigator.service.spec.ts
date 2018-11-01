@@ -171,9 +171,7 @@ describe('Service: NavigatorService', () => {
           ]
         }
       ]));
-
     });
-
   });
 
 
@@ -193,8 +191,7 @@ describe('Service: NavigatorService', () => {
         },
       ];
 
-      events: Observable<any> = new Observable<any>(() => {
-      });
+      events: Observable<any> = new Observable<any>(() => {});
 
       resetConfig(routes: Routes) {
         this.config = routes;

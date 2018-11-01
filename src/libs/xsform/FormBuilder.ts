@@ -3,9 +3,8 @@ import {FormObject} from './FormObject';
 import {Form} from './elements';
 
 import {ResolveDataValue} from './ResolveDataValue';
-import {EntityDef} from 'typexs-schema/libs/EntityDef';
-import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
-import {SchemaDef} from 'typexs-schema/libs/SchemaDef';
+import {EntityDef} from 'typexs-schema/libs/registry/EntityDef';
+import {PropertyDef} from 'typexs-schema/libs/registry/PropertyDef';
 import {EntityRegistry} from 'typexs-schema/libs/EntityRegistry';
 import * as _ from 'lodash';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
@@ -18,11 +17,11 @@ export class FormBuilder {
 
   private form: FormObject;
 
-  private schema: SchemaDef;
+  // private schema: SchemaDef;
 
   buildFromJSON(data: any): Form {
     this.data = data;
-    this.schema = EntityRegistry.getSchema('default');
+    // this.schema = EntityRegistry.getSchema('default');
     return <Form>this._buildForm(data);
   }
 
@@ -37,7 +36,7 @@ export class FormBuilder {
     let formObject: FormObject = null;
 
     if (!this.form) {
-      this.schema = EntityRegistry.getSchema(entity.schemaName);
+      // this.schema = EntityRegistry.getSchema(entity.object.getSchema());
       this.form = formObject = ContentComponentRegistry.createHandler('form');
       formObject.handle('name', entity.id());
       formObject.handle('binding', entity);
@@ -81,7 +80,7 @@ export class FormBuilder {
           let childObject = this._buildFormObject(entity, formObject);
           formObject.insert(childObject);
         } else {
-          let properties = this.schema.getPropertiesFor(property.targetRef.getClass());
+          let properties = EntityRegistry.getPropertyDefsFor(property.targetRef);
           for (let property of properties) {
             let childObject = this._buildFormObject(property, formObject);
             formObject.insert(childObject);
@@ -113,10 +112,20 @@ export class FormBuilder {
     return this._forInput(formType, property);
   }
 
-  private forEmail(formType: string, property: PropertyDef) {
+  private forHidden(formType: string, property: PropertyDef) {
     return this._forInput(formType, property);
   }
 
+  private forReadonly(formType: string, property: PropertyDef) {
+
+    let input = this._forInput('text', property);
+    input.handle('readonly', true);
+    return input;
+  }
+
+  private forEmail(formType: string, property: PropertyDef) {
+    return this._forInput(formType, property);
+  }
 
   private _forInput(formType: string, property: PropertyDef) {
     let formObject = ContentComponentRegistry.createHandler('input');

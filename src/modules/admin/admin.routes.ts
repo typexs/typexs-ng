@@ -5,6 +5,8 @@ import {SystemRoutesComponent} from './system/routes/system-routes.component';
 import {SystemStoragesComponent} from './system/storages/system-storages.component';
 import {SystemConfigComponent} from './system/config/system-config.component';
 import {NgRoutesComponent} from './ng/routes/ng-routes.component';
+import {EntityTypesComponent} from './entity/entity-types.component';
+import {EntityCreateComponent} from './entity/entity-create.component';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -24,7 +26,16 @@ export const ADMIN_ROUTES: Routes = [
       },
       {
         path: 'ng/routes', component: NgRoutesComponent, data: {label: 'Routes', group: 'admin'}
+      },
+
+      {
+        path: 'entity/types', component: EntityTypesComponent, data: {label: 'Types', group: 'admin'}
+      },
+
+      {
+        path: 'entity/:machineName/create', component: EntityCreateComponent, data: {label: 'Create entity',  skip:true}
       }
+
 
     ]
   },

@@ -1,6 +1,16 @@
 
 app:
-  name: typexs-base
+  name: typexs-ng
+
+
+storage:
+  default:
+    synchronize: true
+    type: sqlite
+    # database: ':memory:'
+    database: 'tmp/db_${app.name}.db'
+    #logger: simple-console
+    #logging: all
 
 
 

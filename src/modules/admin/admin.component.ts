@@ -1,5 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {NavigatorService} from '../navigator/navigator.service';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {AdminService} from './admin.service';
 
 @Component({

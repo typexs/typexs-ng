@@ -1,4 +1,4 @@
-import {PropertyDef} from 'typexs-schema/libs/PropertyDef';
+import {PropertyDef} from 'typexs-schema/libs/registry/PropertyDef';
 
 import * as _ from 'lodash';
 import {ResolveDataValue} from './ResolveDataValue';

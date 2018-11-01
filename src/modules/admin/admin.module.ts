@@ -12,6 +12,10 @@ import {SystemInfoService} from './system/system-info.service';
 import {SystemConfigComponent} from './system/config/system-config.component';
 import {AdminService} from './admin.service';
 import {NgRoutesComponent} from './ng/routes/ng-routes.component';
+import {EntityService} from './entity/entity.service';
+import {EntityTypesComponent} from './entity/entity-types.component';
+import {EntityCreateComponent} from './entity/entity-create.component';
+import {xFormsModule} from '../xsform/xforms.module';
 
 
 @NgModule({
@@ -21,16 +25,25 @@ import {NgRoutesComponent} from './ng/routes/ng-routes.component';
     SystemRoutesComponent,
     SystemStoragesComponent,
     SystemConfigComponent,
-    NgRoutesComponent
+    NgRoutesComponent,
+    EntityTypesComponent,
+    EntityCreateComponent
   ],
   imports: [
     NavigatorModule,
+    xFormsModule,
     BrowserModule,
     HttpClientModule,
     RouterModule.forChild(ADMIN_ROUTES)
   ],
-  exports: [AdminComponent],
-  providers: [SystemInfoService, AdminService]
+  exports: [
+    AdminComponent
+  ],
+  providers: [
+    SystemInfoService,
+    AdminService,
+    EntityService
+  ]
 
 })
 export class AdminModule {

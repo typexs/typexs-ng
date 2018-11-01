@@ -20,7 +20,7 @@
 
       <tr *ngFor="let systemRoute of routes">
         <td>{{systemRoute.context}}</td>
-        <td>{{systemRoute.route}}</td>
+        <td><a href="{{systemRoute.route}}" target="_blank">{{systemRoute.route}}</a></td>
         <td>{{systemRoute.method}}</td>
         <td>{{systemRoute.authorized}}</td>
         <td>{{systemRoute.credential}}</td>
