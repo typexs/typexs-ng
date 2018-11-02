@@ -19,7 +19,7 @@
         <td>{{entityDef.name}}</td>
         <td>{{entityDef.machineName}}</td>
         <td>
-          <button class="btn btn-primary">List</button>
+          <a class="btn btn-primary" [routerLink]="['/admin/entity',entityDef.machineName,'query']">Query</a>
           <a class="btn btn-success" [routerLink]="['/admin/entity',entityDef.machineName,'create']">New</a>
           <button class="btn btn-warning">Edit</button>
           <!-- <button class="btn btn-danger">Delete</button> -->

@@ -1,0 +1,25 @@
+<div class="card">
+  <div class="card-header">
+    <h3>Entity list</h3>
+  </div>
+  <div class="card-body">
+    <table class="table">
+      <thead>
+      <tr>
+        <th *ngFor="let prop of getPropertyDefs()">{{ prop.name }}</th>
+        <th>Ops</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let entity of entities">
+        <td *ngFor="let prop of getPropertyDefs()">{{ prop.get(entity) }}</td>
+        <td>
+          <a class="btn btn-success" [routerLink]="['/admin/entity',entityDef.machineName,'view', entityDef.buildLookupConditions(entity) ]">View</a>
+          <a class="btn btn-warning" [routerLink]="['/admin/entity',entityDef.machineName,'edit', entityDef.buildLookupConditions(entity) ]">Edit</a>
+          <a class="btn btn-danger" [routerLink]="['/admin/entity',entityDef.machineName,'delete', entityDef.buildLookupConditions(entity) ]">Delete</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

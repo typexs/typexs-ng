@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {EntityService} from './entity.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {EntityRegistry} from 'typexs-schema/libs/EntityRegistry';
 import {EntityDef} from 'typexs-schema/libs/registry/EntityDef';
 import * as _ from 'lodash';
@@ -21,8 +21,9 @@ export class EntityCreateComponent implements OnInit {
 
   error: any = null;
 
-  constructor(private entityService: EntityService, private route: ActivatedRoute) {
+  constructor(private entityService: EntityService, private route: ActivatedRoute, private router: Router) {
   }
+
 
   ngOnInit() {
     let sub = this.entityService.isReady();
@@ -30,6 +31,7 @@ export class EntityCreateComponent implements OnInit {
       this.load();
     });
   }
+
 
   load() {
     this.machineName = this.route.snapshot.paramMap.get('machineName');
@@ -43,16 +45,17 @@ export class EntityCreateComponent implements OnInit {
   }
 
 
-
   onSubmit($event: any) {
-
     console.log($event);
     if ($event.data.isValidated && $event.data.isSuccessValidated) {
-      this.entityService.create(this.machineName, this.instance).subscribe((res: any) => {
+      this.entityService.create(this.machineName, this.instance).subscribe(async (res: any) => {
         console.log('saved', res);
-        if(res){
-          _.merge(this.instance,res);
-          //_.merge(this.instance,res);
+        if (res) {
+          let idStr = this.entityDef.buildLookupConditions(res);
+          console.log(['admin/entity', this.machineName, idStr]);
+          await this.router.navigate(['admin/entity', this.machineName, 'view', idStr]);
+        } else {
+          // TODO error?
         }
       });
     }

@@ -7,6 +7,8 @@ import {SystemConfigComponent} from './system/config/system-config.component';
 import {NgRoutesComponent} from './ng/routes/ng-routes.component';
 import {EntityTypesComponent} from './entity/entity-types.component';
 import {EntityCreateComponent} from './entity/entity-create.component';
+import {EntityQueryComponent} from './entity/entity-query.component';
+import {EntityViewComponent} from './entity/entity-view.component';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -34,7 +36,14 @@ export const ADMIN_ROUTES: Routes = [
 
       {
         path: 'entity/:machineName/create', component: EntityCreateComponent, data: {label: 'Create entity',  skip:true}
+      },
+      {
+        path: 'entity/:machineName/view/:id', component: EntityViewComponent, data: {label: 'View entity',  skip:true}
+      },
+      {
+        path: 'entity/:machineName/query', component: EntityQueryComponent, data: {label: 'List entities',  skip:true}
       }
+
 
 
     ]

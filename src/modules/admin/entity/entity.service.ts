@@ -3,7 +3,8 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import * as _ from 'lodash';
 import {EntityRegistry} from 'typexs-schema/libs/EntityRegistry';
 import {EntityDef} from 'typexs-schema/libs/registry/EntityDef';
-import {BehaviorSubject, Observable, Subject} from '../../../../node_modules/rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {IFindOptions} from 'typexs-schema/libs/framework/IFindOptions';
 
 
 @Injectable()
@@ -50,6 +51,60 @@ export class EntityService {
   }
 
   get(entityName: string, entityId: any) {
+//    let entityDef = EntityRegistry.$().getEntityDefByName(entityName);
+    let obs = new BehaviorSubject<any>(null);
+    this.http.get('api/entity/' + entityName+ '/' + entityId).subscribe(
+      (res: any) => {
+        obs.next(res);
+      },
+      (err: HttpErrorResponse) => {
+        console.log(err.error);
+        console.log(err.name);
+        console.log(err.message);
+        console.log(err.status);
+        obs.error(err);
+      },
+      () => {obs.complete()}
+    );
+    return obs.asObservable();
+  }
+
+  query(entityName: string, query: any = null, options:IFindOptions = {}) {
+//    let entityDef = EntityRegistry.$().getEntityDefByName(entityName);
+    let obs = new BehaviorSubject<any>(null);
+    let queryParts = [];
+    if(_.isPlainObject(query)){
+      queryParts.push('query='+JSON.stringify(query));
+    }
+    if(_.isNumber(options.limit)){
+      queryParts.push('limit='+options.limit)
+    }
+    if(_.isNumber(options.offset)){
+      queryParts.push('offset='+options.offset)
+    }
+    if(_.isPlainObject(options.sort)){
+      queryParts.push('sort='+JSON.stringify(options.sort))
+    }
+
+    let url = 'api/entity/' + entityName;
+    if(queryParts.length > 0){
+      url += '?'+queryParts.join('&');
+    }
+    console.log(url);
+    this.http.get(url).subscribe(
+      (res: any) => {
+        obs.next(res);
+      },
+      (err: HttpErrorResponse) => {
+        console.log(err.error);
+        console.log(err.name);
+        console.log(err.message);
+        console.log(err.status);
+        obs.error(err);
+      },
+      () => {obs.complete()}
+    );
+    return obs.asObservable();
   }
 
   create(entityName: string, entity: any): Observable<any> {

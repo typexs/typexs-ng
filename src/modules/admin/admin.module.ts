@@ -16,6 +16,8 @@ import {EntityService} from './entity/entity.service';
 import {EntityTypesComponent} from './entity/entity-types.component';
 import {EntityCreateComponent} from './entity/entity-create.component';
 import {xFormsModule} from '../xsform/xforms.module';
+import {EntityQueryComponent} from './entity/entity-query.component';
+import {EntityViewComponent} from './entity/entity-view.component';
 
 
 @NgModule({
@@ -27,7 +29,9 @@ import {xFormsModule} from '../xsform/xforms.module';
     SystemConfigComponent,
     NgRoutesComponent,
     EntityTypesComponent,
-    EntityCreateComponent
+    EntityCreateComponent,
+    EntityQueryComponent,
+    EntityViewComponent
   ],
   imports: [
     NavigatorModule,
