@@ -29,7 +29,6 @@ export class EntityService {
       (entities: Object) => {
         if (_.isArray(entities)) {
           this.entityDefs = [];
-          EntityRegistry.reset();
           entities.forEach(entityDefJson => {
             let ed = EntityRegistry.fromJson(entityDefJson);
             this.entityDefs.push(ed);
