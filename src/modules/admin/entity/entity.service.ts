@@ -14,17 +14,25 @@ export class EntityService {
 
   private _isReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
+  private _ready: boolean = false;
+
   constructor(private http: HttpClient) {
     this.reloadMetadata();
   }
 
 
-  isReady(): Observable<boolean> {
-    return this._isReady.asObservable();
+  isReady(callback: () => void): void {
+    if(this._ready){
+      callback();
+    }
+    this._isReady.asObservable().subscribe(null, null, () => {
+      callback();
+    });;
   }
 
 
   reloadMetadata() {
+    this._ready = false;
     this.http.get('api/metadata/entities').subscribe(
       (entities: Object) => {
         if (_.isArray(entities)) {
@@ -35,6 +43,7 @@ export class EntityService {
           });
         }
         this._isReady.complete();
+        this._ready = true;
       },
       (err: HttpErrorResponse) => {
         console.log(err.error);
@@ -50,11 +59,23 @@ export class EntityService {
   }
 
   get(entityName: string, entityId: any) {
-//    let entityDef = EntityRegistry.$().getEntityDefByName(entityName);
+     let entityDef = EntityRegistry.$().getEntityDefByName(entityName);
     let obs = new BehaviorSubject<any>(null);
     this.http.get('api/entity/' + entityName+ '/' + entityId).subscribe(
       (res: any) => {
-        obs.next(res);
+        if(res){
+          let result = null;
+          if(_.isArray(res)){
+            result = res.map(r => entityDef.build(r));
+          }else{
+            result = entityDef.build(res);
+          }
+
+          obs.next(result);
+        }
+
+
+
       },
       (err: HttpErrorResponse) => {
         console.log(err.error);
@@ -113,14 +134,15 @@ export class EntityService {
       (res: any) => {
         //let data = res.json();
         console.log(res);
-        if(_.isArray(res)){
-          throw new Error('TODO');
 
+        let result = null;
+        if(_.isArray(res)){
+          result = res.map(r => entityDef.build(r));
         }else{
-          res = entityDef.build(res);
+          result = entityDef.build(res);
         }
 
-        obs.next(res);
+        obs.next(result);
       },
       (err: HttpErrorResponse) => {
         console.log(err.error);
@@ -137,6 +159,38 @@ export class EntityService {
   }
 
   update(entityName: string, entityId: any, entity: any) {
+    // TODO if empty entity ???
+    let entityDef = EntityRegistry.$().getEntityDefByName(entityName);
+    let id = entityDef.buildLookupConditions(entity);
+    if(entityId != id){
+      throw new Error('something is wrong');
+    }
+    let obs = new BehaviorSubject<any>(null);
+    this.http.post('api/entity/' + entityName + '/' + entityId, entity).subscribe(
+      (res: any) => {
+        //let data = res.json();
+        console.log(res);
+        let result = null;
+        if(_.isArray(res)){
+          result = res.map(r => entityDef.build(r));
+        }else{
+          result = entityDef.build(res);
+        }
+
+        obs.next(result);
+      },
+      (err: HttpErrorResponse) => {
+        console.log(err.error);
+        console.log(err.name);
+        console.log(err.message);
+        console.log(err.status);
+        obs.error(err);
+      },
+      () => {obs.complete()}
+
+    );
+
+    return obs.asObservable();
   }
 
   delete(entityName: string, entityId: any) {

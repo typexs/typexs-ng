@@ -14,10 +14,11 @@ import {AdminService} from './admin.service';
 import {NgRoutesComponent} from './ng/routes/ng-routes.component';
 import {EntityService} from './entity/entity.service';
 import {EntityTypesComponent} from './entity/entity-types.component';
-import {EntityCreateComponent} from './entity/entity-create.component';
+import {EntityModifyComponent} from './entity/entity-modify.component';
 import {xFormsModule} from '../xsform/xforms.module';
 import {EntityQueryComponent} from './entity/entity-query.component';
 import {EntityViewComponent} from './entity/entity-view.component';
+import {EntityStructComponent} from './entity/entity-struct.component';
 
 
 @NgModule({
@@ -29,9 +30,10 @@ import {EntityViewComponent} from './entity/entity-view.component';
     SystemConfigComponent,
     NgRoutesComponent,
     EntityTypesComponent,
-    EntityCreateComponent,
+    EntityModifyComponent,
     EntityQueryComponent,
-    EntityViewComponent
+    EntityViewComponent,
+    EntityStructComponent
   ],
   imports: [
     NavigatorModule,

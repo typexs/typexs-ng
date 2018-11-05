@@ -28,8 +28,7 @@ export class EntityViewComponent implements OnInit {
 
 
   ngOnInit() {
-    let sub = this.entityService.isReady();
-    sub.subscribe(null, null, () => {
+    this.entityService.isReady(() => {
       this.load();
     });
   }

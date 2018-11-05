@@ -6,9 +6,10 @@ import {SystemStoragesComponent} from './system/storages/system-storages.compone
 import {SystemConfigComponent} from './system/config/system-config.component';
 import {NgRoutesComponent} from './ng/routes/ng-routes.component';
 import {EntityTypesComponent} from './entity/entity-types.component';
-import {EntityCreateComponent} from './entity/entity-create.component';
+import {EntityModifyComponent} from './entity/entity-modify.component';
 import {EntityQueryComponent} from './entity/entity-query.component';
 import {EntityViewComponent} from './entity/entity-view.component';
+import {EntityStructComponent} from './entity/entity-struct.component';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -35,16 +36,20 @@ export const ADMIN_ROUTES: Routes = [
       },
 
       {
-        path: 'entity/:machineName/create', component: EntityCreateComponent, data: {label: 'Create entity',  skip:true}
+        path: 'entity/:machineName/create', component: EntityModifyComponent, data: {label: 'Create entity', skip: true}
       },
       {
-        path: 'entity/:machineName/view/:id', component: EntityViewComponent, data: {label: 'View entity',  skip:true}
+        path: 'entity/:machineName/view/:id', component: EntityViewComponent, data: {label: 'View entity', skip: true}
       },
       {
-        path: 'entity/:machineName/query', component: EntityQueryComponent, data: {label: 'List entities',  skip:true}
+        path: 'entity/:machineName/edit/:id', component: EntityModifyComponent, data: {label: 'Edit entity', skip: true}
+      },
+      {
+        path: 'entity/:machineName/query', component: EntityQueryComponent, data: {label: 'List entities', skip: true}
+      },
+      {
+        path: 'entity/:machineName/structure', component: EntityStructComponent, data: {label: 'Entity type structure', skip: true}
       }
-
-
 
     ]
   },

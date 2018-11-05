@@ -1,0 +1,23 @@
+<div class="card">
+  <div class="card-header">
+    <h3>Entity structure {{entityDef ? entityDef.name : ''}}</h3>
+  </div>
+  <div class="card-body">
+
+    <div *ngIf="entityDef">
+      Options:
+      <pre>
+      {{ entityDef.getOptions() | json }}
+      </pre>
+
+
+      <div *ngFor="let propertyDef of entityDef.getPropertyDefs()" class="row">
+        <div class="col-1">{{propertyDef.name}}</div>
+        <div class="col-1">{{propertyDef.dataType}}</div>
+        <div class="col-1">{{propertyDef.targetRef ? propertyDef.targetRef.className : null}}</div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

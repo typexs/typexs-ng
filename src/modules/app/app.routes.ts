@@ -39,7 +39,7 @@ export const APP_ROUTES: Routes = [
     path: '', redirectTo: 'demo', pathMatch: 'full'
   },
   {
-    path: '**', redirectTo: ''
+    path: '**', redirectTo: 'demo'
   }
 
 ];

@@ -19,12 +19,17 @@
         <td>{{entityDef.getClassRef().getSchema()}}</td>
         <td>{{entityDef.name}}</td>
         <td>{{entityDef.machineName}}</td>
-        <td><pre>{{entityDef.getOptions() | json}}</pre></td>
+        <td>
+          <pre>{{entityDef.getOptions() | json}}</pre>
+        </td>
         <td>
           <a class="btn btn-primary" [routerLink]="['/admin/entity',entityDef.machineName,'query']">Query</a>
           <a class="btn btn-success" [routerLink]="['/admin/entity',entityDef.machineName,'create']">New</a>
+          <a class="btn btn-warning" [routerLink]="['/admin/entity',entityDef.machineName,'structure']">Schema</a>
+          <!--
           <button class="btn btn-warning">Edit</button>
-          <!-- <button class="btn btn-danger">Delete</button> -->
+          <button class="btn btn-danger">Delete</button>
+          -->
         </td>
       </tr>
       </tbody>
