@@ -9,7 +9,7 @@ import {EntityTypesComponent} from './entity/entity-types.component';
 import {EntityModifyComponent} from './entity/entity-modify.component';
 import {EntityQueryComponent} from './entity/entity-query.component';
 import {EntityViewComponent} from './entity/entity-view.component';
-import {EntityStructComponent} from './entity/entity-struct.component';
+import {EntityStructComponent} from './entity/struct/entity-struct.component';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -48,7 +48,10 @@ export const ADMIN_ROUTES: Routes = [
         path: 'entity/:machineName/query', component: EntityQueryComponent, data: {label: 'List entities', skip: true}
       },
       {
-        path: 'entity/:machineName/structure', component: EntityStructComponent, data: {label: 'Entity type structure', skip: true}
+        path: 'entity/:machineName/structure', component: EntityStructComponent, data: {
+          label: 'Entity type structure', skip: true,
+          runGuardsAndResolvers: 'always'
+        }
       }
 
     ]

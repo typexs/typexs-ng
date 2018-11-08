@@ -11,4 +11,8 @@ export class Person {
 
   @Property({type: 'string', form: 'text'})
   lastName: string;
+
+  label(){
+    return this.lastName + ', ' + this.firstName;
+  }
 }

@@ -19,6 +19,7 @@ export * from "./libs/xsform/elements/Input";
 export * from "./libs/xsform/elements/Radio";
 export * from "./libs/xsform/elements/Ref";
 export * from "./libs/xsform/elements/Select";
+export * from "./libs/xsform/elements/Option";
 export * from "./libs/xsform/elements/Tab";
 export * from "./libs/xsform/elements/Tabs";
 export * from "./libs/xsform/FormBuilder";

@@ -18,7 +18,8 @@ import {EntityModifyComponent} from './entity/entity-modify.component';
 import {xFormsModule} from '../xsform/xforms.module';
 import {EntityQueryComponent} from './entity/entity-query.component';
 import {EntityViewComponent} from './entity/entity-view.component';
-import {EntityStructComponent} from './entity/entity-struct.component';
+import {EntityStructComponent} from './entity/struct/entity-struct.component';
+import {EntityOptionsService} from './entity/entity-options.service';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import {EntityStructComponent} from './entity/entity-struct.component';
     EntityModifyComponent,
     EntityQueryComponent,
     EntityViewComponent,
-    EntityStructComponent
+    EntityStructComponent,
+
   ],
   imports: [
     NavigatorModule,
@@ -48,7 +50,9 @@ import {EntityStructComponent} from './entity/entity-struct.component';
   providers: [
     SystemInfoService,
     AdminService,
-    EntityService
+    EntityService,
+    EntityOptionsService,
+    {provide: 'EntityOptionsService', useClass: EntityOptionsService}
   ]
 
 })

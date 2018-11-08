@@ -90,7 +90,7 @@ export class EntityService {
   }
 
   query(entityName: string, query: any = null, options:IFindOptions = {}) {
-//    let entityDef = EntityRegistry.$().getEntityDefByName(entityName);
+    let entityDef = EntityRegistry.$().getEntityDefByName(entityName);
     let obs = new BehaviorSubject<any>(null);
     let queryParts = [];
     if(_.isPlainObject(query)){
@@ -113,7 +113,15 @@ export class EntityService {
     console.log(url);
     this.http.get(url).subscribe(
       (res: any) => {
-        obs.next(res);
+        if(res){
+          let result = null;
+          if(_.isArray(res)){
+            result = res.map(r => entityDef.build(r));
+          }else{
+            result = entityDef.build(res);
+          }
+          obs.next(result);
+        }
       },
       (err: HttpErrorResponse) => {
         console.log(err.error);

@@ -1,0 +1,48 @@
+import {Injectable} from '@angular/core';
+import {EntityService} from './entity.service';
+import {PropertyDef} from 'typexs-schema/libs/registry/PropertyDef';
+import {ISelectOption, ISelectOptionsService} from '../../xsform/ISelectOptionsService';
+import {BehaviorSubject, Observable} from 'rxjs';
+import * as _ from 'lodash';
+
+
+@Injectable()
+export class EntityOptionsService implements ISelectOptionsService {
+
+
+  constructor(private entityService: EntityService) {
+  }
+
+
+  options(propertyDef: PropertyDef, limit: number = 25, page: number = 0): Observable<ISelectOption[]> {
+    let bs = new BehaviorSubject<ISelectOption[]>(null);
+    if (propertyDef.targetRef.isEntity) {
+      let entityDef = propertyDef.targetRef.getEntity();
+      this.entityService.query(entityDef.machineName, null, {limit: limit}).subscribe(
+        entities => {
+          let _entities: ISelectOption[] = [];
+
+          entities.forEach((e: any) => {
+            let option: ISelectOption = {};
+            option.value = entityDef.buildLookupConditions(e);
+            option.label = entityDef.label(e);
+            _entities.push(option);
+          });
+
+          bs.next(_entities);
+        },
+        (e: Error) => {
+          console.error(e);
+        },
+        () => {bs.complete()}
+      );
+    } else {
+      bs.error(new Error('no entity as target in property'));
+    }
+
+    return bs.asObservable();
+
+  }
+
+
+}

@@ -1,4 +1,4 @@
-import {Entity, Property} from 'typexs-schema';
+import {Entity, IProperty, Property} from 'typexs-schema';
 import {Person} from './Person';
 
 @Entity()
@@ -10,6 +10,10 @@ export class Book {
   @Property({type: 'string', form: 'text'})
   title: string;
 
-  @Property({type: Person, form: 'select'})
+  @Property(<IProperty & any>{type: Person, form: 'select', enum: 'EntityOptionsService'})
   author: Person;
+
+  label() {
+    return this.title;
+  }
 }
