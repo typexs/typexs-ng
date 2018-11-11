@@ -6,7 +6,8 @@ import {AbstractFormComponent} from '../../libs/xsform/AbstractFormComponent';
 import {Select} from '../../libs/xsform/elements';
 import {ViewComponent} from '../../libs/xsview/decorators/ViewComponent';
 import {Option} from '../../libs/xsform/elements/Option';
-import {ISelectOptionsService} from './ISelectOptionsService';
+import {ISelectOption, ISelectOptionsService} from './ISelectOptionsService';
+import {Subject} from '../../../node_modules/rxjs';
 
 
 @ViewComponent('select')
@@ -28,56 +29,58 @@ export class SelectComponent extends AbstractFormComponent<Select> implements On
     this.loadOptions();
   }
 
+  static checkAndCreateOption(e:any){
+    let o = new Option();
+    if (_.isString(e)) {
+      o.label = o.value = e;
+    } else if (_.has(e, 'label') || _.has(e, 'value')) {
+      o.label = _.get(e, 'label', _.get(e, 'value'));
+      o.value = _.get(e, 'value', _.get(e, 'label'));
+    } else {
+      throw new Error('not found');
+    }
+    return o;
+  }
+
   loadOptions() {
     let enums = this.retrieveEnum();
 
     if (enums) {
-      if (enums instanceof Observable) {
-        enums.subscribe(e => {
-          let o = new Option();
-          if (_.isString(e)) {
-            o.label = o.value = e;
-          } else if (_.has(e, 'label') || _.has(e, 'value')) {
-            o.label = _.get(e, 'label', _.get(e, 'value'));
-            o.value = _.get(e, 'value', _.get(e, 'label'));
-          } else {
-            throw new Error('not found');
+
+      if (!_.isArray(enums)) {
+        enums.subscribe((e:ISelectOption[]) => {
+          if(e){
+            e.forEach(_e => {
+              this.cachedOptions.push(SelectComponent.checkAndCreateOption(_e));
+            })
           }
-          this.cachedOptions.push(o);
         });
       } else {
         enums.forEach(e => {
-          let o = new Option();
-          if (_.isString(e)) {
-            o.label = o.value = e;
-          } else if (_.has(e, 'label') || _.has(e, 'value')) {
-            o.label = _.get(e, 'label', _.get(e, 'value'));
-            o.value = _.get(e, 'value', _.get(e, 'label'));
-          } else {
-            throw new Error('not found');
-          }
-          this.cachedOptions.push(o);
+          this.cachedOptions.push(SelectComponent.checkAndCreateOption(e));
         });
       }
     }
   }
 
 
-  retrieveEnum(): any[] | Observable<any[]> {
+  retrieveEnum(): any[] | Observable<ISelectOption[]> {
     if (_.isArray(this.elem.enum)) {
       return this.elem.enum;
     } else if (_.isFunction(this.elem.enum)) {
       return (<ISelectOptionsService>this.injector.get(this.elem.enum)).options(this.elem.getBinding());
     } else if (_.isString(this.elem.enum)) {
       let error = null;
+      let observer = null;
       try {
         // maybe is string injector
-        return (<ISelectOptionsService>this.injector.get(this.elem.enum)).options(this.elem.getBinding());
+        observer =  (<ISelectOptionsService>this.injector.get(this.elem.enum));
       } catch (e) {
         error = e;
       }
 
-      if (_.isNull(error)) {
+      if (!_.isNull(error)) {
+
         // check if an entry with the propertyname exists
         let lookupPath: string | string[] = [];
         if (this.context.parent) {
@@ -92,6 +95,8 @@ export class SelectComponent extends AbstractFormComponent<Select> implements On
         } else {
           throw new Error('not found enum reference');
         }
+      }else{
+        return observer.options(this.elem.getBinding());
       }
     }
     return [];

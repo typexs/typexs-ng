@@ -10,6 +10,7 @@ import {EntityModifyComponent} from './entity/entity-modify.component';
 import {EntityQueryComponent} from './entity/entity-query.component';
 import {EntityViewComponent} from './entity/entity-view.component';
 import {EntityStructComponent} from './entity/struct/entity-struct.component';
+import {EntityDeleteComponent} from './entity/entity-delete.component';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -30,11 +31,9 @@ export const ADMIN_ROUTES: Routes = [
       {
         path: 'ng/routes', component: NgRoutesComponent, data: {label: 'Routes', group: 'admin'}
       },
-
       {
         path: 'entity/types', component: EntityTypesComponent, data: {label: 'Types', group: 'admin'}
       },
-
       {
         path: 'entity/:machineName/create', component: EntityModifyComponent, data: {label: 'Create entity', skip: true}
       },
@@ -45,10 +44,14 @@ export const ADMIN_ROUTES: Routes = [
         path: 'entity/:machineName/edit/:id', component: EntityModifyComponent, data: {label: 'Edit entity', skip: true}
       },
       {
+        path: 'entity/:machineName/delete/:id', component: EntityDeleteComponent, data: {label: 'Delete entity', skip: true}
+      },
+      {
         path: 'entity/:machineName/query', component: EntityQueryComponent, data: {label: 'List entities', skip: true}
       },
       {
-        path: 'entity/:machineName/structure', component: EntityStructComponent, data: {
+        path: 'entity/:machineName/structure', component: EntityStructComponent,
+        data: {
           label: 'Entity type structure', skip: true,
           runGuardsAndResolvers: 'always'
         }

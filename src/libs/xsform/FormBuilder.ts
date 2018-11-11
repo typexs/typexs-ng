@@ -87,6 +87,11 @@ export class FormBuilder {
           }
         }
       }
+
+      if(!property.isNullable()){
+
+      }
+
     }
 
     formObject.postProcess();

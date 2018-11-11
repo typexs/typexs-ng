@@ -7,7 +7,10 @@ import {ClassRef} from 'typexs-schema/libs/registry/ClassRef';
 import {PropertyDef} from 'typexs-schema/libs/registry/PropertyDef';
 import {LookupRegistry} from 'typexs-schema/libs/LookupRegistry';
 import {XS_TYPE_PROPERTY} from 'typexs-schema/libs/Constants';
-import {Observable, Subscription} from '../../../../../node_modules/rxjs';
+import {Observable, Subscription} from 'rxjs';
+import {MetadataStorage} from 'class-validator/metadata/MetadataStorage';
+import {getFromContainer} from 'class-validator/container';
+import * as _ from 'lodash';
 
 
 @Component({
@@ -76,6 +79,11 @@ export class EntityStructComponent implements OnInit {
         this.scan(props.propertyRef, level + 1);
       }
     }
+  }
+
+  validator(property:PropertyDef){
+    let validators = getFromContainer(MetadataStorage).getTargetValidationMetadatas(this.entityDef.getClass(),null);
+    return _.filter(validators,v => v.propertyName === property.name);
   }
 
 

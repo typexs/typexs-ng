@@ -11,6 +11,13 @@ import {ViewParentComponent} from './search/view-parent.component';
 import {ContentViewChildDemoComponent} from './content-view-child-demo.component';
 import {DemosComponent} from './demos.component';
 
+/*
+import {Person} from './entities/Person';
+Person;
+
+import {Book} from './entities/Book';
+Book;
+*/
 
 @NgModule({
   declarations: [

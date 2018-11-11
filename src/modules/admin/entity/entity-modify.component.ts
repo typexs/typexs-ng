@@ -25,7 +25,9 @@ export class EntityModifyComponent implements OnInit {
 
   error: any = null;
 
-  constructor(private entityService: EntityService, private route: ActivatedRoute, private router: Router) {
+  constructor(private entityService: EntityService,
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
 
@@ -44,8 +46,8 @@ export class EntityModifyComponent implements OnInit {
       if (this.id) {
         this.new = false;
         this.entityService.get(this.machineName, this.id).subscribe((entity) => {
-          console.log('loaded',entity)
-          if(entity){
+          console.log('loaded', entity);
+          if (entity) {
             this.instance = entity;
           }
 
@@ -65,8 +67,9 @@ export class EntityModifyComponent implements OnInit {
   onSubmit($event: any) {
     console.log($event);
     if ($event.data.isValidated && $event.data.isSuccessValidated) {
+      let instance = $event.data.instance;
       if (this.new) {
-        this.entityService.create(this.machineName, this.instance).subscribe(async (res: any) => {
+        this.entityService.create(this.machineName, instance).subscribe(async (res: any) => {
           console.log('saved', res);
           if (res) {
             let idStr = this.entityDef.buildLookupConditions(res);
@@ -74,12 +77,13 @@ export class EntityModifyComponent implements OnInit {
             // TODO flash message
             await this.router.navigate(['admin/entity', this.machineName, 'view', idStr]);
           } else {
+
             // TODO error?
           }
         });
-      }else{
-        this.entityService.update(this.machineName,this.id, this.instance).subscribe(async (res: any) => {
-          console.log('saved', res);
+      } else {
+        this.entityService.update(this.machineName, this.id, instance).subscribe(async (res: any) => {
+          console.log('saved update', res);
           if (res) {
             let idStr = this.entityDef.buildLookupConditions(res);
             console.log(['admin/entity', this.machineName, idStr]);

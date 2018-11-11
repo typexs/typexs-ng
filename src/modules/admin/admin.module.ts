@@ -20,6 +20,7 @@ import {EntityQueryComponent} from './entity/entity-query.component';
 import {EntityViewComponent} from './entity/entity-view.component';
 import {EntityStructComponent} from './entity/struct/entity-struct.component';
 import {EntityOptionsService} from './entity/entity-options.service';
+import {EntityDeleteComponent} from './entity/entity-delete.component';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import {EntityOptionsService} from './entity/entity-options.service';
     NgRoutesComponent,
     EntityTypesComponent,
     EntityModifyComponent,
+    EntityDeleteComponent,
     EntityQueryComponent,
     EntityViewComponent,
     EntityStructComponent,

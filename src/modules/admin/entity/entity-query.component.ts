@@ -3,7 +3,7 @@ import {EntityService} from './entity.service';
 import {ActivatedRoute} from '@angular/router';
 import {EntityRegistry} from 'typexs-schema/libs/EntityRegistry';
 import {EntityDef} from 'typexs-schema/libs/registry/EntityDef';
-import * as _ from 'lodash';
+import {PropertyDef} from 'typexs-schema/libs/registry/PropertyDef';
 
 @Component({
   selector: 'entity-query',
@@ -69,5 +69,23 @@ export class EntityQueryComponent implements OnInit {
     }
   }
 
+
+  fieldDisplay(prop:PropertyDef){
+    if(prop.isEntityReference()){
+      if(prop.isCollection()){
+        return 'entity_reference_array';
+      }else{
+        return 'entity_reference';
+      }
+    }else if(prop.isReference()) {
+      if(prop.isCollection()){
+        return 'object_reference_array';
+      }else{
+        return 'object_reference';
+      }
+    }else{
+      return 'value';
+    }
+  }
 
 }

@@ -78,16 +78,71 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
     }
   }
 
+  _value:any = null;
+
 
   get value() {
+    if(this._value){
+      return this._value;
+    }else{
+      let path = this.context.path();
+      this._value = _.get(this.data.instance, path, null);
+      if(this._value){
+        let binding = this.elem.getBinding();
+        if(binding.isEntityReference()) {
+          if(_.isArray(this._value)){
+            this._value = this._value.map(v => binding.targetRef.getEntity().buildLookupConditions(v)+'');
+          }else{
+            let cond = binding.targetRef.getEntity().buildLookupConditions(this._value);
+            this._value = [cond];
+          }
+        }
+      }
+    }
+    return this._value;
+    /*
     let path = this.context.path();
-    return _.get(this.data.instance, path, null);
+    let binding = this.elem.getBinding();
+    if(binding.isEntityReference()){
+      let refs = _.get(this.data.instance, path, null);
+      if(refs){
+        console.log('get',refs)
+        if(_.isArray(refs)){
+          refs = refs.map(v => binding.targetRef.getEntity().buildLookupConditions(v)+'');
+        }else{
+          let cond = binding.targetRef.getEntity().buildLookupConditions(refs)+'';
+          console.log('get',cond);
+          refs = [cond];
+        }
+      }
+      return refs;
+    }else{
+      return _.get(this.data.instance, path, null);
+    }*/
   }
 
 
   set value(v: any) {
+    this._value = v;
+
     let path = this.context.path();
-    _.set(this.data.instance, path, v);
+    let binding = this.elem.getBinding();
+    if(binding.isEntityReference()){
+      let data = [];
+      if(_.isArray(v)){
+        data = v;
+      }else{
+        data = [v]
+      }
+      let refs = data.map(v => binding.targetRef.getEntity().createLookupConditions(v));
+      if(!binding.isCollection()){
+        refs = refs.shift();
+      }
+      _.set(this.data.instance, path, refs);
+    }else{
+      _.set(this.data.instance, path, v);
+    }
+
   }
 
 

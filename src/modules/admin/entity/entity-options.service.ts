@@ -19,17 +19,21 @@ export class EntityOptionsService implements ISelectOptionsService {
     if (propertyDef.targetRef.isEntity) {
       let entityDef = propertyDef.targetRef.getEntity();
       this.entityService.query(entityDef.machineName, null, {limit: limit}).subscribe(
-        entities => {
-          let _entities: ISelectOption[] = [];
+        result => {
+          if(result){
+            let _entities: ISelectOption[] = [];
 
-          entities.forEach((e: any) => {
-            let option: ISelectOption = {};
-            option.value = entityDef.buildLookupConditions(e);
-            option.label = entityDef.label(e);
-            _entities.push(option);
-          });
+            if(result.entities){
+              result.entities.forEach((e: any) => {
+                let option: ISelectOption = {};
+                option.value = entityDef.buildLookupConditions(e);
+                option.label = entityDef.label(e);
+                _entities.push(option);
+              });
+            }
 
-          bs.next(_entities);
+            bs.next(_entities);
+          }
         },
         (e: Error) => {
           console.error(e);
