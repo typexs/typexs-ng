@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import * as _ from 'lodash';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {IFindOptions} from 'typexs-schema/libs/framework/IFindOptions';
 import {EntityRegistry} from 'typexs-schema/libs/EntityRegistry';
 import {EntityDef} from 'typexs-schema/libs/registry/EntityDef';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {IFindOptions} from 'typexs-schema/libs/framework/IFindOptions';
 
 
 @Injectable()
@@ -21,7 +21,7 @@ export class EntityService {
   }
 
 
-  isReady(callback: () => void): void {
+  isReady(callback: Function): void {
     if (this._ready) {
       callback();
     }
@@ -206,13 +206,16 @@ export class EntityService {
   }
 
 
+  private static _beforeBuild(entityDef: EntityDef, from: any, to: any) {
+    _.keys(from).filter(k => k.startsWith('$')).forEach(k => {
+      to[k] = from[k];
+    });
+  }
+
+
   private static _buildEntitySingle(entityDef: EntityDef, entity: any) {
     return entityDef.build(entity, {
-      beforeBuild: (entityDef: EntityDef, from: any, to: any) => {
-        _.keys(from).filter(k => k.startsWith('$')).forEach(k => {
-          to[k] = from[k];
-        });
-      }
+      beforeBuild: EntityService._beforeBuild
     });
   }
 
