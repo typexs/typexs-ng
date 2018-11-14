@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {IModule} from 'typexs-base/api/IModule';
 import * as _ from 'lodash';
-import {SystemInfoService} from '../system-info.service';
+
+import {SystemInfoService} from '../../../system/system-info.service';
 
 @Component({
   selector: 'system-modules',

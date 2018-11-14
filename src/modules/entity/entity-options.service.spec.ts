@@ -1,14 +1,8 @@
-
 import {expect} from 'chai';
 import {TestBed} from '@angular/core/testing';
-import {Router, Routes} from '@angular/router';
-import {APP_BASE_HREF} from '@angular/common';
-import {ApplicationInitStatus, InjectionToken} from '@angular/core';
-import {RouterTestingModule} from '@angular/router/testing';
-import {BrowserTestingModule} from '@angular/platform-browser/testing';
 import {EntityOptionsService} from './entity-options.service';
 import {EntityService} from './entity.service';
-import {HttpClientTestingModule} from '../../../../node_modules/@angular/common/http/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 
 describe('Service: EntityOptionsService', () => {

@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 
 
 import * as _ from 'lodash';
 import {IStorageOptions} from 'typexs-base/libs/storage/IStorageOptions';
-import {SystemInfoService} from '../system-info.service';
+import {SystemInfoService} from '../../../system/system-info.service';
 
 
 const API_URL = '/api/storages';

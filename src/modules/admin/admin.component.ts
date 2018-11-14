@@ -14,4 +14,9 @@ export class AdminComponent  {
   }
 
 
+  getUser(){
+    return this.adminInitService.getAuthService().getUser();
+  }
+
+
 }

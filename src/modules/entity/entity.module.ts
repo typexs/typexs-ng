@@ -1,0 +1,41 @@
+import {NgModule} from '@angular/core';
+import {EntityTypesComponent} from './types/entity-types.component';
+import {EntityModifyComponent} from './modify/entity-modify.component';
+import {EntityDeleteComponent} from './delete/entity-delete.component';
+import {EntityQueryComponent} from './query/entity-query.component';
+import {EntityViewComponent} from './view/entity-view.component';
+import {EntityStructComponent} from './struct/entity-struct.component';
+import {EntityService} from './entity.service';
+import {EntityOptionsService} from './entity-options.service';
+import {xFormsModule} from '../xsform/xforms.module';
+import {BrowserModule} from '@angular/platform-browser';
+import {HttpClientModule} from '@angular/common/http';
+import {SystemModule} from '../system/system.module';
+import {RouterModule} from '@angular/router';
+
+@NgModule({
+  declarations: [
+    EntityTypesComponent,
+    EntityModifyComponent,
+    EntityDeleteComponent,
+    EntityQueryComponent,
+    EntityViewComponent,
+    EntityStructComponent
+  ],
+  imports: [
+    SystemModule,
+    BrowserModule,
+    RouterModule,
+    HttpClientModule,
+    xFormsModule
+  ],
+  exports: [],
+  providers: [
+    EntityService,
+    EntityOptionsService,
+    {provide: 'EntityOptionsService', useClass: EntityOptionsService}]
+})
+export class EntityModule {
+
+
+}

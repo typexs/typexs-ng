@@ -1,11 +1,19 @@
 <div class="wrapper">
   <header class="admin-header navbar">
     <a class="navbar-brand" href="/admin#">Admin</a>
-    <ul class="nav navbar-nav d-md-down-none">
+
+    <ul class="nav navbar-nav ml-auto">
       <li class="nav-item px-3">
         <a class="nav-link" routerLink="/">Home</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/admin/user">
+          <img class="img-avatar" alt="{{ getUser().username }}" />
+        </a>
+      </li>
     </ul>
+
+    <!-- TODO add User-->
   </header>
 
   <div class="admin-body">

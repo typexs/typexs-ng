@@ -5,6 +5,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {IFindOptions} from 'typexs-schema/libs/framework/IFindOptions';
 import {EntityRegistry} from 'typexs-schema/libs/EntityRegistry';
 import {EntityDef} from 'typexs-schema/libs/registry/EntityDef';
+import {AuthService} from '../system/api/auth/auth.service';
 
 
 @Injectable()
@@ -16,7 +17,7 @@ export class EntityService {
 
   private _ready: boolean = false;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authService: AuthService) {
     this.reloadMetadata();
   }
 

@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {EntityService} from './entity.service';
 import {PropertyDef} from 'typexs-schema/libs/registry/PropertyDef';
-import {ISelectOption, ISelectOptionsService} from '../../xsform/ISelectOptionsService';
+
 import {BehaviorSubject, Observable} from 'rxjs';
-import * as _ from 'lodash';
+import {ISelectOption, ISelectOptionsService} from '../xsform/ISelectOptionsService';
 
 
 @Injectable()

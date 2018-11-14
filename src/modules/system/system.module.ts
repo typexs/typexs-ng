@@ -1,11 +1,17 @@
 import {NgModule} from '@angular/core';
+import {SystemInfoService} from './system-info.service';
+import {AuthService} from './api/auth/auth.service';
+import {AuthGuardService} from './api/auth/auth-guard.service';
 
 @NgModule({
   declarations: [],
   imports: [],
-  exports: []
+  exports: [],
+  providers: [
+    SystemInfoService,
+    AuthService,
+    AuthGuardService
+  ]
 })
 export class SystemModule {
-
-
 }

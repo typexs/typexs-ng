@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {EntityService} from './entity.service';
+import {EntityService} from './../entity.service';
 import {ActivatedRoute} from '@angular/router';
 import {EntityRegistry} from 'typexs-schema/libs/EntityRegistry';
 import {EntityDef} from 'typexs-schema/libs/registry/EntityDef';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'entity-view',
@@ -39,7 +38,7 @@ export class EntityViewComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
     this.entityDef = EntityRegistry.$().getEntityDefByName(this.machineName);
     if (this.entityDef) {
-      this.entityService.get(this.machineName, this.id).subscribe((entity) => {
+      this.entityService.get(this.machineName, this.id).subscribe((entity: any) => {
         this.instance = entity;
       });
     } else {
