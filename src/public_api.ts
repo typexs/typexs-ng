@@ -3,6 +3,7 @@ export * from './modules/navigator/navigator.module';
 export * from './modules/views/views.module';
 export * from './modules/forms/forms.module';
 export * from './modules/admin/admin.module';
+export * from './modules/entity/entity.module';
 
 // system module
 export * from './libs/api/auth/AnonymusUser'
