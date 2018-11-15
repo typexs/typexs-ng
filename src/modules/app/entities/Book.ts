@@ -1,6 +1,6 @@
-import {Entity} from 'typexs-schema/libs/decorators/Entity';
-import {Property} from 'typexs-schema/libs/decorators/Property';
-import {IProperty} from 'typexs-schema/libs/registry/IProperty';
+import {Entity} from '@typexs/schema/libs/decorators/Entity';
+import {Property} from '@typexs/schema/libs/decorators/Property';
+import {IProperty} from '@typexs/schema/libs/registry/IProperty';
 import {Person} from './Person';
 
 @Entity()

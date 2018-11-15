@@ -1,4 +1,4 @@
-import {PropertyDef} from 'typexs-schema';
+import {PropertyDef} from '@typexs/schema';
 import {Observable} from '../../../node_modules/rxjs';
 
 export interface ISelectOption {

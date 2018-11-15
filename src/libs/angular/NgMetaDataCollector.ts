@@ -1,4 +1,4 @@
-import {Config, ClassesLoader, Inject, RuntimeLoader, PlatformUtils} from "typexs-base";
+import {Config, ClassesLoader, Inject, RuntimeLoader, PlatformUtils} from "@typexs/base";
 import {C_NG_MODUL} from "../../types";
 
 import {INgModuleDef} from "./INgModuleDef";

@@ -2,8 +2,8 @@ import {suite, test} from 'mocha-typescript';
 
 import {MaxLength, MinLength} from 'class-validator';
 import {inspect} from 'util';
-import {Log} from 'typexs-base';
-import {Entity, Property, EntityRegistry} from 'typexs-schema';
+import {Log} from '@typexs/base';
+import {Entity, Property, EntityRegistry} from '@typexs/schema';
 import {Form, FORM_ELEMENTS} from '../../../src/libs/forms/elements';
 import {FormBuilder} from '../../../src/libs/forms/FormBuilder';
 

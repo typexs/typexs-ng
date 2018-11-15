@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import * as _ from 'lodash';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {IFindOptions} from 'typexs-schema/libs/framework/IFindOptions';
-import {EntityRegistry} from 'typexs-schema/libs/EntityRegistry';
-import {EntityDef} from 'typexs-schema/libs/registry/EntityDef';
+import {IFindOptions} from '@typexs/schema/libs/framework/IFindOptions';
+import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
+import {EntityDef} from '@typexs/schema/libs/registry/EntityDef';
 import {AuthService} from '../system/api/auth/auth.service';
 
 

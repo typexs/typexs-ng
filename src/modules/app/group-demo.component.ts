@@ -1,6 +1,6 @@
 import {Component, Injectable, OnInit} from '@angular/core';
-import {Property} from 'typexs-schema/libs/decorators/Property';
-import {Entity} from 'typexs-schema/libs/decorators/Entity';
+import {Property} from '@typexs/schema/libs/decorators/Property';
+import {Entity} from '@typexs/schema/libs/decorators/Entity';
 import {MaxLength, MinLength, IsEmail} from 'class-validator';
 import {EqualWith} from '../../libs/validators/EqualWith';
 

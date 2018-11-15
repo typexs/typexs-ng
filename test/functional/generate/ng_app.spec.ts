@@ -3,7 +3,7 @@ import * as fs from "fs";
 import * as os from "os";
 import {join} from "path";
 import {expect} from 'chai';
-import {Bootstrap, Log, PlatformUtils, SchematicsExecutor} from "typexs-base";
+import {Bootstrap, Log, PlatformUtils, SchematicsExecutor} from "@typexs/base";
 
 
 

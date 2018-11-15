@@ -1,7 +1,7 @@
 import {suite, test} from "mocha-typescript";
 import {expect} from "chai";
 import * as _ from 'lodash';
-import {Bootstrap, Config, IFileConfigOptions, PlatformUtils, ClassesLoader, Container} from "typexs-base";
+import {Bootstrap, Config, IFileConfigOptions, PlatformUtils, ClassesLoader, Container} from "@typexs/base";
 import {C_NG_MODUL} from "../../../src/types";
 import {NgMetaDataCollector} from "../../../src/libs/angular/NgMetaDataCollector";
 import {NgModuleBuilder} from "../../../src/libs/angular/NgModuleBuilder";

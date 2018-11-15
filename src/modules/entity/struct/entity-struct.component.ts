@@ -1,12 +1,12 @@
 import {Component, OnChanges, OnInit} from '@angular/core';
 import {EntityService} from './../entity.service';
-import {EntityRegistry} from 'typexs-schema/libs/EntityRegistry';
-import {EntityDef} from 'typexs-schema/libs/registry/EntityDef';
+import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
+import {EntityDef} from '@typexs/schema/libs/registry/EntityDef';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import {ClassRef} from 'typexs-schema/libs/registry/ClassRef';
-import {PropertyDef} from 'typexs-schema/libs/registry/PropertyDef';
-import {LookupRegistry} from 'typexs-schema/libs/LookupRegistry';
-import {XS_TYPE_PROPERTY} from 'typexs-schema/libs/Constants';
+import {ClassRef} from '@typexs/schema/libs/registry/ClassRef';
+import {PropertyDef} from '@typexs/schema/libs/registry/PropertyDef';
+import {LookupRegistry} from '@typexs/schema/libs/LookupRegistry';
+import {XS_TYPE_PROPERTY} from '@typexs/schema/libs/Constants';
 import {Observable, Subscription} from 'rxjs';
 import {MetadataStorage} from 'class-validator/metadata/MetadataStorage';
 import {getFromContainer} from 'class-validator/container';

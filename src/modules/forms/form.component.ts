@@ -1,5 +1,5 @@
 import {Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, Input, OnInit, Output} from '@angular/core';
-import {DataContainer} from 'typexs-schema/libs/DataContainer';
+import {DataContainer} from '@typexs/schema/libs/DataContainer';
 import {FormService} from './form.service';
 import {ViewComponent} from '../../libs/views/decorators/ViewComponent';
 import {AbstractFormComponent} from '../../libs/forms/AbstractFormComponent';

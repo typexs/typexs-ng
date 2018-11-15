@@ -1,4 +1,4 @@
-import {Config, FileUtils, Module, Inject, RuntimeLoader, Log} from "typexs-base";
+import {Config, FileUtils, Module, Inject, RuntimeLoader, Log} from "@typexs/base";
 import {NgMetaDataCollector} from "../libs/angular/NgMetaDataCollector";
 import {NgModuleBuilder} from "../libs/angular/NgModuleBuilder";
 import * as glob from 'glob';

@@ -1,4 +1,4 @@
-import {IActivator, Log} from "typexs-base";
+import {IActivator, Log} from "@typexs/base";
 
 
 export class Activator implements IActivator{

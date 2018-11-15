@@ -3,7 +3,7 @@ import {join} from 'path';
 import {strings} from '@angular-devkit/core';
 import * as _ from 'lodash';
 
-import {FileUtils, PlatformUtils, SimpleRegexCodeModifierHelper} from 'typexs-base';
+import {FileUtils, PlatformUtils, SimpleRegexCodeModifierHelper} from '@typexs/base';
 import {
   apply,
   chain,

@@ -1,5 +1,5 @@
-import {Entity} from 'typexs-schema/libs/decorators/Entity';
-import {Property} from 'typexs-schema/libs/decorators/Property';
+import {Entity} from '@typexs/schema/libs/decorators/Entity';
+import {Property} from '@typexs/schema/libs/decorators/Property';
 import {IsNotEmpty} from 'class-validator';
 
 @Entity()

@@ -1,6 +1,6 @@
 import {relative} from 'path'
 import * as tpl from "string-template";
-import {Config, FileUtils, MetaArgs, PlatformUtils} from 'typexs-base';
+import {Config, FileUtils, MetaArgs, PlatformUtils} from '@typexs/base';
 import {INgModuleDef} from "./INgModuleDef";
 import {RouterModule} from "@angular/router";
 import {APP_ROUTES} from "../../modules/app/app.routes";

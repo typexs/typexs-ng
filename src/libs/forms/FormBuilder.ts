@@ -1,11 +1,11 @@
-import {NotYetImplementedError} from 'typexs-base/libs/exceptions/NotYetImplementedError';
+import {NotYetImplementedError} from '@typexs/base/libs/exceptions/NotYetImplementedError';
 import {FormObject} from './FormObject';
 import {Form} from './elements';
 
 import {ResolveDataValue} from './ResolveDataValue';
-import {EntityDef} from 'typexs-schema/libs/registry/EntityDef';
-import {PropertyDef} from 'typexs-schema/libs/registry/PropertyDef';
-import {EntityRegistry} from 'typexs-schema/libs/EntityRegistry';
+import {EntityDef} from '@typexs/schema/libs/registry/EntityDef';
+import {PropertyDef} from '@typexs/schema/libs/registry/PropertyDef';
+import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
 import * as _ from 'lodash';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
 import {ContentComponentRegistry} from '../views/ContentComponentRegistry';

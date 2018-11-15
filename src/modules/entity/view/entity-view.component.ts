@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {EntityService} from './../entity.service';
 import {ActivatedRoute} from '@angular/router';
-import {EntityRegistry} from 'typexs-schema/libs/EntityRegistry';
-import {EntityDef} from 'typexs-schema/libs/registry/EntityDef';
+import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
+import {EntityDef} from '@typexs/schema/libs/registry/EntityDef';
 
 @Component({
   selector: 'entity-view',

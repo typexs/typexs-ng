@@ -1,7 +1,7 @@
-import {DataContainer} from 'typexs-schema/libs/DataContainer';
+import {DataContainer} from '@typexs/schema/libs/DataContainer';
 
 import * as _ from 'lodash';
-import {PropertyDef} from 'typexs-schema/libs/registry/PropertyDef';
+import {PropertyDef} from '@typexs/schema/libs/registry/PropertyDef';
 
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
 import {AbstractComponent} from '../views/AbstractComponent';

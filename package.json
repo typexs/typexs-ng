@@ -1,5 +1,5 @@
 {
-  "name": "typexs-ng",
+  "name": "@typexs/ng",
   "version": "0.4.0",
   "description": "Angular for typexs",
   "main": "index.js",
@@ -116,9 +116,9 @@
     "rxjs": "^5.5.10",
     "semver": "^5.5.0",
     "string-template": "^1.0.0",
-    "typexs-base": "latest",
-    "typexs-schema": "latest",
-    "typexs-server": "latest",
+    "@typexs/base": "latest",
+    "@typexs/schema": "latest",
+    "@typexs/server": "latest",
     "zone.js": "^0.8.26"
   },
   "private": true,
