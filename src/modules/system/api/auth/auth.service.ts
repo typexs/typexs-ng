@@ -15,8 +15,8 @@ export class AuthService implements IAuthService {
     return true;
   }
 
-  getUser(): IUser {
-    return this.user;
+  getUser<T extends IUser>(): T {
+    return <T>this.user;
   }
 
   getPermissions(): string[] {
