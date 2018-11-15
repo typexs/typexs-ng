@@ -1,5 +1,5 @@
 import {PropertyDef} from '@typexs/schema';
-import {Observable} from '../../../node_modules/rxjs';
+import {Observable} from 'rxjs/Observable';
 
 export interface ISelectOption {
   label?:string;

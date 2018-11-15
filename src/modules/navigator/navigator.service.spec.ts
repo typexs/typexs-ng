@@ -6,7 +6,7 @@ import {APP_BASE_HREF} from '@angular/common';
 import {ApplicationInitStatus} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
 import {BrowserTestingModule} from '@angular/platform-browser/testing';
-import {Observable} from '../../../node_modules/rxjs';
+import {Observable} from 'rxjs/Observable';
 
 describe('Service: NavigatorService', () => {
 

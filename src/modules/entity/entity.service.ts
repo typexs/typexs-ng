@@ -1,7 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import * as _ from 'lodash';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Observable} from 'rxjs/Observable';
+
 import {IFindOptions} from '@typexs/schema/libs/framework/IFindOptions';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
 import {EntityDef} from '@typexs/schema/libs/registry/EntityDef';

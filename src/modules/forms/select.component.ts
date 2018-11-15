@@ -7,7 +7,6 @@ import {Select} from '../../libs/forms/elements';
 import {ViewComponent} from '../../libs/views/decorators/ViewComponent';
 import {Option} from '../../libs/forms/elements/Option';
 import {ISelectOption, ISelectOptionsService} from './ISelectOptionsService';
-import {Subject} from '../../../node_modules/rxjs';
 
 
 @ViewComponent('select')
