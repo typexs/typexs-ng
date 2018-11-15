@@ -1,6 +1,6 @@
 
 // to integrate the elements
-import {FORM_ELEMENTS} from '../../libs/xsform/elements';
+import {FORM_ELEMENTS} from '../../libs/forms/elements';
 
 FORM_ELEMENTS;
 

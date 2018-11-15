@@ -3,7 +3,7 @@ import {EntityService} from './entity.service';
 import {PropertyDef} from 'typexs-schema/libs/registry/PropertyDef';
 
 import {BehaviorSubject, Observable} from 'rxjs';
-import {ISelectOption, ISelectOptionsService} from '../xsform/ISelectOptionsService';
+import {ISelectOption, ISelectOptionsService} from '../forms/ISelectOptionsService';
 
 
 @Injectable()

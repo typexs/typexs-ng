@@ -3,7 +3,7 @@ import {IResolver} from '../IResolver';
 import {Form} from './Form';
 
 import * as _ from 'lodash';
-import {ViewContent} from '../../xsview/decorators/ViewContent';
+import {ViewContent} from '../../views/decorators/ViewContent';
 
 @ViewContent('ref')
 export class Ref extends FormObject implements IResolver {

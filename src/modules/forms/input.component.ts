@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {ViewComponent} from '../../libs/xsview/decorators/ViewComponent';
-import {AbstractFormComponent} from '../../libs/xsform/AbstractFormComponent';
-import {Input} from '../../libs/xsform/elements';
+import {ViewComponent} from '../../libs/views/decorators/ViewComponent';
+import {AbstractFormComponent} from '../../libs/forms/AbstractFormComponent';
+import {Input} from '../../libs/forms/elements';
 
 
 

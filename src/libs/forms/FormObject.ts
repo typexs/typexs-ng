@@ -2,7 +2,7 @@ import {PropertyDef} from 'typexs-schema/libs/registry/PropertyDef';
 
 import * as _ from 'lodash';
 import {ResolveDataValue} from './ResolveDataValue';
-import {TreeObject} from '../xsview/TreeObject';
+import {TreeObject} from '../views/TreeObject';
 
 
 export function isFormObject(obj: TreeObject | FormObject): obj is FormObject {

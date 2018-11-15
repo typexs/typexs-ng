@@ -7,7 +7,7 @@ import {EntityViewComponent} from './view/entity-view.component';
 import {EntityStructComponent} from './struct/entity-struct.component';
 import {EntityService} from './entity.service';
 import {EntityOptionsService} from './entity-options.service';
-import {xFormsModule} from '../xsform/xforms.module';
+import {FormsModule} from '../forms/forms.module';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
 import {SystemModule} from '../system/system.module';
@@ -27,7 +27,7 @@ import {RouterModule} from '@angular/router';
     BrowserModule,
     RouterModule,
     HttpClientModule,
-    xFormsModule
+    FormsModule
   ],
   exports: [],
   providers: [

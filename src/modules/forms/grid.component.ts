@@ -2,11 +2,11 @@ import {Component, ComponentRef, OnInit} from '@angular/core';
 import {GridRowComponent} from './grid-row.component';
 
 import * as _ from 'lodash';
-import {ViewComponent} from '../../libs/xsview/decorators/ViewComponent';
-import {AbstractFormComponent} from '../../libs/xsform/AbstractFormComponent';
-import {Grid} from '../../libs/xsform/elements';
-import {AbstractComponent} from '../../libs/xsview/AbstractComponent';
-import {FormObject, isFormObject} from '../../libs/xsform/FormObject';
+import {ViewComponent} from '../../libs/views/decorators/ViewComponent';
+import {AbstractFormComponent} from '../../libs/forms/AbstractFormComponent';
+import {Grid} from '../../libs/forms/elements';
+import {AbstractComponent} from '../../libs/views/AbstractComponent';
+import {FormObject, isFormObject} from '../../libs/forms/FormObject';
 @ViewComponent('grid')
 @Component({
   selector: 'xgrid',

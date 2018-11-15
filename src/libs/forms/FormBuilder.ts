@@ -8,7 +8,7 @@ import {PropertyDef} from 'typexs-schema/libs/registry/PropertyDef';
 import {EntityRegistry} from 'typexs-schema/libs/EntityRegistry';
 import * as _ from 'lodash';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
-import {ContentComponentRegistry} from '../xsview/ContentComponentRegistry';
+import {ContentComponentRegistry} from '../views/ContentComponentRegistry';
 
 
 export class FormBuilder {

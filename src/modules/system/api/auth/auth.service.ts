@@ -1,8 +1,8 @@
-import {Injectable, InjectionToken} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {IAuthService} from './IAuthService';
 import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
-import {AnonymusUser} from './AnonymusUser';
-import {IUser} from './IUser';
+import {AnonymusUser} from '../../../../libs/api/auth/AnonymusUser';
+import {IUser} from '../../../../libs/api/auth/IUser';
 
 
 @Injectable()

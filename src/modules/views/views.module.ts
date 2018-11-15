@@ -12,5 +12,5 @@ import {ViewBuilderComponent} from './view-builder.component';
   exports: [ViewBuilderComponent],
   providers: []
 })
-export class xViewsModule {
+export class ViewsModule {
 }

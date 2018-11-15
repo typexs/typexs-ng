@@ -4,7 +4,7 @@ import {FormObject} from '../FormObject';
 import {ResolveDataValue} from '../ResolveDataValue';
 import {Ref} from './Ref';
 
-import {ViewContent} from '../../xsview/decorators/ViewContent';
+import {ViewContent} from '../../views/decorators/ViewContent';
 
 
 @ViewContent('form')

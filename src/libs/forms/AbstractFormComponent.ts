@@ -4,10 +4,10 @@ import * as _ from 'lodash';
 import {PropertyDef} from 'typexs-schema/libs/registry/PropertyDef';
 
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
-import {AbstractComponent} from '../xsview/AbstractComponent';
+import {AbstractComponent} from '../views/AbstractComponent';
 import {FormObject, isFormObject} from './FormObject';
-import {ContentComponentRegistry} from '../xsview/ContentComponentRegistry';
-import {Context} from '../xsview/Context';
+import {ContentComponentRegistry} from '../views/ContentComponentRegistry';
+import {Context} from '../views/Context';
 
 
 export abstract class AbstractFormComponent<T extends FormObject> extends AbstractComponent<T> {

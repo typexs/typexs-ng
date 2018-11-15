@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 
 import * as _ from 'lodash';
 import {Observable} from 'rxjs/Observable';
-import {AbstractFormComponent} from '../../libs/xsform/AbstractFormComponent';
-import {Select} from '../../libs/xsform/elements';
-import {ViewComponent} from '../../libs/xsview/decorators/ViewComponent';
-import {Option} from '../../libs/xsform/elements/Option';
+import {AbstractFormComponent} from '../../libs/forms/AbstractFormComponent';
+import {Select} from '../../libs/forms/elements';
+import {ViewComponent} from '../../libs/views/decorators/ViewComponent';
+import {Option} from '../../libs/forms/elements/Option';
 import {ISelectOption, ISelectOptionsService} from './ISelectOptionsService';
 import {Subject} from '../../../node_modules/rxjs';
 

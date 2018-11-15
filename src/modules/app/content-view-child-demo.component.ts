@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {SearchEntry} from './search/search-entry.component';
 import {SearchResult} from './search/search-result.component';
 import {ViewParent} from './search/view-parent.component';
-import {ViewBuilderComponent} from '../xsview/view-builder.component';
+import {ViewBuilderComponent} from '../views/view-builder.component';
 
 
 @Component({

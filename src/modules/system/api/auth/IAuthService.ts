@@ -1,5 +1,6 @@
 import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
-import {IUser} from './IUser';
+import {IUser} from '../../../../libs/api/auth/IUser';
+
 
 
 export interface IAuthService {

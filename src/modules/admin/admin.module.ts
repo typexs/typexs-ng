@@ -12,7 +12,7 @@ import {SystemStoragesComponent} from './system/storages/system-storages.compone
 import {SystemConfigComponent} from './system/config/system-config.component';
 import {AdminService} from './admin.service';
 import {NgRoutesComponent} from './ng/routes/ng-routes.component';
-import {xFormsModule} from '../xsform/xforms.module';
+import {FormsModule} from '../forms/forms.module';
 import {SystemModule} from '../system/system.module';
 import {EntityModule} from '../entity/entity.module';
 
@@ -30,7 +30,7 @@ import {EntityModule} from '../entity/entity.module';
   imports: [
     SystemModule,
     NavigatorModule,
-    xFormsModule,
+    FormsModule,
     EntityModule,
     BrowserModule,
     HttpClientModule,

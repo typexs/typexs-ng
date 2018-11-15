@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {EntityRegistry} from 'typexs-schema/libs/EntityRegistry';
-import {Form} from '../../libs/xsform/elements';
-import {FormBuilder} from '../../libs/xsform/FormBuilder';
+import {Form} from '../../libs/forms/elements';
+import {FormBuilder} from '../../libs/forms/FormBuilder';
 
 
 @Injectable()

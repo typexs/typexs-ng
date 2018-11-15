@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
-import {AbstractFormComponent} from '../../libs/xsform/AbstractFormComponent';
-import {Radio} from '../../libs/xsform/elements/Radio';
-import {ViewComponent} from '../../libs/xsview/decorators/ViewComponent';
+import {AbstractFormComponent} from '../../libs/forms/AbstractFormComponent';
+import {Radio} from '../../libs/forms/elements/Radio';
+import {ViewComponent} from '../../libs/views/decorators/ViewComponent';
 
 
 @ViewComponent('radio')

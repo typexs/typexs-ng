@@ -4,8 +4,8 @@ import {MaxLength, MinLength} from 'class-validator';
 import {inspect} from 'util';
 import {Log} from 'typexs-base';
 import {Entity, Property, EntityRegistry} from 'typexs-schema';
-import {Form, FORM_ELEMENTS} from '../../../src/libs/xsform/elements';
-import {FormBuilder} from '../../../src/libs/xsform/FormBuilder';
+import {Form, FORM_ELEMENTS} from '../../../src/libs/forms/elements';
+import {FormBuilder} from '../../../src/libs/forms/FormBuilder';
 
 FORM_ELEMENTS;
 
