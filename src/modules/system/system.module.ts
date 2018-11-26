@@ -8,31 +8,27 @@ import {AUTH_SERVICE_GUARD_PROVIDER} from './api/auth/IAuthGuardProvider';
 import {AuthService} from './api/auth/auth.service';
 import {AuthGuardService} from './api/auth/auth-guard.service';
 
+const PROVIDERS = [
+  SystemInfoService,
+  AuthService,
+  AuthGuardService,
+  {provide: AUTH_SERVICE_PROVIDER, useClass: NoopAuthService},
+  {provide: AUTH_SERVICE_GUARD_PROVIDER, useClass: DefaultAuthGuardService},
+
+];
+
 @NgModule({
   declarations: [],
   imports: [],
   exports: [],
-  providers: [
-    SystemInfoService,
-    AuthService,
-    AuthGuardService,
-    {provide: AUTH_SERVICE_PROVIDER, useClass: NoopAuthService},
-    {provide: AUTH_SERVICE_GUARD_PROVIDER, useClass: DefaultAuthGuardService},
-
-  ]
+  providers: PROVIDERS
 })
 export class SystemModule {
 
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SystemModule,
-      providers: [
-        {provide: AUTH_SERVICE_PROVIDER, useClass: NoopAuthService},
-        {provide: AUTH_SERVICE_GUARD_PROVIDER, useClass: DefaultAuthGuardService},
-        SystemInfoService,
-        AuthService,
-        AuthGuardService
-      ]
+      providers: PROVIDERS
     };
   }
 

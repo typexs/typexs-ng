@@ -13,6 +13,9 @@ import {HttpClientModule} from '@angular/common/http';
 import {SystemModule} from '../system/system.module';
 import {RouterModule} from '@angular/router';
 
+
+export const ENTITY_OPTIONS_SERVICE = 'EntityOptionsService';
+
 @NgModule({
   declarations: [
     EntityTypesComponent,
@@ -33,9 +36,19 @@ import {RouterModule} from '@angular/router';
   providers: [
     EntityService,
     EntityOptionsService,
-    {provide: 'EntityOptionsService', useClass: EntityOptionsService}]
+    {provide: ENTITY_OPTIONS_SERVICE, useClass: EntityOptionsService}]
 })
 export class EntityModule {
 
+  static forRoot() {
+    return {
+      ngModule: EntityModule,
+      providers: [
+        EntityService,
+        EntityOptionsService,
+        {provide: ENTITY_OPTIONS_SERVICE, useClass: EntityOptionsService}
+      ]
+    };
+  }
 
 }

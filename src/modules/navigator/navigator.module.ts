@@ -13,6 +13,14 @@ import {MenuLinkComponent} from './menu-link.component';
   providers: [NavigatorService]
 })
 export class NavigatorModule {
+  static forRoot() {
+    return {
+      ngModule: NavigatorModule,
+      providers: [
+        NavigatorService
+      ]
+    };
+  }
 
 
 }

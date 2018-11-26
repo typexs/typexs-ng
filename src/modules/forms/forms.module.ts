@@ -18,4 +18,13 @@ import {FormService} from './form.service';
   ]
 })
 export class FormsModule {
+
+  static forRoot() {
+    return {
+      ngModule: FormsModule,
+      providers: [
+        FormService
+      ]
+    };
+  }
 }

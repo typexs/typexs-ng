@@ -15,6 +15,7 @@ import {NgRoutesComponent} from './ng/routes/ng-routes.component';
 import {FormsModule} from '../forms/forms.module';
 import {SystemModule} from '../system/system.module';
 import {EntityModule} from '../entity/entity.module';
+import {NavigatorService} from '../navigator/navigator.service';
 
 
 @NgModule({
@@ -28,8 +29,8 @@ import {EntityModule} from '../entity/entity.module';
 
   ],
   imports: [
-    SystemModule,
-    NavigatorModule,
+    SystemModule.forRoot(),
+    NavigatorModule.forRoot(),
     FormsModule,
     EntityModule,
     BrowserModule,
@@ -45,6 +46,15 @@ import {EntityModule} from '../entity/entity.module';
 
 })
 export class AdminModule {
+
+  static forRoot() {
+    return {
+      ngModule: AdminModule,
+      providers: [
+        AdminService
+      ]
+    };
+  }
 
 
 }
