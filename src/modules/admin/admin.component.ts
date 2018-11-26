@@ -24,7 +24,12 @@ export class AdminComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.user = await this.getUser();
+    try{
+      this.user = await this.getUser();
+    }catch (e) {
+      console.error(e);
+    }
+
 
   }
 
