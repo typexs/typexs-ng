@@ -97,6 +97,7 @@ export class Gulpfile {
       '!./src/modules/*/*.ts',
       '!./src/modules/*/!(api|entities)/*.ts',
       '!./src/modules/*/!(api|entities)/**/*.ts',
+      '!./src/public_api.ts',
       './src/modules/*/+(api|entities)/*.ts',
       './src/modules/*/+(api|entities)/**/*.ts',
       '!./src/modules/app/**/*.ts',
