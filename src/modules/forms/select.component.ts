@@ -67,7 +67,8 @@ export class SelectComponent extends AbstractFormComponent<Select> implements On
     if (_.isArray(this.elem.enum)) {
       return this.elem.enum;
     } else if (_.isFunction(this.elem.enum)) {
-      return (<ISelectOptionsService>this.injector.get(this.elem.enum)).options(this.elem.getBinding());
+      let service = (<ISelectOptionsService>this.injector.get(this.elem.enum));
+      return service.options(this.elem.getBinding());
     } else if (_.isString(this.elem.enum)) {
       let error = null;
       let observer = null;

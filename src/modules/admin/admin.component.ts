@@ -1,4 +1,4 @@
-import {Component, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {AdminService} from './admin.service';
 import {IUser} from '../../libs/api/auth/IUser';
 
@@ -8,16 +8,24 @@ import {IUser} from '../../libs/api/auth/IUser';
   styleUrls: ['./admin.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class AdminComponent {
+export class AdminComponent implements OnInit {
+
+
+  user: IUser;
 
   constructor(private adminInitService: AdminService) {
 
   }
 
 
-  getUser(): Promise<IUser> {
-    return <Promise<IUser>>this.adminInitService.getAuthService().getUser();
+  async getUser(): Promise<IUser> {
+    return await this.adminInitService.getAuthService().getUser();
+
   }
 
+  async ngOnInit() {
+    this.user = await this.getUser();
+
+  }
 
 }

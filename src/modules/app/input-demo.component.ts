@@ -3,19 +3,25 @@ import {Property} from '@typexs/schema/libs/decorators/Property';
 import {Entity} from '@typexs/schema/libs/decorators/Entity';
 import {MaxLength, MinLength, IsEmail} from 'class-validator';
 import {EqualWith} from '../../libs/validators/EqualWith';
+import {ISelectOption, ISelectOptionsService} from '../forms/ISelectOptionsService';
+import {PropertyDef} from '@typexs/schema/libs/registry/PropertyDef';
+import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 
 @Injectable()
-export class OptionsService {
+export class OptionsService implements ISelectOptionsService {
 
-  favoredMusicTypes: any[] = [
+  favoredMusicTypes: ISelectOption[] = [
     {'label': 'Indie', 'value': 'indie'},
     {'label': 'Blues', 'value': 'Blues'}
   ];
 
-  get(propertyName: string = null) {
-    return this.favoredMusicTypes;
+
+  options(property: PropertyDef): Observable<ISelectOption[]> {
+    return (new BehaviorSubject(this.favoredMusicTypes)).asObservable();
   }
+
 
 }
 
@@ -151,7 +157,7 @@ export class InputDemoComponent implements OnInit {
   }
 
 
-  onSubmit($event:any){
+  onSubmit($event: any) {
     console.log($event);
   }
 }

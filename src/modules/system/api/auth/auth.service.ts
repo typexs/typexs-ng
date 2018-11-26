@@ -1,9 +1,9 @@
 import {AUTH_SERVICE_PROVIDER, IAuthServiceProvider} from './IAuthServiceProvider';
-import {Injector} from '@angular/core';
+import {Injectable, Injector} from '@angular/core';
 import {IUser} from '../../../../libs/api/auth/IUser';
 import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 
-
+@Injectable()
 export class AuthService implements IAuthServiceProvider {
 
   authService: IAuthServiceProvider;
