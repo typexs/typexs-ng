@@ -1,6 +1,6 @@
 {
   "name": "@typexs/ng",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Angular for typexs",
   "main": "index.js",
   "directories": {
@@ -15,7 +15,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "mocha": "mocha --opts test/mocha.all.opts",
-    "karma": "karma start --single-run --browsers PhantomJS",
+    "karma": "karma start --single-run --browsers ChromeHeadless",
     "build:lib": "ng-packagr -p bundles/package.json"
   },
   "repository": {
