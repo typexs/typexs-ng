@@ -2,23 +2,22 @@ import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 import {IUser} from '../../../../libs/api/auth/IUser';
 
 
-
 export interface IAuthService {
 
-  isLoggedIn(): boolean;
+  isLoggedIn():Promise<boolean> | boolean;
 
-  hasRoutePermissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean;
+  hasRoutePermissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean;
 
-  hasPermission(right: string, params?: any): boolean;
+  hasPermission(right: string, params?: any): Promise<boolean> | boolean;
 
-  hasPermissionsFor?(object: any): boolean;
+  hasPermissionsFor?(object: any): Promise<boolean> | boolean;
 
-  getUser(): IUser;
+  getUser():Promise<IUser>| IUser;
 
-  getRoles?(): string[];
+  getRoles?():Promise<string[]> |  string[];
 
-  hasRole?(role: string): boolean;
+  hasRole?(role: string): Promise<boolean> | boolean;
 
-  getPermissions?(): string[];
+  getPermissions?():Promise<string[]> |  string[];
 
 }
