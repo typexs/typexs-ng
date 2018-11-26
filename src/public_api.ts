@@ -5,6 +5,13 @@ export * from './modules/forms/forms.module';
 export * from './modules/admin/admin.module';
 export * from './modules/entity/entity.module';
 
+// admin module
+export * from './modules/admin/admin.service';
+
+// entity module
+export * from './modules/entity/entity.service';
+export * from './modules/entity/entity-options.service';
+
 // system module
 export * from './libs/api/auth/AnonymusUser';
 export * from './libs/api/auth/IUser';
@@ -30,6 +37,7 @@ export * from './libs/forms/FormBuilder';
 export * from './libs/forms/FormObject';
 export * from './libs/forms/IResolver';
 export * from './libs/forms/ResolveDataValue';
+export * from './modules/forms/form.service';
 
 // views module
 export * from './libs/views/AbstractComponent';
@@ -39,6 +47,10 @@ export * from './libs/views/decorators/ViewComponent';
 export * from './libs/views/decorators/ViewContent';
 export * from './libs/views/IElementDef';
 export * from './libs/views/TreeObject';
+
+
+// navigator module
+export * from './modules/navigator/navigator.service';
 
 
 // other
