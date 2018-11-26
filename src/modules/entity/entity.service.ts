@@ -10,7 +10,6 @@ import {EntityDef} from '@typexs/schema/libs/registry/EntityDef';
 import {AuthService} from '../system/api/auth/auth.service';
 
 
-
 @Injectable()
 export class EntityService {
 
@@ -20,7 +19,7 @@ export class EntityService {
 
   private _ready: boolean = false;
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private http: HttpClient, private authService: AuthService<any>) {
     this.reloadMetadata();
   }
 
@@ -32,7 +31,6 @@ export class EntityService {
     this._isReady.asObservable().subscribe(null, null, () => {
       callback();
     });
-    ;
   }
 
 
@@ -63,6 +61,7 @@ export class EntityService {
     return this.entityDefs;
   }
 
+
   get(entityName: string, entityId: any) {
     let entityDef = EntityRegistry.$().getEntityDefByName(entityName);
     let obs = new BehaviorSubject<any>(null);
@@ -89,6 +88,7 @@ export class EntityService {
     );
     return obs.asObservable();
   }
+
 
   query(entityName: string, query: any = null, options: IFindOptions = {}) {
     let entityDef = EntityRegistry.$().getEntityDefByName(entityName);

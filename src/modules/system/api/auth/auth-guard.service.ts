@@ -5,19 +5,20 @@ import {AUTH_SERVICE_GUARD_PROVIDER, IAuthGuardProvider} from './IAuthGuardProvi
 
 
 @Injectable()
-export class AuthGuardService implements IAuthGuardProvider {
+export class AuthGuardService<T extends IAuthGuardProvider> implements IAuthGuardProvider {
 
-  guardProvider: IAuthGuardProvider;
+  guardProvider: T;
 
   constructor(private injector: Injector) {
-    this.guardProvider = injector.get(AUTH_SERVICE_GUARD_PROVIDER);
+    this.guardProvider = <T>injector.get(AUTH_SERVICE_GUARD_PROVIDER);
   }
 
+  getProvider(): T {
+    return this.guardProvider;
+  }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.guardProvider.canActivate(route, state);
-
   }
-
 
 }

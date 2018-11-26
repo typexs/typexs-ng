@@ -4,12 +4,16 @@ import {IUser} from '../../../../libs/api/auth/IUser';
 import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 
 @Injectable()
-export class AuthService implements IAuthServiceProvider {
+export class AuthService<T extends IAuthServiceProvider> implements IAuthServiceProvider {
 
-  authService: IAuthServiceProvider;
+  authService: T;
 
   constructor(private injector: Injector) {
-    this.authService = injector.get(AUTH_SERVICE_PROVIDER);
+    this.authService = <T>injector.get(AUTH_SERVICE_PROVIDER);
+  }
+
+  getProvider(): T {
+    return this.authService;
   }
 
   getPermissions(): Promise<string[]> | string[] {
