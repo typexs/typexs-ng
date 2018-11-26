@@ -1,8 +1,9 @@
 import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 import {IUser} from '../../../../libs/api/auth/IUser';
+import {InjectionToken} from '@angular/core';
 
 
-export interface IAuthService {
+export interface IAuthServiceProvider {
 
   isLoggedIn():Promise<boolean> | boolean;
 
@@ -21,3 +22,6 @@ export interface IAuthService {
   getPermissions?():Promise<string[]> |  string[];
 
 }
+
+
+export const AUTH_SERVICE_PROVIDER = new InjectionToken<IAuthServiceProvider>('TXS_AUTH_SERVICE');

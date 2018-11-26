@@ -11,7 +11,8 @@ import {EntityQueryComponent} from './../entity/query/entity-query.component';
 import {EntityViewComponent} from './../entity/view/entity-view.component';
 import {EntityStructComponent} from './../entity/struct/entity-struct.component';
 import {EntityDeleteComponent} from './../entity/delete/entity-delete.component';
-import {AuthGuardService} from '../system/api/auth/auth-guard.service';
+
+import {AUTH_SERVICE_GUARD_PROVIDER} from '../system/api/auth/IAuthGuardProvider';
 
 
 export const ADMIN_ROUTES: Routes = [
@@ -21,14 +22,14 @@ export const ADMIN_ROUTES: Routes = [
       {
         path: 'system/modules',
         component: SystemModulesComponent,
-        canActivate: [AuthGuardService],
+        canActivate: [AUTH_SERVICE_GUARD_PROVIDER],
         data: {label: 'Modules', group: 'admin'}
       },
       {
         path: 'system/routes',
         component: SystemRoutesComponent,
         data: {label: 'Routes', group: 'admin'},
-        canActivate: [AuthGuardService],
+        canActivate: [AUTH_SERVICE_GUARD_PROVIDER],
       },
       {
         path: 'system/storages',
@@ -39,55 +40,55 @@ export const ADMIN_ROUTES: Routes = [
         path: 'system/config',
         component: SystemConfigComponent,
         data: {label: 'Config', group: 'admin'},
-        canActivate: [AuthGuardService]
+        canActivate: [AUTH_SERVICE_GUARD_PROVIDER]
       },
       {
         path: 'ng/routes',
         component: NgRoutesComponent,
         data: {label: 'Routes', group: 'admin'},
-        canActivate: [AuthGuardService]
+        canActivate: [AUTH_SERVICE_GUARD_PROVIDER]
       },
       {
         path: 'entity/types',
         component: EntityTypesComponent,
         data: {label: 'Types', group: 'admin'},
-        canActivate: [AuthGuardService]
+        canActivate: [AUTH_SERVICE_GUARD_PROVIDER]
       },
       {
         path: 'entity/:machineName/create',
         component: EntityModifyComponent,
         data: {label: 'Create entity', skip: true},
-        canActivate: [AuthGuardService]
+        canActivate: [AUTH_SERVICE_GUARD_PROVIDER]
       },
       {
         path: 'entity/:machineName/view/:id',
         component: EntityViewComponent,
         data: {label: 'View entity', skip: true},
-        canActivate: [AuthGuardService]
+        canActivate: [AUTH_SERVICE_GUARD_PROVIDER]
       },
       {
         path: 'entity/:machineName/edit/:id',
         component: EntityModifyComponent,
         data: {label: 'Edit entity', skip: true},
-        canActivate: [AuthGuardService]
+        canActivate: [AUTH_SERVICE_GUARD_PROVIDER]
       },
       {
         path: 'entity/:machineName/delete/:id',
         component: EntityDeleteComponent,
         data: {label: 'Delete entity', skip: true},
-        canActivate: [AuthGuardService]
+        canActivate: [AUTH_SERVICE_GUARD_PROVIDER]
       },
       {
         path: 'entity/:machineName/query',
         component: EntityQueryComponent,
         data: {label: 'List entities', skip: true},
-        canActivate: [AuthGuardService]
+        canActivate: [AUTH_SERVICE_GUARD_PROVIDER]
       },
       {
         path: 'entity/:machineName/structure',
         component: EntityStructComponent,
         data: {label: 'Entity type structure', skip: true},
-        canActivate: [AuthGuardService]
+        canActivate: [AUTH_SERVICE_GUARD_PROVIDER]
       }
 
     ]

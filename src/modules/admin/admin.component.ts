@@ -15,8 +15,8 @@ export class AdminComponent {
   }
 
 
-  getUser(): IUser {
-    return this.adminInitService.getAuthService().getUser();
+  getUser(): Promise<IUser> {
+    return <Promise<IUser>>this.adminInitService.getAuthService().getUser();
   }
 
 

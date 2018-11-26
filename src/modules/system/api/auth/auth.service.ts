@@ -1,45 +1,47 @@
-import {Injectable} from '@angular/core';
-import {IAuthService} from './IAuthService';
-import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
-import {AnonymusUser} from '../../../../libs/api/auth/AnonymusUser';
+import {AUTH_SERVICE_PROVIDER, IAuthServiceProvider} from './IAuthServiceProvider';
+import {Injector} from '@angular/core';
 import {IUser} from '../../../../libs/api/auth/IUser';
+import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 
 
-@Injectable()
-export class AuthService implements IAuthService {
+export class AuthService implements IAuthServiceProvider {
 
-  user: IUser = new AnonymusUser();
+  authService: IAuthServiceProvider;
 
-
-  isLoggedIn(): boolean {
-    return true;
+  constructor(private injector: Injector) {
+    this.authService = injector.get(AUTH_SERVICE_PROVIDER);
   }
 
-  getUser<T extends IUser>(): T {
-    return <T>this.user;
+  getPermissions(): Promise<string[]> | string[] {
+    return this.authService.getPermissions();
   }
 
-  getPermissions(): string[] {
-    return [];
+  getRoles(): Promise<string[]> | string[] {
+    return this.authService.getRoles();
   }
 
-  getRoles(): string[] {
-    return [];
+  getUser(): Promise<IUser> | IUser {
+    return this.authService.getUser();
   }
 
-  hasRoutePermissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    return true;
+  hasPermission(right: string, params?: any): Promise<boolean> | boolean {
+    return this.authService.hasPermission(right, params);
   }
 
-  hasPermissionsFor(object: any): boolean {
-    return false;
+  hasPermissionsFor(object: any): Promise<boolean> | boolean {
+    return this.authService.hasPermissionsFor(object);
   }
 
-  hasPermission(right: string, params?: any): boolean {
-    return false;
+  hasRole(role: string): Promise<boolean> | boolean {
+    return this.authService.hasRole(role);
   }
 
-  hasRole(role: string): boolean {
-    return false;
+  hasRoutePermissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean {
+    return this.authService.hasRoutePermissions(route, state);
   }
+
+  isLoggedIn(): Promise<boolean> | boolean {
+    return this.authService.isLoggedIn();
+  }
+
 }
