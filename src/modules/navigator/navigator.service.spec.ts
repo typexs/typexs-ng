@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import {expect} from 'chai';
 import {TestBed} from '@angular/core/testing';
 import {NavigatorService} from './navigator.service';
@@ -7,6 +8,17 @@ import {ApplicationInitStatus} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
 import {BrowserTestingModule} from '@angular/platform-browser/testing';
 import {Observable} from 'rxjs/Observable';
+
+function clearTree(tree: any[]) {
+  _.map(tree, t => {
+    delete t.entry;
+    if (!_.isEmpty(t.children)) {
+      clearTree(t.children);
+    }
+
+  });
+}
+
 
 describe('Service: NavigatorService', () => {
 
@@ -93,7 +105,8 @@ describe('Service: NavigatorService', () => {
       expect(service.getEntries()).to.have.length(6);
 
       let tree = service.getTree();
-      expect(JSON.stringify(tree)).to.deep.eq(JSON.stringify([
+      clearTree(tree);
+      expect(tree).to.deep.eq([
         {
           'label': 'Admin',
           'isGroup': false,
@@ -133,11 +146,12 @@ describe('Service: NavigatorService', () => {
             }
           ]
         }
-      ]));
+      ]);
 
 
       let treeAdmin = service.getTree('admin');
-      expect(JSON.stringify(treeAdmin)).to.deep.eq(JSON.stringify([
+      clearTree(treeAdmin);
+      expect(treeAdmin).to.deep.eq([
         {
           'label': 'System',
           'isGroup': true,
@@ -170,7 +184,7 @@ describe('Service: NavigatorService', () => {
             }
           ]
         }
-      ]));
+      ]);
     });
   });
 
@@ -191,7 +205,8 @@ describe('Service: NavigatorService', () => {
         },
       ];
 
-      events: Observable<any> = new Observable<any>(() => {});
+      events: Observable<any> = new Observable<any>(() => {
+      });
 
       resetConfig(routes: Routes) {
         this.config = routes;
@@ -262,8 +277,8 @@ describe('Service: NavigatorService', () => {
       expect(service.getEntries()).to.have.length(6);
 
       let tree = service.getTree();
-
-      expect(JSON.stringify(tree)).to.deep.eq(JSON.stringify([
+      clearTree(tree);
+      expect(tree).to.deep.eq([
         {
           'label': 'Admin',
           'isGroup': false,
@@ -303,12 +318,12 @@ describe('Service: NavigatorService', () => {
             }
           ]
         }
-      ]));
+      ]);
 
 
       let treeAdmin = service.getTree('admin');
-
-      expect(JSON.stringify(treeAdmin)).to.deep.eq(JSON.stringify([
+      clearTree(treeAdmin);
+      expect(treeAdmin).to.deep.eq([
         {
           'label': 'System',
           'isGroup': true,
@@ -341,7 +356,7 @@ describe('Service: NavigatorService', () => {
             }
           ]
         }
-      ]));
+      ]);
     });
   });
 
