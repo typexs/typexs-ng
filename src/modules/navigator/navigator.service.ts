@@ -49,7 +49,7 @@ export class NavigatorService {
 
     for (let entry of this.entries) {
       const realPath = entry.getRealPath();
-      if (_.isEmpty(realPath) || entry.isRedirect() ) {
+      if (_.isEmpty(realPath) || entry.isRedirect()) {
         continue;
       }
       let parentEntry = this.findMatch(realPath);
@@ -124,13 +124,17 @@ export class NavigatorService {
     let fromEntry = !_.isNull(from) ? (from instanceof NavEntry ? from : this.getEntry(from)) : null;
     let _routes: NavEntry[] = _.filter(this.entries, e => e.parent == fromEntry && (filter ? filter(e) : true) && !e.isRedirect() && !e.toIgnore());
     let routes = _.map(_routes, route => {
-      let r: INavTreeEntry = {label: route.label, isGroup: false};
+      let r: INavTreeEntry = {
+        label: route.label,
+        isGroup: false,
+        entry: route
+      };
       if (route.route) {
         r.path = route.getRealPath();
       } else {
         r.isGroup = true;
       }
-      if(route.groups){
+      if (route.groups) {
         r.groups = route.groups;
       }
       r.children = this.getTree(route, filter);

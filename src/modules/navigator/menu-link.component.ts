@@ -1,18 +1,66 @@
-import {Component, Input, OnInit} from '@angular/core';
+import * as _ from 'lodash';
+import {Component, Injector, Input, OnInit} from '@angular/core';
 import {INavTreeEntry} from './INavTreeEntry';
+import {IMenuLinkGuard} from './IMenuLinkGuard';
 
 @Component({
   selector: 'menu-link',
   templateUrl: './menu-link.component.html',
   styleUrls: ['./menu-link.component.scss']
 })
-export class MenuLinkComponent  {
+export class MenuLinkComponent {
 
   @Input()
   entry: INavTreeEntry;
 
-  hasChildren(){
-    return this.entry.children && this.entry.children.length > 0
+
+  activators:IMenuLinkGuard[] = null;
+
+  constructor(private injector: Injector){}
+
+  hasChildren() {
+    return this.entry.children && this.entry.children.length > 0;
   }
 
+  private getActivator(){
+    if(this.activators) return this.activators;
+    this.activators = [];
+    let canActivate = _.get(this.entry, 'entry.route.canActivate', false);
+    if (canActivate && _.isArray(canActivate)) {
+      for(let canAct of canActivate){
+        let guard = this.injector.get(canAct);
+        if(guard.isDisabled || guard.isHidden){
+          this.activators.push(guard)
+        }
+      }
+    }
+    return this.activators;
+  }
+
+  async isDisabled() {
+    let disable:boolean = false;
+    let activators = this.getActivator();
+    if (!_.isEmpty(activators)) {
+      for(let canAct of activators){
+        if(canAct.isDisabled){
+          disable = disable || await (<IMenuLinkGuard>canAct).isDisabled(this.entry.entry);
+        }
+      }
+    }
+    return disable;
+  }
+
+
+  async isHidden() {
+    let hidden:boolean = false;
+    let activators = this.getActivator();
+    if (!_.isEmpty(activators)) {
+      for(let canAct of activators){
+        if(canAct.isHidden){
+          hidden = hidden || await (<IMenuLinkGuard>canAct).isHidden(this.entry.entry);
+        }
+      }
+    }
+    return hidden;
+  }
 }

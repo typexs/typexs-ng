@@ -51,6 +51,9 @@ export * from './libs/views/TreeObject';
 
 // navigator module
 export * from './modules/navigator/navigator.service';
+export * from './modules/navigator/IMenuLinkGuard';
+export * from './modules/navigator/NavEntry';
+export * from './modules/navigator/INavTreeEntry';
 
 
 // other
