@@ -5,7 +5,7 @@ import {InjectionToken} from '@angular/core';
 
 export interface IAuthServiceProvider {
 
-  isLoggedIn():Promise<boolean> | boolean;
+  isLoggedIn(): boolean;
 
   hasRoutePermissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean;
 
@@ -23,5 +23,3 @@ export interface IAuthServiceProvider {
 
 }
 
-
-export const AUTH_SERVICE_PROVIDER = new InjectionToken<IAuthServiceProvider>('TXS_AUTH_SERVICE');

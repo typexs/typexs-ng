@@ -1,16 +1,15 @@
-import {Injectable, Injector} from '@angular/core';
-import {ActivatedRouteSnapshot, Router, RouterStateSnapshot} from '@angular/router';
-import {AUTH_SERVICE_PROVIDER, IAuthServiceProvider} from './IAuthServiceProvider';
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
+
 import {IAuthGuardProvider} from './IAuthGuardProvider';
+import {AuthService} from './auth.service';
 
 
 @Injectable()
 export class DefaultAuthGuardService implements IAuthGuardProvider {
 
-  authService : IAuthServiceProvider;
+  constructor(private authService: AuthService) {
 
-  constructor(private injector: Injector, private router: Router) {
-    this.authService = injector.get(AUTH_SERVICE_PROVIDER);
   }
 
 

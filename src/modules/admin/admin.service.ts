@@ -7,7 +7,7 @@ import {AuthService} from '../system/api/auth/auth.service';
 @Injectable()
 export class AdminService {
 
-  constructor(private navigator: NavigatorService, private authService: AuthService<any>) {
+  constructor(private navigator: NavigatorService, private authService: AuthService) {
     // Startup stuff should be done once!
     this.navigator.addGroupEntry('admin/system/.*', {label: 'System', group: 'admin'});
     this.navigator.addGroupEntry('admin/ng/.*', {label: 'Angular', group: 'admin'});

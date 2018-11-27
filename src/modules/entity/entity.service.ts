@@ -19,7 +19,7 @@ export class EntityService {
 
   private _ready: boolean = false;
 
-  constructor(private http: HttpClient, private authService: AuthService<any>) {
+  constructor(private http: HttpClient, private authService: AuthService) {
     this.reloadMetadata();
   }
 
