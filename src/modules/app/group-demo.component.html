@@ -5,7 +5,10 @@
   <hr/>
 
   <div class="bd">
-    <xform formName="group-demo-form" [instance]="object01"></xform>
+    <xform formName="group-demo-form" [instance]="object01"  (ngSubmit)="onSubmit($event)" ></xform>
+    <pre>
+      {{result | json}}
+    </pre>
   </div>
 
   <hr/>

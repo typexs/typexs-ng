@@ -24,7 +24,7 @@ export class EnumHandle {
     return this.elem;
   }
 
-  retrieveEnum(instance:any,context?:Context): ISelectOption[] | Observable<ISelectOption[]> {
+  retrieveEnum(instance: any, parentContext?: Context): ISelectOption[] | Observable<ISelectOption[]> {
     if (_.isArray(this.getElement().getEnum())) {
       return this.getElement().getEnum();
     } else if (_.isFunction(this.getElement().getEnum())) {
@@ -42,17 +42,15 @@ export class EnumHandle {
 
       if (!_.isNull(error)) {
 
-        if(instance instanceof DataContainer){
+        if (instance instanceof DataContainer) {
           instance = instance.instance;
         }
 
-        // check if an entry with the propertyname exists
+        // check if an entry with the property name exists
         let lookupPath: string | string[] = [];
-
-        if (context) {
-          lookupPath.push(context.path());
+        if (parentContext) {
+          lookupPath.push(parentContext.path());
         }
-
         lookupPath.push(this.getElement().getEnum());
         lookupPath = (<string[]>lookupPath).join('.');
 

@@ -28,11 +28,11 @@ export class GridComponent extends AbstractFormComponent<Grid> implements OnInit
   ngOnInit() {
   }
 
-  showNr(){
+  showNr() {
     return this.elem.options.nr;
   }
 
-  isFixed(){
+  isFixed() {
     return this.elem.options.fixed;
   }
 
@@ -49,7 +49,6 @@ export class GridComponent extends AbstractFormComponent<Grid> implements OnInit
           let enumHandle = new EnumHandle(this.injector, obj);
           let obs = enumHandle.retrieveEnum(dummyObj);
           if (obs instanceof Observable) {
-            console.error('handle observable TODO');
             throw new Error('TODO handle observable');
           } else {
             let idx = 0;
@@ -73,21 +72,22 @@ export class GridComponent extends AbstractFormComponent<Grid> implements OnInit
     });
   }
 
+
   build(form: FormObject): AbstractComponent<any>[] {
     this.context.labelDisplay = 'none';
-    console.log(form);
     this.findColumns(form);
 
     let dataEntries = this.elem.getBinding().get(this.data.instance);
-    console.log(dataEntries);
     let ret = [];
-    for (let i = 0; i < dataEntries.length; i++) {
-      let c = this.addRow(dataEntries[i], i);
-      ret.push(c);
+    if (!_.isEmpty(dataEntries)) {
+      for (let i = 0; i < dataEntries.length; i++) {
+        let c = this.addRow(dataEntries[i], i);
+        ret.push(c);
+      }
     }
 
     // TODO append lines
-    if(!this.isFixed()){
+    if (!this.isFixed()) {
       let c = this.addRow();
       ret.push(c);
 
@@ -103,20 +103,23 @@ export class GridComponent extends AbstractFormComponent<Grid> implements OnInit
     cGridRow.instance.setData(this.elem, this.context, this.entries.length);
     this.entries.push(cGridRow);
 
-    let object = Reflect.construct(this.elem.getBinding().targetRef.getClass(), []);
-    let path = this.context.path();
-    /*
-        if (this.elem.isMultiple()) {
-          let arraySetted = _.get(this.data.instance, path, null);
-          if (!arraySetted) {
-            arraySetted = [];
-          }
-          arraySetted[cGridRow.instance.context.idx] = object;
-          _.set(this.data.instance, path, arraySetted);
-        } else {
-          _.set(this.data.instance, path, object);
+    if (!row) {
+      let object = Reflect.construct(this.elem.getBinding().targetRef.getClass(), []);
+      let path = this.context.path();
+
+      if (this.elem.isMultiple()) {
+        let arraySetted = _.get(this.data.instance, path, null);
+        if (!arraySetted) {
+          arraySetted = [];
         }
-      */
+        arraySetted[cGridRow.instance.context.idx] = object;
+        _.set(this.data.instance, path, arraySetted);
+      } else {
+        _.set(this.data.instance, path, object);
+      }
+
+    }
+
     cGridRow.instance.build(this.elem);
     return cGridRow.instance;
   }

@@ -38,7 +38,6 @@ export class EntityStructComponent implements OnInit {
   ngOnInit() {
     this.entityService.isReady(() => {
       this.route.params.subscribe((params => {
-        console.log(params);
         if (params.machineName) {
           this.load(params.machineName);
         }

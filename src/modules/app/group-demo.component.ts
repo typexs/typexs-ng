@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Property} from '@typexs/schema/libs/decorators/Property';
 import {Entity} from '@typexs/schema/libs/decorators/Entity';
+import {FormGrid} from '../../libs/forms/decorators/FormGrid';
 
 
 export class Places {
@@ -23,7 +24,8 @@ export class Places {
 @Entity()
 export class GroupDemoObject01 {
 
-  @Property({targetClass: Places, cardinality: 0, form: 'grid'})
+  @FormGrid()
+  @Property({type: Places, cardinality: 0})
   places: Places[];
 
 }
@@ -38,8 +40,14 @@ export class GroupDemoComponent implements OnInit {
 
   object01: any;
 
+  result: any;
+
   ngOnInit() {
     this.object01 = new GroupDemoObject01();
   }
 
+
+  onSubmit($event: any) {
+    this.result = $event;
+  }
 }

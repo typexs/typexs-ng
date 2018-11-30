@@ -98,7 +98,7 @@ export class InputDemoObject01 {
   @Property(<any>{
     type: 'string',
     form: 'select',
-    label: 'Favored color',
+    label: 'Favored color 2',
     enum: [{value: 'blue1', label: 'Blue'}, {value: 'green2', label: 'Green'}, {value: 'red3', label: 'Red'}]
   })
   favoredColorCode: string;
@@ -154,12 +154,14 @@ export class InputDemoComponent implements OnInit {
 
   object01: any;
 
+  result:any;
+
   ngOnInit() {
     this.object01 = new InputDemoObject01();
   }
 
 
   onSubmit($event: any) {
-    console.log($event);
+    this.result = $event;
   }
 }

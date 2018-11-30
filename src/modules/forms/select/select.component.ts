@@ -6,7 +6,7 @@ import {Select} from '../../../libs/forms/elements';
 import {ViewComponent} from '../../../libs/views/decorators/ViewComponent';
 import {Option} from '../../../libs/forms/elements/Option';
 import {ISelectOption} from './../libs/ISelectOption';
-import {EnumComponentHandle} from './../libs/EnumComponentHandle';
+import {EnumHandle} from '../libs/EnumHandle';
 
 
 @ViewComponent('select')
@@ -28,7 +28,7 @@ export class SelectComponent extends AbstractFormComponent<Select> implements On
     this.loadOptions();
   }
 
-  static checkAndCreateOption(e:any){
+  static checkAndCreateOption(e: any) {
     let o = new Option();
     if (_.isString(e)) {
       o.label = o.value = e;
@@ -42,17 +42,17 @@ export class SelectComponent extends AbstractFormComponent<Select> implements On
   }
 
   loadOptions() {
-    let enumHandle = new EnumComponentHandle(this);
-    let enums = enumHandle.retrieveEnum();
+    let enumHandle = new EnumHandle(this.injector, this.elem);
+    let enums = enumHandle.retrieveEnum(this.data, this.context.parent);
 
     if (enums) {
 
       if (!_.isArray(enums)) {
-        enums.subscribe((e:ISelectOption[]) => {
-          if(e){
+        enums.subscribe((e: ISelectOption[]) => {
+          if (e) {
             e.forEach(_e => {
               this.cachedOptions.push(SelectComponent.checkAndCreateOption(_e));
-            })
+            });
           }
         });
       } else {

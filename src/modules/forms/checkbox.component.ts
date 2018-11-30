@@ -12,48 +12,46 @@ import {Checkbox} from '../../libs/forms/elements';
 })
 export class CheckboxComponent extends AbstractFormComponent<Checkbox> {
 
-  get type(){
+  get type() {
     return this.elem.variant;
   }
 
 
   // TODO checked as boolean or value?
-  get isChecked(){
+  get isChecked() {
     let value = this.getValue();
 
-    if(this.elem.isMultiple()){
-      if(!value){
+    if (this.elem.isMultiple()) {
+      if (!value) {
         value = [];
       }
       return value.indexOf(this.defaultValue) != -1;
     }
-//    console.log('isChecked',this.data.instance[this.name],this.value)
     return value;
   }
 
 
-  set isChecked(checked:boolean){
-    console.log('set checked',checked,this.defaultValue)
+  set isChecked(checked: boolean) {
     let datatype = this.elem.getBinding().dataType;
-    if(this.elem.isMultiple()){
+    if (this.elem.isMultiple()) {
       let value = this.getValue();
-      if(!value){
+      if (!value) {
         value = [];
       }
-      if(value.indexOf(this.defaultValue) == -1){
+      if (value.indexOf(this.defaultValue) == -1) {
         value.push(this.defaultValue);
-      }else{
-        _.remove(value,v => this.defaultValue == v);
+      } else {
+        _.remove(value, v => this.defaultValue == v);
       }
       this.setValue(value);
-    }else{
+    } else {
 
-      if(datatype == 'boolean'){
+      if (datatype == 'boolean') {
         this.setValue(checked);
-      }else if(datatype == 'string'){
-        if(checked){
+      } else if (datatype == 'string') {
+        if (checked) {
           this.setValue(this.defaultValue);
-        }else{
+        } else {
           this.setValue(null);
         }
       }

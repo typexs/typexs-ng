@@ -54,7 +54,7 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
 
 
   get isReadOnly() {
-    return this.elem.isReadonly();
+    return this.elem.isReadonly() ? 'readonly' : null;
   }
 
 

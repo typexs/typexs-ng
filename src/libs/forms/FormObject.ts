@@ -98,6 +98,7 @@ export abstract class FormObject extends TreeObject {
       form['resolver'].push(value);
     }
 
+
     this.usedKeys.push(key);
     let methodName = 'handle' + _.capitalize(key);
     if (this[methodName]) {
