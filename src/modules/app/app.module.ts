@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {APP_MODULES} from './app.used.modules';
-import {XFORMCOMPONENT} from '../forms/xforms.elements';
+
 import {InputDemoComponent, OptionsService} from './input-demo.component';
 import {GroupDemoComponent} from './group-demo.component';
 import {ContentDemoComponent} from './content-demo.component';
@@ -10,14 +10,9 @@ import {SearchEntryComponent} from './search/search-entry.component';
 import {ViewParentComponent} from './search/view-parent.component';
 import {ContentViewChildDemoComponent} from './content-view-child-demo.component';
 import {DemosComponent} from './demos.component';
+import {CheckboxMatrixDemoComponent} from './checkbox-matrix-demo/checkbox-matrix-demo.component';
+import {FORM_COMPONENTS} from '../forms/forms.elements';
 
-/*
-import {Person} from './entities/Person';
-Person;
-
-import {Book} from './entities/Book';
-Book;
-*/
 
 @NgModule({
   declarations: [
@@ -25,13 +20,15 @@ Book;
     DemosComponent,
     InputDemoComponent,
     GroupDemoComponent,
+    CheckboxMatrixDemoComponent,
     ContentDemoComponent,
     SearchResultComponent,
     SearchEntryComponent,
     ViewParentComponent,
     ContentViewChildDemoComponent
   ],
-  entryComponents: [...XFORMCOMPONENT,
+  entryComponents: [
+    ...FORM_COMPONENTS,
     SearchResultComponent,
     SearchEntryComponent,
     ViewParentComponent

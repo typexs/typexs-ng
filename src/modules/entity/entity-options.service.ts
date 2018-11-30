@@ -4,7 +4,8 @@ import {PropertyDef} from '@typexs/schema/libs/registry/PropertyDef';
 
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
-import {ISelectOption, ISelectOptionsService} from '../forms/ISelectOptionsService';
+import {ISelectOptionsService} from '../forms/libs/ISelectOptionsService';
+import {ISelectOption} from '../forms/libs/ISelectOption';
 
 
 @Injectable()
@@ -21,10 +22,10 @@ export class EntityOptionsService implements ISelectOptionsService {
       let entityDef = propertyDef.targetRef.getEntity();
       this.entityService.query(entityDef.machineName, null, {limit: limit}).subscribe(
         result => {
-          if(result){
+          if (result) {
             let _entities: ISelectOption[] = [];
 
-            if(result.entities){
+            if (result.entities) {
               result.entities.forEach((e: any) => {
                 let option: ISelectOption = {};
                 option.value = entityDef.buildLookupConditions(e);
@@ -39,7 +40,9 @@ export class EntityOptionsService implements ISelectOptionsService {
         (e: Error) => {
           console.error(e);
         },
-        () => {bs.complete()}
+        () => {
+          bs.complete();
+        }
       );
     } else {
       bs.error(new Error('no entity as target in property'));

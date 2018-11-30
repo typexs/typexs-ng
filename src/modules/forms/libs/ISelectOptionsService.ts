@@ -1,10 +1,7 @@
 import {PropertyDef} from '@typexs/schema';
 import {Observable} from 'rxjs/Observable';
+import {ISelectOption} from './ISelectOption';
 
-export interface ISelectOption {
-  label?:string;
-  value?:string;
-}
 
 export interface ISelectOptionsService {
 

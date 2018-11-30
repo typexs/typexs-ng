@@ -25,6 +25,8 @@ export class FormBuilder {
     return <Form>this._buildForm(data);
   }
 
+
+
   buildFromEntity(entity: EntityDef): Form {
     this.data = entity;
     return <Form>this._buildFormObject(entity);
@@ -51,7 +53,7 @@ export class FormBuilder {
         formObject = this.forDefault(formType, property);
       }
     } else if (entity instanceof EntityDef) {
-
+      // TODO is this necessary
     }
 
     if (formObject != null) {
@@ -76,10 +78,11 @@ export class FormBuilder {
       let property = <PropertyDef>entity;
       if (property.isReference()) {
         if (property.isEntityReference()) {
+          // build for new entity
           let entity = property.targetRef.getEntity();
-          let childObject = this._buildFormObject(entity, formObject);
-          formObject.insert(childObject);
+          this._buildFormObject(entity, formObject);
         } else {
+          // insert property form elements
           let properties = EntityRegistry.getPropertyDefsFor(property.targetRef);
           for (let property of properties) {
             let childObject = this._buildFormObject(property, formObject);
@@ -122,7 +125,6 @@ export class FormBuilder {
   }
 
   private forReadonly(formType: string, property: PropertyDef) {
-
     let input = this._forInput('text', property);
     input.handle('readonly', true);
     return input;

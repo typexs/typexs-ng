@@ -91,6 +91,10 @@ export class NavigatorService {
   }
 
 
+  getEntryBy(path: string, cb:Function) {
+    return _.find(this.entries, cb);
+  }
+
   addGroupEntry(pattern: string, data: any) {
     let navEntry = new NavEntry();
     navEntry.parseData(data);

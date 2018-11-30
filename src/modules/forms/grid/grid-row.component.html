@@ -1,6 +1,6 @@
-<div class="col-1">{{idx}}</div>
+<div class="col-1" *ngIf="grid.showNr()">{{idx}}</div>
 <ng-container #content></ng-container>
-<div class="col-1">
+<div class="col-1" *ngIf="!grid.isFixed()">
   <button class="btn btn-info" (click)="removeRow()">X</button>
 </div>
 

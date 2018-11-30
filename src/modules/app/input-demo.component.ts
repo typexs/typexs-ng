@@ -3,10 +3,12 @@ import {Property} from '@typexs/schema/libs/decorators/Property';
 import {Entity} from '@typexs/schema/libs/decorators/Entity';
 import {MaxLength, MinLength, IsEmail} from 'class-validator';
 import {EqualWith} from '../../libs/validators/EqualWith';
-import {ISelectOption, ISelectOptionsService} from '../forms/ISelectOptionsService';
+
 import {PropertyDef} from '@typexs/schema/libs/registry/PropertyDef';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {ISelectOptionsService} from '../forms/libs/ISelectOptionsService';
+import {ISelectOption} from '../forms/libs/ISelectOption';
 
 
 @Injectable()

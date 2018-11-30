@@ -1,18 +1,18 @@
 import {NgModule} from '@angular/core';
 import {FormsModule as NgFormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
-import {XFORMCOMPONENT} from './xforms.elements';
+import {FORM_COMPONENTS} from './forms.elements';
 import {FormService} from './form.service';
 
 
 @NgModule({
-  declarations: XFORMCOMPONENT,
+  declarations: FORM_COMPONENTS,
   imports: [
     NgFormsModule,
     BrowserModule
   ],
-  entryComponents: XFORMCOMPONENT,
-  exports: XFORMCOMPONENT,
+  entryComponents: FORM_COMPONENTS,
+  exports: FORM_COMPONENTS,
   providers: [
     FormService
   ]

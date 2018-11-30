@@ -24,8 +24,7 @@ export * from './modules/system/api/auth/auth-guard.service';
 export * from './libs/forms/AbstractFormComponent';
 export * from './libs/forms/elements/Checkbox';
 export * from './libs/forms/elements/Form';
-export * from './libs/forms/elements/Grid';
-export * from './libs/forms/elements/index';
+export * from './libs/forms/elements/Label';
 export * from './libs/forms/elements/Input';
 export * from './libs/forms/elements/Radio';
 export * from './libs/forms/elements/Ref';
@@ -33,6 +32,12 @@ export * from './libs/forms/elements/Select';
 export * from './libs/forms/elements/Option';
 export * from './libs/forms/elements/Tab';
 export * from './libs/forms/elements/Tabs';
+// forms - module - grid
+export * from './libs/forms/elements/Grid';
+export * from './libs/forms/elements/IGridOptions';
+export * from './libs/forms/decorators/FormGrid';
+
+
 export * from './libs/forms/FormBuilder';
 export * from './libs/forms/FormObject';
 export * from './libs/forms/IResolver';

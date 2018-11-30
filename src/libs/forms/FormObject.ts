@@ -21,22 +21,43 @@ export abstract class FormObject extends TreeObject {
 
   help: string;
 
-  readonly: false;
+  // to mark element as read only
+  private readonly: boolean = false;
+
+  private selectable: boolean = false;
+
+  private multiple: boolean = false;
+
+  private limited: number = -1;
+
+  protected replicable: boolean = false;
 
   private binding: PropertyDef = null;
 
+
+  isSelection() {
+    return this.selectable;
+  }
+
+  isReadonly() {
+    return this.readonly;
+  }
+
+  isMultiple() {
+    return this.multiple;
+  }
+
+  isReplicable() {
+    return this.replicable;
+  }
 
   getBinding() {
     return this.binding;
   }
 
-
-
   getUsedKeys() {
     return this.usedKeys;
   }
-
-
 
   getPath(): string {
     let arr = [];
@@ -44,10 +65,10 @@ export abstract class FormObject extends TreeObject {
     if (this.getBinding() instanceof PropertyDef) {
       if (this.getParent()) {
         const parent = this.getParent();
-        if(isFormObject(parent)){
+        if (isFormObject(parent)) {
           arr.push(parent.getPath());
-        }else{
-         //  throw new Error('parent is not a form object');
+        } else {
+          //  throw new Error('parent is not a form object');
         }
       }
       arr.push(this.name);
@@ -89,7 +110,7 @@ export abstract class FormObject extends TreeObject {
   /**
    * Don't override type
    */
-  handleType(value: string) {
+  private handleType(value: string) {
   }
 
 
@@ -107,4 +128,23 @@ export abstract class FormObject extends TreeObject {
     someObject.setParent(parent);
     return someObject;
   }
+
+  getEnum(){
+    return this.getBinding().getOptions(<any>'enum');
+  }
+
+  protected handleEnum(value: any) {
+    this.handle('selectable',true);
+  }
+
+  protected handleCardinality(value: number) {
+    if(value == 0 || value > 1){
+      this.handle('multiple',true);
+      if(value > 1){
+        this.handle('limited',value);
+      }
+    }
+
+  }
+
 }
