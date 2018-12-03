@@ -28,6 +28,10 @@ export class GridRowComponent extends AbstractFormComponent<any> {
   }
 
 
+  getGrid(){
+    return this.grid;
+  }
+
   get idx() {
     return this.context.idx;
   }
