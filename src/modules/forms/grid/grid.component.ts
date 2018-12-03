@@ -39,15 +39,18 @@ export class GridComponent extends AbstractFormComponent<Grid> implements OnInit
   analyse() {
   }
 
-  private findColumns(form: FormObject) {
+  private findColumns(form: FormObject, tmpObj: any = null) {
     form.getChildren().forEach(obj => {
       if (isFormObject(obj)) {
         //
         if (obj.isReplicable()) {
           // it is so has enum select + multiple but one-decision element like checkbox or radio
-          let dummyObj = obj.getBinding().object.new();
+          if (!tmpObj) {
+            tmpObj = obj.getBinding().object.new();
+          }
+
           let enumHandle = new EnumHandle(this.injector, obj);
-          let obs = enumHandle.retrieveEnum(dummyObj);
+          let obs = enumHandle.retrieveEnum(tmpObj);
           if (obs instanceof Observable) {
             throw new Error('TODO handle observable');
           } else {
@@ -75,9 +78,9 @@ export class GridComponent extends AbstractFormComponent<Grid> implements OnInit
 
   build(form: FormObject): AbstractComponent<any>[] {
     this.context.labelDisplay = 'none';
-    this.findColumns(form);
-
     let dataEntries = this.elem.getBinding().get(this.data.instance);
+    this.findColumns(form, _.first(dataEntries));
+
     let ret = [];
     if (!_.isEmpty(dataEntries)) {
       for (let i = 0; i < dataEntries.length; i++) {
