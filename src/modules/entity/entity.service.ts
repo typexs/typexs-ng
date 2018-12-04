@@ -134,7 +134,7 @@ export class EntityService {
   }
 
 
-  create(entityName: string, entity: any): Observable<any> {
+  save(entityName: string, entity: any): Observable<any> {
     let entityDef = EntityRegistry.$().getEntityDefByName(entityName);
     let obs = new BehaviorSubject<any>(null);
     this.http.post('api/entity/' + entityName, entity).subscribe(
