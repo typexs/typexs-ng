@@ -66,19 +66,17 @@ export class EntityModifyComponent implements OnInit {
     if ($event.data.isValidated && $event.data.isSuccessValidated) {
       let instance = $event.data.instance;
       if (this.new) {
-        this.entityService.create(this.machineName, instance).subscribe(async (res: any) => {
+        this.entityService.save(this.machineName, instance).subscribe(async (res: any) => {
           if (res) {
             let idStr = this.entityDef.buildLookupConditions(res);
             // TODO flash message
             await this.router.navigate(['admin/entity', this.machineName, 'view', idStr]);
           } else {
-
             // TODO error?
           }
         });
       } else {
         this.entityService.update(this.machineName, this.id, instance).subscribe(async (res: any) => {
-
           if (res) {
             let idStr = this.entityDef.buildLookupConditions(res);
             // TODO flash message
