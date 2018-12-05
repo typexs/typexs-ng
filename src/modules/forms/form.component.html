@@ -1,7 +1,9 @@
 <div class="form-container">
   <form (ngSubmit)="onSubmit($event)" [name]="name">
+    <div class="form-alerts" *ngIf="channel">
+      <alert [channel]="channel"></alert>
+    </div>
     <ng-container #content></ng-container>
-
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </div>

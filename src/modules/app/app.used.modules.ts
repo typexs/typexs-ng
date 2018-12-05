@@ -10,6 +10,7 @@ import {AdminModule} from '../admin/admin.module';
 import {NavigatorModule} from '../navigator/navigator.module';
 import {FormsModule} from '../forms/forms.module';
 import {ViewsModule} from '../views/views.module';
+import {SystemModule} from '../system/system.module';
 
 
 export const APP_MODULES: Array<Type<any> | ModuleWithProviders | any[]> = [
@@ -19,5 +20,6 @@ export const APP_MODULES: Array<Type<any> | ModuleWithProviders | any[]> = [
   ViewsModule,
   AdminModule,
   NavigatorModule,
-  RouterModule.forRoot(APP_ROUTES)
+  RouterModule.forRoot(APP_ROUTES),
+  SystemModule.forRoot()
 ];
