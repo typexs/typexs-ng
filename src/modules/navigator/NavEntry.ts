@@ -68,8 +68,8 @@ export class NavEntry {
     // TODO has path placeholder
     // TODO has level
   }
-  
-  parseData(data:any){
+
+  parseData(data: any) {
     if (data) {
       if (_.has(data, 'label')) {
         this.label = data.label;
@@ -144,5 +144,22 @@ export class NavEntry {
     return f.join('/');
   }
 
+  getNearestRoute(): Route {
+    if (this.route) {
+      return this.route;
+    } else if (this.parent) {
+      return this.parent.getNearestRoute();
+    }
+    return null;
+  }
+
+  getNearestPath(): string {
+    if (this.path) {
+      return this.path;
+    } else if (this.parent) {
+      return this.parent.getNearestPath();
+    }
+    return null;
+  }
 
 }

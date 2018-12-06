@@ -67,16 +67,25 @@ export class NavigatorService {
 
   private rebuildRoutes(parent: NavEntry = null): Routes {
     let _routes: NavEntry[] = _.filter(this.entries, e => e.parent == parent);
-    let routes = _.map(_routes, route => {
+    let routes:Routes = [];
+    while(_routes.length > 0){
+      let route = _routes.shift();
       let r = route.route;
-      if (parent) {
-        r.path = r.path.replace(parent.path + '/', '');
+      // if route exists
+      if (r) {
+        if (parent) {
+          let parentPath = parent.getNearestPath();
+          r.path = r.path.replace(parentPath + '/', '');
+        }
+        if (!route.isRedirect()) {
+          r.children = this.rebuildRoutes(route);
+        }
+        routes.push(r);
+      }else{
+        let children =  _.filter(this.entries, e => e.parent == route);
+        children.forEach(c => _routes.push(c));
       }
-      if (!route.isRedirect()) {
-        r.children = this.rebuildRoutes(route);
-      }
-      return r;
-    });
+    }
     return routes;
   }
 
@@ -91,7 +100,7 @@ export class NavigatorService {
   }
 
 
-  getEntryBy(path: string, cb:Function) {
+  getEntryBy(path: string, cb: Function) {
     return _.find(this.entries, cb);
   }
 

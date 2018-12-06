@@ -2,12 +2,13 @@ import * as _ from 'lodash';
 import {expect} from 'chai';
 import {TestBed} from '@angular/core/testing';
 import {NavigatorService} from './navigator.service';
-import {Router, Routes} from '@angular/router';
+import {Route, Router, Routes} from '@angular/router';
 import {APP_BASE_HREF} from '@angular/common';
 import {ApplicationInitStatus} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
 import {BrowserTestingModule} from '@angular/platform-browser/testing';
 import {Observable} from 'rxjs/Observable';
+import {inspect} from 'util';
 
 function clearTree(tree: any[]) {
   _.map(tree, t => {
@@ -357,6 +358,28 @@ describe('Service: NavigatorService', () => {
           ]
         }
       ]);
+    });
+
+
+    it('add group label and rebuild', () => {
+      service = TestBed.get(NavigatorService);
+      expect(service.getEntries()).to.have.length(5);
+
+      let roots = service.getRoots();
+      expect(roots).to.have.length(1);
+
+      service.addGroupEntry('admin/.*', {
+        label: 'System',
+        group: 'admin'
+      });
+      expect(service.getEntries()).to.have.length(6);
+
+      let routes:Route[] = service.getRebuildRoutes();
+      expect(routes).to.have.length(1)
+      expect(routes[0].children).to.have.length(2)
+
+
+
     });
   });
 
