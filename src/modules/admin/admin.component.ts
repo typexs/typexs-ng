@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {AdminService} from './admin.service';
 import {IUser} from '../../libs/api/auth/IUser';
+import {AuthService} from '../system/api/auth/auth.service';
 
 @Component({
   selector: 'admin',
@@ -13,13 +13,12 @@ export class AdminComponent implements OnInit {
 
   user: IUser;
 
-  constructor(private adminInitService: AdminService) {
-
+  constructor(private authService: AuthService) {
   }
 
 
   async getUser(): Promise<IUser> {
-    return await this.adminInitService.getAuthService().getUser();
+    return await this.authService.getUser();
 
   }
 

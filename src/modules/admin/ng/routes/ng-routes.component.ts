@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {AdminService} from '../../admin.service';
 import {NavEntry} from '../../../navigator/NavEntry';
+import {NavigatorService} from '../../../navigator/navigator.service';
 
 @Component({
   selector: 'ng-routes',
@@ -10,11 +10,10 @@ export class NgRoutesComponent implements OnInit {
 
   entries: NavEntry[];
 
-  constructor(private adminService: AdminService) {}
+  constructor(private navigatorService: NavigatorService) {}
 
   ngOnInit() {
-    let service = this.adminService.getNavigatorService();
-    this.entries = service.getEntries();
+    this.entries = this.navigatorService.getEntries();
 
   }
 }

@@ -15,11 +15,11 @@ import {SystemModule} from '../system/system.module';
 
 export const APP_MODULES: Array<Type<any> | ModuleWithProviders | any[]> = [
   BrowserModule,
+  RouterModule.forRoot(APP_ROUTES),
+  NavigatorModule.forRoot(),
   NgFormsModule,
   FormsModule,
   ViewsModule,
   AdminModule,
-  NavigatorModule,
-  RouterModule.forRoot(APP_ROUTES),
   SystemModule.forRoot()
 ];

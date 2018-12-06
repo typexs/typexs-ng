@@ -16,6 +16,12 @@ import {RouterModule} from '@angular/router';
 
 export const ENTITY_OPTIONS_SERVICE = 'EntityOptionsService';
 
+const PROVIDERS = [
+  EntityService,
+  EntityOptionsService,
+  {provide: ENTITY_OPTIONS_SERVICE, useClass: EntityOptionsService}
+];
+
 @NgModule({
   declarations: [
     EntityTypesComponent,
@@ -33,21 +39,14 @@ export const ENTITY_OPTIONS_SERVICE = 'EntityOptionsService';
     FormsModule
   ],
   exports: [],
-  providers: [
-    EntityService,
-    EntityOptionsService,
-    {provide: ENTITY_OPTIONS_SERVICE, useClass: EntityOptionsService}]
+  providers: PROVIDERS
 })
 export class EntityModule {
 
   static forRoot() {
     return {
       ngModule: EntityModule,
-      providers: [
-        EntityService,
-        EntityOptionsService,
-        {provide: ENTITY_OPTIONS_SERVICE, useClass: EntityOptionsService}
-      ]
+      providers: PROVIDERS
     };
   }
 
