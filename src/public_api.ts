@@ -6,7 +6,6 @@ export * from './modules/admin/admin.module';
 export * from './modules/entity/entity.module';
 
 // admin module
-export * from './modules/admin/admin.service';
 
 // entity module
 export * from './modules/entity/entity.service';
