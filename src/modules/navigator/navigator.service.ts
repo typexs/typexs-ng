@@ -61,6 +61,12 @@ export class NavigatorService {
         entry.setParent(parentEntry);
       }
     }
+
+    // apply groups
+    _.filter(this.entries,entry => entry.route == null && entry.isGroup()).map(groupEntry => {
+      this.regroup(groupEntry);
+    })
+
   }
 
 
@@ -112,24 +118,30 @@ export class NavigatorService {
     let navEntry = new NavEntry();
     navEntry.parseData(data);
     navEntry.groupRegex = pattern;
+    this.entries.push(navEntry);
 
+    this.regroup(navEntry);
+  }
+
+  regroup(groupEntry:NavEntry){
+    const pattern = groupEntry.groupRegex;
     let split = pattern.split('/');
     let length = split.length;
     let base = this.findMatch(pattern);
 
     if (base) {
       let regex = new RegExp(pattern);
-      const idx = this.entries.indexOf(base);
+      //const idx = this.entries.indexOf(base);
       //_.insert(this.entries)
-      this.entries.splice(idx + 1, 0, navEntry);
-      navEntry.setParent(base);
+      //this.entries.splice(idx + 1, 0, navEntry);
+      groupEntry.setParent(base);
 
       let children = _.filter(this.entries, e =>
         e.route != null &&
         e.getRealPath().split('/').length == length &&
         regex.test(e.getRealPath())
       );
-      _.map(children, c => c.setParent(navEntry));
+      _.map(children, c => c.setParent(groupEntry));
     } else {
       // TODO
     }

@@ -85,6 +85,14 @@ export class NavEntry {
     }
   }
 
+  isGroup(){
+    return !!this.groupRegex;
+  }
+
+  hasRoute(){
+    return !!this.route;
+  }
+
   setParent(route: NavEntry) {
     if (this.parent != route) {
       this.parent = route;

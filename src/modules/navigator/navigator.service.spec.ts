@@ -356,9 +356,24 @@ describe('Service: NavigatorService', () => {
       });
       let entries1 = service.getEntries();
       expect(entries1).to.have.length(6);
+      let treeBefore = service.getTree();
+      expect(treeBefore[0].path).to.eq('admin');
+      expect(treeBefore[0].children).to.have.length(1);
+      expect(treeBefore[0].children[0].label).to.be.eq('System');
+      expect(treeBefore[0].children[0].children).to.have.length(2);
+      expect(treeBefore[0].children[0].children[0].label).to.eq('Config');
+      expect(treeBefore[0].children[0].children[1].label).to.eq('Storages');
+
       service.read(router.config);
       let entries2 = service.getEntries();
       expect(entries2).to.have.length(6);
+      let treeAfter = service.getTree();
+      expect(treeAfter[0].path).to.eq('admin');
+      expect(treeAfter[0].children).to.have.length(1);
+      expect(treeAfter[0].children[0].label).to.be.eq('System');
+      expect(treeAfter[0].children[0].children).to.have.length(2);
+      expect(treeAfter[0].children[0].children[0].label).to.eq('Config');
+      expect(treeAfter[0].children[0].children[1].label).to.eq('Storages');
 
       expect(entries1.map(e => e.id)).to.deep.eq(entries2.map(e => e.id));
     });
