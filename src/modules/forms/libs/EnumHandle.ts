@@ -25,17 +25,23 @@ export class EnumHandle {
   }
 
   retrieveEnum(instance: any, parentContext?: Context): ISelectOption[] | Observable<ISelectOption[]> {
-    if (_.isArray(this.getElement().getEnum())) {
-      return this.getElement().getEnum();
-    } else if (_.isFunction(this.getElement().getEnum())) {
-      let service = (<ISelectOptionsService>this.injector.get(this.getElement().getEnum()));
+    let _enum = this.getElement().getEnum();
+    if(this.getElement().getBinding().isEntityReference() && !_enum){
+      // set default
+      _enum = 'EntityOptionsService';
+    }
+
+    if (_.isArray(_enum)) {
+      return _enum;
+    } else if (_.isFunction(_enum)) {
+      let service = (<ISelectOptionsService>this.injector.get(_enum));
       return service.options(this.getElement().getBinding());
-    } else if (_.isString(this.getElement().getEnum())) {
+    } else if (_.isString(_enum)) {
       let error = null;
       let observer = null;
       try {
         // maybe is string injector
-        observer = (<ISelectOptionsService>this.injector.get(this.getElement().getEnum()));
+        observer = (<ISelectOptionsService>this.injector.get(_enum));
       } catch (e) {
         error = e;
       }
@@ -51,7 +57,7 @@ export class EnumHandle {
         if (parentContext) {
           lookupPath.push(parentContext.path());
         }
-        lookupPath.push(this.getElement().getEnum());
+        lookupPath.push(_enum);
         lookupPath = (<string[]>lookupPath).join('.');
 
         if (_.has(instance, lookupPath)) {

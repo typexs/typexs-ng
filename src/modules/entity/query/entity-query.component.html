@@ -19,8 +19,22 @@
               {{ prop.getEntity().label(prop.get(entity))}}
             </a>
           </ng-template>
+          <ng-template ngSwitchCase="entity_reference_array">
+            <ul>
+              <li *ngFor="let entry of prop.get(entity)">
+                <a
+                  [routerLink]="['/admin/entity',prop.getEntity().machineName,'view', prop.getEntity().buildLookupConditions(entry) ]">
+                  {{ prop.getEntity().label(entry)}}
+                </a>
+              </li>
+            </ul>
+            <a
+              [routerLink]="['/admin/entity',prop.getEntity().machineName,'view', prop.getEntity().buildLookupConditions(prop.get(entity)) ]">
+              {{ prop.getEntity().label(prop.get(entity))}}
+            </a>
+          </ng-template>
           <ng-template ngSwitchDefault>
-            {{prop.get(entity)}}
+            <pre>{{asString(prop.get(entity))}}</pre>
           </ng-template>
         </td>
         <td>

@@ -69,6 +69,10 @@ export class EntityQueryComponent implements OnInit {
     }
   }
 
+  asString(data:any){
+    return JSON.stringify(data,null,2);
+  }
+
 
   fieldDisplay(prop:PropertyDef){
     if(prop.isEntityReference()){

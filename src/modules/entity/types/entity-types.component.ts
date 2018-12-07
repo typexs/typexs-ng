@@ -12,6 +12,6 @@ export class EntityTypesComponent {
   }
 
   getEntityDefs(){
-    return this.entityService.getEntityDefs();
+    return this.entityService.getEntityDefs().filter(e => e.isStoreable());
   }
 }

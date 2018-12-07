@@ -45,7 +45,25 @@ export class FormBuilder {
     } else if (entity instanceof PropertyDef) {
       // TODO support also other types
       let property = entity;
-      let formType = <string>property.getOptions('form') || 'text';
+
+      let formType = <string>property.getOptions('form');// || 'text';
+      if(!formType){
+        // TODO Defaults for the field
+        if(property.isEntityReference()) {
+          formType = 'select';
+        }else if(property.isReference()){
+          formType = 'grid';
+        }else{
+          if(property.dataType == 'boolean'){
+            formType = 'checkbox';
+          }else{
+            formType = 'text';
+          }
+        }
+        property.setOption('form',formType)
+      }
+
+
       let methodName = 'for' + _.capitalize(formType);
       if (this[methodName]) {
         formObject = this[methodName](formType, property);

@@ -42,6 +42,7 @@ export class SelectComponent extends AbstractFormComponent<Select> implements On
   }
 
   loadOptions() {
+
     let enumHandle = new EnumHandle(this.injector, this.elem);
     let enums = enumHandle.retrieveEnum(this.data, this.context.parent);
 
