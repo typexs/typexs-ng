@@ -29,13 +29,18 @@ export class NavigatorService {
 
   readRoutes(config: Routes, parent: NavEntry = null) {
     for (let route of config) {
-      let entry = new NavEntry();
-      entry.parse(route);
-      if (parent && parent != entry) {
-        entry.setParent(parent);
-        entry.setRealPath(entry.getFullPath());
+      let entry = _.find(this.entries, e => e.route && e.id == route['navId'] );
+
+      if(!entry){
+        entry = new NavEntry();
+        this.entries.push(entry);
+        entry.parse(route);
+        if (parent && parent != entry) {
+          entry.setParent(parent);
+          entry.setRealPath(entry.getFullPath());
+        }
       }
-      this.entries.push(entry);
+
       if (route.children && !_.isEmpty(route.children)) {
         this.readRoutes(route.children, entry);
       }
@@ -44,7 +49,6 @@ export class NavigatorService {
 
 
   read(routes: Routes) {
-    this.entries = [];
     this.readRoutes(routes);
 
     for (let entry of this.entries) {

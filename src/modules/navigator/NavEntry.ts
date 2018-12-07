@@ -39,6 +39,7 @@ export class NavEntry {
 
   parse(route: Route) {
     this.route = route;
+    route['navId'] = this.id;
     this.path = this.realPath = route.path;
     this.paths = this.path.split('/');
     let fixedPath = [];

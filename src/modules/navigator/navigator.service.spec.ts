@@ -63,32 +63,13 @@ describe('Service: NavigatorService', () => {
       expect(service.getEntries()).to.have.length(5);
 
       let tree = service.getRebuildRoutes();
-      expect(JSON.stringify(tree)).to.deep.eq(JSON.stringify([
-        {
-          'path': 'admin',
-          'children': [
-            {
-              'path': 'configure',
-              'children': [
-                {
-                  'path': 'module1',
-                  'children': []
-                },
-                {
-                  'path': 'module2',
-                  'children': []
-                }
-              ]
-            },
-            {
-              'path': 'storages',
-              'children': []
-            }
-          ]
-        }
-      ]));
       expect(tree).to.have.length(1);
       expect(tree[0].children).to.have.length(2);
+      expect(tree[0].path).to.eq('admin');
+      expect(tree[0].children[0].path).to.eq('configure');
+      expect(tree[0].children[1].path).to.eq('storages');
+      expect(tree[0].children[0].children[0].path).to.eq('module1');
+      expect(tree[0].children[0].children[1].path).to.eq('module2');
     });
 
 
@@ -234,33 +215,15 @@ describe('Service: NavigatorService', () => {
       expect(service.getEntries()).to.have.length(5);
 
       let tree = service.getRebuildRoutes();
-      expect(JSON.stringify(tree)).to.deep.eq(JSON.stringify([
-        {
-          'path': 'admin',
-          'children': [
-            {
-              'path': 'configure',
-              'data': {'label': 'Config'},
-              'children': [
-                {
-                  'path': 'module1',
-                  'children': []
-                },
-                {
-                  'path': 'module2',
-                  'children': []
-                }
-              ]
-            },
-            {
-              'path': 'storages',
-              'children': []
-            }
-          ]
-        }
-      ]));
       expect(tree).to.have.length(1);
       expect(tree[0].children).to.have.length(2);
+      expect(tree[0].path).to.eq('admin');
+      expect(tree[0].children[0].path).to.eq('configure');
+      expect(tree[0].children[0].data.label).to.eq('Config');
+      expect(tree[0].children[1].path).to.eq('storages');
+      expect(tree[0].children[0].children[0].path).to.eq('module1');
+      expect(tree[0].children[0].children[1].path).to.eq('module2');
+
     });
 
 
@@ -374,13 +337,33 @@ describe('Service: NavigatorService', () => {
       });
       expect(service.getEntries()).to.have.length(6);
 
-      let routes:Route[] = service.getRebuildRoutes();
-      expect(routes).to.have.length(1)
-      expect(routes[0].children).to.have.length(2)
-
+      let routes: Route[] = service.getRebuildRoutes();
+      expect(routes).to.have.length(1);
+      expect(routes[0].children).to.have.length(2);
 
 
     });
+
+    it('rebuild routes before and after group added', () => {
+      let router = TestBed.get(Router);
+      service = TestBed.get(NavigatorService);
+
+      service.read(router.config);
+      expect(service.getEntries()).to.have.length(5);
+      service.addGroupEntry('admin/.*', {
+        label: 'System',
+        group: 'admin'
+      });
+      let entries1 = service.getEntries();
+      expect(entries1).to.have.length(6);
+      service.read(router.config);
+      let entries2 = service.getEntries();
+      expect(entries2).to.have.length(6);
+
+      expect(entries1.map(e => e.id)).to.deep.eq(entries2.map(e => e.id));
+    });
+
+
   });
 
 });
