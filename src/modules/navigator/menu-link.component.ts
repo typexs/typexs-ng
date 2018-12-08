@@ -52,7 +52,7 @@ export class MenuLinkComponent implements OnInit {
     if (!_.isEmpty(activators)) {
       for (let canAct of activators) {
         if (canAct.isDisabled) {
-          disable = disable ||  (<IMenuLinkGuard>canAct).isDisabled(this.entry.entry);
+          return (<IMenuLinkGuard>canAct).isDisabled(this.entry.entry);
         }
       }
     }
@@ -66,7 +66,7 @@ export class MenuLinkComponent implements OnInit {
     if (!_.isEmpty(activators)) {
       for (let canAct of activators) {
         if (canAct.isHidden) {
-          disable = disable ||  (<IMenuLinkGuard>canAct).isHidden(this.entry.entry);
+          return  (<IMenuLinkGuard>canAct).isHidden(this.entry.entry);
         }
       }
     }

@@ -1,12 +1,12 @@
 <li [ngClass]="{'nav-item': !entry.isGroup, 'nav-title':entry.isGroup}">
 
-  <div *ngIf="!isHidden()">
+  <div *ngIf="!(isHidden() | async)">
     <div *ngIf="entry.isGroup">{{entry.label}}</div>
     <a *ngIf="!entry.isGroup"
        [routerLink]="'/'+entry.path"
        routerLinkActive="active"
        class="nav-link"
-       [class.disabled]="isDisabled()">{{entry.label}}</a>
+       [class.disabled]="(isDisabled() | async)">{{entry.label}}</a>
   </div>
   <div class="nav-sub" *ngIf="hasChildren()">
     <ul>

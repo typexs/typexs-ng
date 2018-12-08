@@ -1,25 +1,25 @@
 import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 import {IUser} from '../../../../libs/api/auth/IUser';
-import {InjectionToken} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
 
 
 export interface IAuthServiceProvider {
 
   isLoggedIn(): boolean;
 
-  hasRoutePermissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean;
+  hasRoutePermissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean;
 
-  hasPermission(right: string, params?: any): Promise<boolean> | boolean;
+  hasPermission(right: string, params?: any): Observable<boolean> | Promise<boolean> | boolean;
 
-  hasPermissionsFor?(object: any): Promise<boolean> | boolean;
+  hasPermissionsFor?(object: any): Observable<boolean> | Promise<boolean> | boolean;
 
-  getUser():Promise<IUser>| IUser;
+  getUser(): Observable<IUser> | Promise<IUser> | IUser;
 
-  getRoles?():Promise<string[]> |  string[];
+  getRoles?(): Observable<string[]> | Promise<string[]> | string[];
 
-  hasRole?(role: string): Promise<boolean> | boolean;
+  hasRole?(role: string): Observable<boolean> | Promise<boolean> | boolean;
 
-  getPermissions?():Promise<string[]> |  string[];
+  getPermissions?(): Observable<string[]> | Promise<string[]> | string[];
 
 }
 

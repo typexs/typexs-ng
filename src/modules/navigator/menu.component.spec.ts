@@ -143,7 +143,7 @@ describe('Component: Menu', () => {
     expect(await componentLink.isDisabled()).to.be.true;
     expect(await componentLink.isHidden()).to.be.true;
 
-  })
+  });
 
 
   it.skip('create submenu by with exclude', () => { })
