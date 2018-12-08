@@ -6,6 +6,8 @@ import {ApplicationInitStatus, Injectable} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
 import {BrowserTestingModule} from '@angular/platform-browser/testing';
 import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+
 import {MenuComponent} from './menu.component';
 import {MenuLinkComponent} from './menu-link.component';
 import {expect} from 'chai';
@@ -24,11 +26,12 @@ describe('Component: Menu', () => {
 
   @Injectable()
   class MockGuard implements IMenuLinkGuard{
-    isDisabled(entry: NavEntry): boolean {
-      return true;
+    isDisabled(entry: NavEntry): Observable<boolean> {
+
+      return (new BehaviorSubject(true)).asObservable();
     }
-    isHidden(entry: NavEntry): boolean {
-      return true;
+    isHidden(entry: NavEntry): Observable<boolean> {
+      return (new BehaviorSubject(true)).asObservable();
     }
   }
 
@@ -55,7 +58,7 @@ describe('Component: Menu', () => {
     resetConfig(routes: Routes) {
       this.config = routes;
     }
-  }
+  }8
 
 
   beforeEach(async () => {
@@ -140,8 +143,11 @@ describe('Component: Menu', () => {
     fixtureLink = TestBed.createComponent(MenuLinkComponent);
     componentLink = fixtureLink.componentInstance;
     componentLink.entry = component.tree[2].children[1];
-    expect(await componentLink.isDisabled()).to.be.true;
-    expect(await componentLink.isHidden()).to.be.true;
+    componentLink.ngOnInit();
+    expect(componentLink.isHidden).to.not.be.undefined;
+    expect(componentLink.isDisabled).to.not.be.undefined;
+    expect(await new Promise((resolve, reject) => {componentLink.isDisabled.subscribe(x => resolve(x))})).to.be.true;
+    expect(await new Promise((resolve, reject) => {componentLink.isHidden.subscribe(x => resolve(x))})).to.be.true;
 
   });
 

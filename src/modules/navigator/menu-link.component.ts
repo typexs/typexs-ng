@@ -5,6 +5,7 @@ import {IMenuLinkGuard} from './IMenuLinkGuard';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 
+
 @Component({
   selector: 'menu-link',
   templateUrl: './menu-link.component.html',
@@ -17,11 +18,26 @@ export class MenuLinkComponent implements OnInit {
 
   activators: IMenuLinkGuard[] = null;
 
+  isDisabled: Observable<boolean>;
+
+  isHidden: Observable<boolean>;
+
   constructor(private injector: Injector) {
   }
 
 
   ngOnInit(): void {
+    let activators = this.getActivator();
+    if (!_.isEmpty(activators)) {
+      for (let canAct of activators) {
+        if (canAct.isDisabled && !this.isDisabled) {
+          this.isDisabled = (<IMenuLinkGuard>canAct).isDisabled(this.entry.entry);
+        }
+        if (canAct.isHidden && !this.isHidden) {
+          this.isHidden = (<IMenuLinkGuard>canAct).isHidden(this.entry.entry);
+        }
+      }
+    }
   }
 
 
@@ -45,32 +61,32 @@ export class MenuLinkComponent implements OnInit {
     return this.activators;
   }
 
-
-  isDisabled() {
-    let disable: boolean = false;
-    let activators = this.getActivator();
-    if (!_.isEmpty(activators)) {
-      for (let canAct of activators) {
-        if (canAct.isDisabled) {
-          return (<IMenuLinkGuard>canAct).isDisabled(this.entry.entry);
+  /*
+    isDisabled():Observable<boolean> | boolean {
+      let disable: boolean = false;
+      let activators = this.getActivator();
+      if (!_.isEmpty(activators)) {
+        for (let canAct of activators) {
+          if (canAct.isDisabled) {
+            return (<IMenuLinkGuard>canAct).isDisabled(this.entry.entry);
+          }
         }
       }
+      return disable;
     }
-    return disable;
-  }
 
 
-  isHidden() {
-    let disable: boolean = false;
-    let activators = this.getActivator();
-    if (!_.isEmpty(activators)) {
-      for (let canAct of activators) {
-        if (canAct.isHidden) {
-          return  (<IMenuLinkGuard>canAct).isHidden(this.entry.entry);
+    isHidden():Observable<boolean> | boolean {
+      let disable: boolean = false;
+      let activators = this.getActivator();
+      if (!_.isEmpty(activators)) {
+        for (let canAct of activators) {
+          if (canAct.isHidden) {
+            return  (<IMenuLinkGuard>canAct).isHidden(this.entry.entry);
+          }
         }
       }
+      return disable;
     }
-    return disable;
-  }
-
+  */
 }
