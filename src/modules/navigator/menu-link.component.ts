@@ -15,21 +15,20 @@ export class MenuLinkComponent implements OnInit {
   @Input()
   entry: INavTreeEntry;
 
-
   activators: IMenuLinkGuard[] = null;
-
-
 
   constructor(private injector: Injector) {
   }
 
-  ngOnInit(): void {
 
+  ngOnInit(): void {
   }
+
 
   hasChildren() {
     return this.entry.children && this.entry.children.length > 0;
   }
+
 
   private getActivator() {
     if (this.activators) return this.activators;
@@ -46,6 +45,7 @@ export class MenuLinkComponent implements OnInit {
     return this.activators;
   }
 
+
   isDisabled() {
     let disable: boolean = false;
     let activators = this.getActivator();
@@ -59,6 +59,7 @@ export class MenuLinkComponent implements OnInit {
     return disable;
   }
 
+
   isHidden() {
     let disable: boolean = false;
     let activators = this.getActivator();
@@ -71,6 +72,5 @@ export class MenuLinkComponent implements OnInit {
     }
     return disable;
   }
-
 
 }

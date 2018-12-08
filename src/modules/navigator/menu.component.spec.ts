@@ -42,7 +42,11 @@ describe('Component: Menu', () => {
       {path: 'level/one'},
       {path: 'level/one/subone'},
       {path: 'level/one/subtwo'},
-      {path: 'level/two',canActivate:[MockGuard]}
+      {path: 'level/two',canActivate:[MockGuard]},
+      /*
+      {path: 'group/two'},
+      {path: 'group/one'},
+      */
     ];
 
     events: Observable<any> = new Observable<any>(() => {
@@ -99,6 +103,7 @@ describe('Component: Menu', () => {
     expect(component.tree).to.have.length(2);
     expect(_.map(component.tree, e => e.path)).to.be.deep.eq(['admin/configure', 'admin/storages']);
   });
+
 
   it('create submenu for base entry is "level/one"', () => {
     component.base = 'level/one';

@@ -9,9 +9,13 @@ export class NavEntry {
 
   ignore: boolean = false;
 
+  private fixedPath: boolean = false;
+
+  private orgPath: string = null;
+
   path: string;
 
-  realPath: string = null;
+  //realPath: string = null;
 
   route: Route = null;
 
@@ -39,8 +43,10 @@ export class NavEntry {
 
   parse(route: Route) {
     this.route = route;
+    // save original path
+    this.orgPath = this.route.path;
     route['navId'] = this.id;
-    this.path = this.realPath = route.path;
+    this.path = route.path;
     this.paths = this.path.split('/');
     let fixedPath = [];
 
@@ -85,18 +91,33 @@ export class NavEntry {
     }
   }
 
-  isGroup(){
+  isGroup() {
     return !!this.groupRegex;
   }
 
-  hasRoute(){
+  hasRoute() {
     return !!this.route;
   }
 
+  markAsFixedPath(){
+    this.fixedPath = true;
+  }
+
   setParent(route: NavEntry) {
-    if (this.parent != route) {
+    if (this.parent != route && this != route) {
+      let localPath = this.getFullPath();
       this.parent = route;
+      if (!this.fixedPath) {
+        let parentPath = this.parent.getFullPath();
+        if (localPath && localPath.startsWith(parentPath + '/')) {
+          this.path = localPath.replace(parentPath + '/', '');
+        }
+      }
     }
+  }
+
+  getPath() {
+    return this.path;
   }
 
   getLevel(): number {
@@ -116,6 +137,7 @@ export class NavEntry {
     return null;
   }
 
+  /*
   setRealPath(s: string) {
     this.realPath = s;
   }
@@ -123,14 +145,18 @@ export class NavEntry {
   getRealPath() {
     return this.realPath;
   }
+  */
 
 
   getFullPath(): string {
+    if(this.fixedPath) return this.path;
     let path = [];
     if (this.parent) {
       path.push(this.parent.getFullPath());
     }
-    path.push(this.path);
+    if (this.path) {
+      path.push(this.path);
+    }
     return path.join('/');
   }
 

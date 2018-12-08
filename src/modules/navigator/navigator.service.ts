@@ -35,9 +35,11 @@ export class NavigatorService {
         entry = new NavEntry();
         this.entries.push(entry);
         entry.parse(route);
+
         if (parent && parent != entry) {
+          // is child element
           entry.setParent(parent);
-          entry.setRealPath(entry.getFullPath());
+          //entry.setRealPath(entry.getFullPath());
         }
       }
 
@@ -52,7 +54,7 @@ export class NavigatorService {
     this.readRoutes(routes);
 
     for (let entry of this.entries) {
-      const realPath = entry.getRealPath();
+      const realPath = entry.getFullPath();
       if (_.isEmpty(realPath) || entry.isRedirect()) {
         continue;
       }
@@ -83,10 +85,15 @@ export class NavigatorService {
       let r = route.route;
       // if route exists
       if (r) {
+
+        /*
         if (parent) {
-          let parentPath = parent.getNearestPath();
+          let parentPath = parent.getFullPath()
           r.path = r.path.replace(parentPath + '/', '');
         }
+        */
+
+        r.path = route.path;
         if (!route.isRedirect()) {
           r.children = this.rebuildRoutes(route);
         }
@@ -106,13 +113,14 @@ export class NavigatorService {
 
 
   getEntry(path: string) {
-    return _.find(this.entries, e => e.getRealPath() == path);
+    return _.find(this.entries, e => e.getFullPath() == path);
   }
 
 
   getEntryBy(path: string, cb: Function) {
     return _.find(this.entries, cb);
   }
+
 
   addGroupEntry(pattern: string, data: any) {
     let navEntry = new NavEntry();
@@ -138,8 +146,8 @@ export class NavigatorService {
 
       let children = _.filter(this.entries, e =>
         e.route != null &&
-        e.getRealPath().split('/').length == length &&
-        regex.test(e.getRealPath())
+        e.getFullPath().split('/').length == length &&
+        regex.test(e.getFullPath())
       );
       _.map(children, c => c.setParent(groupEntry));
     } else {
@@ -159,7 +167,7 @@ export class NavigatorService {
         entry: route
       };
       if (route.route) {
-        r.path = route.getRealPath();
+        r.path = route.getFullPath();
       } else {
         r.isGroup = true;
       }
@@ -178,7 +186,8 @@ export class NavigatorService {
     let base = null;
     while (split.length > 0 && base == null) {
       split.pop();
-      base = _.find(this.entries, e => e.route != null && e.getRealPath() == split.join('/') && !e.isRedirect() && !e.toIgnore());
+      const lookup = split.join('/');
+      base = _.find(this.entries, e => e.route != null && e.getFullPath() == lookup && !e.isRedirect() && !e.toIgnore());
     }
     return base;
   }
