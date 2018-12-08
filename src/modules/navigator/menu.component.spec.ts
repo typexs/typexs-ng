@@ -30,7 +30,7 @@ describe('Component: Menu', () => {
 
       return (new BehaviorSubject(true)).asObservable();
     }
-    isHidden(entry: NavEntry): Observable<boolean> {
+    isShown(entry: NavEntry): Observable<boolean> {
       return (new BehaviorSubject(true)).asObservable();
     }
   }
@@ -144,10 +144,12 @@ describe('Component: Menu', () => {
     componentLink = fixtureLink.componentInstance;
     componentLink.entry = component.tree[2].children[1];
     componentLink.ngOnInit();
-    expect(componentLink.isHidden).to.not.be.undefined;
+
+    expect(componentLink.isShown).to.not.be.undefined;
     expect(componentLink.isDisabled).to.not.be.undefined;
     expect(await new Promise((resolve, reject) => {componentLink.isDisabled.subscribe(x => resolve(x))})).to.be.true;
-    expect(await new Promise((resolve, reject) => {componentLink.isHidden.subscribe(x => resolve(x))})).to.be.true;
+    expect(await new Promise((resolve, reject) => {componentLink.isShown.subscribe(x => resolve(x))})).to.be.true;
+
 
   });
 

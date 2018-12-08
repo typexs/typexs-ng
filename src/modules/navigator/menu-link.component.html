@@ -1,6 +1,6 @@
 <li [ngClass]="{'nav-item': !entry.isGroup, 'nav-title':entry.isGroup}">
 
-  <div *ngIf="!(isHidden | async)">
+  <div *ngIf="(isShown | async)">
     <div *ngIf="entry.isGroup">{{entry.label}}</div>
     <a *ngIf="!entry.isGroup"
        [routerLink]="'/'+entry.path"

@@ -9,5 +9,5 @@ export interface IMenuLinkGuard {
     */
   isDisabled?(entry: NavEntry): Observable<boolean>;
 
-  isHidden?(entry: NavEntry): Observable<boolean>;
+  isShown?(entry: NavEntry): Observable<boolean>;
 }

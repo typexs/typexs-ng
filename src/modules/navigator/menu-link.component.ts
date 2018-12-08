@@ -20,7 +20,7 @@ export class MenuLinkComponent implements OnInit {
 
   isDisabled: Observable<boolean>;
 
-  isHidden: Observable<boolean>;
+  isShown: Observable<boolean>;
 
   constructor(private injector: Injector) {
   }
@@ -33,8 +33,8 @@ export class MenuLinkComponent implements OnInit {
         if (canAct.isDisabled && !this.isDisabled) {
           this.isDisabled = (<IMenuLinkGuard>canAct).isDisabled(this.entry.entry);
         }
-        if (canAct.isHidden && !this.isHidden) {
-          this.isHidden = (<IMenuLinkGuard>canAct).isHidden(this.entry.entry);
+        if (canAct.isShown && !this.isShown) {
+          this.isShown = (<IMenuLinkGuard>canAct).isShown(this.entry.entry);
         }
       }
     }
