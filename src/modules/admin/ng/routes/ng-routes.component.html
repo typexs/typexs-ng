@@ -23,7 +23,7 @@
       <tr *ngFor="let entry of entries">
         <td>{{entry.id}}</td>
         <td>{{entry.getParentId()}}</td>
-        <td><a [routerLink]="'/'+entry.getRealPath()" routerLinkActive="active">{{entry.getRealPath()}}</a></td>
+        <td><a [routerLink]="'/'+entry.getFullPath()" routerLinkActive="active">{{entry.getFullPath()}}</a></td>
         <td>{{entry.path}}</td>
         <td>{{entry.groupRegex}}</td>
         <td>{{entry.label}}</td>
