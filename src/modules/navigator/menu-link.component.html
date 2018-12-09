@@ -1,6 +1,6 @@
-<li [ngClass]="{'nav-item': !entry.isGroup, 'nav-title':entry.isGroup}">
+<li [ngClass]="{'nav-item': !entry.isGroup, 'nav-title':entry.isGroup}" *ngIf="(isShown | async)">
 
-  <div *ngIf="(isShown | async)">
+  <div>
     <div *ngIf="entry.isGroup">{{entry.label}}</div>
     <a *ngIf="!entry.isGroup"
        [routerLink]="'/'+entry.path"

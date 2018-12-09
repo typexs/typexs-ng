@@ -12,6 +12,9 @@ import {ContentViewChildDemoComponent} from './content-view-child-demo.component
 import {DemosComponent} from './demos.component';
 import {CheckboxMatrixDemoComponent} from './checkbox-matrix-demo/checkbox-matrix-demo.component';
 import {FORM_COMPONENTS} from '../forms/forms.elements';
+import {MenuDemoComponent} from './menu-demo/menu-demo.component';
+import {MenuAccessService} from './menu-demo/MenuAccessService';
+import {DummyComponent} from './dummy/dummy.component';
 
 
 @NgModule({
@@ -25,7 +28,9 @@ import {FORM_COMPONENTS} from '../forms/forms.elements';
     SearchResultComponent,
     SearchEntryComponent,
     ViewParentComponent,
-    ContentViewChildDemoComponent
+    ContentViewChildDemoComponent,
+    MenuDemoComponent,
+    DummyComponent
   ],
   entryComponents: [
     ...FORM_COMPONENTS,
@@ -35,7 +40,8 @@ import {FORM_COMPONENTS} from '../forms/forms.elements';
   ],
   imports: APP_MODULES,
   providers: [
-    OptionsService
+    OptionsService,
+    MenuAccessService
   ],
   bootstrap: [AppComponent]
 })

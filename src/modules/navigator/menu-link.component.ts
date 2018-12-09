@@ -18,9 +18,9 @@ export class MenuLinkComponent implements OnInit {
 
   activators: IMenuLinkGuard[] = null;
 
-  isDisabled: Observable<boolean>;
+  isDisabled: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  isShown: Observable<boolean>;
+  isShown: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   constructor(private injector: Injector) {
   }
@@ -29,12 +29,14 @@ export class MenuLinkComponent implements OnInit {
   ngOnInit(): void {
     let activators = this.getActivator();
     if (!_.isEmpty(activators)) {
+
       for (let canAct of activators) {
-        if (canAct.isDisabled && !this.isDisabled) {
-          this.isDisabled = (<IMenuLinkGuard>canAct).isDisabled(this.entry.entry);
+
+        if (canAct.isDisabled) {
+          (<IMenuLinkGuard>canAct).isDisabled(this.entry.entry).subscribe(this.isDisabled) ;
         }
-        if (canAct.isShown && !this.isShown) {
-          this.isShown = (<IMenuLinkGuard>canAct).isShown(this.entry.entry);
+        if (canAct.isShown) {
+          (<IMenuLinkGuard>canAct).isShown(this.entry.entry).subscribe(this.isShown);
         }
       }
     }
