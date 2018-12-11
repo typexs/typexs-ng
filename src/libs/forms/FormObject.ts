@@ -28,6 +28,8 @@ export abstract class FormObject extends TreeObject {
 
   private multiple: boolean = false;
 
+  private struct: boolean = false;
+
   private limited: number = -1;
 
   protected replicable: boolean = false;
@@ -37,6 +39,11 @@ export abstract class FormObject extends TreeObject {
 
   isSelection() {
     return this.selectable;
+  }
+
+
+  isStruct() {
+    return this.struct;
   }
 
   isReadonly() {

@@ -48,12 +48,12 @@ class Form_parseSpec {
     let formElements = formBuilder.buildFromEntity(EntityRegistry.$().getEntityDefByName('CheckboxMatrix'));
     expect(formElements.getChildren()).to.have.length(1);
     let gridChildren = formElements.getChildren()[0].getChildren();
-    console.log(gridChildren)
+    //console.log(gridChildren)
     expect(formElements.getChildren()[0].getChildren()).to.have.length(2);
     let checkbox = _.get(formElements,'children.0.children.1');
     expect(checkbox.isMultiple()).to.be.true;
     expect(checkbox.isReplicable()).to.be.true;
-    console.log(inspect(formElements,false,10))
+   // console.log(inspect(formElements,false,10))
 
   }
 }

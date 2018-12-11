@@ -10,6 +10,8 @@ export class Grid extends FormObject {
 
   handleGrid(options: IGridOptions) {
     this.options = _.defaults(options, DEFAULT_GRID_OPTIONS);
+    // mark that this is an structuring element
+    this.handle('struct', true);
   }
 
 }

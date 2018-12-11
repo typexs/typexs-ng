@@ -83,7 +83,7 @@ export class FormBuilder {
 
     const nextLevel = options.level + 1;
     if (entity instanceof EntityDef) {
-      if(options.level == 0){
+      if(options.level == 0 || formObject.isStruct()){
         let properties = entity.getPropertyDefs();
         for (let property of properties) {
           let childObject = this._buildFormObject(property, formObject,{level:nextLevel});
