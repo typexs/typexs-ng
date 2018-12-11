@@ -33,8 +33,7 @@ export class FormBuilder {
   }
 
 
-  private _buildFormObject(entity: EntityDef | PropertyDef, parent: FormObject = null) {
-
+  private _buildFormObject(entity: EntityDef | PropertyDef, parent: FormObject = null, options: { level: number } = {level: 0}) {
     let formObject: FormObject = null;
 
     if (!this.form) {
@@ -60,18 +59,10 @@ export class FormBuilder {
             formType = 'checkbox';
           } else {
             formType = 'text';
-            /*
-            if (!property.isNullable()) {
-              IsNotEmpty()(entity.object.getClass(), property.name);
-            }
-            */
           }
         }
-
-
         property.setOption('form', formType);
       }
-
 
       let methodName = 'for' + _.capitalize(formType);
       if (this[methodName]) {
@@ -90,13 +81,14 @@ export class FormBuilder {
       formObject = parent;
     }
 
-
+    const nextLevel = options.level + 1;
     if (entity instanceof EntityDef) {
-      let properties = entity.getPropertyDefs();
-
-      for (let property of properties) {
-        let childObject = this._buildFormObject(property, formObject);
-        formObject.insert(childObject);
+      if(options.level == 0){
+        let properties = entity.getPropertyDefs();
+        for (let property of properties) {
+          let childObject = this._buildFormObject(property, formObject,{level:nextLevel});
+          formObject.insert(childObject);
+        }
       }
     } else if (entity instanceof PropertyDef) {
       // TODO for properties which points to Entity / Entities
@@ -107,27 +99,21 @@ export class FormBuilder {
         if (property.isEntityReference()) {
           // build for new entity
           let entity = property.targetRef.getEntity();
-          this._buildFormObject(entity, formObject);
+          this._buildFormObject(entity, formObject,{level:nextLevel});
         } else {
           // insert property form elements
           let properties = EntityRegistry.getPropertyDefsFor(property.targetRef);
           for (let property of properties) {
-            let childObject = this._buildFormObject(property, formObject);
+            let childObject = this._buildFormObject(property, formObject,{level:nextLevel});
             formObject.insert(childObject);
           }
         }
       }
-
-      if (!property.isNullable()) {
-
-      }
-
     }
-
     formObject.postProcess();
     return formObject;
-
   }
+
 
   private forDefault(formType: string, property: PropertyDef) {
     let formObject = ContentComponentRegistry.createHandler(formType);
@@ -139,23 +125,28 @@ export class FormBuilder {
     throw new NoFormTypeDefinedError(formType);
   }
 
+
   private forText(formType: string, property: PropertyDef) {
     return this._forInput(formType, property);
   }
+
 
   private forPassword(formType: string, property: PropertyDef) {
     return this._forInput(formType, property);
   }
 
+
   private forHidden(formType: string, property: PropertyDef) {
     return this._forInput(formType, property);
   }
+
 
   private forReadonly(formType: string, property: PropertyDef) {
     let input = this._forInput('text', property);
     input.handle('readonly', true);
     return input;
   }
+
 
   private forEmail(formType: string, property: PropertyDef) {
     return this._forInput(formType, property);
@@ -167,6 +158,7 @@ export class FormBuilder {
     this._applyValues(formObject, property);
     return formObject;
   }
+
 
   private _applyValues(formObject: FormObject, property: PropertyDef) {
     formObject.handle('name', property.name);
@@ -182,7 +174,6 @@ export class FormBuilder {
         formObject.handle(opt, value);
       });
     }
-
   }
 
 

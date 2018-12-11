@@ -45,7 +45,7 @@ class Form_parseSpec {
   }
 */
 
-  @test
+  @test.skip()
   async 'parse json form'() {
 
     let formJSON: any = {
