@@ -162,7 +162,7 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
             instance.build(formObject);
             comp.push(instance);
           } else {
-            console.error('No view content setted');
+            //console.error('No view content setted');
           }
         } else {
           throw new NoFormTypeDefinedError(formObject.type);

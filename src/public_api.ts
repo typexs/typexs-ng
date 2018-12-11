@@ -47,7 +47,7 @@ export * from './libs/forms/decorators/FormRadio';
 export * from './libs/forms/decorators/FormReadonly';
 export * from './libs/forms/decorators/FormText';
 export * from './libs/forms/decorators/FormType';
-
+export * from './libs/forms/decorators/FormHidden';
 
 export * from './libs/forms/FormBuilder';
 export * from './libs/forms/FormObject';

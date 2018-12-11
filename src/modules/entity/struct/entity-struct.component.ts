@@ -1,16 +1,17 @@
-import {Component, OnChanges, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {EntityService} from './../entity.service';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
 import {EntityDef} from '@typexs/schema/libs/registry/EntityDef';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ClassRef} from '@typexs/schema/libs/registry/ClassRef';
 import {PropertyDef} from '@typexs/schema/libs/registry/PropertyDef';
 import {LookupRegistry} from '@typexs/schema/libs/LookupRegistry';
 import {XS_TYPE_PROPERTY} from '@typexs/schema/libs/Constants';
-import {Observable, Subscription} from 'rxjs';
+import {Observable} from 'rxjs';
 import {MetadataStorage} from 'class-validator/metadata/MetadataStorage';
 import {getFromContainer} from 'class-validator/container';
 import * as _ from 'lodash';
+import {TreeUtils} from '@typexs/base/libs/utils/TreeUtils';
 
 
 @Component({
@@ -80,10 +81,21 @@ export class EntityStructComponent implements OnInit {
     }
   }
 
-  validator(property:PropertyDef){
-    let validators = getFromContainer(MetadataStorage).getTargetValidationMetadatas(this.entityDef.getClass(),null);
-    return _.filter(validators,v => v.propertyName === property.name);
+  validator(property: PropertyDef) {
+    let validators = getFromContainer(MetadataStorage).getTargetValidationMetadatas(this.entityDef.getClass(), null);
+    return _.filter(validators, v => v.propertyName === property.name);
   }
 
+  cardinality(propDef: PropertyDef) {
+    return propDef.cardinality;
+  }
+
+  options(propDef: PropertyDef) {
+    let opts = _.clone(propDef.getOptions());
+    if(opts.sourceClass){
+      delete opts.sourceClass._cacheEntity;
+    }
+    return opts;
+  }
 
 }

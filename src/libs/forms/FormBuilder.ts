@@ -7,6 +7,7 @@ import {EntityDef} from '@typexs/schema/libs/registry/EntityDef';
 import {PropertyDef} from '@typexs/schema/libs/registry/PropertyDef';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
 import * as _ from 'lodash';
+import {IsNotEmpty} from 'class-validator';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
 import {ContentComponentRegistry} from '../views/ContentComponentRegistry';
 
@@ -24,7 +25,6 @@ export class FormBuilder {
     // this.schema = EntityRegistry.getSchema('default');
     return <Form>this._buildForm(data);
   }
-
 
 
   buildFromEntity(entity: EntityDef): Form {
@@ -47,20 +47,29 @@ export class FormBuilder {
       let property = entity;
 
       let formType = <string>property.getOptions('form');// || 'text';
-      if(!formType){
+      if (!formType) {
         // TODO Defaults for the field
-        if(property.isEntityReference()) {
+        if (property.identifier) {
+          formType = 'readonly';
+        } else if (property.isEntityReference()) {
           formType = 'select';
-        }else if(property.isReference()){
+        } else if (property.isReference()) {
           formType = 'grid';
-        }else{
-          if(property.dataType == 'boolean'){
+        } else {
+          if (property.dataType == 'boolean') {
             formType = 'checkbox';
-          }else{
+          } else {
             formType = 'text';
+            /*
+            if (!property.isNullable()) {
+              IsNotEmpty()(entity.object.getClass(), property.name);
+            }
+            */
           }
         }
-        property.setOption('form',formType)
+
+
+        property.setOption('form', formType);
       }
 
 
@@ -109,7 +118,7 @@ export class FormBuilder {
         }
       }
 
-      if(!property.isNullable()){
+      if (!property.isNullable()) {
 
       }
 

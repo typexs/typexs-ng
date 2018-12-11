@@ -71,7 +71,7 @@ export abstract class AbstractComponent<T extends TreeObject> {
                     }
                   }
                 } else {
-                  console.error('can\'t resolve metadata', instance.constructor, key, v);
+                  //console.error('can\'t resolve metadata', instance.constructor, key, v);
                 }
               }
             });

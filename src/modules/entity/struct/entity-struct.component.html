@@ -42,9 +42,13 @@
               </div>
             </td>
 
-            <td>{{propertyRef.property.cardinality}}</td>
-            <td><pre>{{propertyRef.property.getOptions() | json}}</pre></td>
-            <td><pre>{{validator(propertyRef.property) | json}}</pre></td>
+            <td>{{cardinality(propertyRef.property)}}</td>
+            <td>
+              <pre>{{options(propertyRef.property) | json}}</pre>
+            </td>
+            <td>
+              <pre>{{validator(propertyRef.property) | json}}</pre>
+            </td>
           </tr>
           </tbody>
         </table>

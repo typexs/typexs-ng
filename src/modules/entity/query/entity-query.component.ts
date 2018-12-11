@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
 import {EntityService} from './../entity.service';
 import {ActivatedRoute} from '@angular/router';
@@ -27,7 +28,7 @@ export class EntityQueryComponent implements OnInit {
 
   offset: number = 25;
 
-  page:number = 0;
+  page: number = 0;
 
   error: any = null;
 
@@ -41,10 +42,10 @@ export class EntityQueryComponent implements OnInit {
     });
   }
 
-  getPropertyDefs(){
-    if(this.entityDef){
+  getPropertyDefs() {
+    if (this.entityDef) {
       return this.entityDef.getPropertyDefs();
-    }else{
+    } else {
       return [];
     }
   }
@@ -56,7 +57,7 @@ export class EntityQueryComponent implements OnInit {
     if (this.entityDef) {
       this.entityService.query(this.machineName, query, {limit: 25}).subscribe(
         (results: any) => {
-          if(results){
+          if (results) {
             this.entities = results.entities;
             this.count = results.$count;
             this.limit = results.$limit;
@@ -69,25 +70,32 @@ export class EntityQueryComponent implements OnInit {
     }
   }
 
-  asString(data:any){
-    return JSON.stringify(data,null,2);
+  asString(data: any) {
+    return JSON.stringify(data, null, 2);
   }
 
+  hasData(entity: any, prop: PropertyDef) {
+    return !_.isEmpty(this.getData(entity, prop));
+  }
 
-  fieldDisplay(prop:PropertyDef){
-    if(prop.isEntityReference()){
-      if(prop.isCollection()){
+  getData(entity: any, prop: PropertyDef) {
+    return prop.get(entity);
+  }
+
+  fieldDisplay(prop: PropertyDef) {
+    if (prop.isEntityReference()) {
+      if (prop.isCollection()) {
         return 'entity_reference_array';
-      }else{
+      } else {
         return 'entity_reference';
       }
-    }else if(prop.isReference()) {
-      if(prop.isCollection()){
+    } else if (prop.isReference()) {
+      if (prop.isCollection()) {
         return 'object_reference_array';
-      }else{
+      } else {
         return 'object_reference';
       }
-    }else{
+    } else {
       return 'value';
     }
   }

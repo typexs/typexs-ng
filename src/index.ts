@@ -37,6 +37,7 @@ export * from './libs/forms/decorators/FormSelect';
 export * from './libs/forms/decorators/FormLabel';
 export * from './libs/forms/decorators/FormRadio';
 export * from './libs/forms/decorators/FormReadonly';
+export * from './libs/forms/decorators/FormHidden';
 export * from './libs/forms/decorators/FormText';
 export * from './libs/forms/decorators/FormType';
 
