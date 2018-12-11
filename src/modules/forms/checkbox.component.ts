@@ -47,7 +47,12 @@ export class CheckboxComponent extends AbstractFormComponent<Checkbox> {
     } else {
 
       if (datatype == 'boolean') {
-        this.setValue(checked);
+        let v = this.getValue();
+        if(_.isBoolean(v)){
+          this.setValue(!v);
+        }else{
+          this.setValue(true);
+        }
       } else if (datatype == 'string') {
         if (checked) {
           this.setValue(this.defaultValue);
