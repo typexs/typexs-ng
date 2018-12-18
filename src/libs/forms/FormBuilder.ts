@@ -45,7 +45,7 @@ export class FormBuilder {
       // TODO support also other types
       let property = entity;
 
-      let formType = <string>property.getOptions('form');// || 'text';
+      let formType = <string>property.getOptions(<any>'form');// || 'text';
       if (!formType) {
         // TODO Defaults for the field
         if (property.identifier) {
