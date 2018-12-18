@@ -2,14 +2,18 @@
 import {ISelectOption} from '../../forms/libs/ISelectOption';
 import {Entity} from '@typexs/schema/libs/decorators/Entity';
 import {Property} from '@typexs/schema/libs/decorators/Property';
+import {FormLabel} from '../../../libs/forms/decorators/FormLabel';
+import {FormCheckbox} from '../../../libs/forms/decorators/FormCheckbox';
 
 @Entity({storeable: false})
 export class CheckboxMatrixRow {
 
-  @Property({type: 'string', form: 'label'})
+  @FormLabel()
+  @Property({type: 'string'})
   label: string;
 
-  @Property(<any>{type: 'string', form: 'checkbox', enum: 'roleValues', cardinality: 0})
+  @FormCheckbox({enum:'rolesValues'})
+  @Property(<any>{type: 'string', cardinality: 0})
   roles: string[];
 
   roleValues: ISelectOption[] = [
