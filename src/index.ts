@@ -28,6 +28,7 @@ export * from "./libs/forms/elements/Select";
 export * from "./libs/forms/elements/Tab";
 export * from "./libs/forms/elements/Tabs";
 
+export * from './libs/forms/elements/ICheckboxOptions';
 export * from './libs/forms/elements/ISelectOptions';
 export * from './libs/forms/elements/IGridOptions';
 
