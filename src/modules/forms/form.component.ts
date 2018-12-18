@@ -90,12 +90,16 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
 
 
   async onSubmit($event: Event): Promise<boolean> {
-    if (this.channel) {
-      // clear
-      this.channel.publish(null);
+    if($event.type == 'submit'){
+      // ignore mouse event
+      if (this.channel) {
+        // clear
+        this.channel.publish(null);
+      }
+      await this.data.validate();
+      this.ngSubmit.emit({event: $event, data: this.data});
+
     }
-    await this.data.validate();
-    this.ngSubmit.emit({event: $event, data: this.data});
     return false;
   }
 
