@@ -3,9 +3,10 @@ import {suite, test} from 'mocha-typescript';
 import {MaxLength, MinLength} from 'class-validator';
 import {inspect} from 'util';
 import {Log} from '@typexs/base';
-import {Entity, Property, EntityRegistry} from '@typexs/schema';
+import {Entity, EntityRegistry, Property} from '@typexs/schema';
 import {Form, FORM_ELEMENTS} from '../../../src/libs/forms/elements';
 import {FormBuilder} from '../../../src/libs/forms/FormBuilder';
+import {FormText, FormType} from '../../../src';
 
 FORM_ELEMENTS;
 
@@ -14,13 +15,14 @@ FORM_ELEMENTS;
 @Entity()
 export class TestUser {
 
-
-  @Property({type: 'string', form: 'text'})
+  @FormText()
+  @Property({type: 'string'})
   @MinLength(8, {message: 'username is too short'})
   @MaxLength(32, {message: 'username is too long'})
   username: string = '';
 
-  @Property({type: 'string', form: 'password'})
+  @FormType({form:'password'})
+  @Property({type: 'string'})
   @MinLength(8, {message: 'password is too short'})
   @MaxLength(64, {message: 'password is a little too long'})
   password: string = '';
