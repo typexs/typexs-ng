@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import {Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {DataContainer} from '@typexs/schema/libs/DataContainer';
 import {FormService} from './form.service';
@@ -6,12 +7,14 @@ import {AbstractFormComponent} from '../../libs/forms/AbstractFormComponent';
 import {Form} from '../../libs/forms/elements';
 import {MessageChannel} from '../system/messages/MessageChannel';
 import {IMessage} from '../system/messages/IMessage';
+import {IFormOptions} from './IFormOptions';
 
 
 @ViewComponent('form')
 @Component({
   selector: 'xform',
   templateUrl: './form.component.html',
+  styleUrls:['./form.component.scss']
   //host: {'(submit)': 'onSubmit($event)', '(reset)': 'onReset()'},
   //outputs: ['ngSubmit'],
 })
@@ -20,8 +23,32 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
   @Output()
   ngSubmit = new EventEmitter();
 
+  @Output()
+  ngReset = new EventEmitter();
+
+  @Output()
+  ngButton = new EventEmitter();
+
   @Input()
   channel: MessageChannel<IMessage>;
+
+  @Input()
+  options: IFormOptions = {
+    buttons: [
+      {
+        key: 'submit',
+        label: 'Submit',
+        type: 'submit'
+      },
+      {
+        key: 'reset',
+        label: 'Reset',
+        type: 'restore'
+      },
+
+    ],
+
+  };
 
 
   @Input()
@@ -30,6 +57,7 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
   @Input()
   instance: any;
 
+  original: any;
 
   constructor(@Inject(FormService)
               private formService: FormService,
@@ -42,19 +70,27 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
 
 
   ngOnInit() {
+    this.original = _.cloneDeep(this.instance);
+
+    this.reset();
+  }
+
+  reset() {
     // TODO instance must be present
+    super.reset();
     this.data = new DataContainer(this.instance);
     this.elem = this.formService.get(this.formName, this.instance);
     // TODO restructure form
     this.build(this.elem);
   }
 
+
   ngOnDestroy(): void {
   }
 
 
   async onSubmit($event: Event): Promise<boolean> {
-    if(this.channel){
+    if (this.channel) {
       // clear
       this.channel.publish(null);
     }
@@ -64,5 +100,30 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
   }
 
 
+  async onReset($event: Event): Promise<boolean> {
+    if (this.channel) {
+      // clear
+      this.channel.publish(null);
+    }
+
+    this.instance = _.cloneDeep(this.original);
+
+    this.reset();
+    this.ngReset.emit({event: $event, data: this.data});
+    return false;
+  }
+
+
+  async onButton(key:string,$event: Event): Promise<boolean> {
+    let btn = _.find(this.options.buttons, b => b.key == key);
+    if(btn.type == 'submit'){
+      return this.onSubmit($event);
+    }else if(btn.type == 'restore'){
+      return this.onReset($event);
+    }else{
+      this.ngButton.emit({button:btn, event: $event, data: this.data});
+    }
+    return false;
+  }
 }
 

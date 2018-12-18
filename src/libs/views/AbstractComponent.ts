@@ -98,4 +98,8 @@ export abstract class AbstractComponent<T extends TreeObject> {
     return refs;
   }
 
+  reset(){
+    this.vc.clear();
+  }
+
 }

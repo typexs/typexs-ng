@@ -4,6 +4,11 @@
       <alert [channel]="channel"></alert>
     </div>
     <ng-container #content></ng-container>
-    <button type="submit" class="btn btn-primary">Submit</button>
+
+    <div class="btn-form-ops">
+      <button *ngFor="let button of options.buttons"
+              type="{{button.type == 'restore' ? 'button' : button.type }}" class="btn btn-primary" (click)="onButton(button.key,$event)" >{{button.label}}</button>
+    </div>
+
   </form>
 </div>
