@@ -38,7 +38,12 @@ const PROVIDERS = [
     HttpClientModule,
     FormsModule
   ],
-  exports: [],
+  exports: [ EntityTypesComponent,
+    EntityModifyComponent,
+    EntityDeleteComponent,
+    EntityQueryComponent,
+    EntityViewComponent,
+    EntityStructComponent],
   providers: PROVIDERS
 })
 export class EntityModule {

@@ -137,10 +137,10 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
         refs = refs.shift();
       }
       this.setValue(refs)
-      //_.set(this.data.instance, path, refs);
+      // _.set(this.data.instance, path, refs);
     } else {
       this.setValue(v)
-      //_.set(this.data.instance, path, v);
+      // _.set(this.data.instance, path, v);
     }
 
   }

@@ -26,17 +26,33 @@ export * from './modules/system/messages/MessageChannel';
 // forms module
 export * from './libs/forms/AbstractFormComponent';
 export * from './libs/forms/elements/Checkbox';
+export * from './modules/forms/checkbox.component';
+
 export * from './libs/forms/elements/Form';
+export * from './modules/forms/form.component';
+
 export * from './libs/forms/elements/Label';
+export * from './modules/forms/label.component';
+
 export * from './libs/forms/elements/Input';
+export * from './modules/forms/input.component';
+
 export * from './libs/forms/elements/Radio';
+export * from './modules/forms/radio.component';
+
 export * from './libs/forms/elements/Ref';
 export * from './libs/forms/elements/Select';
+export * from './modules/forms/select/select.component';
+
 export * from './libs/forms/elements/Option';
 export * from './libs/forms/elements/Tab';
 export * from './libs/forms/elements/Tabs';
 // forms - module - grid
 export * from './libs/forms/elements/Grid';
+export * from './modules/forms/grid/grid.component';
+export * from './modules/forms/grid/grid-row.component';
+export * from './modules/forms/grid/grid-cell.component';
+
 export * from './libs/forms/elements/IGridOptions';
 export * from './libs/forms/decorators/FormGrid';
 export * from './libs/forms/decorators/FormCheckbox';
