@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {APP_MODULES} from './app.used.modules';
 
-import {InputDemoComponent, OptionsService} from './input-demo.component';
+import {InputDemoComponent} from './input-demo.component';
 import {GroupDemoComponent} from './group-demo.component';
 import {ContentDemoComponent} from './content-demo.component';
 import {SearchResultComponent} from './search/search-result.component';
@@ -15,6 +15,8 @@ import {FORM_COMPONENTS} from '../forms/forms.elements';
 import {MenuDemoComponent} from './menu-demo/menu-demo.component';
 import {MenuAccessService} from './menu-demo/MenuAccessService';
 import {DummyComponent} from './dummy/dummy.component';
+import {OptionsService} from './services/OptionsService';
+import {PagerDemoComponent} from './pager-demo/pager-demo.component';
 
 
 @NgModule({
@@ -30,7 +32,8 @@ import {DummyComponent} from './dummy/dummy.component';
     ViewParentComponent,
     ContentViewChildDemoComponent,
     MenuDemoComponent,
-    DummyComponent
+    DummyComponent,
+    PagerDemoComponent
   ],
   entryComponents: [
     ...FORM_COMPONENTS,

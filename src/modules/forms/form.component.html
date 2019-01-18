@@ -1,7 +1,7 @@
 <div class="form-container">
   <form (ngSubmit)="onSubmit($event)" [name]="name">
     <div class="form-alerts" *ngIf="channel">
-      <alert [channel]="channel"></alert>
+      <txs-alert [channel]="channel"></txs-alert>
     </div>
     <ng-container #content></ng-container>
 

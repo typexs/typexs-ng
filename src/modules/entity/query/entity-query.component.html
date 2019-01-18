@@ -3,6 +3,13 @@
     <h3>Entity list</h3>
   </div>
   <div class="card-body">
+    <txs-pager
+      [name]="pagerId"
+      frameSize="5"
+      (onPageChange)="updateEntities($event)"
+    >
+    </txs-pager>
+
     <table class="table">
       <thead>
       <tr>
@@ -15,8 +22,8 @@
         <td *ngFor="let prop of getPropertyDefs()" [ngSwitch]="fieldDisplay(prop)">
           <ng-template ngSwitchCase="entity_reference">
             <a *ngIf="hasData(entity,prop)"
-              [routerLink]="['/admin/entity',prop.getEntity().machineName,'view', prop.getEntity().buildLookupConditions(getData(entity,prop)) ]">
-              {{ prop.getEntity().label(getData(entity,prop))}}
+               [routerLink]="['/admin/entity',prop.getEntity().machineName,'view', prop.getEntity().buildLookupConditions(getData(entity,prop)) ]">
+              {{ prop.getEntity().label(getData(entity, prop))}}
             </a>
           </ng-template>
           <ng-template ngSwitchCase="entity_reference_array">
@@ -44,5 +51,11 @@
       </tr>
       </tbody>
     </table>
+    <txs-pager
+      [name]="pagerId"
+      frameSize="5"
+      (onPageChange)="updateEntities($event)"
+    >
+    </txs-pager>
   </div>
 </div>

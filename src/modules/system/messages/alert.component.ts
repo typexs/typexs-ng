@@ -5,7 +5,7 @@ import {ISubscription} from 'rxjs/Subscription';
 
 
 @Component({
-  selector: 'alert',
+  selector: 'txs-alert',
   templateUrl: 'alert.component.html'
 })
 

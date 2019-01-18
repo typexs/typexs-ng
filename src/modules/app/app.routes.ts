@@ -8,6 +8,8 @@ import {CheckboxMatrixDemoComponent} from './checkbox-matrix-demo/checkbox-matri
 import {MenuDemoComponent} from './menu-demo/menu-demo.component';
 import {DummyComponent} from './dummy/dummy.component';
 import {MenuAccessService} from './menu-demo/MenuAccessService';
+import {PagerComponent} from '../system/pager/pager.component';
+import {PagerDemoComponent} from './pager-demo/pager-demo.component';
 
 
 export const APP_ROUTES: Routes = [
@@ -45,6 +47,11 @@ export const APP_ROUTES: Routes = [
         path: 'content-view-child',
         component: ContentViewChildDemoComponent,
         data: {label: 'Content View Child Demo', group: 'demo'},
+      },
+      {
+        path: 'pager-demo',
+        component: PagerDemoComponent,
+        data: {label: 'Pager Demo', group: 'demo'},
       },
     ]
   },
