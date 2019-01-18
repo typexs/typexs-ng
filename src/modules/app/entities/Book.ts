@@ -2,14 +2,18 @@ import {Entity} from '@typexs/schema/libs/decorators/Entity';
 import {Property} from '@typexs/schema/libs/decorators/Property';
 import {IProperty} from '@typexs/schema/libs/registry/IProperty';
 import {Person} from './Person';
+import {FormReadonly} from '../../../libs/forms/decorators/FormReadonly';
+import {FormText} from '../../../libs/forms/decorators/FormText';
 
 @Entity()
 export class Book {
 
-  @Property({type: 'number', form: 'readonly', auto: true})
+  @FormReadonly()
+  @Property({type: 'number',auto: true})
   id: number;
 
-  @Property({type: 'string', form: 'text'})
+  @FormText()
+  @Property({type: 'string'})
   title: string;
 
   @Property(<IProperty & any>{type: Person, form: 'select', enum: 'EntityOptionsService'})
