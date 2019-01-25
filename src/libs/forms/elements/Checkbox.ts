@@ -4,6 +4,7 @@ import {ViewContent} from '../../views/decorators/ViewContent';
 @ViewContent('checkbox')
 export class Checkbox extends Input {
 
+  enum: any;
 
   postProcess() {
     super.postProcess();

@@ -12,7 +12,7 @@ import {IStylesheetEntry} from './IStylesheetEntry';
  */
 export class ThemeRegistry {
 
-  private static $self: ThemeRegistry;
+  private static $self: ThemeRegistry = null;
 
   private themes: ITemplateEntry[] = [];
 
@@ -69,7 +69,9 @@ export class ThemeRegistry {
   }
 
   static normalize(str: string) {
-    return _.kebabCase(str).replace(/^\-/, '').replace(/[^\d\w\-\_]/, '_');
+    return _.kebabCase(str)
+      .replace(new RegExp('^\-'), '')
+      .replace(new RegExp('[^\d\w\\-\_]'), '_');
   }
 
 
