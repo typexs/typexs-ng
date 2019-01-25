@@ -33,4 +33,7 @@ server:
       context: api
       routePrefix: api
 
+    - type: static_files
+      routePrefix: public
+      path: public
 #    - dataType: static_files

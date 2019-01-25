@@ -67,3 +67,6 @@ typings/
 build
 package-lock.json
 tmp/
+
+**/scss/themes/ext
+**/scss/themes/ext/*
