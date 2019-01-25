@@ -1,9 +1,15 @@
 import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 import {IUser} from '../../../../libs/api/auth/IUser';
 import {Observable} from 'rxjs/Observable';
+import {MessageChannel} from '../../messages/MessageChannel';
+import {AuthMessage} from './AuthMessage';
 
 
 export interface IAuthServiceProvider {
+
+  init(): void;
+
+  getChannel(): MessageChannel<AuthMessage>;
 
   isLoggedIn(): boolean;
 

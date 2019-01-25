@@ -11,6 +11,7 @@ import {AlertComponent} from './messages/alert.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {PagerComponent} from './pager/pager.component';
 import {PagerService} from './pager/PagerService';
+import {AppStateService} from './app.state.service';
 
 const PROVIDERS = [
   SystemInfoService,
@@ -19,7 +20,8 @@ const PROVIDERS = [
   {provide: AuthService, useClass: NoopAuthService},
   {provide: AuthGuardService, useClass: DefaultAuthGuardService},
   MessageService,
-  PagerService
+  PagerService,
+  AppStateService
 ];
 
 @NgModule({

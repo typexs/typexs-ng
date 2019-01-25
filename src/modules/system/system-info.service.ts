@@ -1,11 +1,11 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
-import {API_SYSTEM_CONFIG, API_SYSTEM_MODULES, API_SYSTEM_ROUTES, API_SYSTEM_STORAGES} from '@typexs/server/types';
-import {IModule} from '@typexs/base/api/IModule';
-import {IStorageOptions} from '@typexs/base/libs/storage/IStorageOptions';
-import {ITypexsOptions} from '@typexs/base/libs/ITypexsOptions';
-import {IRoute} from '@typexs/server/libs/server/IRoute';
+
+import {API_SYSTEM_CONFIG, API_SYSTEM_MODULES, API_SYSTEM_ROUTES, API_SYSTEM_STORAGES, IRoute} from '@typexs/server/browser';
+import {IModule, IStorageOptions, ITypexsOptions} from '@typexs/base/browser';
+
+
 
 @Injectable()
 export class SystemInfoService {
