@@ -15,6 +15,8 @@ import {FormsModule} from '../forms/forms.module';
 import {SystemModule} from '../system/system.module';
 import {EntityModule} from '../entity/entity.module';
 import {NavigatorService} from '../navigator/navigator.service';
+import {BaseAdminThemeModule} from '../base_admin_theme/base_admin_theme.module';
+
 
 const PROVIDERS: Provider[] = [];
 
@@ -29,6 +31,7 @@ const PROVIDERS: Provider[] = [];
     NgRoutesComponent
   ],
   imports: [
+    BaseAdminThemeModule,
     SystemModule.forRoot(),
     NavigatorModule.forRoot(),
     RouterModule,
