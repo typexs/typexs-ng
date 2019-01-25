@@ -16,7 +16,7 @@ export class CheckboxMatrixRow {
   @Property(<any>{type: 'string', cardinality: 0})
   roles: string[];
 
-  roleValues: ISelectOption[] = [
+  rolesValues: ISelectOption[] = [
     {value: 'admin', label: 'Admin'},
     {value: 'user', label: 'User'}
   ];

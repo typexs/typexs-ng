@@ -17,6 +17,7 @@ import {MenuAccessService} from './menu-demo/MenuAccessService';
 import {DummyComponent} from './dummy/dummy.component';
 import {OptionsService} from './services/OptionsService';
 import {PagerDemoComponent} from './pager-demo/pager-demo.component';
+import {AuthService} from '../system/api/auth/auth.service';
 
 
 @NgModule({
@@ -50,6 +51,9 @@ import {PagerDemoComponent} from './pager-demo/pager-demo.component';
 })
 export class AppModule {
 
+  constructor(private authService: AuthService) {
+    authService.init();
+  }
 }
 
 

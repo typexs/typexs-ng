@@ -11,6 +11,7 @@ import {NavigatorModule} from '../navigator/navigator.module';
 import {FormsModule} from '../forms/forms.module';
 import {ViewsModule} from '../views/views.module';
 import {SystemModule} from '../system/system.module';
+import {BaseAdminThemeModule} from '../base_admin_theme/base_admin_theme.module';
 
 
 export const APP_MODULES: Array<Type<any> | ModuleWithProviders | any[]> = [
@@ -21,5 +22,6 @@ export const APP_MODULES: Array<Type<any> | ModuleWithProviders | any[]> = [
   FormsModule,
   ViewsModule,
   AdminModule,
-  SystemModule.forRoot()
+  SystemModule.forRoot(),
+  BaseAdminThemeModule
 ];
