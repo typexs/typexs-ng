@@ -77,3 +77,6 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+import 'bootstrap/dist/js/bootstrap';
+import 'perfect-scrollbar/dist/perfect-scrollbar';
+
