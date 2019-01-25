@@ -3,6 +3,26 @@ import {NavigatorService} from './navigator.service';
 import {INavTreeEntry} from './INavTreeEntry';
 import {NavEntry} from './NavEntry';
 import * as _ from 'lodash';
+import {IMenuOptions} from './IMenuOptions';
+
+const DEFAULT_OPTIONS: IMenuOptions = {
+  label: null,
+  base: null,
+  group: null,
+  level: null,
+  filter: (options: IMenuOptions, e: NavEntry) => {
+    let ret = true;
+    if (!_.isNull(options.group)) {
+      ret = ret && e.groups && e.groups.indexOf(options.group) !== -1;
+    }
+    if (!_.isNull(options.level)) {
+      ret = ret && e.getLevel() <= options.level;
+    }
+
+    return ret;
+  }
+};
+
 
 @Component({
   selector: 'menu',
@@ -12,30 +32,7 @@ import * as _ from 'lodash';
 export class MenuComponent implements OnInit {
 
   @Input()
-  label: string = null;
-
-  @Input()
-  base: string = null;
-
-  @Input()
-  group: string = null;
-
-  @Input()
-  level: number = null;
-
-  @Input()
-  filter: (e: NavEntry) => boolean = (e: NavEntry) => {
-    let ret = true;
-    if (!_.isNull(this.group)) {
-      ret = ret && e.groups && e.groups.indexOf(this.group) !== -1;
-    }
-
-    if (!_.isNull(this.level)) {
-      ret = ret && e.getLevel() <= this.level;
-    }
-
-    return ret;
-  };
+  options: IMenuOptions = DEFAULT_OPTIONS;
 
   tree: INavTreeEntry[] = [];
 
@@ -43,7 +40,9 @@ export class MenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tree = this.navigator.getTree(this.base, this.filter.bind(this));
+    this.options = _.defaults(this.options, DEFAULT_OPTIONS);
+    this.tree = this.navigator.getTree(this.options.base,
+      this.options.filter.bind(this, this.options));
   }
 
 }

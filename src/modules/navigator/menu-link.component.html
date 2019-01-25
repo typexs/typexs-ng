@@ -1,18 +1,28 @@
-<li [ngClass]="{'nav-item': !entry.isGroup, 'nav-title':entry.isGroup}" *ngIf="(isShown | async)">
+<li class="nav-item txs-menu-caption" *ngIf="isCaption()">
+  <label>
+    <span class="txs-micon"><i class="icon" [ngClass]="icon()"></i></span>
+    <span class="txs-mtext">{{entry.label}}</span>
+  </label>
+</li>
 
-  <div>
-    <div *ngIf="entry.isGroup">{{entry.label}}</div>
-    <a *ngIf="!entry.isGroup"
-       [routerLink]="'/'+entry.path"
-       routerLinkActive="active"
-       class="nav-link"
-       [class.disabled]="(isDisabled | async)">{{entry.label}}</a>
-  </div>
-  <div class="nav-sub" *ngIf="hasChildren()">
-    <ul>
-      <ng-container *ngFor="let subEntry of entry.children">
-        <menu-link [entry]="subEntry"></menu-link>
-      </ng-container>
-    </ul>
-  </div>
+<li class="nav-item"
+    *ngIf="(isShown | async)"
+    routerLinkActive="active"
+>
+
+  <a *ngIf="!entry.isGroup"
+     [routerLink]="'/'+entry.path"
+     class="nav-link"
+     routerLinkActive="active"
+     [class.disabled]="(isDisabled | async)">
+    <span class="txs-micon"><i class="icon" [ngClass]="icon()"></i></span>
+    <span class="txs-mtext">{{entry.label}}</span>
+  </a>
+
+  <ul class="txs-submenu" *ngIf="hasChildren()">
+    <ng-container *ngFor="let subEntry of entry.children">
+      <menu-link [entry]="subEntry"></menu-link>
+    </ng-container>
+  </ul>
+
 </li>

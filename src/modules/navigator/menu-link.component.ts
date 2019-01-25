@@ -42,6 +42,9 @@ export class MenuLinkComponent implements OnInit {
     }
   }
 
+  isCaption(){
+    return this.entry.isGroup;
+  }
 
   hasChildren() {
     return this.entry.children && this.entry.children.length > 0;
@@ -63,32 +66,13 @@ export class MenuLinkComponent implements OnInit {
     return this.activators;
   }
 
-  /*
-    isDisabled():Observable<boolean> | boolean {
-      let disable: boolean = false;
-      let activators = this.getActivator();
-      if (!_.isEmpty(activators)) {
-        for (let canAct of activators) {
-          if (canAct.isDisabled) {
-            return (<IMenuLinkGuard>canAct).isDisabled(this.entry.entry);
-          }
-        }
-      }
-      return disable;
+
+  icon(){
+    if(this.entry.isGroup){
+      return 'icon-'+this.entry.entry.groupRegex.replace(/[^\w\d]/g,'-').replace(/-+$/,'');
+    }else{
+      return 'icon-'+this.entry.path.replace(/[^\w\d]/g,'-')
     }
 
-
-    isHidden():Observable<boolean> | boolean {
-      let disable: boolean = false;
-      let activators = this.getActivator();
-      if (!_.isEmpty(activators)) {
-        for (let canAct of activators) {
-          if (canAct.isHidden) {
-            return  (<IMenuLinkGuard>canAct).isHidden(this.entry.entry);
-          }
-        }
-      }
-      return disable;
-    }
-  */
+  }
 }

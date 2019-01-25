@@ -14,6 +14,7 @@ import {expect} from 'chai';
 import * as _ from 'lodash';
 import {NavEntry} from './NavEntry';
 import {IMenuLinkGuard} from './IMenuLinkGuard';
+import {IMenuOptions} from './IMenuOptions';
 
 
 describe('Component: Menu', () => {
@@ -25,11 +26,12 @@ describe('Component: Menu', () => {
   let fixtureLink: ComponentFixture<MenuLinkComponent>;
 
   @Injectable()
-  class MockGuard implements IMenuLinkGuard{
+  class MockGuard implements IMenuLinkGuard {
     isDisabled(entry: NavEntry): Observable<boolean> {
 
       return (new BehaviorSubject(true)).asObservable();
     }
+
     isShown(entry: NavEntry): Observable<boolean> {
       return (new BehaviorSubject(true)).asObservable();
     }
@@ -45,7 +47,7 @@ describe('Component: Menu', () => {
       {path: 'level/one'},
       {path: 'level/one/subone'},
       {path: 'level/one/subtwo'},
-      {path: 'level/two',canActivate:[MockGuard]},
+      {path: 'level/two', canActivate: [MockGuard]},
       /*
       {path: 'group/two'},
       {path: 'group/one'},
@@ -58,7 +60,9 @@ describe('Component: Menu', () => {
     resetConfig(routes: Routes) {
       this.config = routes;
     }
-  }8
+  }
+
+  8;
 
 
   beforeEach(async () => {
@@ -86,22 +90,22 @@ describe('Component: Menu', () => {
     component.ngOnInit();
 
     expect(component.tree).to.have.length(3);
-    expect(_.map(component.tree, e => e.path)).to.be.deep.eq(['home', 'admin','level']);
+    expect(_.map(component.tree, e => e.path)).to.be.deep.eq(['home', 'admin', 'level']);
     expect(component.tree[1].children).to.have.length(2);
   });
 
 
   it('create menu for level is equal 0', () => {
-    component.level = 0;
+    component.options = {level: 0};
     component.ngOnInit();
     expect(component.tree).to.have.length(3);
-    expect(_.map(component.tree, e => e.path)).to.be.deep.eq(['home', 'admin','level']);
+    expect(_.map(component.tree, e => e.path)).to.be.deep.eq(['home', 'admin', 'level']);
     expect(component.tree[1].children).to.have.length(0);
   });
 
 
   it('create submenu for base entry is "admin"', () => {
-    component.base = 'admin';
+    component.options = {base: 'admin'};
     component.ngOnInit();
     expect(component.tree).to.have.length(2);
     expect(_.map(component.tree, e => e.path)).to.be.deep.eq(['admin/configure', 'admin/storages']);
@@ -109,16 +113,16 @@ describe('Component: Menu', () => {
 
 
   it('create submenu for base entry is "level/one"', () => {
-    component.base = 'level/one';
+    component.options = {base: 'level/one'};//= 'level/one';
     component.ngOnInit();
     expect(component.tree).to.have.length(2);
-    expect(_.map(component.tree, e => e.path)).to.be.deep.eq(["level/one/subone",
-      "level/one/subtwo"]);
+    expect(_.map(component.tree, e => e.path)).to.be.deep.eq(['level/one/subone',
+      'level/one/subtwo']);
   });
 
 
   it('create submenu for group "test"', () => {
-    component.group = 'test';
+    component.options = {group: 'test'};
     component.ngOnInit();
     expect(component.tree).to.have.length(1);
     expect(_.map(component.tree, e => e.path)).to.be.deep.eq(['home']);
@@ -126,12 +130,14 @@ describe('Component: Menu', () => {
 
 
   it('create submenu by own filter function', () => {
-    component.filter = (e:NavEntry) => {
-      let ret = false;
-      if (e.path === 'admin') {
-        ret = true;
+    component.options = {
+      filter: (options: IMenuOptions, e: NavEntry) => {
+        let ret = false;
+        if (e.path === 'admin') {
+          ret = true;
+        }
+        return ret;
       }
-      return ret;
     };
     component.ngOnInit();
     expect(component.tree).to.have.length(1);
@@ -147,14 +153,19 @@ describe('Component: Menu', () => {
 
     expect(componentLink.isShown).to.not.be.undefined;
     expect(componentLink.isDisabled).to.not.be.undefined;
-    expect(await new Promise((resolve, reject) => {componentLink.isDisabled.subscribe(x => resolve(x))})).to.be.true;
-    expect(await new Promise((resolve, reject) => {componentLink.isShown.subscribe(x => resolve(x))})).to.be.true;
+    expect(await new Promise((resolve, reject) => {
+      componentLink.isDisabled.subscribe(x => resolve(x));
+    })).to.be.true;
+    expect(await new Promise((resolve, reject) => {
+      componentLink.isShown.subscribe(x => resolve(x));
+    })).to.be.true;
 
 
   });
 
 
-  it.skip('create submenu by with exclude', () => { })
+  it.skip('create submenu by with exclude', () => {
+  });
 
 });
 
