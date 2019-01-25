@@ -6,6 +6,7 @@ import {IMenuOptions} from '../navigator/IMenuOptions';
 import {AppStateService} from '../system/app.state.service';
 
 @Component({
+  selector:'base-admin-theme',
   templateUrl: './base_admin_theme.component.html',
   styleUrls: ['./base_admin_theme.component.scss'],
   encapsulation: ViewEncapsulation.None

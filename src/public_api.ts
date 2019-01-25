@@ -1,14 +1,23 @@
 export * from './browser';
 
-export * from './modules/base_admin_theme/base_admin_theme.module';
 export * from './modules/system/system.module';
 export * from './modules/navigator/navigator.module';
 export * from './modules/views/views.module';
 export * from './modules/forms/forms.module';
-export * from './modules/admin/admin.module';
 export * from './modules/entity/entity.module';
 
+
+// base_admin_theme module
+export * from './modules/base_admin_theme/base_admin_theme.module';
+export * from './modules/base_admin_theme/base_admin_theme.component';
+export * from './modules/base_admin_theme/toggle.directive';
+export * from './modules/base_admin_theme/perfect-scrollbar.directive';
+
 // admin module
+export * from './modules/admin/admin.module';
+export * from './modules/admin/admin.component';
+
+
 
 // entity module
 export * from './modules/entity/entity.service';
