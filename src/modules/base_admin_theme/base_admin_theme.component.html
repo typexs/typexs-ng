@@ -1,0 +1,245 @@
+<div class="wrapper">
+
+  <!-- [ Pre-loader ] start -->
+  <!--
+  <div class="loader-bg">
+    <div class="loader-track">
+      <div class="loader-fill"></div>
+    </div>
+  </div>
+  -->
+  <!-- [ Pre-loader ] End -->
+
+
+  <!-- [ navigation menu ] start -->
+  <nav class="txs-navbar">
+
+    <div class="navbar-wrapper">
+      <div class="navbar-brand header-logo">
+        <a [routerLink]="baseRouterLink" class="b-brand">
+          <div class="b-bg">
+            <i class="icon icon-logo"></i>
+          </div>
+          <span class="b-title">{{title}}</span>
+        </a>
+
+        <a [txs-toggle]="['on',{'.txs-navbar':'navbar-collapsed'}]"
+           class="mobile-menu" id="mobile-collapse">
+          <span></span>
+        </a>
+      </div>
+
+      <div class="navbar-content">
+        <menu [options]="menuOptions"></menu>
+      </div>
+
+    </div>
+  </nav>
+  <!-- [ navigation menu ] end -->
+
+
+  <!-- [ Header ] start -->
+  <header class="navbar txs-header navbar-expand-lg navbar-light">
+
+    <div class="m-header">
+      <a class="mobile-menu" id="mobile-collapse1" href="#"><span></span></a>
+      <a [routerLink]="baseRouterLink" class="b-brand">
+        <div class="b-bg">
+          <i class="icon icon-trending-up"></i>
+        </div>
+        <span class="b-title">{{title}}</span>
+      </a>
+    </div>
+
+    <a class="mobile-menu" id="mobile-header">
+      <i class="icon icon-more-horizontal"></i>
+    </a>
+
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav mr-auto">
+        <!--
+        <li><a href="/admin/#" class="full-screen"
+               onclick="javascript:toggleFullScreen()">
+          <i class="icon icon-maximize"></i></a></li>
+
+        <li class="nav-item dropdown">
+          <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+            Dropdown
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="">Action</a></li>
+            <li><a class="dropdown-item" href="">Another action</a></li>
+            <li><a class="dropdown-item" href="">Something else here</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <div class="main-search">
+            <div class="input-group">
+              <input type="text" id="m-search" class="form-control" placeholder="Search . . .">
+              <a href="#" class="input-group-append search-close">
+                <i class="icon icon-x input-group-text"></i>
+              </a>
+              <span class="input-group-append search-btn btn btn-primary">
+                                <i class="icon icon-search input-group-text"></i>
+                            </span>
+            </div>
+          </div>
+        </li>
+        -->
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li *ngIf="appStateService.isAuthenticated() && appStateService.viewMode != 'admin'">
+          <a *ngIf="(appStateService.isAdmin | async)" routerLink="/admin" >
+            <i class="icon icon-admin-user"></i>
+            Admin
+          </a>
+        </li>
+        <li *ngIf="appStateService.viewMode == 'admin'">
+          <a  routerLink="/">
+            <i class="icon icon-page-home"></i>
+            Home
+          </a>
+        </li>
+<!--
+        <li>
+          <div class="dropdown">
+            <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+              <i class="icon icon icon-bell"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right notification">
+              <div class="noti-head">
+                <h6 class="d-inline-block m-b-0">Notifications</h6>
+                <div class="float-right">
+                  <a href="#" class="m-r-10">mark as read</a>
+                  <a href="#">clear all</a>
+                </div>
+              </div>
+              <ul class="noti-body">
+                <li class="n-title">
+                  <p class="m-b-0">NEW</p>
+                </li>
+                <li class="notification">
+                  <div class="media">
+                    <div class="media-body">
+                      <p><strong>John Doe</strong><span class="n-time text-muted"><i
+                        class="icon icon icon-clock m-r-10"></i>30 min</span></p>
+                      <p>New ticket Added</p>
+                    </div>
+                  </div>
+                </li>
+                <li class="n-title">
+                  <p class="m-b-0">EARLIER</p>
+                </li>
+                <li class="notification">
+                  <div class="media">
+                    <div class="media-body">
+                      <p><strong>Joseph William</strong><span class="n-time text-muted"><i
+                        class="icon icon icon-clock m-r-10"></i>30 min</span></p>
+                      <p>Prchace New Theme and make payment</p>
+                    </div>
+                  </div>
+                </li>
+                <li class="notification">
+                  <div class="media">
+                    <div class="media-body">
+                      <p><strong>Sara Soudein</strong><span class="n-time text-muted"><i
+                        class="icon icon icon-clock m-r-10"></i>30 min</span></p>
+                      <p>currently login</p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <div class="noti-footer">
+                <a href="#">show all</a>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li><a href="#" class="displayChatbox"><i class="icon icon icon-mail"></i></a></li>
+-->
+        <li  *ngIf="appStateService.isAuthenticated()">
+          <div class="dropdown drp-user">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="icon  icon-settings"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right profile-notification">
+              <div class="pro-head">
+                <span>TODO USERNAME</span>
+                <a [routerLink]="userRouterLinks.logout" class="dud-logout" title="Logout">
+                  <i class="icon icon-logout"></i>
+                </a>
+              </div>
+              <ul class="pro-body">
+                <li>
+                  <a [routerLink]="userRouterLinks.profile" class="dropdown-item">
+                    <i class="icon icon-user"></i> Profile
+                  </a>
+                </li>
+                <!--
+                <li><a href="#" class="dropdown-item"><i class="icon icon-settings"></i> Settings</a></li>
+
+                <li><a href="email-inbox.html" class="dropdown-item"><i class="icon icon-mail"></i> My Messages</a></li>
+                <li><a href="auth-lock-screen.html" class="dropdown-item"><i class="icon icon-lock"></i> Lock Screen</a>
+                </li>
+
+                <li><a href="#" class="dropdown-item"><i class="icon icon-settings"></i> Settings</a></li>
+                -->
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </header>
+  <!-- [ Header ] end -->
+
+
+  <!-- [ Main Content ] start -->
+  <div class="txs-main-container">
+    <div class="txs-wrapper">
+      <div class="txs-content">
+        <div class="txs-inner-content">
+          <!-- [ breadcrumb ] start -->
+          <!--
+          <div class="page-header">
+            <div class="page-block">
+              <div class="row align-items-center">
+                <div class="col-md-12">
+                  <div class="page-header-title">
+                    <h5 class="m-b-10">Navbar-Fixed Layout</h5>
+                  </div>
+                  <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html"><i class="icon icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="#">Page Layouts</a></li>
+                    <li class="breadcrumb-item"><a href="#">Vertical</a></li>
+                    <li class="breadcrumb-item"><a href="#">Navbar-Fixed Layout</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          -->
+          <!-- [ breadcrumb ] end -->
+          <div class="main-body">
+            <div class="page-wrapper">
+              <!-- [ Main Content ] start -->
+              <div class="row">
+                <!-- [ fixed-menu ] start -->
+                <div class="col-sm-12">
+                  <router-outlet></router-outlet>
+                </div>
+                <!-- [ fixed-menu ] end -->
+              </div>
+              <!-- [ Main Content ] end -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [ Main Content ] end -->
+
+
+</div>
