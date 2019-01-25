@@ -1,0 +1,43 @@
+<div class="free-query-input">
+  <label for="textarea-entity-query" class="txs-title">Query:</label>
+  <textarea id="textarea-entity-query" class="query-input"
+            rows="1" cols="128"
+            placeholder=" insert query string ... " [(ngModel)]="freeTextQuery"
+            (ngModelChange)="onQueryInput($event)"></textarea>
+
+  <div *ngIf="freeTextQueryError.length > 0">
+    <ul class="list-group">
+      <li *ngFor="let error of freeTextQueryError" class="list-group-item list-group-item-warning">{{error}}</li>
+    </ul>
+  </div>
+
+  <div *ngIf="jsonQuery" class="alert alert-success">
+    <div class="row">
+      <div class="col-md-6">
+        <p class="txs-title">Mango-JSON</p>
+        <pre>{{jsonQuery.toJson() | json}}</pre>
+      </div>
+      <div class="col-md-6">
+        <div *ngIf="sqlWhere">
+          <p class="txs-title">SQL Where expression</p>
+          <pre>{{sqlWhere}}</pre>
+          <div *ngIf="sqlJoins.length > 0">
+            <p>Joins:</p>
+            <ul>
+              <li *ngFor="let join of sqlJoins">
+                LEFT JOIN <em>{{join.table}}</em> as <em>{{join.alias}}</em> ON <em>{{join.condition}}</em>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="btn-group" *ngIf="jsonQuery">
+    <button class="btn btn-info" (click)="doQuery()">Execute query</button>
+    <button class="btn btn-warning" (click)="doResetQuery()">Reset query</button>
+  </div>
+</div>

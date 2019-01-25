@@ -8,10 +8,13 @@ import {PropertyDef} from '@typexs/schema/libs/registry/PropertyDef';
 import {PagerAction} from '../../system/pager/PagerAction';
 import {PagerService} from '../../system/pager/PagerService';
 import {Pager} from '../../system/pager/Pager';
+import {EntityQueryAction} from './EntityQueryAction';
+
 
 @Component({
-  selector: 'entity-query',
-  templateUrl: './entity-query.component.html'
+  selector: 'txs-entity-query',
+  templateUrl: './entity-query.component.html',
+  styleUrls: ['./entity-query.component.scss']
 })
 export class EntityQueryComponent implements OnInit, OnDestroy {
 
@@ -41,12 +44,17 @@ export class EntityQueryComponent implements OnInit, OnDestroy {
 
   pager: Pager;
 
+
   constructor(private entityService: EntityService,
               private route: ActivatedRoute,
               private pagerService: PagerService) {
     this.pager = this.pagerService.get(this.pagerId);
   }
 
+  onQueryAction(action:EntityQueryAction){
+    console.log('query',action)
+    this.query(action.query);
+  }
 
   ngOnInit() {
     this.entityService.isReady(() => {

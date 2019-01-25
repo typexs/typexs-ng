@@ -12,7 +12,8 @@ import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
 import {SystemModule} from '../system/system.module';
 import {RouterModule} from '@angular/router';
-
+import {FormsModule as NgFormsModule} from '@angular/forms';
+import {EntityQueryInputComponent} from './query/entity-query-input.component';
 
 export const ENTITY_OPTIONS_SERVICE = 'EntityOptionsService';
 
@@ -28,6 +29,7 @@ const PROVIDERS = [
     EntityModifyComponent,
     EntityDeleteComponent,
     EntityQueryComponent,
+    EntityQueryInputComponent,
     EntityViewComponent,
     EntityStructComponent
   ],
@@ -36,14 +38,18 @@ const PROVIDERS = [
     BrowserModule,
     RouterModule,
     HttpClientModule,
+    NgFormsModule,
     FormsModule
   ],
-  exports: [ EntityTypesComponent,
+  exports: [
+    EntityTypesComponent,
     EntityModifyComponent,
     EntityDeleteComponent,
     EntityQueryComponent,
+    EntityQueryInputComponent,
     EntityViewComponent,
-    EntityStructComponent],
+    EntityStructComponent
+  ],
   providers: PROVIDERS
 })
 export class EntityModule {

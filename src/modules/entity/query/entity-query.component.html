@@ -3,11 +3,16 @@
     <h3>Entity list</h3>
   </div>
   <div class="card-body">
+
+    <txs-entity-query-input
+      (queryState)="onQueryAction($event)"
+      [entityDef]="entityDef">
+    </txs-entity-query-input>
+
     <txs-pager
       [name]="pagerId"
       frameSize="5"
-      (onPageChange)="updateEntities($event)"
-    >
+      (onPageChange)="updateEntities($event)">
     </txs-pager>
 
     <table class="table">
@@ -55,7 +60,7 @@
       [name]="pagerId"
       frameSize="5"
       (onPageChange)="updateEntities($event)"
-    >
-    </txs-pager>
+    ></txs-pager>
+
   </div>
 </div>
