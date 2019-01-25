@@ -1,7 +1,6 @@
 import {NgModule, Provider} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {NavigatorModule} from '../navigator/navigator.module';
-import {HttpClientModule} from '@angular/common/http';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '../forms/forms.module';
 import {SystemModule} from '../system/system.module';
@@ -33,6 +32,15 @@ const PROVIDERS: Provider[] = [];
   providers: PROVIDERS
 })
 export class BaseAdminThemeModule {
+
+
+  static forRoot() {
+    return {
+      ngModule: BaseAdminThemeModule,
+      providers: PROVIDERS
+    };
+  }
+
 
 
 }
