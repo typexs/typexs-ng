@@ -4,3 +4,6 @@
 @import "~perfect-scrollbar/css/perfect-scrollbar.css";
 @import "icons-pct.css";
 
+$fa-font-path: '/assets/fonts/';
+@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";
