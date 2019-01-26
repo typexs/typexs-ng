@@ -10,6 +10,7 @@ import {DummyComponent} from './dummy/dummy.component';
 import {MenuAccessService} from './menu-demo/MenuAccessService';
 import {PagerComponent} from '../system/pager/pager.component';
 import {PagerDemoComponent} from './pager-demo/pager-demo.component';
+import {EmbeddedContentDemoComponent} from './embedded-content/embedded-content-demo.component';
 
 
 export const APP_ROUTES: Routes = [
@@ -52,6 +53,11 @@ export const APP_ROUTES: Routes = [
         path: 'pager-demo',
         component: PagerDemoComponent,
         data: {label: 'Pager Demo', group: 'demo'},
+      },
+      {
+        path: 'embedded-demo',
+        component: EmbeddedContentDemoComponent,
+        data: {label: 'Embedded Content Demo', group: 'demo'},
       },
     ]
   },

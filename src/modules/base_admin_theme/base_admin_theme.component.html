@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div bat-wrapper>
 
   <!-- [ Pre-loader ] start -->
   <!--
@@ -228,7 +228,8 @@
               <div class="row">
                 <!-- [ fixed-menu ] start -->
                 <div class="col-sm-12">
-                  <router-outlet></router-outlet>
+                  <ng-content></ng-content>
+                  <!-- <router-outlet></router-outlet> -->
                 </div>
                 <!-- [ fixed-menu ] end -->
               </div>
@@ -240,6 +241,5 @@
     </div>
   </div>
   <!-- [ Main Content ] end -->
-
 
 </div>

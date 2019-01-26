@@ -1,16 +1,13 @@
 import {Component, ViewEncapsulation} from '@angular/core';
-import {BaseAdminThemeComponent} from '../base_admin_theme/base_admin_theme.component';
 
 
 @Component({
-  templateUrl: '../base_admin_theme/base_admin_theme.component.html',
-  styleUrls: ['../base_admin_theme/base_admin_theme.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  templateUrl: './demos.component.html'
 })
-export class DemosComponent extends BaseAdminThemeComponent {
+export class DemosComponent  {
 
 
-
+/*
   async ngOnInit(): Promise<void> {
     this.menuOptions = {
       base: 'demo',
@@ -20,4 +17,5 @@ export class DemosComponent extends BaseAdminThemeComponent {
     this.title = 'TypexsNg'
     await super.ngOnInit();
   }
+  */
 }

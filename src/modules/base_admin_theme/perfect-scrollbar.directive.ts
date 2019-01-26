@@ -5,6 +5,7 @@ import PerfectScrollbar from 'perfect-scrollbar';
 @Directive({
   exportAs: 'perfect-scrollbar',
   selector: '[perfect-scrollbar]',
+
 })
 export class PerfectScrollbarDirective implements OnInit {
 

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, Renderer2, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, Renderer2, TemplateRef, ViewEncapsulation} from '@angular/core';
 import {IUser} from '../../libs/api/auth/IUser';
 import {AuthService} from '../system/api/auth/auth.service';
 import PerfectScrollbar from 'perfect-scrollbar';
@@ -6,20 +6,27 @@ import {IMenuOptions} from '../navigator/IMenuOptions';
 import {AppStateService} from '../system/app.state.service';
 
 @Component({
-  selector:'base-admin-theme',
+  selector: 'bat-admin-layout',
   templateUrl: './base_admin_theme.component.html',
-  styleUrls: ['./base_admin_theme.component.scss'],
+  // styleUrls: ['./base_admin_theme.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class BaseAdminThemeComponent implements OnInit, AfterViewInit {
 
+  @Input('content')
+  ref: TemplateRef<any>;
+
+  @Input()
   title: string = 'TypeXs';
 
+  @Input()
   menuOptions: IMenuOptions = {};
 
+  @Input()
   baseRouterLink: string = '/';
 
-  userRouterLinks: {profile:string,logout:string} = {profile:'/user',logout:'/user/logout'};
+  @Input()
+  userRouterLinks: { profile: string, logout: string } = {profile: '/user', logout: '/user/logout'};
 
   user: IUser;
 
@@ -51,7 +58,6 @@ export class BaseAdminThemeComponent implements OnInit, AfterViewInit {
     }
 
   }
-
 
   async ngAfterViewInit() {
     await this.enableMenuScrollBar();

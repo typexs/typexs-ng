@@ -7,6 +7,8 @@ import {SystemModule} from '../system/system.module';
 import {BaseAdminThemeComponent} from './base_admin_theme.component';
 import {ToggleDirective} from './toggle.directive';
 import {PerfectScrollbarDirective} from './perfect-scrollbar.directive';
+import {WrapperComponent} from './components/wrapper/wrapper.component';
+import {CardComponent} from './components/card/card.component';
 
 const PROVIDERS: Provider[] = [
 ];
@@ -14,6 +16,8 @@ const PROVIDERS: Provider[] = [
 
 @NgModule({
   declarations: [
+    WrapperComponent,
+    CardComponent,
     BaseAdminThemeComponent,
     ToggleDirective,
     PerfectScrollbarDirective
@@ -28,7 +32,9 @@ const PROVIDERS: Provider[] = [
   exports: [
     BaseAdminThemeComponent,
     ToggleDirective,
-    PerfectScrollbarDirective
+    PerfectScrollbarDirective,
+    WrapperComponent,
+    CardComponent
   ],
   providers: PROVIDERS
 })

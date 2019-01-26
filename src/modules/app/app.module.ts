@@ -18,6 +18,10 @@ import {DummyComponent} from './dummy/dummy.component';
 import {OptionsService} from './services/OptionsService';
 import {PagerDemoComponent} from './pager-demo/pager-demo.component';
 import {AuthService} from '../system/api/auth/auth.service';
+import {EmbeddedContentComponent} from './embedded-content/embedded-content.component';
+import {EmbeddedContentDemoComponent} from './embedded-content/embedded-content-demo.component';
+import {EmbeddedContentDirective} from './embedded-content/embedded-content.directive';
+import {EmbeddedContent2Component} from './embedded-content/embedded-content-2.component';
 
 
 @NgModule({
@@ -34,7 +38,11 @@ import {AuthService} from '../system/api/auth/auth.service';
     ContentViewChildDemoComponent,
     MenuDemoComponent,
     DummyComponent,
-    PagerDemoComponent
+    PagerDemoComponent,
+    EmbeddedContentComponent,
+    EmbeddedContentDemoComponent,
+    EmbeddedContentDirective,
+    EmbeddedContent2Component
   ],
   entryComponents: [
     ...FORM_COMPONENTS,
