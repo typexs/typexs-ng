@@ -28,10 +28,13 @@ export * from './modules/system/api/auth/IAuthServiceProvider';
 export * from './modules/system/api/auth/auth.service';
 export * from './modules/system/api/auth/IAuthGuardProvider';
 export * from './modules/system/api/auth/auth-guard.service';
+export * from './modules/system/api/auth/AuthMessage';
+
 export * from './modules/system/messages/message.service';
 export * from './modules/system/app.state.service';
 export * from './modules/system/messages/IMessage';
 export * from './modules/system/messages/MessageChannel';
+
 
 
 // forms module

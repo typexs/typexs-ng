@@ -8,7 +8,10 @@ import {BaseAdminThemeComponent} from './base_admin_theme.component';
 import {ToggleDirective} from './toggle.directive';
 import {PerfectScrollbarDirective} from './perfect-scrollbar.directive';
 
-const PROVIDERS: Provider[] = [];
+const PROVIDERS: Provider[] = [,
+  ToggleDirective,
+  PerfectScrollbarDirective
+];
 
 
 @NgModule({
@@ -25,9 +28,7 @@ const PROVIDERS: Provider[] = [];
     BrowserModule
   ],
   exports: [
-    BaseAdminThemeComponent,
-    ToggleDirective,
-    PerfectScrollbarDirective
+    BaseAdminThemeComponent
   ],
   providers: PROVIDERS
 })
@@ -40,7 +41,6 @@ export class BaseAdminThemeModule {
       providers: PROVIDERS
     };
   }
-
 
 
 }
