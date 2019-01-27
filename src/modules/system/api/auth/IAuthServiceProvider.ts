@@ -9,6 +9,8 @@ export interface IAuthServiceProvider {
 
   init(): void;
 
+  isInitialized(): Observable<boolean> | Promise<boolean> | boolean;
+
   getChannel(): MessageChannel<AuthMessage>;
 
   isLoggedIn(): boolean;

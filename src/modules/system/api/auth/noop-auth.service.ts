@@ -7,12 +7,15 @@ import {MessageService} from '../../messages/message.service';
 import {AuthMessage} from './AuthMessage';
 import {MessageChannel} from '../../messages/MessageChannel';
 import {MessageType} from '../../messages/IMessage';
-
+import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class NoopAuthService implements IAuthServiceProvider {
 
   user: IUser = new AnonymusUser();
+
+  private _initialized: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private messageService: MessageService) {
   }
@@ -22,6 +25,11 @@ export class NoopAuthService implements IAuthServiceProvider {
     msg.type = MessageType.Success;
     msg.topic = 'set user';
     this.getChannel().publish(msg);
+
+  }
+
+  isInitialized(): Observable<boolean> | Promise<boolean> | boolean {
+    return this._initialized;
   }
 
   getChannel(): MessageChannel<AuthMessage> {
