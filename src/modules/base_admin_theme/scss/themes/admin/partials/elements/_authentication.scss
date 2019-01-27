@@ -65,7 +65,7 @@
         font-size: 30px;
 
         &:before {
-            background: $theme-color;
+            background: $theme-color-reverse;
             background-clip: text;
             text-fill-color: transparent;
             -webkit-background-clip: text;
