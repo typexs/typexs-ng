@@ -5,7 +5,9 @@
 [![Dependency Status](https://david-dm.org/typexs/typexs-ng.svg)](https://david-dm.org/typexs/typexs-ng)
 
 
+## Develop demo start
 
-## Notes
-
-ngc -p tsconfig.app.json
+```
+$ npm install
+$ npm start 
+```
