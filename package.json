@@ -10,7 +10,7 @@
     "test": "nyc mocha --opts test/mocha.all.opts && karma start --single-run --browsers ChromeHeadless --code-coverage",
     "posttest": "nyc report --reporter=json && codecov -f coverage/backend/*.json && codecov -f coverage/karma/*.json",
     "ng": "ng",
-    "start": "concurrently \"ng serve -pc proxy.conf.json --open\" \"typexs server\"",
+    "start": "./node_modules/.bin/concurrently \"./node_modules/.bin/ng serve -pc proxy.conf.json --open\" \"./node_modules/.bin/typexs server\"",
     "build": "ng build --prod",
     "lint": "ng lint",
     "e2e": "ng e2e",
