@@ -4,6 +4,8 @@ import {AuthService} from '../system/api/auth/auth.service';
 import PerfectScrollbar from 'perfect-scrollbar';
 import {IMenuOptions} from '../navigator/IMenuOptions';
 import {AppStateService} from '../system/app.state.service';
+import {NavigatorService} from '../navigator/navigator.service';
+import {CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE} from '../system/constants';
 
 @Component({
   selector: 'bat-admin-layout',
@@ -26,29 +28,23 @@ export class BaseAdminThemeComponent implements OnInit, AfterViewInit {
   baseRouterLink: string = '/';
 
   @Input()
-  userRouterLinks: { profile: string, logout: string } = {profile: '/user', logout: '/user/logout'};
+  userRouterLinks: { profile: string, logout: string } = {profile: 'user/profile', logout: 'user/logout'};
 
   user: IUser;
 
   menuScrollBar: PerfectScrollbar;
 
-  //authService: AuthService;
-
-  //renderer: Renderer2;
-
-  //appStateService: AppStateService;
-
-  constructor(public authService: AuthService, public renderer: Renderer2, public appStateService: AppStateService) {
-//    this.authService = authService;
-    //this.renderer = renderer;
-    //this.appStateService = appStateService;
+  constructor(public authService: AuthService,
+              public renderer: Renderer2,
+              public appStateService: AppStateService,
+              private navigatorService: NavigatorService) {
   }
 
 
   async getUser(): Promise<IUser> {
     return await this.authService.getUser();
-
   }
+
 
   async ngOnInit() {
     try {
@@ -56,7 +52,14 @@ export class BaseAdminThemeComponent implements OnInit, AfterViewInit {
     } catch (e) {
       console.error(e);
     }
-
+    let entry = this.navigatorService.getEntryByContext(CTXT_ROUTE_USER_PROFILE);
+    if(entry){
+      this.userRouterLinks.profile = entry.getFullPath();
+    }
+    entry = this.navigatorService.getEntryByContext(CTXT_ROUTE_USER_LOGOUT);
+    if(entry){
+      this.userRouterLinks.logout = entry.getFullPath();
+    }
   }
 
   async ngAfterViewInit() {

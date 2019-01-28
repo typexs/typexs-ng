@@ -1,11 +1,8 @@
-
 <bat-admin-layout
   [baseRouterLink]="'/admin'"
-  [menuOptions]="{
-      base: 'admin',
-      group: 'admin'
-    }"
+  [menuOptions]="{base: 'admin',group: 'admin'}"
   [title]="'TypeXs'"
+  [userRouterLinks]="{logout:'/user/logout',profile:'/user/profile'}"
 >
   <router-outlet></router-outlet>
 </bat-admin-layout>

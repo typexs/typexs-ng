@@ -166,7 +166,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right profile-notification">
               <div class="pro-head">
-                <span>TODO USERNAME</span>
+                <span>{{user ? user.username : 'loading ...'}}</span>
                 <a [routerLink]="userRouterLinks.logout" class="dud-logout" title="Logout">
                   <i class="icon icon-logout"></i>
                 </a>
