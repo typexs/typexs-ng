@@ -68,6 +68,10 @@ export class MenuLinkComponent implements OnInit {
 
 
   icon(){
+    let icon = _.get(this.entry,'entry.data.icon',null);
+    if(icon){
+      return icon;
+    }
     if(this.entry.isGroup){
       return 'icon-'+this.entry.entry.groupRegex.replace(/[^\w\d]/g,'-').replace(/-+$/,'');
     }else{

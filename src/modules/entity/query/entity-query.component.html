@@ -14,48 +14,59 @@
       frameSize="5"
       (onPageChange)="updateEntities($event)">
     </txs-pager>
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+        <tr>
+          <th class="headcol">Ops</th>
+          <th *ngFor="let prop of getPropertyDefs()">{{ prop.name }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let entity of entities">
+          <td class="col-ops headcol">
+            <div class="btn-group-ops">
+              <a
+                [routerLink]="['/admin/entity',entityDef.machineName,'view', entityDef.buildLookupConditions(entity) ]">
+                <i class="icon icon-data-view"></i>
+              </a>
+              <a
+                [routerLink]="['/admin/entity',entityDef.machineName,'edit', entityDef.buildLookupConditions(entity) ]">
+                <i class="icon icon-data-edit"></i>
+              </a>
+              <a
+                [routerLink]="['/admin/entity',entityDef.machineName,'delete', entityDef.buildLookupConditions(entity) ]">
+                <i class="icon icon-data-delete"></i>
+              </a>
+            </div>
+          </td>
 
-    <table class="table">
-      <thead>
-      <tr>
-        <th *ngFor="let prop of getPropertyDefs()">{{ prop.name }}</th>
-        <th>Ops</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let entity of entities">
-        <td *ngFor="let prop of getPropertyDefs()" [ngSwitch]="fieldDisplay(prop)">
-          <ng-template ngSwitchCase="entity_reference">
-            <a *ngIf="hasData(entity,prop)"
-               [routerLink]="['/admin/entity',prop.getEntity().machineName,'view', prop.getEntity().buildLookupConditions(getData(entity,prop)) ]">
-              {{ prop.getEntity().label(getData(entity, prop))}}
-            </a>
-          </ng-template>
-          <ng-template ngSwitchCase="entity_reference_array">
-            <ul>
-              <li *ngFor="let entry of getData(entity,prop)">
-                <a
-                  [routerLink]="['/admin/entity',prop.getEntity().machineName,'view', prop.getEntity().buildLookupConditions(entry) ]">
-                  {{ prop.getEntity().label(entry)}}
-                </a>
-              </li>
-            </ul>
-          </ng-template>
-          <ng-template ngSwitchDefault>
-            <pre>{{asString(prop.get(entity))}}</pre>
-          </ng-template>
-        </td>
-        <td>
-          <a class="btn btn-success"
-             [routerLink]="['/admin/entity',entityDef.machineName,'view', entityDef.buildLookupConditions(entity) ]">View</a>
-          <a class="btn btn-warning"
-             [routerLink]="['/admin/entity',entityDef.machineName,'edit', entityDef.buildLookupConditions(entity) ]">Edit</a>
-          <a class="btn btn-danger"
-             [routerLink]="['/admin/entity',entityDef.machineName,'delete', entityDef.buildLookupConditions(entity) ]">Delete</a>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+          <td *ngFor="let prop of getPropertyDefs()" [ngSwitch]="fieldDisplay(prop)">
+            <ng-template ngSwitchCase="entity_reference">
+              <a *ngIf="hasData(entity,prop)"
+                 [routerLink]="['/admin/entity',prop.getEntity().machineName,'view', prop.getEntity().buildLookupConditions(getData(entity,prop)) ]">
+                {{ prop.getEntity().label(getData(entity, prop))}}
+              </a>
+            </ng-template>
+            <ng-template ngSwitchCase="entity_reference_array">
+              <ul>
+                <li *ngFor="let entry of getData(entity,prop)">
+                  <a
+                    [routerLink]="['/admin/entity',prop.getEntity().machineName,'view', prop.getEntity().buildLookupConditions(entry) ]">
+                    {{ prop.getEntity().label(entry)}}
+                  </a>
+                </li>
+              </ul>
+            </ng-template>
+            <ng-template ngSwitchDefault>
+              <pre>{{asString(prop.get(entity))}}</pre>
+            </ng-template>
+          </td>
+
+        </tr>
+        </tbody>
+      </table>
+    </div>
     <txs-pager
       [name]="pagerId"
       frameSize="5"

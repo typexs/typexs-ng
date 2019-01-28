@@ -4,6 +4,16 @@
   font-weight: 900;
 }
 
+
+menu-link {
+  .icon {
+    &:before {
+      margin-right: .3rem;
+    }
+  }
+
+}
+
 .icon {
   @extend %fa-icon;
   @extend .fas;
@@ -12,9 +22,10 @@
 
   // Menu
   &:before {
-    margin-right: .3rem;
+
     content: fa-content($fa-var-cubes);
   }
+
 
   &.icon-admin-system-modules {
     &:before {
@@ -23,6 +34,7 @@
   }
 
   &.icon-admin-system-routes {
+
     &:before {
       content: fa-content($fa-var-route);
     }
@@ -41,6 +53,8 @@
   }
 
   &.icon-admin-ng {
+    font-family: 'Font Awesome 5 Brands';
+
     &:before {
       content: fa-content($fa-var-angular);
     }
@@ -140,6 +154,24 @@
     &:before {
       margin-right: 0;
       content: fa-content($fa-var-th);
+    }
+  }
+
+  &.icon-data-view {
+    &:before {
+      content: fa-content($fa-var-file);
+    }
+  }
+
+  &.icon-data-edit {
+    &:before {
+      content: fa-content($fa-var-edit);
+    }
+  }
+
+  &.icon-data-delete {
+    &:before {
+      content: fa-content($fa-var-trash);
     }
   }
 

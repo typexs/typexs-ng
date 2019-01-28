@@ -13,6 +13,8 @@ export class NavEntry {
 
   private orgPath: string = null;
 
+  data:any = {};
+
   path: string;
 
   //realPath: string = null;
@@ -88,6 +90,9 @@ export class NavEntry {
       if (_.has(data, 'skip')) {
         this.ignore = data.skip;
       }
+
+      this.data = data;
+
     }
   }
 
