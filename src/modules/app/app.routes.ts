@@ -8,9 +8,11 @@ import {CheckboxMatrixDemoComponent} from './checkbox-matrix-demo/checkbox-matri
 import {MenuDemoComponent} from './menu-demo/menu-demo.component';
 import {DummyComponent} from './dummy/dummy.component';
 import {MenuAccessService} from './menu-demo/MenuAccessService';
-import {PagerComponent} from '../system/pager/pager.component';
 import {PagerDemoComponent} from './pager-demo/pager-demo.component';
 import {EmbeddedContentDemoComponent} from './embedded-content/embedded-content-demo.component';
+import {LogoutComponent} from './dummy/logout/logout.component';
+import {ProfileComponent} from './dummy/profile/profile.component';
+import {CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE} from '../system/constants';
 
 
 export const APP_ROUTES: Routes = [
@@ -88,6 +90,18 @@ export const APP_ROUTES: Routes = [
 
     ]
   },
+  {
+    path: 'user/logout',
+    component: LogoutComponent,
+    data: {label: 'Logout', skip: true, context: CTXT_ROUTE_USER_LOGOUT},
+  }
+  ,
+  {
+    path: 'user/profile',
+    component: ProfileComponent,
+    data: {label: 'Profile', skip: true, context: CTXT_ROUTE_USER_PROFILE},
+  }
+  ,
   {
     path: '', redirectTo: 'demo', pathMatch: 'full'
   },

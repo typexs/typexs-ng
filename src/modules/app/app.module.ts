@@ -22,6 +22,8 @@ import {EmbeddedContentComponent} from './embedded-content/embedded-content.comp
 import {EmbeddedContentDemoComponent} from './embedded-content/embedded-content-demo.component';
 import {EmbeddedContentDirective} from './embedded-content/embedded-content.directive';
 import {EmbeddedContent2Component} from './embedded-content/embedded-content-2.component';
+import {LogoutComponent} from './dummy/logout/logout.component';
+import {ProfileComponent} from './dummy/profile/profile.component';
 
 
 @NgModule({
@@ -42,7 +44,9 @@ import {EmbeddedContent2Component} from './embedded-content/embedded-content-2.c
     EmbeddedContentComponent,
     EmbeddedContentDemoComponent,
     EmbeddedContentDirective,
-    EmbeddedContent2Component
+    EmbeddedContent2Component,
+    LogoutComponent,
+    ProfileComponent
   ],
   entryComponents: [
     ...FORM_COMPONENTS,
