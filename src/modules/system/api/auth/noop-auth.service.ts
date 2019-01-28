@@ -4,12 +4,13 @@ import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 import {AnonymusUser} from '../../../../libs/api/auth/AnonymusUser';
 import {IUser} from '../../../../libs/api/auth/IUser';
 import {MessageService} from '../../messages/message.service';
-import {AuthMessage} from './AuthMessage';
+
 import {MessageChannel} from '../../messages/MessageChannel';
 import {MessageType} from '../../messages/IMessage';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {MESSAGE_TYPE_AUTH_SERVICE} from '../../constants';
+import {AuthMessage} from '../../messages/types/AuthMessage';
 
 @Injectable()
 export class NoopAuthService implements IAuthServiceProvider {

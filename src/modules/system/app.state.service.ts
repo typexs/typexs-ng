@@ -7,7 +7,8 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Observable} from "rxjs/Observable"
 import {AuthService} from './api/auth/auth.service';
 import {MessageService} from './messages/message.service';
-import {AuthMessage} from './api/auth/AuthMessage';
+import {AuthMessage} from './messages/types/AuthMessage';
+
 
 @Injectable()
 export class AppStateService {

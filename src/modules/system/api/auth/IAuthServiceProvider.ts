@@ -2,7 +2,8 @@ import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 import {IUser} from '../../../../libs/api/auth/IUser';
 import {Observable} from 'rxjs/Observable';
 import {MessageChannel} from '../../messages/MessageChannel';
-import {AuthMessage} from './AuthMessage';
+import {AuthMessage} from '../../messages/types/AuthMessage';
+
 
 
 export interface IAuthServiceProvider {
