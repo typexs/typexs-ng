@@ -9,6 +9,7 @@ import {MessageChannel} from '../../messages/MessageChannel';
 import {MessageType} from '../../messages/IMessage';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {MESSAGE_TYPE_AUTH_SERVICE} from '../../constants';
 
 @Injectable()
 export class NoopAuthService implements IAuthServiceProvider {
@@ -35,7 +36,7 @@ export class NoopAuthService implements IAuthServiceProvider {
   }
 
   getChannel(): MessageChannel<AuthMessage> {
-    return <MessageChannel<AuthMessage>>this.messageService.get('AuthService');
+    return <MessageChannel<AuthMessage>>this.messageService.get(MESSAGE_TYPE_AUTH_SERVICE);
   }
 
   isLoggedIn(): boolean {

@@ -12,6 +12,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {PagerComponent} from './pager/pager.component';
 import {PagerService} from './pager/PagerService';
 import {AppStateService} from './app.state.service';
+import {InvokerService} from './invoker.service';
 
 const PROVIDERS = [
   SystemInfoService,
@@ -21,7 +22,8 @@ const PROVIDERS = [
   {provide: AuthGuardService, useClass: DefaultAuthGuardService},
   MessageService,
   PagerService,
-  AppStateService
+  AppStateService,
+  InvokerService
 ];
 
 @NgModule({
