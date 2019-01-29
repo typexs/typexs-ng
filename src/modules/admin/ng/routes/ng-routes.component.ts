@@ -4,7 +4,8 @@ import {NavigatorService} from '../../../navigator/navigator.service';
 
 @Component({
   selector: 'ng-routes',
-  templateUrl: './ng-routes.component.html'
+  templateUrl: './ng-routes.component.html',
+  styleUrls:['./ng-routes.component.scss']
 })
 export class NgRoutesComponent implements OnInit {
 

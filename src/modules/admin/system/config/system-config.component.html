@@ -3,8 +3,8 @@
     <h3>Config</h3>
   </div>
   <div class="card-body">
-    <pre>
-      {{config | json}}
+    <pre class="language-json">
+      {{stringify(config).trim()}}
     </pre>
   </div>
 </div>

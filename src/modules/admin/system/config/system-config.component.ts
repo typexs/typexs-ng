@@ -24,8 +24,12 @@ export class SystemConfigComponent implements OnInit {
 
 
   ngOnInit() {
-    this.infoService.loadConfig((x:ITypexsOptions) => {
-      this.config = x
+    this.infoService.loadConfig((x:ITypexsOptions[]) => {
+      this.config = x.shift()
     })
+  }
+
+  stringify(x:any){
+    return JSON.stringify(x,null, 2);
   }
 }
