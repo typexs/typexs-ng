@@ -6,6 +6,9 @@ import {IMenuOptions} from '../navigator/IMenuOptions';
 import {AppStateService} from '../system/app.state.service';
 import {NavigatorService} from '../navigator/navigator.service';
 import {CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE} from '../system/constants';
+import {LogMessage} from '../system/messages/types/LogMessage';
+import {INotifyOptions} from './components/notifications/INotifyOptions';
+import {NotificationsService} from './components/notifications/notifications.service';
 
 @Component({
   selector: 'bat-admin-layout',
@@ -25,6 +28,12 @@ export class BaseAdminThemeComponent implements OnInit, AfterViewInit {
   menuOptions: IMenuOptions = {};
 
   @Input()
+  notifyOptions: INotifyOptions = {
+    displayTime: 60000,
+    maxAlerts: 5
+  };
+
+  @Input()
   baseRouterLink: string = '/';
 
   @Input()
@@ -34,12 +43,32 @@ export class BaseAdminThemeComponent implements OnInit, AfterViewInit {
 
   menuScrollBar: PerfectScrollbar;
 
+  viewContext: string;
+
   constructor(public authService: AuthService,
               public renderer: Renderer2,
               public appStateService: AppStateService,
-              private navigatorService: NavigatorService) {
+              private navigatorService: NavigatorService,
+              private notifyService: NotificationsService) {
+
+    appStateService.getViewContext().subscribe(x => this.viewContext = x);
+    appStateService.getLogService().subscribe(this.onLogMessage.bind(this));
   }
 
+
+  onLogMessage(log: LogMessage) {
+    // if()
+    if (!log) {
+      return;
+    }
+
+    if (log.isErrorMessage()) {
+      console.error(log.error);
+    }
+
+    this.notifyService.addMessage(log);
+
+  }
 
   async getUser(): Promise<IUser> {
     return await this.authService.getUser();
@@ -53,14 +82,15 @@ export class BaseAdminThemeComponent implements OnInit, AfterViewInit {
       console.error(e);
     }
     let entry = this.navigatorService.getEntryByContext(CTXT_ROUTE_USER_PROFILE);
-    if(entry){
-      this.userRouterLinks.profile = entry.getFullPath();
+    if (entry) {
+      this.userRouterLinks.profile = '/' + entry.getFullPath();
     }
     entry = this.navigatorService.getEntryByContext(CTXT_ROUTE_USER_LOGOUT);
-    if(entry){
-      this.userRouterLinks.logout = entry.getFullPath();
+    if (entry) {
+      this.userRouterLinks.logout = '/' + entry.getFullPath();
     }
   }
+
 
   async ngAfterViewInit() {
     await this.enableMenuScrollBar();

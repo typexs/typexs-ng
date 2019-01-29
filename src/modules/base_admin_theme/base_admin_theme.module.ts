@@ -9,8 +9,11 @@ import {ToggleDirective} from './toggle.directive';
 import {PerfectScrollbarDirective} from './perfect-scrollbar.directive';
 import {WrapperComponent} from './components/wrapper/wrapper.component';
 import {CardComponent} from './components/card/card.component';
+import {NotificationsComponent} from './components/notifications/notifications.component';
+import {NotificationsService} from './components/notifications/notifications.service';
 
 const PROVIDERS: Provider[] = [
+  NotificationsService
 ];
 
 
@@ -20,7 +23,8 @@ const PROVIDERS: Provider[] = [
     CardComponent,
     BaseAdminThemeComponent,
     ToggleDirective,
-    PerfectScrollbarDirective
+    PerfectScrollbarDirective,
+    NotificationsComponent
   ],
   imports: [
     SystemModule.forRoot(),
@@ -34,7 +38,8 @@ const PROVIDERS: Provider[] = [
     ToggleDirective,
     PerfectScrollbarDirective,
     WrapperComponent,
-    CardComponent
+    CardComponent,
+    NotificationsComponent
   ],
   providers: PROVIDERS
 })

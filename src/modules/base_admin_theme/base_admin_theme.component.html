@@ -1,3 +1,6 @@
+<bat-notify
+  [options]="notifyOptions"
+></bat-notify>
 <div bat-wrapper>
 
   <!-- [ Pre-loader ] start -->
@@ -57,6 +60,7 @@
 
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav mr-auto">
+        <ng-content select="header-left-list-entries"></ng-content>
         <!--
         <li><a href="/admin/#" class="full-screen"
                onclick="javascript:toggleFullScreen()">
@@ -89,76 +93,19 @@
         -->
       </ul>
       <ul class="navbar-nav ml-auto">
-        <li *ngIf="appStateService.isAuthenticated() && appStateService.viewMode != 'admin'">
+        <ng-content select="header-right-list-entries"></ng-content>
+        <li *ngIf="appStateService.isAuthenticated() && viewContext != 'admin'">
           <a *ngIf="(appStateService.isAdmin | async)" routerLink="/admin" >
             <i class="icon icon-admin-user"></i>
             Admin
           </a>
         </li>
-        <li *ngIf="appStateService.viewMode == 'admin'">
+        <li *ngIf="viewContext == 'admin'">
           <a  routerLink="/">
             <i class="icon icon-page-home"></i>
             Home
           </a>
         </li>
-<!--
-        <li>
-          <div class="dropdown">
-            <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-              <i class="icon icon icon-bell"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right notification">
-              <div class="noti-head">
-                <h6 class="d-inline-block m-b-0">Notifications</h6>
-                <div class="float-right">
-                  <a href="#" class="m-r-10">mark as read</a>
-                  <a href="#">clear all</a>
-                </div>
-              </div>
-              <ul class="noti-body">
-                <li class="n-title">
-                  <p class="m-b-0">NEW</p>
-                </li>
-                <li class="notification">
-                  <div class="media">
-                    <div class="media-body">
-                      <p><strong>John Doe</strong><span class="n-time text-muted"><i
-                        class="icon icon icon-clock m-r-10"></i>30 min</span></p>
-                      <p>New ticket Added</p>
-                    </div>
-                  </div>
-                </li>
-                <li class="n-title">
-                  <p class="m-b-0">EARLIER</p>
-                </li>
-                <li class="notification">
-                  <div class="media">
-                    <div class="media-body">
-                      <p><strong>Joseph William</strong><span class="n-time text-muted"><i
-                        class="icon icon icon-clock m-r-10"></i>30 min</span></p>
-                      <p>Prchace New Theme and make payment</p>
-                    </div>
-                  </div>
-                </li>
-                <li class="notification">
-                  <div class="media">
-                    <div class="media-body">
-                      <p><strong>Sara Soudein</strong><span class="n-time text-muted"><i
-                        class="icon icon icon-clock m-r-10"></i>30 min</span></p>
-                      <p>currently login</p>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-              <div class="noti-footer">
-                <a href="#">show all</a>
-              </div>
-            </div>
-          </div>
-        </li>
-
-        <li><a href="#" class="displayChatbox"><i class="icon icon icon-mail"></i></a></li>
--->
         <li  *ngIf="appStateService.isAuthenticated()">
           <div class="dropdown drp-user">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -177,15 +124,7 @@
                     <i class="icon icon-user"></i> Profile
                   </a>
                 </li>
-                <!--
-                <li><a href="#" class="dropdown-item"><i class="icon icon-settings"></i> Settings</a></li>
-
-                <li><a href="email-inbox.html" class="dropdown-item"><i class="icon icon-mail"></i> My Messages</a></li>
-                <li><a href="auth-lock-screen.html" class="dropdown-item"><i class="icon icon-lock"></i> Lock Screen</a>
-                </li>
-
-                <li><a href="#" class="dropdown-item"><i class="icon icon-settings"></i> Settings</a></li>
-                -->
+                <ng-content select="header-profile-entries"></ng-content>
               </ul>
             </div>
           </div>
