@@ -8,6 +8,7 @@ import {Observable} from "rxjs/Observable"
 import {AuthService} from './api/auth/auth.service';
 import {MessageService} from './messages/message.service';
 import {AuthMessage} from './messages/types/AuthMessage';
+import {CTXT_VIEW_ADMIN, CTXT_VIEW_DEFAULT, CTXT_VIEW_LOADING, CTXT_VIEW_LOGIN} from './constants';
 
 
 @Injectable()
@@ -15,7 +16,7 @@ export class AppStateService {
 
   _isAdmin: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  viewMode: string = 'login';
+  _viewMode: BehaviorSubject<string> = new BehaviorSubject<string>(CTXT_VIEW_LOADING);
 
   adminUrl: boolean = false;
 
@@ -32,17 +33,37 @@ export class AppStateService {
       if (e instanceof NavigationEnd) {
         this.adminUrl = e.urlAfterRedirects.startsWith('/admin');
         if (this._isAdmin.value && this.adminUrl) {
-          if (this.viewMode != 'admin') {
-            this.viewMode = 'admin';
+          if (!this.isViewContext(CTXT_VIEW_ADMIN)) {
+            this.setViewContext(CTXT_VIEW_ADMIN);
           }
         }
-        if (this.viewMode == 'admin' && !this.adminUrl) {
-          this.viewMode = 'default';
+        if (this.isViewContext(CTXT_VIEW_ADMIN) && !this.adminUrl) {
+          this.setViewContext(CTXT_VIEW_DEFAULT);
         }
 
       }
     })
+  }
 
+
+  getViewContext(){
+    return this._viewMode.asObservable();
+  }
+
+  getViewContextValue(){
+    return this._viewMode.value;
+  }
+
+  setViewContext(str:string){
+    this._viewMode.next(str);
+  }
+
+  isViewContext(str:string){
+    return this.getViewContextValue() == str;
+  }
+
+  getLogService(){
+    return this.messageService.getLogService();
   }
 
 
@@ -56,13 +77,13 @@ export class AppStateService {
       if (this.authService.isLoggedIn()) {
         let isAdmin = await this.authService.hasRole('admin');
         this._isAdmin.next(isAdmin);
-        if (this.adminUrl && this.viewMode != 'admin') {
-          this.viewMode = 'admin';
+        if (this.adminUrl &&  !this.isViewContext(CTXT_VIEW_ADMIN)) {
+          this.setViewContext(CTXT_VIEW_ADMIN);
         } else {
-          this.viewMode = 'default';
+          this.setViewContext(CTXT_VIEW_DEFAULT);
         }
       } else {
-        this.viewMode = 'login';
+        this.setViewContext(CTXT_VIEW_LOGIN);
         this._isAdmin.next(false);
       }
     }

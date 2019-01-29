@@ -24,7 +24,7 @@ export class NoopAuthService implements IAuthServiceProvider {
 
   init() {
     let msg = new AuthMessage();
-    msg.type = MessageType.Success;
+    msg.type = MessageType.SUCCESS;
     msg.topic = 'set user';
     this.getChannel().publish(msg);
     this._initialized.next(true);

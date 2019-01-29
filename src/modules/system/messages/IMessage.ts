@@ -1,8 +1,8 @@
 export enum MessageType {
-  Success,
-  Error,
-  Info,
-  Warning
+  SUCCESS,
+  ERROR,
+  INFO,
+  WARNING
 }
 
 
