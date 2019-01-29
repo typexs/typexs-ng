@@ -13,6 +13,7 @@ import {EmbeddedContentDemoComponent} from './embedded-content/embedded-content-
 import {LogoutComponent} from './dummy/logout/logout.component';
 import {ProfileComponent} from './dummy/profile/profile.component';
 import {CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE} from '../system/constants';
+import {NotificationDemoComponent} from './components/demos/notification/notification-demo.component';
 
 
 export const APP_ROUTES: Routes = [
@@ -52,14 +53,15 @@ export const APP_ROUTES: Routes = [
         data: {label: 'Content View Child Demo', group: 'demo'},
       },
       {
-        path: 'pager-demo',
+        path: 'pager',
         component: PagerDemoComponent,
-        data: {label: 'Pager Demo', group: 'demo'},
+        data: {label: 'Pager', group: 'demo'},
       },
+
       {
-        path: 'embedded-demo',
-        component: EmbeddedContentDemoComponent,
-        data: {label: 'Embedded Content Demo', group: 'demo'},
+        path: 'notifications',
+        component: NotificationDemoComponent,
+        data: {label: 'Notifications', group: 'demo'},
       },
     ]
   },

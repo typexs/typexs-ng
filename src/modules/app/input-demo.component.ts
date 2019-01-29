@@ -37,7 +37,7 @@ export class InputDemoComponent implements OnInit {
   onSubmit($event: any) {
     this.result = $event;
     this.channel.publish({
-      type:MessageType.Success,
+      type:MessageType.SUCCESS,
       content: 'Successful submitted ' + ($event.data.isSuccessValidated ? ' and validated' : ' and not validated')
     })
   }
