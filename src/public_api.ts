@@ -27,6 +27,10 @@ export * from './modules/base_admin_theme/base_admin_theme.module';
 export * from './modules/base_admin_theme/base_admin_theme.component';
 export * from './modules/base_admin_theme/toggle.directive';
 export * from './modules/base_admin_theme/perfect-scrollbar.directive';
+export * from './modules/base_admin_theme/components/wrapper/wrapper.component';
+export * from './modules/base_admin_theme/components/card/card.component';
+export * from './modules/base_admin_theme/components/notifications/notifications.component';
+export * from './modules/base_admin_theme/components/notifications/notifications.service';
 
 // admin module
 export * from './modules/admin/admin.module';

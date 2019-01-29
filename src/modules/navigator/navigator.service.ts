@@ -116,8 +116,9 @@ export class NavigatorService {
     return _.find(this.entries, e => e.getFullPath() == path);
   }
 
+
   getEntryByContext(path: string) {
-    return _.find(this.entries, e => _.get(e,'data.context',null) != null);
+    return _.find(this.entries, e => _.get(e,'data.context',null) == path);
   }
 
 
