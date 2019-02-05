@@ -3,8 +3,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {EntityService} from './../entity.service';
 import {ActivatedRoute} from '@angular/router';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
-import {EntityDef} from '@typexs/schema/libs/registry/EntityDef';
-import {PropertyDef} from '@typexs/schema/libs/registry/PropertyDef';
+import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
+import {PropertyRef} from '@typexs/schema/libs/registry/PropertyRef';
 import {PagerAction} from '../../system/pager/PagerAction';
 import {PagerService} from '../../system/pager/PagerService';
 import {Pager} from '../../system/pager/Pager';
@@ -26,7 +26,7 @@ export class EntityQueryComponent implements OnInit, OnDestroy {
 
   id: string;
 
-  entityDef: EntityDef;
+  entityDef: EntityRef;
 
   entities: any[] = [];
 
@@ -52,7 +52,6 @@ export class EntityQueryComponent implements OnInit, OnDestroy {
   }
 
   onQueryAction(action:EntityQueryAction){
-    console.log('query',action)
     this.query(action.query);
   }
 
@@ -62,9 +61,9 @@ export class EntityQueryComponent implements OnInit, OnDestroy {
     });
   }
 
-  getPropertyDefs() {
+  getPropertyRefs() {
     if (this.entityDef) {
-      return this.entityDef.getPropertyDefs();
+      return this.entityDef.getPropertyRefs();
     } else {
       return [];
     }
@@ -81,7 +80,7 @@ export class EntityQueryComponent implements OnInit, OnDestroy {
   query(query?: any) {
     this._query = query;
     this.machineName = this.route.snapshot.paramMap.get('machineName');
-    this.entityDef = EntityRegistry.$().getEntityDefByName(this.machineName);
+    this.entityDef = EntityRegistry.$().getEntityRefByName(this.machineName);
     if (this.entityDef) {
       this.entityService.query(this.machineName, query, {
         offset: this.offset,
@@ -108,15 +107,15 @@ export class EntityQueryComponent implements OnInit, OnDestroy {
     return JSON.stringify(data, null, 2);
   }
 
-  hasData(entity: any, prop: PropertyDef) {
+  hasData(entity: any, prop: PropertyRef) {
     return !_.isEmpty(this.getData(entity, prop));
   }
 
-  getData(entity: any, prop: PropertyDef) {
+  getData(entity: any, prop: PropertyRef) {
     return prop.get(entity);
   }
 
-  fieldDisplay(prop: PropertyDef) {
+  fieldDisplay(prop: PropertyRef) {
     if (prop.isEntityReference()) {
       if (prop.isCollection()) {
         return 'entity_reference_array';

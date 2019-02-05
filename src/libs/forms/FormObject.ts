@@ -1,4 +1,4 @@
-import {PropertyDef} from '@typexs/schema/libs/registry/PropertyDef';
+import {PropertyRef} from '@typexs/schema/libs/registry/PropertyRef';
 
 import * as _ from 'lodash';
 import {ResolveDataValue} from './ResolveDataValue';
@@ -34,7 +34,7 @@ export abstract class FormObject extends TreeObject {
 
   protected replicable: boolean = false;
 
-  private binding: PropertyDef = null;
+  private binding: PropertyRef = null;
 
 
   isSelection() {
@@ -69,7 +69,7 @@ export abstract class FormObject extends TreeObject {
   getPath(): string {
     let arr = [];
 
-    if (this.getBinding() instanceof PropertyDef) {
+    if (this.getBinding() instanceof PropertyRef) {
       if (this.getParent()) {
         const parent = this.getParent();
         if (isFormObject(parent)) {

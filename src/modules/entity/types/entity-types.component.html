@@ -15,7 +15,7 @@
       </thead>
 
       <tbody>
-      <tr *ngFor="let entityDef of getEntityDefs()">
+      <tr *ngFor="let entityDef of getEntityRefs()">
         <td>{{entityDef.getClassRef().getSchema()}}</td>
         <td>{{entityDef.name}}</td>
         <td>{{entityDef.machineName}}</td>

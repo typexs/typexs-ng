@@ -50,17 +50,21 @@ export class AppStateService {
     return this._viewMode.asObservable();
   }
 
+
   getViewContextValue(){
     return this._viewMode.value;
   }
+
 
   setViewContext(str:string){
     this._viewMode.next(str);
   }
 
+
   isViewContext(str:string){
     return this.getViewContextValue() == str;
   }
+
 
   getLogService(){
     return this.messageService.getLogService();

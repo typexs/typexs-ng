@@ -1,10 +1,10 @@
 import * as _ from 'lodash';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
-import {Expressions} from '@typexs/schema/libs/expressions/Expressions';
+import {Expressions} from 'commons-expressions/browser';
 import {IConditionJoin, SqlConditionsBuilder} from '@typexs/schema/libs/framework/typeorm/SqlConditionsBuilder';
 import {EntityQueryAction} from './EntityQueryAction';
-import {EntityDef} from '@typexs/schema/browser';
+import {EntityRef} from '@typexs/schema/browser';
 
 
 @Component({
@@ -12,10 +12,10 @@ import {EntityDef} from '@typexs/schema/browser';
   templateUrl: './entity-query-input.component.html',
   styleUrls: ['./entity-query-input.component.scss']
 })
-export class EntityQueryInputComponent  {
+export class EntityQueryInputComponent {
 
   @Input()
-  entityDef:EntityDef;
+  entityDef: EntityRef;
 
   @Output()
   queryState: EventEmitter<EntityQueryAction> = new EventEmitter();
@@ -32,7 +32,7 @@ export class EntityQueryInputComponent  {
 
 
   doQuery() {
-    if(this.jsonQuery && this.freeTextQueryError.length == 0){
+    if (this.jsonQuery && this.freeTextQueryError.length == 0) {
       this.queryState.emit(new EntityQueryAction(this.jsonQuery));
     }
   }

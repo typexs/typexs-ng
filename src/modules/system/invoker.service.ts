@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
-import {ClassType, Invoker} from '@typexs/base/browser';
+import {Invoker} from '@typexs/base/browser';
+import {ClassType} from 'commons-schema-api/browser';
 
 
 @Injectable()
@@ -11,24 +12,24 @@ export class InvokerService {
     this._invoker = new Invoker();
   }
 
-  use<T>(type: ClassType<T>):T {
+  use<T>(type: ClassType<T>): T {
     return this._invoker.use(type);
   }
 
-  getInvoker(){
+  getInvoker() {
     return this._invoker;
   }
 
-  register(api: Function, impl: Function | Function[]): void{
-    this._invoker.register(api,impl);
+  register(api: Function, impl: Function | Function[]): void {
+    this._invoker.register(api, impl);
   }
 
 
-  has(api: Function): boolean{
+  has(api: Function): boolean {
     return this._invoker.has(api);
   }
 
-  hasImpl(api: Function): boolean{
+  hasImpl(api: Function): boolean {
     return this._invoker.hasImpl(api);
   }
 

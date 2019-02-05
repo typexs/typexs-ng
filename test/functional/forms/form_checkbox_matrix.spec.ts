@@ -45,7 +45,7 @@ class Form_parseSpec {
     checkboxMatrix.rows.push(row2);
 
     let formBuilder = new FormBuilder();
-    let formElements = formBuilder.buildFromEntity(EntityRegistry.$().getEntityDefByName('CheckboxMatrix'));
+    let formElements = formBuilder.buildFromEntity(EntityRegistry.$().getEntityRefByName('CheckboxMatrix'));
     expect(formElements.getChildren()).to.have.length(1);
     let gridChildren = formElements.getChildren()[0].getChildren();
     //console.log(gridChildren)

@@ -1,6 +1,6 @@
 import {OptionsHelper} from '@typexs/schema/libs/registry/OptionsHelper';
-import {ClassRef} from '@typexs/schema/libs/registry/ClassRef';
 import {ICheckboxOptions} from '../elements/ICheckboxOptions';
+import {ClassRef} from "commons-schema-api/browser";
 
 export function FormCheckbox(opts?: ICheckboxOptions) {
   return function (object: any, property: string) {

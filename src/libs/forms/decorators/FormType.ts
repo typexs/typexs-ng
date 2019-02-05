@@ -1,6 +1,5 @@
 import {OptionsHelper} from '@typexs/schema/libs/registry/OptionsHelper';
-import {ClassRef} from '@typexs/schema/libs/registry/ClassRef';
-import {ISelectOptions} from '../elements/ISelectOptions';
+import {ClassRef} from 'commons-schema-api/browser';
 
 export function FormType(options: { form: string, [k: string]: any }) {
   return function (object: any, property: string) {

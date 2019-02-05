@@ -1,17 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {EntityService} from './../entity.service';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
-import {EntityDef} from '@typexs/schema/libs/registry/EntityDef';
+import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ClassRef} from '@typexs/schema/libs/registry/ClassRef';
-import {PropertyDef} from '@typexs/schema/libs/registry/PropertyDef';
-import {LookupRegistry} from '@typexs/schema/libs/LookupRegistry';
-import {XS_TYPE_PROPERTY} from '@typexs/schema/libs/Constants';
+import {PropertyRef} from '@typexs/schema/libs/registry/PropertyRef';
 import {Observable} from 'rxjs';
 import {MetadataStorage} from 'class-validator/metadata/MetadataStorage';
 import {getFromContainer} from 'class-validator/container';
 import * as _ from 'lodash';
-import {TreeUtils} from '@typexs/base/libs/utils/TreeUtils';
+import {ClassRef, LookupRegistry, XS_TYPE_PROPERTY} from 'commons-schema-api/browser';
 
 
 @Component({
@@ -25,11 +22,11 @@ export class EntityStructComponent implements OnInit {
 
   machineName: string;
 
-  entityDef: EntityDef;
+  entityDef: EntityRef;
 
-  referrerProps: PropertyDef[] = [];
+  referrerProps: PropertyRef[] = [];
 
-  propertyDefs: { property: PropertyDef, level: number }[] = [];
+  propertyDefs: { property: PropertyRef, level: number }[] = [];
 
 
   constructor(private entityService: EntityService, private route: ActivatedRoute, private router: Router) {
@@ -51,15 +48,15 @@ export class EntityStructComponent implements OnInit {
     this.propertyDefs = [];
 
     this.machineName = machineName;
-    this.entityDef = EntityRegistry.$().getEntityDefByName(this.machineName);
-    this.referrerProps = LookupRegistry.$().filter(XS_TYPE_PROPERTY, (referrer: PropertyDef) => {
+    this.entityDef = EntityRegistry.$().getEntityRefByName(this.machineName);
+    this.referrerProps = LookupRegistry.$().filter(XS_TYPE_PROPERTY, (referrer: PropertyRef) => {
       return referrer.isReference() && referrer.targetRef == this.entityDef.getClassRef();
     });
     this.scan(this.entityDef);
   }
 
 
-  type(propertyDef: PropertyDef): string {
+  type(propertyDef: PropertyRef): string {
     if (propertyDef.isEmbedded()) {
       return propertyDef.propertyRef.className;
     } else if (propertyDef.isReference()) {
@@ -69,28 +66,28 @@ export class EntityStructComponent implements OnInit {
     }
   }
 
-  scan(source: ClassRef | EntityDef, level: number = 0) {
+  scan(source: ClassRef | EntityRef, level: number = 0) {
     if (level > 8) return;
-    for (let props of source.getPropertyDefs()) {
+    for (let props of <PropertyRef[]>source.getPropertyRefs()) {
       this.propertyDefs.push({property: props, level: level});
       if (props.isReference()) {
-        this.scan(props.targetRef, level + 1);
+        this.scan(props.getTargetRef(), level + 1);
       } else if (!props.isInternal()) {
         this.scan(props.propertyRef, level + 1);
       }
     }
   }
 
-  validator(property: PropertyDef) {
+  validator(property: PropertyRef) {
     let validators = getFromContainer(MetadataStorage).getTargetValidationMetadatas(this.entityDef.getClass(), null);
     return _.filter(validators, v => v.propertyName === property.name);
   }
 
-  cardinality(propDef: PropertyDef) {
+  cardinality(propDef: PropertyRef) {
     return propDef.cardinality;
   }
 
-  options(propDef: PropertyDef) {
+  options(propDef: PropertyRef) {
     let opts = _.clone(propDef.getOptions());
     if(opts.sourceClass){
       delete opts.sourceClass._cacheEntity;

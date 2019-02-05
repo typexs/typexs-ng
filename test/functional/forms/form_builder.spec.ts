@@ -41,7 +41,7 @@ class Form_parseSpec {
   async 'tree data parse'() {
 
     let builder = new FormBuilder();
-    let entityDef = EntityRegistry.getEntityDefFor('TreeTestData');
+    let entityDef = EntityRegistry.getEntityRefFor('TreeTestData');
     let tree = builder.buildFromEntity(entityDef);
     expect(tree.children).to.have.length(2);
     expect(tree.children[0].type).to.be.eq('input');

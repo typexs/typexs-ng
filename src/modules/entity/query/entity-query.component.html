@@ -19,7 +19,7 @@
         <thead>
         <tr>
           <th class="headcol">Ops</th>
-          <th *ngFor="let prop of getPropertyDefs()">{{ prop.name }}</th>
+          <th *ngFor="let prop of getPropertyRefs()">{{ prop.name }}</th>
         </tr>
         </thead>
         <tbody>
@@ -41,7 +41,7 @@
             </div>
           </td>
 
-          <td *ngFor="let prop of getPropertyDefs()" [ngSwitch]="fieldDisplay(prop)">
+          <td *ngFor="let prop of getPropertyRefs()" [ngSwitch]="fieldDisplay(prop)">
             <ng-template ngSwitchCase="entity_reference">
               <a *ngIf="hasData(entity,prop)"
                  [routerLink]="['/admin/entity',prop.getEntity().machineName,'view', prop.getEntity().buildLookupConditions(getData(entity,prop)) ]">

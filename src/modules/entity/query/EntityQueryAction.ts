@@ -1,4 +1,5 @@
-import {ExprDesc} from '@typexs/schema/browser';
+import {ExprDesc} from 'commons-expressions/browser';
+
 
 export class EntityQueryAction {
 

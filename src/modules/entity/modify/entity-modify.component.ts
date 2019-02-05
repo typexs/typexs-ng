@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {EntityService} from './../entity.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
-import {EntityDef} from '@typexs/schema/libs/registry/EntityDef';
+import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
 
 @Component({
   selector: 'entity-modify',
@@ -18,7 +18,7 @@ export class EntityModifyComponent implements OnInit {
 
   machineName: string;
 
-  entityDef: EntityDef;
+  entityDef: EntityRef;
 
   instance: any;
 
@@ -40,7 +40,7 @@ export class EntityModifyComponent implements OnInit {
   load() {
     this.machineName = this.route.snapshot.paramMap.get('machineName');
     this.id = this.route.snapshot.paramMap.get('id');
-    this.entityDef = EntityRegistry.$().getEntityDefByName(this.machineName);
+    this.entityDef = EntityRegistry.$().getEntityRefByName(this.machineName);
     if (this.entityDef) {
       if (this.id) {
         this.new = false;

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {EntityService} from './entity.service';
-import {PropertyDef} from '@typexs/schema/libs/registry/PropertyDef';
+import {EntityRef, PropertyRef} from '@typexs/schema/browser';
 
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
@@ -16,10 +16,10 @@ export class EntityOptionsService implements ISelectOptionsService {
   }
 
 
-  options(propertyDef: PropertyDef, limit: number = 25, page: number = 0): Observable<ISelectOption[]> {
+  options(propertyDef: PropertyRef, limit: number = 25, page: number = 0): Observable<ISelectOption[]> {
     let bs = new BehaviorSubject<ISelectOption[]>(null);
     if (propertyDef.targetRef.isEntity) {
-      let entityDef = propertyDef.targetRef.getEntity();
+      let entityDef = <EntityRef>propertyDef.getTargetRef().getEntityRef();
       this.entityService.query(entityDef.machineName, null, {limit: limit}).subscribe(
         result => {
           if (result) {

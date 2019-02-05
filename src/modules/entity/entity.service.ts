@@ -6,14 +6,14 @@ import {Observable} from 'rxjs/Observable';
 
 import {IFindOptions} from '@typexs/schema/libs/framework/IFindOptions';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
-import {EntityDef} from '@typexs/schema/libs/registry/EntityDef';
+import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
 import {AuthService} from '../system/api/auth/auth.service';
 
 
 @Injectable()
 export class EntityService {
 
-  private entityDefs: EntityDef[] = [];
+  private entityDefs: EntityRef[] = [];
 
   private _isReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
@@ -57,13 +57,13 @@ export class EntityService {
   }
 
 
-  getEntityDefs() {
+  getEntityRefs() {
     return this.entityDefs;
   }
 
 
   get(entityName: string, entityId: any) {
-    let entityDef = EntityRegistry.$().getEntityDefByName(entityName);
+    let entityDef = EntityRegistry.$().getEntityRefByName(entityName);
     let obs = new BehaviorSubject<any>(null);
     this.http.get('api/entity/' + entityName + '/' + entityId).subscribe(
       (res: any) => {
@@ -91,7 +91,7 @@ export class EntityService {
 
 
   query(entityName: string, query: any = null, options: IFindOptions = {}) {
-    let entityDef = EntityRegistry.$().getEntityDefByName(entityName);
+    let entityDef = EntityRegistry.$().getEntityRefByName(entityName);
     let obs = new BehaviorSubject<any>(null);
     let queryParts = [];
     if (_.isPlainObject(query)) {
@@ -135,7 +135,7 @@ export class EntityService {
 
 
   save(entityName: string, entity: any): Observable<any> {
-    let entityDef = EntityRegistry.$().getEntityDefByName(entityName);
+    let entityDef = EntityRegistry.$().getEntityRefByName(entityName);
     let obs = new BehaviorSubject<any>(null);
     this.http.post('api/entity/' + entityName, entity).subscribe(
       (res: any) => {
@@ -159,7 +159,7 @@ export class EntityService {
 
   update(entityName: string, entityId: any, entity: any) {
     // TODO if empty entity ???
-    let entityDef = EntityRegistry.$().getEntityDefByName(entityName);
+    let entityDef = EntityRegistry.$().getEntityRefByName(entityName);
     let id = entityDef.buildLookupConditions(entity);
     if (entityId != id) {
       throw new Error('something is wrong');
@@ -186,7 +186,7 @@ export class EntityService {
   }
 
   delete(entityName: string, entityId: any) {
-    let entityDef = EntityRegistry.$().getEntityDefByName(entityName);
+    let entityDef = EntityRegistry.$().getEntityRefByName(entityName);
     let obs = new BehaviorSubject<any>(null);
     this.http.delete('api/entity/' + entityName + '/' + entityId).subscribe(
       (res: any) => {
@@ -210,20 +210,20 @@ export class EntityService {
   }
 
 
-  private static _beforeBuild(entityDef: EntityDef, from: any, to: any) {
+  private static _beforeBuild(entityDef: EntityRef, from: any, to: any) {
     _.keys(from).filter(k => k.startsWith('$')).forEach(k => {
       to[k] = from[k];
     });
   }
 
 
-  private static _buildEntitySingle(entityDef: EntityDef, entity: any) {
+  private static _buildEntitySingle(entityDef: EntityRef, entity: any) {
     return entityDef.build(entity, {
       beforeBuild: EntityService._beforeBuild
     });
   }
 
-  private static _buildEntity(entityDef: EntityDef, rawEntities: any | any[]) {
+  private static _buildEntity(entityDef: EntityRef, rawEntities: any | any[]) {
 
     let result = null;
     if (_.isArray(rawEntities)) {

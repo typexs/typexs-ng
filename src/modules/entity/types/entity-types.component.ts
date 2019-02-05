@@ -11,7 +11,7 @@ export class EntityTypesComponent {
   constructor(private entityService:EntityService){
   }
 
-  getEntityDefs(){
-    return this.entityService.getEntityDefs().filter(e => e.isStoreable());
+  getEntityRefs(){
+    return this.entityService.getEntityRefs().filter(e => e.isStoreable());
   }
 }

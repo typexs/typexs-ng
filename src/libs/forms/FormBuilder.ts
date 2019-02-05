@@ -1,16 +1,13 @@
-import {NotYetImplementedError} from '@typexs/base/libs/exceptions/NotYetImplementedError';
 import {FormObject} from './FormObject';
 import {Form} from './elements';
 
 import {ResolveDataValue} from './ResolveDataValue';
-import {EntityDef} from '@typexs/schema/libs/registry/EntityDef';
-import {PropertyDef} from '@typexs/schema/libs/registry/PropertyDef';
-import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
 import * as _ from 'lodash';
-import {IsNotEmpty} from 'class-validator';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
 import {ContentComponentRegistry} from '../views/ContentComponentRegistry';
-
+import {EntityRef, PropertyRef} from '@typexs/schema/browser';
+import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
+import {NotYetImplementedError} from "@typexs/base/browser"
 
 export class FormBuilder {
 
@@ -27,13 +24,13 @@ export class FormBuilder {
   }
 
 
-  buildFromEntity(entity: EntityDef): Form {
+  buildFromEntity(entity: EntityRef): Form {
     this.data = entity;
     return <Form>this._buildFormObject(entity);
   }
 
 
-  private _buildFormObject(entity: EntityDef | PropertyDef, parent: FormObject = null, options: { level: number } = {level: 0}) {
+  private _buildFormObject(entity: EntityRef | PropertyRef, parent: FormObject = null, options: { level: number } = {level: 0}) {
     let formObject: FormObject = null;
 
     if (!this.form) {
@@ -41,7 +38,7 @@ export class FormBuilder {
       this.form = formObject = ContentComponentRegistry.createHandler('form');
       formObject.handle('name', entity.id());
       formObject.handle('binding', entity);
-    } else if (entity instanceof PropertyDef) {
+    } else if (entity instanceof PropertyRef) {
       // TODO support also other types
       let property = entity;
 
@@ -70,7 +67,7 @@ export class FormBuilder {
       } else {
         formObject = this.forDefault(formType, property);
       }
-    } else if (entity instanceof EntityDef) {
+    } else if (entity instanceof EntityRef) {
       // TODO is this necessary
     }
 
@@ -82,27 +79,27 @@ export class FormBuilder {
     }
 
     const nextLevel = options.level + 1;
-    if (entity instanceof EntityDef) {
+    if (entity instanceof EntityRef) {
       if(options.level == 0 || formObject.isStruct()){
-        let properties = entity.getPropertyDefs();
+        let properties = entity.getPropertyRefs();
         for (let property of properties) {
           let childObject = this._buildFormObject(property, formObject,{level:nextLevel});
           formObject.insert(childObject);
         }
       }
-    } else if (entity instanceof PropertyDef) {
+    } else if (entity instanceof PropertyRef) {
       // TODO for properties which points to Entity / Entities
-      //property.getEntityDef
+      //property.getEntityRef
       //formObject;
-      let property = <PropertyDef>entity;
+      let property = <PropertyRef>entity;
       if (property.isReference()) {
         if (property.isEntityReference()) {
           // build for new entity
-          let entity = property.targetRef.getEntity();
+          let entity = <EntityRef>property.getTargetRef().getEntityRef();
           this._buildFormObject(entity, formObject,{level:nextLevel});
         } else {
           // insert property form elements
-          let properties = EntityRegistry.getPropertyDefsFor(property.targetRef);
+          let properties = EntityRegistry.getPropertyRefsFor(property.targetRef);
           for (let property of properties) {
             let childObject = this._buildFormObject(property, formObject,{level:nextLevel});
             formObject.insert(childObject);
@@ -115,7 +112,7 @@ export class FormBuilder {
   }
 
 
-  private forDefault(formType: string, property: PropertyDef) {
+  private forDefault(formType: string, property: PropertyRef) {
     let formObject = ContentComponentRegistry.createHandler(formType);
     if (formObject) {
       formObject.handle('variant', formType);
@@ -126,33 +123,33 @@ export class FormBuilder {
   }
 
 
-  private forText(formType: string, property: PropertyDef) {
+  private forText(formType: string, property: PropertyRef) {
     return this._forInput(formType, property);
   }
 
 
-  private forPassword(formType: string, property: PropertyDef) {
+  private forPassword(formType: string, property: PropertyRef) {
     return this._forInput(formType, property);
   }
 
 
-  private forHidden(formType: string, property: PropertyDef) {
+  private forHidden(formType: string, property: PropertyRef) {
     return this._forInput(formType, property);
   }
 
 
-  private forReadonly(formType: string, property: PropertyDef) {
+  private forReadonly(formType: string, property: PropertyRef) {
     let input = this._forInput('text', property);
     input.handle('readonly', true);
     return input;
   }
 
 
-  private forEmail(formType: string, property: PropertyDef) {
+  private forEmail(formType: string, property: PropertyRef) {
     return this._forInput(formType, property);
   }
 
-  private _forInput(formType: string, property: PropertyDef) {
+  private _forInput(formType: string, property: PropertyRef) {
     let formObject = ContentComponentRegistry.createHandler('input');
     formObject.handle('variant', formType);
     this._applyValues(formObject, property);
@@ -160,7 +157,7 @@ export class FormBuilder {
   }
 
 
-  private _applyValues(formObject: FormObject, property: PropertyDef) {
+  private _applyValues(formObject: FormObject, property: PropertyRef) {
     formObject.handle('name', property.name);
     formObject.handle('id', property.id());
     formObject.handle('label', property.label ? property.label : _.capitalize(property.name));

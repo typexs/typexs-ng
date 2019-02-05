@@ -87,7 +87,7 @@ class Form_parseSpec {
 
 
 
-    let entityDef = EntityRegistry.getEntityDefFor('TestUser');
+    let entityDef = EntityRegistry.getEntityRefFor('TestUser');
 
     let builder2 = new FormBuilder();
     let form2 = builder2.buildFromEntity(entityDef);

@@ -1,6 +1,5 @@
 import {OptionsHelper} from '@typexs/schema/libs/registry/OptionsHelper';
-import {ClassRef} from '@typexs/schema/libs/registry/ClassRef';
-import {ISelectOptions} from '../elements/ISelectOptions';
+import {ClassRef} from 'commons-schema-api/browser';
 
 export function FormLabel() {
   return function (object: any, property: string) {

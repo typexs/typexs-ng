@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {EntityService} from './../entity.service';
 import {ActivatedRoute} from '@angular/router';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
-import {EntityDef} from '@typexs/schema/libs/registry/EntityDef';
+import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
 
 @Component({
   selector: 'entity-view',
@@ -16,7 +16,7 @@ export class EntityViewComponent implements OnInit {
 
   id: string;
 
-  entityDef: EntityDef;
+  entityDef: EntityRef;
 
   instance: any;
 
@@ -36,7 +36,7 @@ export class EntityViewComponent implements OnInit {
   load() {
     this.machineName = this.route.snapshot.paramMap.get('machineName');
     this.id = this.route.snapshot.paramMap.get('id');
-    this.entityDef = EntityRegistry.$().getEntityDefByName(this.machineName);
+    this.entityDef = EntityRegistry.$().getEntityRefByName(this.machineName);
     if (this.entityDef) {
       this.entityService.get(this.machineName, this.id).subscribe((entity: any) => {
         this.instance = entity;

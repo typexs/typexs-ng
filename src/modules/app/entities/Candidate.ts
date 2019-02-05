@@ -1,4 +1,4 @@
-import {Asc, CObject, Entity, Eq, Key, Property, Schema} from "@typexs/schema";
+import {Entity, Property} from '@typexs/schema/browser';
 
 
 @Entity({name: 'bew'})

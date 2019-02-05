@@ -11,7 +11,7 @@ export class FormService {
 
   get(name: string, instance: any): Form {
     // TODO lookup for form modifications
-    let entityDef = EntityRegistry.getEntityDefFor(instance);
+    let entityDef = EntityRegistry.getEntityRefFor(instance);
     let builder2 = new FormBuilder();
     return builder2.buildFromEntity(entityDef);
   }

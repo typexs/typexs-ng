@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ISelectOptionsService} from '../../forms/libs/ISelectOptionsService';
 import {ISelectOption} from '../../forms/libs/ISelectOption';
-import {PropertyDef} from '@typexs/schema/libs/registry/PropertyDef';
+import {PropertyRef} from '@typexs/schema/libs/registry/PropertyRef';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
@@ -14,7 +14,7 @@ export class OptionsService implements ISelectOptionsService {
   ];
 
 
-  options(property: PropertyDef): Observable<ISelectOption[]> {
+  options(property: PropertyRef): Observable<ISelectOption[]> {
     return (new BehaviorSubject(this.favoredMusicTypes)).asObservable();
   }
 

@@ -1,6 +1,6 @@
 import {Component, Injectable, OnInit} from '@angular/core';
 
-import {PropertyDef} from '@typexs/schema/libs/registry/PropertyDef';
+import {PropertyRef} from '@typexs/schema/libs/registry/PropertyRef';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {ISelectOptionsService} from '../forms/libs/ISelectOptionsService';

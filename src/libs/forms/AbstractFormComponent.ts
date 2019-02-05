@@ -1,13 +1,13 @@
-import {DataContainer} from '@typexs/schema/libs/DataContainer';
-
 import * as _ from 'lodash';
-import {PropertyDef} from '@typexs/schema/libs/registry/PropertyDef';
+
 
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
 import {AbstractComponent} from '../views/AbstractComponent';
 import {FormObject, isFormObject} from './FormObject';
 import {ContentComponentRegistry} from '../views/ContentComponentRegistry';
 import {Context} from '../views/Context';
+import {DataContainer, PropertyRef} from '@typexs/schema/browser';
+import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
 
 
 export abstract class AbstractFormComponent<T extends FormObject> extends AbstractComponent<T> {
@@ -82,19 +82,19 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
       this.context = parent.child(elem.name, idx);
     } else {
       this.context = new Context();
-      if (elem.getBinding() instanceof PropertyDef) {
+      if (elem.getBinding() instanceof PropertyRef) {
         this.context.name = elem.name;
         this.context.idx = idx;
       }
     }
   }
 
-  getValue(){
+  getValue() {
     let path = this.context.path();
     return _.get(this.data.instance, path, null);
   }
 
-  setValue(v:any){
+  setValue(v: any) {
     let path = this.context.path();
     return _.set(this.data.instance, path, v);
   }
@@ -108,9 +108,9 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
         let binding = this.elem.getBinding();
         if (binding.isEntityReference()) {
           if (_.isArray(this._value)) {
-            this._value = this._value.map(v => binding.targetRef.getEntity().buildLookupConditions(v) + '');
+            this._value = this._value.map(v => (<EntityRef>binding.getTargetRef().getEntityRef()).buildLookupConditions(v) + '');
           } else {
-            let cond = binding.targetRef.getEntity().buildLookupConditions(this._value);
+            let cond = (<EntityRef>binding.getTargetRef().getEntityRef()).buildLookupConditions(this._value);
             this._value = [cond];
           }
         }
@@ -132,14 +132,14 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
       } else {
         data = [v];
       }
-      let refs = data.map(v => binding.targetRef.getEntity().createLookupConditions(v));
+      let refs = data.map(v => (<EntityRef>binding.getTargetRef().getEntityRef()).createLookupConditions(v));
       if (!binding.isCollection()) {
         refs = refs.shift();
       }
-      this.setValue(refs)
+      this.setValue(refs);
       // _.set(this.data.instance, path, refs);
     } else {
-      this.setValue(v)
+      this.setValue(v);
       // _.set(this.data.instance, path, v);
     }
 
