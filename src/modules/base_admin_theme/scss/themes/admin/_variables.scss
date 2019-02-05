@@ -1,38 +1,6 @@
-// =======================================
-//     List of variables for layout
-// =======================================
-/*
-    description Of variables for build for theme layouts
-        1) menu-caption-color
-            List of color for sidebar menu caption
-
-        2) brand-background
-            List of color for logo background
-
-        3) header-dark-background
-            List of color for Dark Header
-
-        4) header-light-background
-            List of color for light Header
-
-        5) menu-dark-background
-            List of color for Dark sidebar menu
-
-        6) menu-light-background
-            List of color for light sidebar menu
-
-        7) menu-active-color
-            List of color for Active item highliter
-
-        8) menu-icon-color
-            List of color for sidebar menu items icon colors
-*/
 $header-height: 70px;
 $Menu-width: 264px;
 $Menu-collapsed-width: 80px;
-
-// color list for build layouts
-// temp variables
 
 $primary-color: #04a9f5;
 $warning-color: #f4c22b;
@@ -48,14 +16,8 @@ $inverse-color: $dark-color;
 $theme-border: #eaeaea;
 
 
-//linear-gradient(-135deg, #e91d1d 0%, #483836 100%)
-//$theme-color: linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%);
-//$theme-color: linear-gradient(-135deg, #e91d1d 0%, #483836 100%);
-//$theme-color: linear-gradient(-135deg, #e91d1d 0%, #e6aa3b 100%);
 $theme-color: linear-gradient(-135deg, $danger-color 0%, $warning-color 100%);
 $theme-color-reverse: linear-gradient(-135deg, $warning-color 0%, $danger-color 100%);
-//$theme-color2: linear-gradient(-135deg, #899FD4 0%, #A389D4 100%);
-//$theme-color2: linear-gradient(-135deg, #1de9b6 0%, #3ebfea 100%);
 $theme-color2: linear-gradient(-135deg, $success-color 0%, $info-color 100%);
 
 
@@ -79,22 +41,16 @@ $dark-layout: #212224;
 $dark-layout-font: #adb7be;
 
 
-// Menu icon
 $menu-icon-color: $primary-color, #ff5252, #01a9ac, #9575CD, #23b7e5, $warning-color;
-// Header background
 $color-header-name: blue, red, purple, lightblue, dark;
 $color-header-color: $primary-color, #ff5252, #9575CD, #23b7e5, lighten($dark-layout, 7%);
-// Menu background
 $color-menu-name: blue, red, purple, lightblue, dark;
 $color-menu-color: $primary-color, #ff5252, #9575CD, #23b7e5, lighten($dark-layout, 7%);
-// Active background color
 $color-active-name: blue, red, purple, lightblue, dark;
 $color-active-color: $primary-color, #ff5252, #9575CD, #23b7e5, lighten($dark-layout, 7%);
-// Menu title color
 $color-title-name: blue, red, purple, lightblue, dark;
 $color-title-color: $primary-color, #ff5252, #9575CD, #23b7e5, lighten($dark-layout, 7%);
 
-// layout-6 background color
 $layout-6-bg-color: #23b7e5;
 
 
@@ -109,7 +65,6 @@ $color-color: $primary-color, $danger-color, $success-color, $warning-color, $pu
 $color-bt-name: primary, danger, success, warning, info;
 $color-bt-color: $primary-color, $danger-color, $success-color, $warning-color, $info-color;
 
-// form-control variables
 $form-bg: #f0f3f6;
 
 $theme-colors: () !default;

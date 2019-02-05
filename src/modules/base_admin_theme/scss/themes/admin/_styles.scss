@@ -1,4 +1,4 @@
-@import "partials/variables";
+@import "variables";
 
 $fa-css-prefix: 'bat-icons';
 @import "~@fortawesome/fontawesome-free/scss/mixins";
@@ -7,39 +7,22 @@ $fa-css-prefix: 'bat-icons';
 // @import "~@fortawesome/fontawesome-free/scss/solid";
 
 
+@import "mixins/function";
+
 @import "partials/general";
 @import "partials/generic";
-@import "partials/mixins/function";
 @import "partials/icons";
-
-
-// important Element
-@import "partials/menu/menu-lite";
-// @import "partials/widget/widget";
-
-// Theme Element
-
-@import "partials/elements/form";
-@import "partials/elements/radiobox-checkbox";
-@import "partials/elements/labels-badges";
-@import "partials/elements/data-tables";
-@import "partials/elements/authentication";
-@import "partials/elements/button";
-@import "partials/elements/alert";
-@import "partials/elements/breadcrumb-pagination";
-@import "partials/elements/progress";
-@import "partials/elements/tooltip";
-@import "partials/elements/popover";
-@import "partials/elements/nav";
-@import "partials/elements/modal";
-
-// Other
-// @import "partials/other/chat";
-// @import "partials/other/prism";
-// @import "partials/other/toolbar";
-// @import "partials/other/wizard";
-// @import "partials/other/chart";
-// @import "partials/other/icon-lauouts";
-// @import "partials/other/calendar";
-// @import "partials/other/file-upload";
-
+@import "partials/menu";
+@import "partials/form";
+@import "partials/radiobox-checkbox";
+@import "partials/labels-badges";
+@import "partials/data-tables";
+@import "partials/authentication";
+@import "partials/button";
+@import "partials/alert";
+@import "partials/breadcrumb-pagination";
+@import "partials/progress";
+@import "partials/tooltip";
+@import "partials/popover";
+@import "partials/nav";
+@import "partials/modal";
