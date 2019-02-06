@@ -1,0 +1,90 @@
+<div class="card">
+  <div class="card-header">
+    <h3>Entity list</h3>
+  </div>
+  <div class="card-body">
+
+    <txs-storage-query-input
+      (queryState)="onQueryAction($event)"
+      [entityDef]="entityDef">
+    </txs-storage-query-input>
+
+    <txs-pager
+      [name]="pagerId"
+      frameSize="5"
+      (onPageChange)="updateEntities($event)">
+    </txs-pager>
+    <div class="table-wrapper">
+      <table datatable class="table hover">
+        <thead>
+        <tr>
+          <th class="headcol">Ops</th>
+          <th *ngFor="let prop of getPropertyRefs()">{{ prop.name }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let entity of entities">
+          <td class="col-ops headcol">
+            <div class="btn-group-ops">
+              <a
+                [routerLink]="[entityService.getNgUrlPrefix(),entityDef.machineName,'view', buildLookupConditions(entityDef,entity) ]">
+                <i class="icon icon-data-view"></i>
+              </a>
+              <a
+                [routerLink]="[entityService.getNgUrlPrefix(),entityDef.machineName,'edit', buildLookupConditions(entityDef,entity) ]">
+                <i class="icon icon-data-edit"></i>
+              </a>
+              <a
+                [routerLink]="[entityService.getNgUrlPrefix(),entityDef.machineName,'delete', buildLookupConditions(entityDef,entity) ]">
+                <i class="icon icon-data-delete"></i>
+              </a>
+            </div>
+          </td>
+
+          <td *ngFor="let prop of getPropertyRefs()" [ngSwitch]="fieldDisplay(prop)">
+            <ng-template ngSwitchCase="entity_reference">
+              <a *ngIf="hasData(entity,prop)"
+                 [routerLink]="[entityService.getNgUrlPrefix(),prop.getEntity().machineName,'view',buildLookupConditions(prop.getEntityRef(), getData(entity,prop)) ]">
+                {{ prop.getEntity().label(getData(entity, prop))}}
+              </a>
+            </ng-template>
+            <ng-template ngSwitchCase="entity_reference_array">
+              <ul>
+                <li *ngFor="let entry of getData(entity,prop)">
+                  <a
+                    [routerLink]="[entityService.getNgUrlPrefix(),prop.getEntity().machineName,'view', buildLookupConditions(prop.getEntityRef(), getData(entity,prop)) ]">
+                    {{ prop.getEntity().label(entry)}}
+                  </a>
+                </li>
+              </ul>
+            </ng-template>
+            <ng-template ngSwitchCase="object_reference_array">
+              <details>
+                <summary>JSON</summary>
+                <pre class="language-js">{{asString(prop.get(entity))}}</pre>
+              </details>
+
+            </ng-template>
+            <ng-template ngSwitchCase="object_reference">
+              <details>
+                <summary>JSON</summary>
+                <pre class="language-js">{{asString(prop.get(entity))}}</pre>
+              </details>
+            </ng-template>
+            <ng-template ngSwitchDefault>
+              {{asString(prop.get(entity))}}
+            </ng-template>
+          </td>
+
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <txs-pager
+      [name]="pagerId"
+      frameSize="5"
+      (onPageChange)="updateEntities($event)"
+    ></txs-pager>
+
+  </div>
+</div>
