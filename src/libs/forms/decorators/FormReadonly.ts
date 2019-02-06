@@ -1,9 +1,7 @@
-import {OptionsHelper} from '@typexs/schema/libs/registry/OptionsHelper';
-import {ClassRef} from "commons-schema-api/browser";
-import {ISelectOptions} from '../elements/ISelectOptions';
+import {AnnotationsHelper, ClassRef} from 'commons-schema-api/browser';
 
 export function FormReadonly() {
   return function (object: any, property: string) {
-    OptionsHelper.forPropertyOn(ClassRef.get(object), property, {form: 'readonly'});
+    AnnotationsHelper.forPropertyOn(ClassRef.get(object), property, {form: 'readonly'});
   };
 }

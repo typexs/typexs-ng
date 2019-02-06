@@ -1,10 +1,10 @@
-import {OptionsHelper} from '@typexs/schema/libs/registry/OptionsHelper';
+import {AnnotationsHelper} from 'commons-schema-api/browser';
 import {ClassRef} from "commons-schema-api/browser";
 import {ISelectOptions} from '../elements/ISelectOptions';
 
 export function FormText() {
   return function (object: any, property: string) {
     // use enum attribute, but later it will be deprecated
-    OptionsHelper.forPropertyOn(ClassRef.get(object), property, {form: 'text'});
+    AnnotationsHelper.forPropertyOn(ClassRef.get(object), property, {form: 'text'});
   };
 }

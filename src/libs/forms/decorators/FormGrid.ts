@@ -1,9 +1,8 @@
 import {IGridOptions} from '../elements/IGridOptions';
-import {OptionsHelper} from '@typexs/schema/libs/registry/OptionsHelper';
-import {ClassRef} from "commons-schema-api/browser";
+import {AnnotationsHelper, ClassRef} from 'commons-schema-api/browser';
 
 export function FormGrid(options: IGridOptions = {}) {
   return function (object: any, property: string) {
-    OptionsHelper.forPropertyOn(ClassRef.get(object), property, {form: 'grid', grid: options});
+    AnnotationsHelper.forPropertyOn(ClassRef.get(object), property, {form: 'grid', grid: options});
   };
 }

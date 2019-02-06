@@ -36,6 +36,9 @@ export abstract class FormObject extends TreeObject {
 
   private binding: PropertyRef = null;
 
+  getGivenLabel() {
+    return this.binding.label();
+  }
 
   isSelection() {
     return this.selectable;
@@ -137,19 +140,19 @@ export abstract class FormObject extends TreeObject {
     return someObject;
   }
 
-  getEnum(){
+  getEnum() {
     return this.getBinding().getOptions(<any>'enum');
   }
 
   protected handleEnum(value: any) {
-    this.handle('selectable',true);
+    this.handle('selectable', true);
   }
 
   protected handleCardinality(value: number) {
-    if(value == 0 || value > 1){
-      this.handle('multiple',true);
-      if(value > 1){
-        this.handle('limited',value);
+    if (value == 0 || value > 1) {
+      this.handle('multiple', true);
+      if (value > 1) {
+        this.handle('limited', value);
       }
     }
 

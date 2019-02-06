@@ -1,6 +1,6 @@
-import {OptionsHelper} from '@typexs/schema/libs/registry/OptionsHelper';
+
 import {ICheckboxOptions} from '../elements/ICheckboxOptions';
-import {ClassRef} from "commons-schema-api/browser";
+import {AnnotationsHelper, ClassRef} from 'commons-schema-api/browser';
 
 export function FormCheckbox(opts?: ICheckboxOptions) {
   return function (object: any, property: string) {
@@ -10,6 +10,6 @@ export function FormCheckbox(opts?: ICheckboxOptions) {
      _opts.enum = opts.enum;
    }
 
-    OptionsHelper.forPropertyOn(ClassRef.get(object), property, _opts);
+    AnnotationsHelper.forPropertyOn(ClassRef.get(object), property, _opts);
   };
 }

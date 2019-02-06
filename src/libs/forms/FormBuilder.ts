@@ -8,6 +8,7 @@ import {ContentComponentRegistry} from '../views/ContentComponentRegistry';
 import {EntityRef, PropertyRef} from '@typexs/schema/browser';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
 import {NotYetImplementedError} from "@typexs/base/browser"
+import {IPropertyRef} from 'commons-schema-api/browser';
 
 export class FormBuilder {
 
@@ -112,7 +113,7 @@ export class FormBuilder {
   }
 
 
-  private forDefault(formType: string, property: PropertyRef) {
+  private forDefault(formType: string, property: IPropertyRef) {
     let formObject = ContentComponentRegistry.createHandler(formType);
     if (formObject) {
       formObject.handle('variant', formType);
@@ -123,33 +124,33 @@ export class FormBuilder {
   }
 
 
-  private forText(formType: string, property: PropertyRef) {
+  private forText(formType: string, property: IPropertyRef) {
     return this._forInput(formType, property);
   }
 
 
-  private forPassword(formType: string, property: PropertyRef) {
+  private forPassword(formType: string, property: IPropertyRef) {
     return this._forInput(formType, property);
   }
 
 
-  private forHidden(formType: string, property: PropertyRef) {
+  private forHidden(formType: string, property: IPropertyRef) {
     return this._forInput(formType, property);
   }
 
 
-  private forReadonly(formType: string, property: PropertyRef) {
+  private forReadonly(formType: string, property: IPropertyRef) {
     let input = this._forInput('text', property);
     input.handle('readonly', true);
     return input;
   }
 
 
-  private forEmail(formType: string, property: PropertyRef) {
+  private forEmail(formType: string, property: IPropertyRef) {
     return this._forInput(formType, property);
   }
 
-  private _forInput(formType: string, property: PropertyRef) {
+  private _forInput(formType: string, property: IPropertyRef) {
     let formObject = ContentComponentRegistry.createHandler('input');
     formObject.handle('variant', formType);
     this._applyValues(formObject, property);
@@ -157,10 +158,10 @@ export class FormBuilder {
   }
 
 
-  private _applyValues(formObject: FormObject, property: PropertyRef) {
+  private _applyValues(formObject: FormObject, property: IPropertyRef) {
     formObject.handle('name', property.name);
     formObject.handle('id', property.id());
-    formObject.handle('label', property.label ? property.label : _.capitalize(property.name));
+    formObject.handle('label', property.label() ? property.label() : _.capitalize(property.name));
     formObject.handle('binding', property);
 
     let options = property.getOptions();
