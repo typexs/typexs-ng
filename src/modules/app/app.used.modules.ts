@@ -23,5 +23,6 @@ export const APP_MODULES: Array<Type<any> | ModuleWithProviders | any[]> = [
   ViewsModule,
   AdminModule,
   SystemModule.forRoot(),
-  BaseAdminThemeModule
+  BaseAdminThemeModule,
+
 ];

@@ -2,12 +2,12 @@ import {FormObject} from '../../../libs/forms/FormObject';
 
 export class GridColumnDef {
 
-  idx:number = 0;
+  idx: number = 0;
 
   label: string;
 
-  elem:FormObject;
+  elem: FormObject;
 
-  value:string;
+  value: string;
 
 }

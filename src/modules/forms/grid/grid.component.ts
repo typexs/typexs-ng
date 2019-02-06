@@ -66,7 +66,7 @@ export class GridComponent extends AbstractFormComponent<Grid> implements OnInit
           }
         } else {
           let def = new GridColumnDef();
-          def.label = obj.label;
+          //def.label = obj.label;
           def.elem = obj;
           this.columns.push(def);
         }
