@@ -4,19 +4,23 @@ export * from './modules/system/system.module';
 export * from './modules/navigator/navigator.module';
 export * from './modules/views/views.module';
 export * from './modules/forms/forms.module';
+export * from './modules/storage/storage.module';
 export * from './modules/entity/entity.module';
 
+
 // system module
+export * from './modules/system/constants';
+export * from './modules/system/http-client-wrapper.service';
+export * from './modules/system/invoker.service';
+export * from './modules/system/app.state.service';
+export * from './modules/system/system-info.service';
+
 export * from './modules/system/api/auth/IAuthServiceProvider';
 export * from './modules/system/api/auth/auth.service';
 export * from './modules/system/api/auth/IAuthGuardProvider';
 export * from './modules/system/api/auth/auth-guard.service';
 
-
-export * from './modules/system/constants';
 export * from './modules/system/messages/message.service';
-export * from './modules/system/app.state.service';
-export * from './modules/system/invoker.service';
 export * from './modules/system/messages/IMessage';
 export * from './modules/system/messages/MessageChannel';
 export * from './modules/system/messages/types/AuthMessage';
@@ -37,12 +41,12 @@ export * from './modules/admin/admin.module';
 export * from './modules/admin/admin.component';
 
 
-
 // entity module
 export * from './modules/entity/entity.service';
 export * from './modules/entity/entity-options.service';
 
-
+// storage module
+export * from './modules/storage/storage.service';
 
 
 // forms module
