@@ -13,6 +13,8 @@ import {PagerComponent} from './pager/pager.component';
 import {PagerService} from './pager/PagerService';
 import {AppStateService} from './app.state.service';
 import {InvokerService} from './invoker.service';
+import {HttpClientWrapper} from './http-client-wrapper.service';
+import {DataTableDirective} from './directive/datatables.directive';
 
 const PROVIDERS = [
   SystemInfoService,
@@ -23,18 +25,21 @@ const PROVIDERS = [
   MessageService,
   PagerService,
   AppStateService,
-  InvokerService
+  InvokerService,
+  HttpClientWrapper
 ];
 
 @NgModule({
   declarations: [
     AlertComponent,
-    PagerComponent
+    PagerComponent,
+    DataTableDirective
   ],
   imports: [BrowserModule],
   exports: [
     AlertComponent,
-    PagerComponent
+    PagerComponent,
+    DataTableDirective
   ],
   providers: PROVIDERS
 })

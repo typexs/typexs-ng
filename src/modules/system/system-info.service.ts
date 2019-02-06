@@ -1,50 +1,31 @@
-import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {HttpErrorResponse} from '@angular/common/http';
 
 import {API_SYSTEM_CONFIG, API_SYSTEM_MODULES, API_SYSTEM_ROUTES, API_SYSTEM_STORAGES, IRoute} from '@typexs/server/browser';
 import {IModule, IStorageOptions, ITypexsOptions} from '@typexs/base/browser';
-import {MessageService} from './messages/message.service';
-import {MessageChannel} from './messages/MessageChannel';
-import {LogMessage} from './messages/types/LogMessage';
-
+import {HttpClientWrapper} from './http-client-wrapper.service';
 
 
 @Injectable()
 export class SystemInfoService {
 
-  logChannel: MessageChannel<LogMessage>;
-
-
-  constructor(private http: HttpClient,private messageService: MessageService) {
-    this.logChannel = messageService.getLogService();
+  constructor(private http: HttpClientWrapper) {
   }
 
 
-  load<T>(url: string, response: (data: T) => void): void {
-    this.http.get<T>(url).subscribe(res => {
-        response(res);
-      },
-      (err: HttpErrorResponse) => {
-        this.logChannel.publish(LogMessage.error(err));
-      });
-
+  loadModules(callback?: (err:Error,modules: IModule[]) => void) {
+    return this.http.get<IModule[]>(API_SYSTEM_MODULES, callback);
   }
 
-  loadModules(callback: (modules: IModule[]) => void) {
-    this.load<IModule[]>(API_SYSTEM_MODULES, callback);
+  loadStorages(callback?: (err:Error,storageOptions: IStorageOptions[]) => void) {
+    return this.http.get<IStorageOptions[]>(API_SYSTEM_STORAGES, callback);
   }
 
-  loadStorages(callback: (storageOptions: IStorageOptions[]) => void) {
-    this.load<IStorageOptions[]>(API_SYSTEM_STORAGES, callback);
+  loadConfig(callback?: (err:Error,config: ITypexsOptions[]) => void) {
+    return this.http.get<ITypexsOptions[]>(API_SYSTEM_CONFIG, callback);
   }
 
-  loadConfig(callback: (config: ITypexsOptions[]) => void) {
-    this.load<ITypexsOptions[]>(API_SYSTEM_CONFIG, callback);
-  }
-
-  loadRoutes(callback: (routes: IRoute[]) => void) {
-    this.load<IRoute[]>(API_SYSTEM_ROUTES, callback);
+  loadRoutes(callback?: (err:Error,routes: IRoute[]) => void) {
+    return this.http.get<IRoute[]>(API_SYSTEM_ROUTES, callback);
   }
 
 }
