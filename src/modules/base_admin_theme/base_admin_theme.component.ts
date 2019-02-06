@@ -16,7 +16,7 @@ import {NotificationsService} from './components/notifications/notifications.ser
   // styleUrls: ['./base_admin_theme.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class BaseAdminThemeComponent implements OnInit, AfterViewInit {
+export class BaseAdminThemeComponent implements OnInit {
 
   @Input('content')
   ref: TemplateRef<any>;
@@ -89,19 +89,18 @@ export class BaseAdminThemeComponent implements OnInit, AfterViewInit {
     if (entry) {
       this.userRouterLinks.logout = '/' + entry.getFullPath();
     }
-  }
-
-
-  async ngAfterViewInit() {
     await this.enableMenuScrollBar();
   }
 
 
+
   async enableMenuScrollBar() {
+
     const _$ = document.querySelector;
     let classList = document.querySelector('.txs-navbar').classList;
     if (!classList.contains('theme-horizontal')) {
       const minScrollbarLength = 40;
+      const minScrollbarYOffset = 0;
       let vw = window.innerWidth;
       if (vw < 992 || classList.contains('menupos-static')) {
         this.menuScrollBar = new PerfectScrollbar('.navbar-content', {
@@ -110,6 +109,7 @@ export class BaseAdminThemeComponent implements OnInit, AfterViewInit {
           suppressScrollX: true,
           wheelPropagation: true,
           minScrollbarLength: minScrollbarLength,
+          scrollYMarginOffset: minScrollbarYOffset
 
         });
       } else {
@@ -119,6 +119,7 @@ export class BaseAdminThemeComponent implements OnInit, AfterViewInit {
           suppressScrollX: true,
           wheelPropagation: true,
           minScrollbarLength: minScrollbarLength,
+          scrollYMarginOffset:minScrollbarYOffset
         });
       }
     }

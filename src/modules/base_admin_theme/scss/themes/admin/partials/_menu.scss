@@ -597,7 +597,7 @@
     margin-bottom: 0;
   }
 
-  .scroll-div.navbar-content {
+  .navbar-content.scroll-div {
     height: calc(100vh - #{$header-height});
   }
 
