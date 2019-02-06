@@ -70,7 +70,7 @@ export class EntityModifyComponent implements OnInit {
           if (res) {
             let idStr = this.entityDef.buildLookupConditions(res);
             // TODO flash message
-            await this.router.navigate(['admin/entity', this.machineName, 'view', idStr]);
+            await this.router.navigate([this.entityService.getNgUrlPrefix(), this.machineName, 'view', idStr]);
           } else {
             // TODO error?
           }
@@ -80,7 +80,7 @@ export class EntityModifyComponent implements OnInit {
           if (res) {
             let idStr = this.entityDef.buildLookupConditions(res);
             // TODO flash message
-            await this.router.navigate(['admin/entity', this.machineName, 'view', idStr]);
+            await this.router.navigate([this.entityService.getNgUrlPrefix(), this.machineName, 'view', idStr]);
           } else {
             // TODO error?
           }

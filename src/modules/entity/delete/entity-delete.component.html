@@ -22,7 +22,7 @@
     </div>
 
     <div *ngIf="deleted">
-      <a class="btn btn-primary" [routerLink]="['/admin/entity',machineName,'query']">Query</a>
+      <a class="btn btn-primary" [routerLink]="[entityService.getNgUrlPrefix(),machineName,'query']">Query</a>
     </div>
   </div>
 </div>

@@ -37,7 +37,6 @@ const PROVIDERS = [
     SystemModule,
     BrowserModule,
     RouterModule,
-    HttpClientModule,
     NgFormsModule,
     FormsModule
   ],

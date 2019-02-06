@@ -9,6 +9,8 @@ import {PagerAction} from '../../system/pager/PagerAction';
 import {PagerService} from '../../system/pager/PagerService';
 import {Pager} from '../../system/pager/Pager';
 import {EntityQueryAction} from './EntityQueryAction';
+import {IEntityRef} from 'commons-schema-api';
+import {Expressions} from 'commons-expressions';
 
 
 @Component({
@@ -70,6 +72,10 @@ export class EntityQueryComponent implements OnInit, OnDestroy {
   }
 
 
+  buildLookupConditions(e:IEntityRef,res:any){
+    return Expressions.buildLookupConditions(e,res);
+  }
+
   updateEntities(action: PagerAction) {
     if (action.name == this.pagerId && action.type == 'set') {
       this.offset = (action.page - 1) * this.limit;
@@ -104,7 +110,12 @@ export class EntityQueryComponent implements OnInit, OnDestroy {
   }
 
   asString(data: any) {
-    return JSON.stringify(data, null, 2);
+    if(_.isObjectLike(data)){
+      return JSON.stringify(data, null, 2);
+    }else{
+      return data;
+    }
+
   }
 
   hasData(entity: any, prop: PropertyRef) {

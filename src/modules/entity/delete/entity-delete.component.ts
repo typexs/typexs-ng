@@ -59,18 +59,18 @@ export class EntityDeleteComponent implements OnInit {
           // TODO maybe wait
           this.instance = entity;
           this.deleted = true;
-//          await this.router.navigate(['admin/entity', this.machineName, 'query']);
+//          await this.router.navigate([entityService.getNgUrlPrefix(), this.machineName, 'query']);
         });
       }
     }
   }
 
   doAbort() {
-    return this.router.navigate(['admin/entity', this.machineName, 'view', this.id]);
+    return this.router.navigate([this.entityService.getNgUrlPrefix(), this.machineName, 'view', this.id]);
   }
 
   gotoQuery() {
-    return this.router.navigate(['admin/entity', this.machineName, 'query']);
+    return this.router.navigate([this.entityService.getNgUrlPrefix(), this.machineName, 'query']);
   }
 
 }

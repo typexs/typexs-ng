@@ -15,7 +15,7 @@
       (onPageChange)="updateEntities($event)">
     </txs-pager>
     <div class="table-wrapper">
-      <table class="table">
+      <table datatable class="table hover">
         <thead>
         <tr>
           <th class="headcol">Ops</th>
@@ -27,15 +27,15 @@
           <td class="col-ops headcol">
             <div class="btn-group-ops">
               <a
-                [routerLink]="['/admin/entity',entityDef.machineName,'view', entityDef.buildLookupConditions(entity) ]">
+                [routerLink]="[entityService.getNgUrlPrefix(),entityDef.machineName,'view', buildLookupConditions(entityDef,entity) ]">
                 <i class="icon icon-data-view"></i>
               </a>
               <a
-                [routerLink]="['/admin/entity',entityDef.machineName,'edit', entityDef.buildLookupConditions(entity) ]">
+                [routerLink]="[entityService.getNgUrlPrefix(),entityDef.machineName,'edit', buildLookupConditions(entityDef,entity) ]">
                 <i class="icon icon-data-edit"></i>
               </a>
               <a
-                [routerLink]="['/admin/entity',entityDef.machineName,'delete', entityDef.buildLookupConditions(entity) ]">
+                [routerLink]="[entityService.getNgUrlPrefix(),entityDef.machineName,'delete', buildLookupConditions(entityDef,entity) ]">
                 <i class="icon icon-data-delete"></i>
               </a>
             </div>
@@ -44,7 +44,7 @@
           <td *ngFor="let prop of getPropertyRefs()" [ngSwitch]="fieldDisplay(prop)">
             <ng-template ngSwitchCase="entity_reference">
               <a *ngIf="hasData(entity,prop)"
-                 [routerLink]="['/admin/entity',prop.getEntity().machineName,'view', prop.getEntity().buildLookupConditions(getData(entity,prop)) ]">
+                 [routerLink]="[entityService.getNgUrlPrefix(),prop.getEntity().machineName,'view', buildLookupConditions(prop.getEntityRef(),getData(entity,prop)) ]">
                 {{ prop.getEntity().label(getData(entity, prop))}}
               </a>
             </ng-template>
@@ -52,14 +52,27 @@
               <ul>
                 <li *ngFor="let entry of getData(entity,prop)">
                   <a
-                    [routerLink]="['/admin/entity',prop.getEntity().machineName,'view', prop.getEntity().buildLookupConditions(entry) ]">
+                    [routerLink]="[entityService.getNgUrlPrefix(),prop.getEntity().machineName,'view', buildLookupConditions(prop.getEntityRef(), entry) ]">
                     {{ prop.getEntity().label(entry)}}
                   </a>
                 </li>
               </ul>
             </ng-template>
+            <ng-template ngSwitchCase="object_reference_array">
+              <details>
+                <summary>JSON</summary>
+                <pre class="language-js">{{asString(prop.get(entity))}}</pre>
+              </details>
+
+            </ng-template>
+            <ng-template ngSwitchCase="object_reference">
+              <details>
+                <summary>JSON</summary>
+                <pre class="language-js">{{asString(prop.get(entity))}}</pre>
+              </details>
+            </ng-template>
             <ng-template ngSwitchDefault>
-              <pre>{{asString(prop.get(entity))}}</pre>
+              {{asString(prop.get(entity))}}
             </ng-template>
           </td>
 

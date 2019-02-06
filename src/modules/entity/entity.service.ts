@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import * as _ from 'lodash';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
@@ -8,6 +7,7 @@ import {IFindOptions} from '@typexs/schema/libs/framework/IFindOptions';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
 import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
 import {AuthService} from '../system/api/auth/auth.service';
+import {HttpClientWrapper} from '../system/http-client-wrapper.service';
 
 
 @Injectable()
@@ -19,9 +19,22 @@ export class EntityService {
 
   private _ready: boolean = false;
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  private prefix:string = '/entity';
+
+  constructor(private http: HttpClientWrapper, private authService: AuthService) {
     this.reloadMetadata();
   }
+
+
+
+  setNgUrlPrefix(prefix:string){
+    this.prefix = prefix;
+  }
+
+  getNgUrlPrefix(){
+    return this.prefix;
+  }
+
 
 
   isReady(callback: Function): void {
@@ -36,8 +49,8 @@ export class EntityService {
 
   reloadMetadata() {
     this._ready = false;
-    this.http.get('api/metadata/entities').subscribe(
-      (entities: Object) => {
+    this.http.get('api/metadata/entities',
+      (err: Error, entities: Object) => {
         if (_.isArray(entities)) {
           this.entityDefs = [];
           entities.forEach(entityDefJson => {
@@ -47,12 +60,6 @@ export class EntityService {
         }
         this._isReady.complete();
         this._ready = true;
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.error);
-        console.log(err.name);
-        console.log(err.message);
-        console.log(err.status);
       });
   }
 
@@ -65,25 +72,16 @@ export class EntityService {
   get(entityName: string, entityId: any) {
     let entityDef = EntityRegistry.$().getEntityRefByName(entityName);
     let obs = new BehaviorSubject<any>(null);
-    this.http.get('api/entity/' + entityName + '/' + entityId).subscribe(
-      (res: any) => {
-        if (res) {
+    this.http.get('api/entity/' + entityName + '/' + entityId,
+      (err: Error, res: any) => {
+        if (err) {
+          obs.error(err);
+          obs.complete();
+        } else if (res) {
           let result = EntityService._buildEntity(entityDef, res);
-          ;
           obs.next(result);
+          obs.complete();
         }
-
-
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.error);
-        console.log(err.name);
-        console.log(err.message);
-        console.log(err.status);
-        obs.error(err);
-      },
-      () => {
-        obs.complete();
       }
     );
     return obs.asObservable();
@@ -112,24 +110,16 @@ export class EntityService {
       url += '?' + queryParts.join('&');
     }
 
-    this.http.get(url).subscribe(
-      (res: any) => {
-        if (res) {
-          res.entities = EntityService._buildEntity(entityDef, res.entities);
-          obs.next(res);
-        }
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.error);
-        console.log(err.name);
-        console.log(err.message);
-        console.log(err.status);
+    this.http.get(url, (err: Error, res: any) => {
+      if (err) {
         obs.error(err);
-      },
-      () => {
+        obs.complete();
+      } else if (res) {
+        res.entities = EntityService._buildEntity(entityDef, res.entities);
+        obs.next(res);
         obs.complete();
       }
-    );
+    });
     return obs.asObservable();
   }
 
@@ -137,25 +127,19 @@ export class EntityService {
   save(entityName: string, entity: any): Observable<any> {
     let entityDef = EntityRegistry.$().getEntityRefByName(entityName);
     let obs = new BehaviorSubject<any>(null);
-    this.http.post('api/entity/' + entityName, entity).subscribe(
-      (res: any) => {
+    this.http.post('api/entity/' + entityName, entity, (err: Error, res: any) => {
+      if (err) {
+        obs.error(err);
+        obs.complete();
+      } else if (res) {
         let result = EntityService._buildEntity(entityDef, res);
         obs.next(result);
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.error);
-        console.log(err.name);
-        console.log(err.message);
-        console.log(err.status);
-        obs.error(err);
-      },
-      () => {
         obs.complete();
       }
-    );
-
+    });
     return obs.asObservable();
   }
+
 
   update(entityName: string, entityId: any, entity: any) {
     // TODO if empty entity ???
@@ -165,47 +149,34 @@ export class EntityService {
       throw new Error('something is wrong');
     }
     let obs = new BehaviorSubject<any>(null);
-    this.http.post('api/entity/' + entityName + '/' + entityId, entity).subscribe(
-      (res: any) => {
+    this.http.post('api/entity/' + entityName + '/' + entityId, entity, (err: Error, res: any) => {
+      if (err) {
+        obs.error(err);
+        obs.complete();
+      } else if (res) {
         let result = EntityService._buildEntity(entityDef, res);
         obs.next(result);
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.error);
-        console.log(err.name);
-        console.log(err.message);
-        console.log(err.status);
-        obs.error(err);
-      },
-      () => {
         obs.complete();
       }
-    );
-
+    });
     return obs.asObservable();
   }
+
 
   delete(entityName: string, entityId: any) {
     let entityDef = EntityRegistry.$().getEntityRefByName(entityName);
     let obs = new BehaviorSubject<any>(null);
-    this.http.delete('api/entity/' + entityName + '/' + entityId).subscribe(
-      (res: any) => {
-        if (res) {
+    this.http.delete('api/entity/' + entityName + '/' + entityId,
+      (err: Error, res: any) => {
+        if (err) {
+          obs.error(err);
+          obs.complete();
+        } else {
           let result = EntityService._buildEntity(entityDef, res);
           obs.next(result);
+          obs.complete();
         }
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.error);
-        console.log(err.name);
-        console.log(err.message);
-        console.log(err.status);
-        obs.error(err);
-      },
-      () => {
-        obs.complete();
-      }
-    );
+      });
     return obs.asObservable();
   }
 

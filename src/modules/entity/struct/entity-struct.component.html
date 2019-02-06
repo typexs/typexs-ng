@@ -12,7 +12,7 @@
 
       <div *ngIf="propertyDefs.length > 0">
         <h3>Properties</h3>
-        <table class="table">
+        <table datatable class="hover">
           <thead>
           <tr>
             <th>Name</th>
@@ -32,7 +32,7 @@
             <td>{{propertyRef.property.object.className}}</td>
             <td>
               <div *ngIf="propertyRef.property.isEntityReference()">
-                <a [routerLink]="['/admin/entity',propertyRef.property.targetRef.machineName(),'structure']"
+                <a [routerLink]="[entityService.getNgUrlPrefix(),propertyRef.property.getTargetRef().machineName,'structure']"
                    routerLinkActive="true">
                   {{type(propertyRef.property)}}{{propertyRef.property.isCollection() ? '[]' : ''}}
                 </a>
@@ -44,10 +44,17 @@
 
             <td>{{cardinality(propertyRef.property)}}</td>
             <td>
-              <pre>{{options(propertyRef.property) | json}}</pre>
+              <details>
+                <summary>JSON</summary>
+                <pre class="language-js">{{options(propertyRef.property) | json}}</pre>
+              </details>
             </td>
             <td>
-              <pre>{{validator(propertyRef.property) | json}}</pre>
+              <details>
+                <summary>JSON</summary>
+                <pre>{{validator(propertyRef.property) | json}}</pre>
+                <pre class="language-js">{{options(propertyRef.property) | json}}</pre>
+              </details>
             </td>
           </tr>
           </tbody>
@@ -56,7 +63,7 @@
 
       <div *ngIf="referrerProps.length > 0">
         <h3>Referring properties</h3>
-        <table class="table">
+        <table datatable class="table hover">
           <thead>
           <tr>
             <th>Name</th>
@@ -72,13 +79,13 @@
               {{ propertyRef.name }}
             </td>
             <td>
-              <a [routerLink]="['/admin/entity',propertyRef.object.machineName(),'structure']"
+              <a [routerLink]="[entityService.getNgUrlPrefix(),propertyRef.getSourceRef().machineName,'structure']"
                  routerLinkActive="active">
                 {{propertyRef.object.className}}</a>
             </td>
             <td>
               <div *ngIf="propertyRef.isEntityReference()">
-                <a [routerLink]="['/admin/entity',propertyRef.targetRef.machineName(),'structure']"
+                <a [routerLink]="[entityService.getNgUrlPrefix(),propertyRef.getTargetRef().machineName,'structure']"
                    routerLinkActive="active">
                   {{type(propertyRef)}}{{propertyRef.isCollection() ? '[]' : ''}}
                 </a>

@@ -13,9 +13,9 @@
     </pre>
 
     <div>
-      <a class="btn btn-primary" [routerLink]="['/admin/entity',machineName,'query' ]">Query</a>
-      <a class="btn btn-warning" [routerLink]="['/admin/entity',machineName,'edit', id ]">Edit</a>
-      <a class="btn btn-danger" [routerLink]="['/admin/entity',machineName,'delete', id ]">Delete</a>
+      <a class="btn btn-primary" [routerLink]="[entityService.getNgUrlPrefix(),machineName,'query' ]">Query</a>
+      <a class="btn btn-warning" [routerLink]="[entityService.getNgUrlPrefix(),machineName,'edit', id ]">Edit</a>
+      <a class="btn btn-danger" [routerLink]="[entityService.getNgUrlPrefix(),machineName,'delete', id ]">Delete</a>
     </div>
   </div>
 </div>
