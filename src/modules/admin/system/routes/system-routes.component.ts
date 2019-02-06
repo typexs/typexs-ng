@@ -25,8 +25,10 @@ export class SystemRoutesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.infoService.loadRoutes(x => {
-      this.routes = x;
+    this.infoService.loadRoutes((err:Error,x:IRoute[]) => {
+      if(x){
+        this.routes = x;
+      }
     });
   }
 }

@@ -26,8 +26,10 @@ export class SystemStoragesComponent implements OnInit {
 
 
   ngOnInit() {
-    this.infoService.loadStorages(x => {
-      this.storages = x;
+    this.infoService.loadStorages((err:Error,x:IStorageOptions[]) => {
+      if(x){
+        this.storages = x;
+      }
     });
   }
 }

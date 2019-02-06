@@ -12,6 +12,12 @@ import {EntityViewComponent} from './../entity/view/entity-view.component';
 import {EntityStructComponent} from './../entity/struct/entity-struct.component';
 import {EntityDeleteComponent} from './../entity/delete/entity-delete.component';
 import {AuthGuardService} from '../system/api/auth/auth-guard.service';
+import {StorageTypesComponent} from '../storage/types/storage-types.component';
+import {StorageStructComponent} from '../storage/struct/storage-struct.component';
+import {StorageModifyComponent} from '../storage/modify/storage-modify.component';
+import {StorageViewComponent} from '../storage/view/storage-view.component';
+import {StorageDeleteComponent} from '../storage/delete/storage-delete.component';
+import {StorageQueryComponent} from '../storage/query/storage-query.component';
 
 
 export const ADMIN_ROUTES: Routes = [
@@ -90,7 +96,49 @@ export const ADMIN_ROUTES: Routes = [
         component: EntityStructComponent,
         data: {label: 'Entity type structure', skip: true},
         canActivate: [AuthGuardService]
-      }
+      },
+      {
+        path: 'storage/types',
+        component: StorageTypesComponent,
+        data: {label: 'Types', group: 'admin'},
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'storage/:machineName/structure',
+        component: StorageStructComponent,
+        data: {label: 'Entity type structure', skip: true},
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'storage/:machineName/create',
+        component: StorageModifyComponent,
+        data: {label: 'Create entity', skip: true},
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'storage/:machineName/view/:id',
+        component: StorageViewComponent,
+        data: {label: 'View entity', skip: true},
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'storage/:machineName/edit/:id',
+        component: StorageModifyComponent,
+        data: {label: 'Edit entity', skip: true},
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'storage/:machineName/delete/:id',
+        component: StorageDeleteComponent,
+        data: {label: 'Delete entity', skip: true},
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'storage/:machineName/query',
+        component: StorageQueryComponent,
+        data: {label: 'List entities', skip: true},
+        canActivate: [AuthGuardService]
+      },
 
     ]
   },

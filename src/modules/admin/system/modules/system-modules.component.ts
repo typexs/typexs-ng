@@ -21,8 +21,10 @@ export class SystemModulesComponent implements OnInit {
 
 
   ngOnInit() {
-    this.infoService.loadModules(x => {
-      this.modules = x;
+    this.infoService.loadModules((err: Error, x: IModule[]) => {
+      if (x) {
+        this.modules = x;
+      }
     });
   }
 }

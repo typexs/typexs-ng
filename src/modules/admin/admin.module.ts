@@ -16,6 +16,9 @@ import {SystemModule} from '../system/system.module';
 import {EntityModule} from '../entity/entity.module';
 import {NavigatorService} from '../navigator/navigator.service';
 import {BaseAdminThemeModule} from '../base_admin_theme/base_admin_theme.module';
+import {EntityService} from '../entity/entity.service';
+import {StorageService} from '../storage/storage.service';
+import {StorageModule} from '../storage/storage.module';
 
 
 const PROVIDERS: Provider[] = [];
@@ -37,6 +40,7 @@ const PROVIDERS: Provider[] = [];
     RouterModule,
     FormsModule,
     EntityModule,
+    StorageModule,
     BrowserModule,
     HttpClientModule,
     RouterModule.forChild(ADMIN_ROUTES)
@@ -55,11 +59,16 @@ export class AdminModule {
     };
   }
 
-  constructor(private navigator: NavigatorService) {
+  constructor(private navigator: NavigatorService,
+              private entityService: EntityService,
+              private storageService: StorageService) {
     // Startup stuff should be done once!
+    entityService.setNgUrlPrefix('/admin/entity');
+    storageService.setNgUrlPrefix('/admin/storage');
     this.navigator.addGroupEntry('admin/system/.*', {label: 'System', group: 'admin'});
     this.navigator.addGroupEntry('admin/ng/.*', {label: 'Angular', group: 'admin'});
     this.navigator.addGroupEntry('admin/entity/.*', {label: 'Entity', group: 'admin'});
+    this.navigator.addGroupEntry('admin/storage/.*', {label: 'Storage', group: 'admin'});
   }
 
 
