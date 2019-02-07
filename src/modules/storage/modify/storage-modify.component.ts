@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 
 import {ActivatedRoute, Router} from '@angular/router';
 import {StorageService} from '../storage.service';
-import {IEntityRef, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
-import {REGISTRY_TYPEORM} from '@typexs/base/browser';
+import {IEntityRef, ILookupRegistry, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
+import {REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base/browser';
 import * as _ from 'lodash';
 import {Expressions} from 'commons-expressions/browser';
 
@@ -22,6 +22,8 @@ export class StorageModifyComponent implements OnInit {
   machineName: string;
 
   entityDef: IEntityRef;
+
+  registry: ILookupRegistry = TypeOrmEntityRegistry.$();
 
   instance: any;
 
