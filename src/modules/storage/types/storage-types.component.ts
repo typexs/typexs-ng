@@ -8,7 +8,7 @@ import {StorageService} from '../storage.service';
 })
 export class StorageTypesComponent {
 
-  constructor(private storageService: StorageService) {
+  constructor(public storageService: StorageService) {
   }
 
   getEntityRefs() {

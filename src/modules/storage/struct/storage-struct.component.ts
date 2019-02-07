@@ -28,7 +28,7 @@ export class StorageStructComponent implements OnInit {
   propertyDefs: { property: IPropertyRef, level: number }[] = [];
 
 
-  constructor(private entityService: StorageService, private route: ActivatedRoute, private router: Router) {
+  constructor(public entityService: StorageService, private route: ActivatedRoute, private router: Router) {
 
   }
 

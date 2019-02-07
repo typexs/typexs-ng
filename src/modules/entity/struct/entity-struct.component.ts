@@ -29,7 +29,7 @@ export class EntityStructComponent implements OnInit {
   propertyDefs: { property: PropertyRef, level: number }[] = [];
 
 
-  constructor(private entityService: EntityService, private route: ActivatedRoute, private router: Router) {
+  constructor(public entityService: EntityService, private route: ActivatedRoute, private router: Router) {
 
   }
 

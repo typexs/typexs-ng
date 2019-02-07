@@ -24,7 +24,7 @@ export class EntityDeleteComponent implements OnInit {
 
   deleted: boolean = false;
 
-  constructor(private entityService: EntityService,
+  constructor(public entityService: EntityService,
               private route: ActivatedRoute,
               private router: Router) {
   }

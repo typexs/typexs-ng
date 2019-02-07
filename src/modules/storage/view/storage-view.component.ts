@@ -24,7 +24,7 @@ export class StorageViewComponent implements OnInit {
 
   error: any = null;
 
-  constructor(private entityService: StorageService, private route: ActivatedRoute) {
+  constructor(public entityService: StorageService, private route: ActivatedRoute) {
   }
 
 

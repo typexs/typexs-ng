@@ -46,11 +46,12 @@ export class StorageQueryComponent implements OnInit, OnDestroy {
   pager: Pager;
 
 
-  constructor(private entityService: StorageService,
+  constructor(public entityService: StorageService,
               private route: ActivatedRoute,
               private pagerService: PagerService) {
     this.pager = this.pagerService.get(this.pagerId);
   }
+
 
   onQueryAction(action:StorageQueryAction){
     this.query(action.query);

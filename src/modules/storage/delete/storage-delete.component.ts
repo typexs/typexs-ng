@@ -25,7 +25,7 @@ export class StorageDeleteComponent implements OnInit {
 
   deleted: boolean = false;
 
-  constructor(private entityService: StorageService,
+  constructor(public entityService: StorageService,
               private route: ActivatedRoute,
               private router: Router) {
   }

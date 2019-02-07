@@ -6,9 +6,7 @@
 
     <div *ngIf="entityDef">
       Options:
-      <pre>
-      {{ entityDef.getOptions() | json }}
-      </pre>
+      <pre class="language-js">{{ entityDef.getOptions() | json }}</pre>
 
       <div *ngIf="propertyDefs.length > 0">
         <h3>Properties</h3>

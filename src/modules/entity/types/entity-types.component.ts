@@ -8,7 +8,7 @@ import {EntityService} from './../entity.service';
 })
 export class EntityTypesComponent {
 
-  constructor(private entityService:EntityService){
+  constructor(public entityService:EntityService){
   }
 
   getEntityRefs(){

@@ -13,6 +13,7 @@ import {StorageQueryComponent} from './query/storage-query.component';
 import {StorageDeleteComponent} from './delete/storage-delete.component';
 import {StorageQueryInputComponent} from './query/storage-query-input.component';
 import {StorageBackendsComponent} from './backends/storage-backends.component';
+import {CommonModule} from '@angular/common';
 
 const PROVIDERS = [
   StorageService,
@@ -32,6 +33,7 @@ const COMPONENTS = [
 @NgModule({
   declarations: COMPONENTS,
   imports: [
+    CommonModule,
     SystemModule,
     BrowserModule,
     RouterModule,

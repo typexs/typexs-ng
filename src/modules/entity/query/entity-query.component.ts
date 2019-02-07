@@ -47,7 +47,7 @@ export class EntityQueryComponent implements OnInit, OnDestroy {
   pager: Pager;
 
 
-  constructor(private entityService: EntityService,
+  constructor(public entityService: EntityService,
               private route: ActivatedRoute,
               private pagerService: PagerService) {
     this.pager = this.pagerService.get(this.pagerId);

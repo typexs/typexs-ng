@@ -22,7 +22,7 @@ export class EntityViewComponent implements OnInit {
 
   error: any = null;
 
-  constructor(private entityService: EntityService, private route: ActivatedRoute) {
+  constructor(public entityService: EntityService, private route: ActivatedRoute) {
   }
 
 

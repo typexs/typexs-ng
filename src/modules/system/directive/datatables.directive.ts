@@ -14,9 +14,9 @@ export class DataTableDirective implements OnDestroy, AfterContentInit {
 
   @Input()
   dtOptions: any = {
-    paging:false,
-    scrollX:'100%',
-    scrollXInner:'100%'
+    paging: false,
+    scrollX: '100%',
+    scrollXInner: '100%'
   };
 
   @Input()
@@ -51,19 +51,18 @@ export class DataTableDirective implements OnDestroy, AfterContentInit {
   }
 
   private async displayTable() {
-    try{
-      import("jquery").then($ => {
-        this.dtInstance = new Promise((resolve, reject) => {
-          Promise.resolve(this.dtOptions).then(dtOptions => {
-            setTimeout(() => {
-              this.dt = (<any>$(this.el.nativeElement)).DataTable(dtOptions);
-              resolve(this.dt);
-            });
+    try {
+      const $ = require('jquery');
+      this.dtInstance = new Promise((resolve, reject) => {
+        Promise.resolve(this.dtOptions).then(dtOptions => {
+          setTimeout(() => {
+            this.dt = (<any>$(this.el.nativeElement)).DataTable(dtOptions);
+            resolve(this.dt);
           });
         });
       });
-    }catch (e) {
-      console.error('jquery not found, disabling datatables')
+    } catch (e) {
+      console.error('jquery not found, disabling datatables');
     }
 
 
