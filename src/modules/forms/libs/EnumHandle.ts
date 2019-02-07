@@ -2,11 +2,12 @@ import {Observable} from 'rxjs/Observable';
 
 import * as _ from 'lodash';
 import {Injector} from '@angular/core';
-import {DataContainer} from '@typexs/schema/libs/DataContainer';
+
 import {FormObject} from '../../../libs/forms/FormObject';
 import {Context} from '../../../libs/views/Context';
 import {ISelectOption} from './ISelectOption';
 import {ISelectOptionsService} from './ISelectOptionsService';
+import {DataContainer} from '@typexs/base/browser';
 
 
 export class EnumHandle {

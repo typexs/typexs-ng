@@ -6,8 +6,9 @@ import {AbstractComponent} from '../views/AbstractComponent';
 import {FormObject, isFormObject} from './FormObject';
 import {ContentComponentRegistry} from '../views/ContentComponentRegistry';
 import {Context} from '../views/Context';
-import {DataContainer, PropertyRef} from '@typexs/schema/browser';
-import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
+import {DataContainer} from '@typexs/base/browser';
+import {IEntityRef, XS_TYPE_PROPERTY} from 'commons-schema-api/browser';
+import {Expressions} from 'commons-expressions/browser';
 
 
 export abstract class AbstractFormComponent<T extends FormObject> extends AbstractComponent<T> {
@@ -82,7 +83,7 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
       this.context = parent.child(elem.name, idx);
     } else {
       this.context = new Context();
-      if (elem.getBinding() instanceof PropertyRef) {
+      if (elem.getBinding().baseType == XS_TYPE_PROPERTY) {
         this.context.name = elem.name;
         this.context.idx = idx;
       }
@@ -108,9 +109,9 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
         let binding = this.elem.getBinding();
         if (binding.isEntityReference()) {
           if (_.isArray(this._value)) {
-            this._value = this._value.map(v => (<EntityRef>binding.getTargetRef().getEntityRef()).buildLookupConditions(v) + '');
+            this._value = this._value.map(v => Expressions.buildLookupConditions(<IEntityRef>binding.getTargetRef().getEntityRef(), v) + '');
           } else {
-            let cond = (<EntityRef>binding.getTargetRef().getEntityRef()).buildLookupConditions(this._value);
+            let cond = Expressions.buildLookupConditions(<IEntityRef>binding.getTargetRef().getEntityRef(), this._value);
             this._value = [cond];
           }
         }
@@ -122,9 +123,7 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
 
   set value(v: any) {
     this._value = v;
-    //let path = this.context.path();
     let binding = this.elem.getBinding();
-    //console.log('set value',path,this._value,this.data.instance)
     if (binding.isEntityReference()) {
       let data = [];
       if (_.isArray(v)) {
@@ -132,17 +131,14 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
       } else {
         data = [v];
       }
-      let refs = data.map(v => (<EntityRef>binding.getTargetRef().getEntityRef()).createLookupConditions(v));
+      let refs = data.map(v => Expressions.parseLookupConditions((<IEntityRef>binding.getTargetRef().getEntityRef()), v));
       if (!binding.isCollection()) {
         refs = refs.shift();
       }
       this.setValue(refs);
-      // _.set(this.data.instance, path, refs);
     } else {
       this.setValue(v);
-      // _.set(this.data.instance, path, v);
     }
-
   }
 
 
