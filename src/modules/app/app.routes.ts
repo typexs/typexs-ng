@@ -1,5 +1,5 @@
 import {Routes} from '@angular/router';
-import {InputDemoComponent} from './input-demo.component';
+
 import {GroupDemoComponent} from './group-demo.component';
 import {ContentDemoComponent} from './content-demo.component';
 import {ContentViewChildDemoComponent} from './content-view-child-demo.component';
@@ -9,11 +9,11 @@ import {MenuDemoComponent} from './menu-demo/menu-demo.component';
 import {DummyComponent} from './dummy/dummy.component';
 import {MenuAccessService} from './menu-demo/MenuAccessService';
 import {PagerDemoComponent} from './pager-demo/pager-demo.component';
-import {EmbeddedContentDemoComponent} from './embedded-content/embedded-content-demo.component';
 import {LogoutComponent} from './dummy/logout/logout.component';
 import {ProfileComponent} from './dummy/profile/profile.component';
 import {CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE} from '../system/constants';
 import {NotificationDemoComponent} from './components/demos/notification/notification-demo.component';
+import {InputDemoComponent} from './components/demos/form-input/input-demo.component';
 
 
 export const APP_ROUTES: Routes = [
@@ -25,7 +25,7 @@ export const APP_ROUTES: Routes = [
       {
         path: 'input',
         component: InputDemoComponent,
-        data: {label: 'Input Demo', group: 'demo'},
+        data: {label: 'Input', group: 'demo'},
       },
       {
         path: 'group',

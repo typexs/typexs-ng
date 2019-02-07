@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {APP_MODULES} from './app.used.modules';
 
-import {InputDemoComponent} from './input-demo.component';
+
 import {GroupDemoComponent} from './group-demo.component';
 import {ContentDemoComponent} from './content-demo.component';
 import {SearchResultComponent} from './search/search-result.component';
@@ -25,6 +25,7 @@ import {EmbeddedContent2Component} from './embedded-content/embedded-content-2.c
 import {LogoutComponent} from './dummy/logout/logout.component';
 import {ProfileComponent} from './dummy/profile/profile.component';
 import {NotificationDemoComponent} from './components/demos/notification/notification-demo.component';
+import {InputDemoComponent} from './components/demos/form-input/input-demo.component';
 
 
 @NgModule({
