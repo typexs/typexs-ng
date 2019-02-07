@@ -12,6 +12,7 @@ import {StorageViewComponent} from './view/storage-view.component';
 import {StorageQueryComponent} from './query/storage-query.component';
 import {StorageDeleteComponent} from './delete/storage-delete.component';
 import {StorageQueryInputComponent} from './query/storage-query-input.component';
+import {StorageBackendsComponent} from './backends/storage-backends.component';
 
 const PROVIDERS = [
   StorageService,
@@ -24,7 +25,8 @@ const COMPONENTS = [
   StorageViewComponent,
   StorageQueryComponent,
   StorageQueryInputComponent,
-  StorageDeleteComponent
+  StorageDeleteComponent,
+  StorageBackendsComponent
 ];
 
 @NgModule({

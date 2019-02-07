@@ -10,13 +10,14 @@ import {
   API_STORAGE_DELETE_ENTITY,
   API_STORAGE_FIND_ENTITY,
   API_STORAGE_GET_ENTITY,
-  API_STORAGE_METADATA_ALL_ENTITIES,
+  API_STORAGE_METADATA_ALL_ENTITIES, API_STORAGE_METADATA_ALL_STORES,
   API_STORAGE_PREFIX,
-  API_STORAGE_SAVE_ENTITY, API_STORAGE_UPDATE_ENTITY
+  API_STORAGE_SAVE_ENTITY, API_STORAGE_UPDATE_ENTITY, IStorageRefMetadata
 } from '@typexs/server/browser';
 import {REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base/browser';
 import {IEntityRef, ILookupRegistry, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
 import {Expressions} from 'commons-expressions/browser';
+import {Subject} from 'rxjs/Subject';
 
 
 @Injectable()
@@ -84,6 +85,21 @@ export class StorageService {
         this._isReady.complete();
         this._ready = true;
       });
+  }
+
+  getStorages(): Observable<IStorageRefMetadata[]> {
+    let obs = new Subject<IStorageRefMetadata[]>();
+    this.http.get(this.url(API_STORAGE_METADATA_ALL_STORES),
+      (err: Error, entities: IStorageRefMetadata[]) => {
+        if (err) {
+          obs.error(err);
+          obs.complete();
+        } else if (_.isArray(entities)) {
+          obs.next(entities);
+          obs.complete();
+        }
+      });
+    return obs.asObservable();
   }
 
   getEntityRefForName(name: string): IEntityRef {
