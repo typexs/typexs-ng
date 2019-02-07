@@ -1,5 +1,3 @@
-
-
 <div class="card">
   <div class="card-header">
     <h3>Storages</h3>
@@ -18,7 +16,12 @@
       <tr *ngFor="let storage of storages">
         <td>{{storage.name}}</td>
         <td>{{storage.type}}</td>
-        <td>{{storage | json}}</td>
+        <td>
+          <details>
+            <summary>JSON</summary>
+            <pre>{{storage | json}}</pre>
+          </details>
+        </td>
       </tr>
 
       </tbody>

@@ -18,6 +18,7 @@ import {StorageModifyComponent} from '../storage/modify/storage-modify.component
 import {StorageViewComponent} from '../storage/view/storage-view.component';
 import {StorageDeleteComponent} from '../storage/delete/storage-delete.component';
 import {StorageQueryComponent} from '../storage/query/storage-query.component';
+import {StorageBackendsComponent} from '../storage/backends/storage-backends.component';
 
 
 export const ADMIN_ROUTES: Routes = [
@@ -137,6 +138,12 @@ export const ADMIN_ROUTES: Routes = [
         path: 'storage/:machineName/query',
         component: StorageQueryComponent,
         data: {label: 'List entities', skip: true},
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'storage/backends',
+        component: StorageBackendsComponent,
+        data: {label: 'Backend', group:'admin'},
         canActivate: [AuthGuardService]
       },
 

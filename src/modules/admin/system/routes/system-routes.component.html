@@ -3,7 +3,7 @@
     <h3>Routes</h3>
   </div>
   <div class="card-body">
-    <table class="table table-responsive-lg">
+    <table datatable class="hover">
       <thead>
       <tr>
         <th>Context</th>
@@ -25,7 +25,14 @@
         <td>{{systemRoute.authorized}}</td>
         <td>{{systemRoute.credential}}</td>
         <td>{{systemRoute.controller}}->{{systemRoute.controllerMethod}}</td>
-        <td>{{systemRoute.params | json}}</td>
+        <td>
+          <details>
+            <summary>JSON</summary>
+            <pre class="language-js">
+             {{systemRoute.params | json}}
+            </pre>
+          </details>
+        </td>
         <!---td>{{systemRoute | json}}</td>-->
       </tr>
 
