@@ -1,14 +1,10 @@
 export * from './browser';
 
-export * from './modules/system/system.module';
-export * from './modules/navigator/navigator.module';
-export * from './modules/views/views.module';
-export * from './modules/forms/forms.module';
-export * from './modules/storage/storage.module';
-export * from './modules/entity/entity.module';
+
 
 
 // system module
+export * from './modules/system/system.module';
 export * from './modules/system/constants';
 export * from './modules/system/http-client-wrapper.service';
 export * from './modules/system/invoker.service';
@@ -26,6 +22,13 @@ export * from './modules/system/messages/MessageChannel';
 export * from './modules/system/messages/types/AuthMessage';
 export * from './modules/system/messages/types/LogMessage';
 
+export * from './modules/system/pager/PagerService';
+export * from './modules/system/pager/Pager';
+export * from './modules/system/pager/PagerAction';
+
+
+
+
 // base_admin_theme module
 export * from './modules/base_admin_theme/base_admin_theme.module';
 export * from './modules/base_admin_theme/base_admin_theme.component';
@@ -42,14 +45,17 @@ export * from './modules/admin/admin.component';
 
 
 // entity module
+export * from './modules/entity/entity.module';
 export * from './modules/entity/entity.service';
 export * from './modules/entity/entity-options.service';
 
 // storage module
+export * from './modules/storage/storage.module';
 export * from './modules/storage/storage.service';
 
 
 // forms module
+export * from './modules/forms/forms.module';
 export * from './modules/forms/checkbox.component';
 export * from './modules/forms/form.component';
 export * from './modules/forms/label.component';
@@ -64,8 +70,11 @@ export * from './modules/forms/grid/grid-cell.component';
 export * from './modules/forms/form.service';
 
 // navigator module
+export * from './modules/navigator/navigator.module';
 export * from './modules/navigator/navigator.service';
 export * from './modules/navigator/IMenuLinkGuard';
 export * from './modules/navigator/NavEntry';
 export * from './modules/navigator/INavTreeEntry';
 
+// Views module
+export * from './modules/views/views.module';

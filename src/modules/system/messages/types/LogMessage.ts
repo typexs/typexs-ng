@@ -3,19 +3,20 @@ import {IMessage, MessageType} from '../../messages/IMessage';
 
 export class LogMessage implements IMessage {
 
-  content: any;
+  content: any = null;
 
-  topic: any;
+  topic: any = null;
 
-  type: MessageType;
+  type: MessageType = null;
 
-  error: Error;
+  error: Error = null;
 
-  source: any;
+  source: any = null;
 
-  method: string;
+  method: string = null;
 
   data: any[] = null;
+
 
 
   isErrorMessage() {
