@@ -29,7 +29,7 @@ export class BaseAdminThemeComponent implements OnInit {
 
   @Input()
   notifyOptions: INotifyOptions = {
-    displayTime: 60000,
+    displayTime: 5000,
     maxAlerts: 5
   };
 

@@ -18,11 +18,12 @@ export class NotificationsComponent implements OnInit {
 
   items: NotifyItem[] = [];
 
-  constructor(private service: NotificationsService) {
 
+  constructor(private service: NotificationsService) {
     service.OnAddMessage.subscribe((msg: NotifyItem) => this.onAddMessage(msg));
     service.OnRemoveMessage.subscribe((msg: NotifyItem) => this.onRemoveMessage(msg));
   }
+
 
   ngOnInit(): void {
     _.defaults(this.options, DEFAULT_OPTIONS);
@@ -32,9 +33,9 @@ export class NotificationsComponent implements OnInit {
 
   close(index: number, done?: () => void) {
     if (typeof index !== 'number') return;
-
     this.onRemoveMessage(this.items[index], done);
   }
+
 
   onAddMessage(msg: NotifyItem) {
     if (this.items.length && this.options.maxAlerts && this.options.maxAlerts <= this.items.length) {
@@ -44,8 +45,8 @@ export class NotificationsComponent implements OnInit {
     } else {
       this.items.unshift(msg);
     }
-
   }
+
 
   onRemoveMessage(msg: NotifyItem, done?: () => void) {
     if (!msg || !this.items || !this.items.length) return;

@@ -713,8 +713,8 @@
 
       > a {
         text-align: left;
-        padding: 7px 15px;
-        margin: 5px 0 0;
+        padding: 9px 15px;
+        margin: 0;
         display: block;
         border-radius: 0;
         position: relative;
@@ -745,7 +745,7 @@
         > a {
           &:after {
             content: "\e844";
-            font-family: 'feather';
+            font-family: 'Font Awesome 5 Free';
             font-size: 15px;
             border: none;
             position: absolute;
@@ -1100,7 +1100,7 @@
       &:focus,
       &:hover {
         > a {
-          color: #1dc4e9;
+          color: $menu-active-mark-color;
         }
       }
 
@@ -1110,7 +1110,7 @@
         &:hover {
           > a {
             &:before {
-              background: #1dc4e9;
+              background: $menu-active-mark-color;
             }
           }
         }
@@ -1123,13 +1123,13 @@
       &.txs-trigger {
         &:after {
           content: "";
-          background-color: #1dc4e9;
-          z-index: 1027;
+          background-color: $menu-active-mark-color;
+          z-index: 689;
           position: absolute;
           left: 0;
-          top: 5px;
+          top: 0px;
           width: 3px;
-          height: calc(100% - 5px);
+          height: calc(100% - 0px);
         }
 
         > a {
@@ -1286,8 +1286,8 @@
         &.txs-trigger {
           &:after {
             content: "";
-            background-color: #1dc4e9;
-            z-index: 1027;
+            background-color: $menu-active-mark-color;
+            z-index: 689;
             position: absolute;
             left: 19px;
             top: auto;
@@ -3108,7 +3108,7 @@ body {
   }
 
   &.layout-2 {
-    background: linear-gradient(253Deg, #1de9b6 0, #1dc4e9 70%);
+    background: linear-gradient(253Deg, #1de9b6 0, $menu-active-mark-color 70%);
   }
 
   &.layout-2-2 {

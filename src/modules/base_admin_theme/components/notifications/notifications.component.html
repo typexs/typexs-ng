@@ -1,4 +1,4 @@
-<div class="message-container alert alert-dismissible alert-{{item.type.toLowerCase()}}" *ngFor="let item of items; let idx = index;" [ngClass]="{closing: item.closing}">
+<div class="message-container alert alert-dismissible alert-{{item.getTypeAsLowerCase()}}" *ngFor="let item of items; let idx = index;" [ngClass]="{closing: item.closing}">
   <strong class="heading">{{item.heading}}</strong>
   <span class="message">{{item.message}}</span>
   <button type="button" class="close" (click)="close(idx)"
