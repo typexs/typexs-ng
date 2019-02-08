@@ -54,17 +54,19 @@ export class DataTableDirective implements OnDestroy, AfterContentInit {
     try {
       const $ = require('jquery');
       this.dtInstance = new Promise((resolve, reject) => {
-        Promise.resolve(this.dtOptions).then(dtOptions => {
-          setTimeout(() => {
-            this.dt = (<any>$(this.el.nativeElement)).DataTable(dtOptions);
-            resolve(this.dt);
+          Promise.resolve(this.dtOptions).then(dtOptions => {
+            if ($.fn.DataTable) {
+              setTimeout(() => {
+                this.dt = (<any>$(this.el.nativeElement)).DataTable(dtOptions);
+                resolve(this.dt);
+              });
+            }
           });
-        });
-      });
+        }
+      );
     } catch (e) {
       console.error('jquery not found, disabling datatables');
     }
-
 
   }
 }

@@ -75,41 +75,46 @@ export class StorageService {
 
   reloadMetadata() {
     Helper.after(this.authService.isInitialized(), x => {
-      if(x){
+      if (x) {
         this.authService.getChannel().subscribe(s => {
-          if(s instanceof AuthMessage){
+          if (s instanceof AuthMessage) {
             this.userState();
           }
-        })
+        });
       }
-    })
+    });
   }
 
 
-  userState(){
-    if(this.authService.isLoggedIn()){
+  userState() {
+    if (this.authService.isLoggedIn()) {
       // TODO load for use permissions
       this.loadEntityMetadata();
-    }else{
+    } else {
+      this._ready = false;
       this.entityDefs = [];
     }
   }
 
 
-  loadEntityMetadata(){
-    this._ready = false;
-    this.http.get(this.url(API_STORAGE_METADATA_ALL_ENTITIES),
-      (err: Error, entities: Object) => {
-        if (_.isArray(entities)) {
-          this.entityDefs = [];
-          entities.forEach(entityDefJson => {
-            let ed = this.registry.fromJson(entityDefJson);
-            this.entityDefs.push(ed);
-          });
-        }
-        this._isReady.complete();
-        this._ready = true;
-      });
+  loadEntityMetadata() {
+    if (!this._ready) {
+      this.http.get(this.url(API_STORAGE_METADATA_ALL_ENTITIES),
+        (err: Error, entities: Object) => {
+          if (_.isArray(entities)) {
+            this.entityDefs = [];
+            entities.forEach(entityDefJson => {
+              let entity:any = TypeOrmEntityRegistry.$().getEntityRefByName(entityDefJson.name);
+              if(!entity){
+                entity = this.registry.fromJson(entityDefJson);
+              }
+              this.entityDefs.push(entity);
+            });
+          }
+          this._isReady.complete();
+          this._ready = true;
+        });
+    }
   }
 
   getStorages(): Observable<IStorageRefMetadata[]> {

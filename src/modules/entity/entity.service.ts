@@ -67,25 +67,30 @@ export class EntityService {
       // TODO load for use permissions
       this.loadEntityMetadata();
     } else {
+      this._ready = false;
       this.entityDefs = [];
     }
   }
 
 
   loadEntityMetadata() {
-    this._ready = false;
-    this.http.get('api/metadata/entities',
-      (err: Error, entities: Object) => {
-        if (_.isArray(entities)) {
-          this.entityDefs = [];
-          entities.forEach(entityDefJson => {
-            let ed = EntityRegistry.fromJson(entityDefJson);
-            this.entityDefs.push(ed);
-          });
-        }
-        this._isReady.complete();
-        this._ready = true;
-      });
+    if (!this._ready) {
+      this.http.get('api/metadata/entities',
+        (err: Error, entities: Object) => {
+          if (_.isArray(entities)) {
+            this.entityDefs = [];
+            entities.forEach(entityDefJson => {
+              let entity = EntityRegistry.$().getEntityRefByName(entityDefJson.name);
+              if(!entity){
+                entity = EntityRegistry.fromJson(entityDefJson);
+              }
+              this.entityDefs.push(entity);
+            });
+          }
+          this._isReady.complete();
+          this._ready = true;
+        });
+    }
   }
 
 
