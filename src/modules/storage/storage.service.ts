@@ -19,6 +19,7 @@ import {IEntityRef, ILookupRegistry, LookupRegistry, XS_TYPE_ENTITY} from 'commo
 import {Expressions} from 'commons-expressions/browser';
 import {Subject} from 'rxjs/Subject';
 import {AuthMessage} from '../system/messages/types/AuthMessage';
+import {Helper} from '../../libs/observable/Helper';
 
 
 @Injectable()
@@ -73,7 +74,7 @@ export class StorageService {
   }
 
   reloadMetadata() {
-    this.authService.isInitialized().subscribe(x => {
+    Helper.after(this.authService.isInitialized(), x => {
       if(x){
         this.authService.getChannel().subscribe(s => {
           if(s instanceof AuthMessage){

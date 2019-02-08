@@ -10,6 +10,7 @@ import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
 import {AuthService} from '../system/api/auth/auth.service';
 import {HttpClientWrapper} from '../system/http-client-wrapper.service';
 import {AuthMessage} from '../system/messages/types/AuthMessage';
+import {Helper} from '../../libs/observable/Helper';
 
 
 @Injectable()
@@ -21,19 +22,19 @@ export class EntityService {
 
   private _ready: boolean = false;
 
-  private prefix:string = '/entity';
+  private prefix: string = '/entity';
 
   constructor(private http: HttpClientWrapper, private authService: AuthService) {
     this.reloadMetadata();
   }
 
 
-  setNgUrlPrefix(prefix:string){
+  setNgUrlPrefix(prefix: string) {
     this.prefix = prefix;
   }
 
 
-  getNgUrlPrefix(){
+  getNgUrlPrefix() {
     return this.prefix;
   }
 
@@ -49,27 +50,26 @@ export class EntityService {
 
 
   reloadMetadata() {
-    this.authService.isInitialized().subscribe(x => {
-      if(x){
+    Helper.after(this.authService.isInitialized(), x => {
+      if (x) {
         this.authService.getChannel().subscribe(s => {
-          if(s instanceof AuthMessage){
+          if (s instanceof AuthMessage) {
             this.userState();
           }
-        })
+        });
       }
-    })
+    });
   }
 
 
-  userState(){
-    if(this.authService.isLoggedIn()){
+  userState() {
+    if (this.authService.isLoggedIn()) {
       // TODO load for use permissions
       this.loadEntityMetadata();
-    }else{
+    } else {
       this.entityDefs = [];
     }
   }
-
 
 
   loadEntityMetadata() {

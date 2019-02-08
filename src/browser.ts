@@ -7,6 +7,8 @@ export * from "./libs/angular/ITemplateEntry";
 export * from "./libs/exceptions/NoFormHandlerDefinedForTypeError";
 export * from "./libs/exceptions/NoFormTypeDefinedError";
 
+export * from "./libs/observable/Helper";
+
 export * from "./libs/validators/EqualWith";
 export * from "./libs/validators/IsUrl";
 

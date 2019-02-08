@@ -9,6 +9,8 @@ import {MessageChannel} from '../../messages/MessageChannel';
 import {MessageType} from '../../messages/IMessage';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Subject} from 'rxjs/Subject';
+
 import {MESSAGE_TYPE_AUTH_SERVICE} from '../../constants';
 import {AuthMessage} from '../../messages/types/AuthMessage';
 
@@ -23,16 +25,19 @@ export class NoopAuthService implements IAuthServiceProvider {
   }
 
   init() {
+    this._initialized.next(true);
+    this._initialized.complete();
     let msg = new AuthMessage();
     msg.type = MessageType.SUCCESS;
     msg.topic = 'set user';
     this.getChannel().publish(msg);
-    this._initialized.next(true);
-    this._initialized.complete();
 
   }
 
-  isInitialized(): Observable<boolean>  {
+  isInitialized(): Observable<boolean> | boolean  {
+    if(this._initialized.value){
+      return this._initialized.value;
+    }
     return this._initialized;
   }
 

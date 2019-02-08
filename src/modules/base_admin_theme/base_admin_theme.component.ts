@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnInit, Renderer2, TemplateRef, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, Input, OnDestroy, OnInit, Renderer2, TemplateRef, ViewEncapsulation} from '@angular/core';
 import {IUser} from '../../libs/api/auth/IUser';
 import {AuthService} from '../system/api/auth/auth.service';
 import PerfectScrollbar from 'perfect-scrollbar';
@@ -9,6 +9,9 @@ import {CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE} from '../system/constan
 import {LogMessage} from '../system/messages/types/LogMessage';
 import {INotifyOptions} from './components/notifications/INotifyOptions';
 import {NotificationsService} from './components/notifications/notifications.service';
+import {AuthMessage} from '../system/messages/types/AuthMessage';
+import {Subscription} from 'rxjs/Subscription';
+import {Helper} from '../../libs/observable/Helper';
 
 @Component({
   selector: 'bat-admin-layout',
@@ -16,7 +19,7 @@ import {NotificationsService} from './components/notifications/notifications.ser
   // styleUrls: ['./base_admin_theme.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class BaseAdminThemeComponent implements OnInit {
+export class BaseAdminThemeComponent implements OnInit,OnDestroy {
 
   @Input('content')
   ref: TemplateRef<any>;
@@ -45,6 +48,10 @@ export class BaseAdminThemeComponent implements OnInit {
 
   viewContext: string;
 
+  private initSubscription:Subscription;
+
+  private userChannelSubscription:Subscription;
+
   constructor(public authService: AuthService,
               public renderer: Renderer2,
               public appStateService: AppStateService,
@@ -53,6 +60,8 @@ export class BaseAdminThemeComponent implements OnInit {
 
     appStateService.getViewContext().subscribe(x => this.viewContext = x);
     appStateService.getLogService().subscribe(this.onLogMessage.bind(this));
+
+
   }
 
 
@@ -71,16 +80,28 @@ export class BaseAdminThemeComponent implements OnInit {
   }
 
   async getUser(): Promise<IUser> {
-    return await this.authService.getUser();
+    if(this.authService.isLoggedIn()){
+      return await this.authService.getUser();
+    }else{
+      return null;
+    }
+
   }
 
 
   async ngOnInit() {
-    try {
-      this.user = await this.getUser();
-    } catch (e) {
-      console.error(e);
-    }
+    Helper.after(this.authService.isInitialized(), s => {
+      if(s){
+        this.userChannelSubscription = this.authService.getChannel().subscribe(async msg => {
+          if(msg instanceof AuthMessage){
+            if(this.authService.isLoggedIn()){
+              this.user = await this.getUser();
+            }
+          }
+        })
+      }
+    });
+
     let entry = this.navigatorService.getEntryByContext(CTXT_ROUTE_USER_PROFILE);
     if (entry) {
       this.userRouterLinks.profile = '/' + entry.getFullPath();
@@ -92,6 +113,15 @@ export class BaseAdminThemeComponent implements OnInit {
     await this.enableMenuScrollBar();
   }
 
+  ngOnDestroy(): void {
+    if(this.userChannelSubscription){
+      this.userChannelSubscription.unsubscribe();
+    }
+    if(this.initSubscription){
+      this.initSubscription.unsubscribe();
+    }
+
+  }
 
 
   async enableMenuScrollBar() {
