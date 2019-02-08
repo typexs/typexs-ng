@@ -13,7 +13,7 @@ import {REGISTRY_TYPEORM} from '@typexs/base/browser';
 @Component({
   selector: 'storage-struct',
   templateUrl: './storage-struct.component.html',
-  styleUrls: ['./storage-struct.component.html']
+  styleUrls: ['./storage-struct.component.scss']
 })
 export class StorageStructComponent implements OnInit {
 

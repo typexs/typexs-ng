@@ -70,3 +70,6 @@ tmp/
 
 **/scss/themes/ext
 **/scss/themes/ext/*
+
+
+src/*.metadata.json
