@@ -18,6 +18,7 @@ import {REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base/browser';
 import {IEntityRef, ILookupRegistry, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
 import {Expressions} from 'commons-expressions/browser';
 import {Subject} from 'rxjs/Subject';
+import {AuthMessage} from '../system/messages/types/AuthMessage';
 
 
 @Injectable()
@@ -34,8 +35,8 @@ export class StorageService {
   private prefix: string = '/storage';
 
   constructor(private http: HttpClientWrapper, private authService: AuthService) {
-    this.reloadMetadata();
     this.registry = TypeOrmEntityRegistry.$();
+    this.reloadMetadata();
   }
 
   getRegistry() {
@@ -72,6 +73,29 @@ export class StorageService {
   }
 
   reloadMetadata() {
+    this.authService.isInitialized().subscribe(x => {
+      if(x){
+        this.authService.getChannel().subscribe(s => {
+          if(s instanceof AuthMessage){
+            this.userState();
+          }
+        })
+      }
+    })
+  }
+
+
+  userState(){
+    if(this.authService.isLoggedIn()){
+      // TODO load for use permissions
+      this.loadEntityMetadata();
+    }else{
+      this.entityDefs = [];
+    }
+  }
+
+
+  loadEntityMetadata(){
     this._ready = false;
     this.http.get(this.url(API_STORAGE_METADATA_ALL_ENTITIES),
       (err: Error, entities: Object) => {

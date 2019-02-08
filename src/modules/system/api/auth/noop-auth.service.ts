@@ -32,7 +32,7 @@ export class NoopAuthService implements IAuthServiceProvider {
 
   }
 
-  isInitialized(): Observable<boolean> | Promise<boolean> | boolean {
+  isInitialized(): Observable<boolean>  {
     return this._initialized;
   }
 

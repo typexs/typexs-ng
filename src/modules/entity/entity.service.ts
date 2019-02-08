@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import * as _ from 'lodash';
+import {Subject} from 'rxjs/Subject';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 
@@ -8,6 +9,7 @@ import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
 import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
 import {AuthService} from '../system/api/auth/auth.service';
 import {HttpClientWrapper} from '../system/http-client-wrapper.service';
+import {AuthMessage} from '../system/messages/types/AuthMessage';
 
 
 @Injectable()
@@ -15,7 +17,7 @@ export class EntityService {
 
   private entityDefs: EntityRef[] = [];
 
-  private _isReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private _isReady: Subject<boolean> = new Subject<boolean>();
 
   private _ready: boolean = false;
 
@@ -26,15 +28,14 @@ export class EntityService {
   }
 
 
-
   setNgUrlPrefix(prefix:string){
     this.prefix = prefix;
   }
 
+
   getNgUrlPrefix(){
     return this.prefix;
   }
-
 
 
   isReady(callback: Function): void {
@@ -48,6 +49,30 @@ export class EntityService {
 
 
   reloadMetadata() {
+    this.authService.isInitialized().subscribe(x => {
+      if(x){
+        this.authService.getChannel().subscribe(s => {
+          if(s instanceof AuthMessage){
+            this.userState();
+          }
+        })
+      }
+    })
+  }
+
+
+  userState(){
+    if(this.authService.isLoggedIn()){
+      // TODO load for use permissions
+      this.loadEntityMetadata();
+    }else{
+      this.entityDefs = [];
+    }
+  }
+
+
+
+  loadEntityMetadata() {
     this._ready = false;
     this.http.get('api/metadata/entities',
       (err: Error, entities: Object) => {
