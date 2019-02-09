@@ -47,9 +47,7 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
         label: 'Reset',
         type: 'restore'
       },
-
     ],
-
   };
 
 
@@ -87,7 +85,7 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
     // TODO instance must be present
     super.reset();
     this.data = new DataContainer(this.instance, this.registry);
-    this.elem = this.formService.get(this.formName, this.instance);
+    this.elem = this.formService.get(this.formName, this.instance, this.registry);
     // TODO restructure form
     this.build(this.elem);
   }
