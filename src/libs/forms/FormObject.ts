@@ -1,8 +1,7 @@
-import {PropertyRef} from '@typexs/schema/libs/registry/PropertyRef';
-
 import * as _ from 'lodash';
 import {ResolveDataValue} from './ResolveDataValue';
 import {TreeObject} from '../views/TreeObject';
+import {IPropertyRef, XS_TYPE_PROPERTY} from 'commons-schema-api/browser';
 
 
 export function isFormObject(obj: TreeObject | FormObject): obj is FormObject {
@@ -34,7 +33,7 @@ export abstract class FormObject extends TreeObject {
 
   protected replicable: boolean = false;
 
-  private binding: PropertyRef = null;
+  private binding: IPropertyRef = null;
 
   getGivenLabel() {
     return this.binding.label();
@@ -72,7 +71,7 @@ export abstract class FormObject extends TreeObject {
   getPath(): string {
     let arr = [];
 
-    if (this.getBinding() instanceof PropertyRef) {
+    if (this.getBinding()['baseType'] == XS_TYPE_PROPERTY) {
       if (this.getParent()) {
         const parent = this.getParent();
         if (isFormObject(parent)) {

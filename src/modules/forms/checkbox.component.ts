@@ -32,7 +32,7 @@ export class CheckboxComponent extends AbstractFormComponent<Checkbox> {
 
 
   set isChecked(checked: boolean) {
-    let datatype = this.elem.getBinding().dataType;
+    let datatype = this.elem.getBinding().getType();
     if (this.elem.isMultiple()) {
       let value = this.getValue();
       if (!value) {

@@ -5,10 +5,8 @@ import {ResolveDataValue} from './ResolveDataValue';
 import * as _ from 'lodash';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
 import {ContentComponentRegistry} from '../views/ContentComponentRegistry';
-import {EntityRef, PropertyRef} from '@typexs/schema/browser';
-import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
 import {NotYetImplementedError} from "@typexs/base/browser"
-import {IPropertyRef} from 'commons-schema-api/browser';
+import {AbstractRef, ClassRef, IEntityRef, IPropertyRef, XS_TYPE_ENTITY, XS_TYPE_PROPERTY} from 'commons-schema-api/browser';
 
 export class FormBuilder {
 
@@ -25,13 +23,13 @@ export class FormBuilder {
   }
 
 
-  buildFromEntity(entity: EntityRef): Form {
+  buildFromEntity(entity: IEntityRef): Form {
     this.data = entity;
     return <Form>this._buildFormObject(entity);
   }
 
 
-  private _buildFormObject(entity: EntityRef | PropertyRef, parent: FormObject = null, options: { level: number } = {level: 0}) {
+  private _buildFormObject(entity: IEntityRef | IPropertyRef, parent: FormObject = null, options: { level: number } = {level: 0}) {
     let formObject: FormObject = null;
 
     if (!this.form) {
@@ -39,21 +37,21 @@ export class FormBuilder {
       this.form = formObject = ContentComponentRegistry.createHandler('form');
       formObject.handle('name', entity.id());
       formObject.handle('binding', entity);
-    } else if (entity instanceof PropertyRef) {
+    } else if ((<AbstractRef><any>entity).baseType == XS_TYPE_PROPERTY) {
       // TODO support also other types
-      let property = entity;
+      let property:IPropertyRef = <IPropertyRef>entity;
 
       let formType = <string>property.getOptions(<any>'form');// || 'text';
       if (!formType) {
         // TODO Defaults for the field
-        if (property.identifier) {
+        if (property.isIdentifier()) {
           formType = 'readonly';
         } else if (property.isEntityReference()) {
           formType = 'select';
         } else if (property.isReference()) {
           formType = 'grid';
         } else {
-          if (property.dataType == 'boolean') {
+          if (property['getType'] && property['getType']() == 'boolean') {
             formType = 'checkbox';
           } else {
             formType = 'text';
@@ -68,7 +66,7 @@ export class FormBuilder {
       } else {
         formObject = this.forDefault(formType, property);
       }
-    } else if (entity instanceof EntityRef) {
+    } else if ((<AbstractRef><any>entity).baseType == XS_TYPE_ENTITY) {
       // TODO is this necessary
     }
 
@@ -80,27 +78,27 @@ export class FormBuilder {
     }
 
     const nextLevel = options.level + 1;
-    if (entity instanceof EntityRef) {
+    if ((<AbstractRef><any>entity).baseType == XS_TYPE_ENTITY) {
       if(options.level == 0 || formObject.isStruct()){
-        let properties = entity.getPropertyRefs();
+        let properties = (<IEntityRef>entity).getPropertyRefs();
         for (let property of properties) {
           let childObject = this._buildFormObject(property, formObject,{level:nextLevel});
           formObject.insert(childObject);
         }
       }
-    } else if (entity instanceof PropertyRef) {
+    } else if ((<AbstractRef><any>entity).baseType == XS_TYPE_PROPERTY) {
       // TODO for properties which points to Entity / Entities
       //property.getEntityRef
       //formObject;
-      let property = <PropertyRef>entity;
+      let property = <IPropertyRef>entity;
       if (property.isReference()) {
         if (property.isEntityReference()) {
           // build for new entity
-          let entity = <EntityRef>property.getTargetRef().getEntityRef();
+          let entity = (<ClassRef>property.getTargetRef()).getEntityRef();
           this._buildFormObject(entity, formObject,{level:nextLevel});
         } else {
           // insert property form elements
-          let properties = EntityRegistry.getPropertyRefsFor(property.targetRef);
+          let properties = property.getTargetRef().getPropertyRefs();
           for (let property of properties) {
             let childObject = this._buildFormObject(property, formObject,{level:nextLevel});
             formObject.insert(childObject);

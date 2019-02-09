@@ -7,7 +7,7 @@ import {FormObject, isFormObject} from './FormObject';
 import {ContentComponentRegistry} from '../views/ContentComponentRegistry';
 import {Context} from '../views/Context';
 import {DataContainer} from '@typexs/base/browser';
-import {IEntityRef, XS_TYPE_PROPERTY} from 'commons-schema-api/browser';
+import {ClassRef, XS_TYPE_PROPERTY} from 'commons-schema-api/browser';
 import {Expressions} from 'commons-expressions/browser';
 
 
@@ -109,9 +109,9 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
         let binding = this.elem.getBinding();
         if (binding.isEntityReference()) {
           if (_.isArray(this._value)) {
-            this._value = this._value.map(v => Expressions.buildLookupConditions(<IEntityRef>binding.getTargetRef().getEntityRef(), v) + '');
+            this._value = this._value.map(v => Expressions.buildLookupConditions((<ClassRef>binding.getTargetRef()).getEntityRef(), v) + '');
           } else {
-            let cond = Expressions.buildLookupConditions(<IEntityRef>binding.getTargetRef().getEntityRef(), this._value);
+            let cond = Expressions.buildLookupConditions((<ClassRef>binding.getTargetRef()).getEntityRef(), this._value);
             this._value = [cond];
           }
         }else if(binding.isCollection()){
@@ -137,7 +137,7 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
       } else {
         data = [v];
       }
-      let refs = data.map(v => Expressions.parseLookupConditions((<IEntityRef>binding.getTargetRef().getEntityRef()), v));
+      let refs = data.map(v => Expressions.parseLookupConditions(((<ClassRef>binding.getTargetRef()).getEntityRef()), v));
       if (!binding.isCollection()) {
         refs = refs.shift();
       }

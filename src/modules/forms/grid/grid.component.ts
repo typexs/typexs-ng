@@ -46,7 +46,7 @@ export class GridComponent extends AbstractFormComponent<Grid> implements OnInit
         if (obj.isReplicable()) {
           // it is so has enum select + multiple but one-decision element like checkbox or radio
           if (!tmpObj) {
-            tmpObj = obj.getBinding().object.new();
+            tmpObj = obj.getBinding().getSourceRef().create();
           }
 
           let enumHandle = new EnumHandle(this.injector, obj);
@@ -107,7 +107,7 @@ export class GridComponent extends AbstractFormComponent<Grid> implements OnInit
     this.entries.push(cGridRow);
 
     if (!row) {
-      let object = Reflect.construct(this.elem.getBinding().targetRef.getClass(), []);
+      let object = Reflect.construct(this.elem.getBinding().getTargetRef().getClass(), []);
       let path = this.context.path();
 
       if (this.elem.isMultiple()) {
