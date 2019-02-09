@@ -3,41 +3,42 @@
     <h3>Backends</h3>
   </div>
   <div class="card-body">
-    <table datatable class="hover">
-      <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Entities</th>
-        <th>Options</th>
-        <th>Ops</th>
-      </tr>
-      </thead>
+    <txs-datatable>
+      <table class="table hover">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Entities</th>
+          <th>Options</th>
+          <th>Ops</th>
+        </tr>
+        </thead>
 
-      <tbody>
-      <tr *ngFor="let storage of storages">
-        <td>{{storage.name}}</td>
-        <td>{{storage.type}}</td>
-        <td>
-        {{storage.entities.length}}
-        </td>
-        <td>
-          <details>
-            <summary>JSON</summary>
-            <pre class="language-js">
+        <tbody>
+        <tr *ngFor="let storage of storages">
+          <td>{{storage.name}}</td>
+          <td>{{storage.type}}</td>
+          <td>
+            {{storage.entities.length}}
+          </td>
+          <td>
+            <details>
+              <summary>JSON</summary>
+              <pre class="language-js">
           {{storage.options | json}}
             </pre>
-          </details>
-        </td>
-        <td>
-          <!-- TODO
-          <a class="btn btn-primary"
-             [routerLink]="[storageService.getNgUrlPrefix(),'backend',storage.name]">View</a>
-             -->
-        </td>
-      </tr>
-      </tbody>
-
-    </table>
+            </details>
+          </td>
+          <td>
+            <!-- TODO
+            <a class="btn btn-primary"
+               [routerLink]="[storageService.getNgUrlPrefix(),'backend',storage.name]">View</a>
+               -->
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </txs-datatable>
   </div>
 </div>

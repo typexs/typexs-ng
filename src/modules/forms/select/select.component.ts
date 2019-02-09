@@ -16,6 +16,8 @@ import {EnumHandle} from '../libs/EnumHandle';
 })
 export class SelectComponent extends AbstractFormComponent<Select> implements OnInit {
 
+
+
   cachedOptions: Option[] = [];
 
 
@@ -41,6 +43,20 @@ export class SelectComponent extends AbstractFormComponent<Select> implements On
     return o;
   }
 
+  selectFirst(o:Option){
+    if(!this.supportsMultiple && !this._value){
+      // TODO default value?
+      this.value = o.value;
+    }
+  }
+
+
+  addCacheOption(iso:ISelectOption){
+    let o = SelectComponent.checkAndCreateOption(iso)
+    this.selectFirst(o);
+    this.cachedOptions.push(o);
+  }
+
   loadOptions() {
 
     let enumHandle = new EnumHandle(this.injector, this.elem);
@@ -51,14 +67,15 @@ export class SelectComponent extends AbstractFormComponent<Select> implements On
       if (!_.isArray(enums)) {
         enums.subscribe((e: ISelectOption[]) => {
           if (e) {
+            this.cachedOptions = [];
             e.forEach(_e => {
-              this.cachedOptions.push(SelectComponent.checkAndCreateOption(_e));
+              this.addCacheOption(_e);
             });
           }
         });
       } else {
         enums.forEach(e => {
-          this.cachedOptions.push(SelectComponent.checkAndCreateOption(e));
+          this.addCacheOption(e);
         });
       }
     }

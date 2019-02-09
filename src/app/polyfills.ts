@@ -82,7 +82,4 @@ import 'bootstrap/dist/js/bootstrap';
 import 'perfect-scrollbar/dist/perfect-scrollbar';
 import 'prismjs/prism'
 
-import 'jquery/dist/jquery.slim';
-import 'datatables.net/js/jquery.dataTables';
-
 

@@ -14,7 +14,8 @@ import {PagerService} from './pager/PagerService';
 import {AppStateService} from './app.state.service';
 import {InvokerService} from './invoker.service';
 import {HttpClientWrapper} from './http-client-wrapper.service';
-import {DataTableDirective} from './directive/datatables.directive';
+import {DatatableComponent} from './datatable/datatable.component';
+
 
 const PROVIDERS = [
   SystemInfoService,
@@ -29,18 +30,16 @@ const PROVIDERS = [
   HttpClientWrapper
 ];
 
+const COMPONENTS = [
+  AlertComponent,
+  PagerComponent,
+  DatatableComponent
+];
+
 @NgModule({
-  declarations: [
-    AlertComponent,
-    PagerComponent,
-    DataTableDirective
-  ],
+  declarations: COMPONENTS,
   imports: [BrowserModule],
-  exports: [
-    AlertComponent,
-    PagerComponent,
-    DataTableDirective
-  ],
+  exports:  COMPONENTS,
   providers: PROVIDERS
 })
 export class SystemModule {

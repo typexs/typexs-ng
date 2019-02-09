@@ -14,8 +14,9 @@
       frameSize="5"
       (onPageChange)="updateEntities($event)">
     </txs-pager>
-    <div class="table-wrapper">
-      <table datatable class="table hover">
+
+    <txs-datatable>
+      <table class="table hover">
         <thead>
         <tr>
           <th class="headcol">Ops</th>
@@ -75,16 +76,15 @@
               {{asString(prop.get(entity))}}
             </ng-template>
           </td>
-
         </tr>
         </tbody>
       </table>
-    </div>
+    </txs-datatable>
+
     <txs-pager
       [name]="pagerId"
       frameSize="5"
       (onPageChange)="updateEntities($event)"
     ></txs-pager>
-
   </div>
 </div>

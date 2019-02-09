@@ -50,6 +50,12 @@ export class DataTableDirective implements OnDestroy, AfterContentInit {
     }
   }
 
+  reload(){
+    if(this.dt){
+      this.displayTable();
+    }
+  }
+
   private async displayTable() {
     try {
       const $ = require('jquery');

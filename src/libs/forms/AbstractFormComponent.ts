@@ -114,6 +114,12 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
             let cond = Expressions.buildLookupConditions(<IEntityRef>binding.getTargetRef().getEntityRef(), this._value);
             this._value = [cond];
           }
+        }else if(binding.isCollection()){
+          if(this._value){
+            if(!_.isArray(this._value)){
+              this._value = [this._value];
+            }
+          }
         }
       }
     }
@@ -137,7 +143,20 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
       }
       this.setValue(refs);
     } else {
-      this.setValue(v);
+      if (binding.isCollection()) {
+        if (_.isArray(v)) {
+          this.setValue(v);
+        } else {
+          this.setValue([v]);
+        }
+      } else {
+        if (_.isArray(v) && v.length == 1) {
+          this.setValue(v[0]);
+        } else {
+          this.setValue(v);
+        }
+      }
+
     }
   }
 

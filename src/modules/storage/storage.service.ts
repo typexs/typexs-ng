@@ -117,6 +117,7 @@ export class StorageService {
     }
   }
 
+
   getStorages(): Observable<IStorageRefMetadata[]> {
     let obs = new Subject<IStorageRefMetadata[]>();
     this.http.get(this.url(API_STORAGE_METADATA_ALL_STORES),

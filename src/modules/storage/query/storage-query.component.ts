@@ -45,7 +45,6 @@ export class StorageQueryComponent implements OnInit, OnDestroy {
 
   pager: Pager;
 
-
   constructor(public entityService: StorageService,
               private route: ActivatedRoute,
               private pagerService: PagerService) {
@@ -53,7 +52,7 @@ export class StorageQueryComponent implements OnInit, OnDestroy {
   }
 
 
-  onQueryAction(action:StorageQueryAction){
+  onQueryAction(action: StorageQueryAction) {
     this.query(action.query);
   }
 
@@ -82,7 +81,9 @@ export class StorageQueryComponent implements OnInit, OnDestroy {
   query(query?: any) {
     this._query = query;
     this.machineName = this.route.snapshot.paramMap.get('machineName');
-    this.entityDef = LookupRegistry.$(REGISTRY_TYPEORM).find(XS_TYPE_ENTITY, (e:IEntityRef) => {return e.machineName == _.snakeCase(this.machineName)});
+    this.entityDef = LookupRegistry.$(REGISTRY_TYPEORM).find(XS_TYPE_ENTITY, (e: IEntityRef) => {
+      return e.machineName == _.snakeCase(this.machineName);
+    });
     if (this.entityDef) {
       this.entityService.query(this.machineName, query, {
         offset: this.offset,
@@ -97,6 +98,7 @@ export class StorageQueryComponent implements OnInit, OnDestroy {
             this.pager.totalPages = Math.ceil(this.count * 1.0 / this.limit * 1.0);
             this.pager.currentPage = (this.offset / this.limit) + 1;
             this.pager.calculatePages();
+
           }
         }
       );
@@ -105,15 +107,15 @@ export class StorageQueryComponent implements OnInit, OnDestroy {
     }
   }
 
-  buildLookupConditions(e:IEntityRef,res:any){
-    return Expressions.buildLookupConditions(e,res);
+  buildLookupConditions(e: IEntityRef, res: any) {
+    return Expressions.buildLookupConditions(e, res);
   }
 
 
   asString(data: any) {
-    if(_.isObjectLike(data)){
+    if (_.isObjectLike(data)) {
       return JSON.stringify(data, null, 2);
-    }else{
+    } else {
       return data;
     }
 
