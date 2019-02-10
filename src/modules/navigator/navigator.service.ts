@@ -135,31 +135,29 @@ export class NavigatorService {
     let base = this.findMatch(pattern);
 
     if (base) {
-      let regex = new RegExp(pattern);
       groupEntry.setParent(base);
-
-      const entries = _.orderBy(this.entries, s => {
-        return s.getFullPath().length;
-      });
-
-      let selected: number[] = [];
-      let children = _.filter(entries, e => {
-        const id = e.getParentId();
-
-        if (id && selected.indexOf(id) != -1) return false;
-        const fullPath = e.getFullPath();
-        const res = e.route != null && regex.test(fullPath);
-
-        if (res) {
-          selected.push(e.id);
-        }
-        return res;
-      });
-
-      _.map(children, c => c.setParent(groupEntry));
-    } else {
-      // TODO
     }
+
+    let regex = new RegExp(pattern);
+    const entries = _.orderBy(this.entries, s => {
+      return s.getFullPath().length;
+    });
+
+    let selected: number[] = [];
+    let children = _.filter(entries, e => {
+      const id = e.getParentId();
+
+      if (id && selected.indexOf(id) != -1) return false;
+      const fullPath = e.getFullPath();
+      const res = e.route != null && regex.test(fullPath);
+
+      if (res) {
+        selected.push(e.id);
+      }
+      return res;
+    });
+
+    _.map(children, c => c.setParent(groupEntry));
 
   }
 

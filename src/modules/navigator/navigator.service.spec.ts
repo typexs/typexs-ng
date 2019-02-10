@@ -528,6 +528,7 @@ describe('Service: NavigatorService', () => {
       expect(service.getEntries()).to.have.length(10);
 
       let tree = service.getTree();
+      let t = clearTree(tree);
       expect(tree).to.have.length(1);
       expect(tree[0].children).to.have.length(3);
       expect(_.map(tree[0].children, p => p.label)).to.deep.eq([
