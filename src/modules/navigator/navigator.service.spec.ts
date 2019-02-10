@@ -80,7 +80,7 @@ describe('Service: NavigatorService', () => {
       let roots = service.getRoots();
       expect(roots).to.have.length(1);
 
-      service.addGroupEntry('admin/*', {
+      service.addGroupEntry('admin/.*', {
         label: 'System',
         group: 'admin'
       });
@@ -287,22 +287,22 @@ describe('Service: NavigatorService', () => {
           ]
         },
         {
-          "children": [],
-          "isGroup": false,
-          "label": "Demo",
-          "path": "demo",
+          'children': [],
+          'isGroup': false,
+          'label': 'Demo',
+          'path': 'demo',
         },
         {
-          "children": [],
-          "isGroup": false,
-          "label": "UserData",
-          "path": "user/data"
+          'children': [],
+          'isGroup': false,
+          'label': 'UserData',
+          'path': 'user/data'
         },
         {
-          "children": [],
-          "isGroup": false,
-          "label": "UserLogin",
-          "path": "user/login"
+          'children': [],
+          'isGroup': false,
+          'label': 'UserLogin',
+          'path': 'user/login'
         }
       ]);
 
@@ -448,6 +448,93 @@ describe('Service: NavigatorService', () => {
       expect(demoTree).to.have.length(2);
       expect(demoTree[0].path).to.be.eq('user/data');
       expect(demoTree[1].path).to.be.eq('user/login');
+    });
+
+
+  });
+
+
+  describe('build navigation tree from root / path', () => {
+    let service: NavigatorService;
+
+    class MockRouterStruct {
+      config: Routes = [
+        {path: '', data: {group: 'test'}},
+        {path: 'admin'},
+        {path: 'admin/configure'},
+        {path: 'admin/storages'},
+        {path: 'level'},
+        {path: 'level/one'},
+        {path: 'level/two'},
+        {path: 'group/two'},
+        {path: 'group/one'},
+      ];
+
+      events: Observable<any> = new Observable<any>(() => {
+      });
+
+      resetConfig(routes: Routes) {
+        this.config = routes;
+      }
+    }
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          BrowserTestingModule,
+          RouterTestingModule],
+        providers: [
+          {provide: APP_BASE_HREF, useValue: '/'},
+          ApplicationInitStatus,
+          {provide: Router, useClass: MockRouterStruct},
+          NavigatorService
+        ]
+      });
+    });
+
+
+    it('auto grouping paths', () => {
+      service = TestBed.get(NavigatorService);
+      let entries = service.getEntries();
+      expect(entries).to.have.length(9);
+
+      let tree = service.getRebuildRoutes();
+      expect(tree).to.have.length(1);
+      expect(tree[0].path).to.eq('');
+      expect(tree[0].children).to.have.length(4);
+      expect(_.map(tree[0].children, p => p.path)).to.deep.eq([
+        "admin",
+        "level",
+        "group/two",
+        "group/one"
+      ]);
+      /*
+      expect(tree[0].children[0].data.label).to.eq('Config');
+      expect(tree[0].children[1].path).to.eq('storages');
+      expect(tree[0].children[0].children[0].path).to.eq('module1');
+      expect(tree[0].children[0].children[1].path).to.eq('module2');
+      */
+    });
+
+    it('add group without base element', () => {
+      service = TestBed.get(NavigatorService);
+      expect(service.getEntries()).to.have.length(9);
+
+
+      service.addGroupEntry('group/.*', {
+        label: 'Group',
+        group: 'group'
+      });
+      expect(service.getEntries()).to.have.length(10);
+
+      let tree = service.getTree();
+      expect(tree).to.have.length(1);
+      expect(tree[0].children).to.have.length(3);
+      expect(_.map(tree[0].children, p => p.label)).to.deep.eq([
+        "Admin",
+        "Level",
+        "Group"
+      ]);
     });
 
 

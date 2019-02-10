@@ -29,9 +29,9 @@ export class NavigatorService {
 
   readRoutes(config: Routes, parent: NavEntry = null) {
     for (let route of config) {
-      let entry = _.find(this.entries, e => e.route && e.id == route['navId'] );
+      let entry = _.find(this.entries, e => e.route && e.id == route['navId']);
 
-      if(!entry){
+      if (!entry) {
         entry = new NavEntry();
         this.entries.push(entry);
         entry.parse(route);
@@ -65,9 +65,9 @@ export class NavigatorService {
     }
 
     // apply groups
-    _.filter(this.entries,entry => entry.route == null && entry.isGroup()).map(groupEntry => {
+    _.filter(this.entries, entry => entry.route == null && entry.isGroup()).map(groupEntry => {
       this.regroup(groupEntry);
-    })
+    });
 
   }
 
@@ -79,27 +79,19 @@ export class NavigatorService {
 
   private rebuildRoutes(parent: NavEntry = null): Routes {
     let _routes: NavEntry[] = _.filter(this.entries, e => e.parent == parent);
-    let routes:Routes = [];
-    while(_routes.length > 0){
+    let routes: Routes = [];
+    while (_routes.length > 0) {
       let route = _routes.shift();
       let r = route.route;
       // if route exists
       if (r) {
-
-        /*
-        if (parent) {
-          let parentPath = parent.getFullPath()
-          r.path = r.path.replace(parentPath + '/', '');
-        }
-        */
-
         r.path = route.path;
         if (!route.isRedirect()) {
           r.children = this.rebuildRoutes(route);
         }
         routes.push(r);
-      }else{
-        let children =  _.filter(this.entries, e => e.parent == route);
+      } else {
+        let children = _.filter(this.entries, e => e.parent == route);
         children.forEach(c => _routes.push(c));
       }
     }
@@ -118,7 +110,7 @@ export class NavigatorService {
 
 
   getEntryByContext(path: string) {
-    return _.find(this.entries, e => _.get(e,'data.context',null) == path);
+    return _.find(this.entries, e => _.get(e, 'data.context', null) == path);
   }
 
 
@@ -132,28 +124,38 @@ export class NavigatorService {
     navEntry.parseData(data);
     navEntry.groupRegex = pattern;
     this.entries.push(navEntry);
-
     this.regroup(navEntry);
+    return navEntry;
   }
 
-  regroup(groupEntry:NavEntry){
+
+  regroup(groupEntry: NavEntry) {
     const pattern = groupEntry.groupRegex;
-    let split = pattern.split('/');
-    let length = split.length;
+//    let split = pattern.split('/');
     let base = this.findMatch(pattern);
 
     if (base) {
       let regex = new RegExp(pattern);
-      //const idx = this.entries.indexOf(base);
-      //_.insert(this.entries)
-      //this.entries.splice(idx + 1, 0, navEntry);
       groupEntry.setParent(base);
 
-      let children = _.filter(this.entries, e =>
-        e.route != null &&
-        e.getFullPath().split('/').length == length &&
-        regex.test(e.getFullPath())
-      );
+      const entries = _.orderBy(this.entries, s => {
+        return s.getFullPath().length;
+      });
+
+      let selected: number[] = [];
+      let children = _.filter(entries, e => {
+        const id = e.getParentId();
+
+        if (id && selected.indexOf(id) != -1) return false;
+        const fullPath = e.getFullPath();
+        const res = e.route != null && regex.test(fullPath);
+
+        if (res) {
+          selected.push(e.id);
+        }
+        return res;
+      });
+
       _.map(children, c => c.setParent(groupEntry));
     } else {
       // TODO
