@@ -20,12 +20,6 @@ menu-link {
 
   vertical-align: 0;
 
-  // Menu
-  &:before {
-
-    content: fa-content($fa-var-cubes);
-  }
-
 
   &.icon-admin-system-modules {
     &:before {
