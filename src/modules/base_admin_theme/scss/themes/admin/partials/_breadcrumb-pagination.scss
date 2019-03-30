@@ -8,7 +8,6 @@
     color: $primary-color;
 
     &::before {
-      /* content: $breadcrumb-divider; */
     }
   }
 
@@ -19,7 +18,7 @@
 
 .page-item {
   &.active .page-link {
-    color: #fff;
+    color: $blank-white;
     background-color: $primary-color;
     border-color: $primary-color;
   }

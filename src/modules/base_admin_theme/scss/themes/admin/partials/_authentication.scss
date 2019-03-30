@@ -1,17 +1,12 @@
 .auth-wrapper {
   position: relative;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   overflow: hidden;
-  min-width: 100%;
   min-height: 100vh;
+  min-width: 100%;
 
-  a,
-  p > a {
-    color: $theme-heading-color;
-    font-weight: 600;
-  }
 
   .btn-auth-gen {
     .btn-icon {
@@ -36,14 +31,20 @@
     margin-bottom: 0;
   }
 
+  a,
+  p > a {
+    color: $theme-heading-color;
+    font-weight: 600;
+  }
+
   > div {
     z-index: 5;
   }
 
   .auth-content {
     position: relative;
-    width: 390px;
     padding: 15px;
+    width: 390px;
     z-index: 5;
 
     &.multyform,
@@ -91,7 +92,6 @@
       height: 300px;
       border-radius: 50%;
 
-
       &:first-child {
         top: -100px;
         right: -100px;
@@ -135,40 +135,27 @@
 
 .auth-tabs {
   .card {
-    // border-right: 10px;
   }
 
   .nav-pills {
-    // margin-top: -80px;
   }
 
   .tab-content {
     overflow: hidden;
     position: relative;
 
+    .auth-icon {
+      position: absolute;
+      font-size: 180px;
+      transform: rotate(-30deg);
+      z-index: 1;
+      bottom: 0;
+      right: 0;
+      opacity: 0.2;
+    }
     .tab-pane > * {
       position: relative;
       z-index: 5;
     }
-
-    .auth-icon {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      font-size: 180px;
-      transform: rotate(-30deg);
-      z-index: 1;
-      opacity: 0.2;
-    }
-  }
-}
-
-@keyframes floating {
-  from {
-    transform: rotate(0deg) translate(-10px) rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg) translate(-10px) rotate(-360deg);
   }
 }

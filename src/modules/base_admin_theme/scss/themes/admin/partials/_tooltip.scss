@@ -8,9 +8,9 @@
     display: block;
 
     &::before {
+      font-family: $font-family-layout-icon;
       content: "\6d";
       left: 0;
-      font-family: "pct";
       font-size: 20px;
       line-height: 0.3;
       color: #000;

@@ -13,12 +13,12 @@
       padding-left: 0;
 
       &:before {
-        content: "\e83f";
-        width: 22px;
-        height: 22px;
         display: inline-block;
         margin-right: 10px;
         border: 2px solid #e9eaec;
+        content: "\e83f";
+        width: 22px;
+        height: 22px;
         border-radius: 3px;
         font: {
           size: 15px;
@@ -28,7 +28,7 @@
         line-height: 19px;
         vertical-align: bottom;
         text-align: center;
-        background: #ffffff;
+        background: $blank-white;
         color: transparent;
         cursor: pointer;
         transition: all 0.2s ease-in-out;
@@ -36,9 +36,9 @@
     }
 
     &:checked + .cr:before {
-      background: #1dd5d2;
-      border-color: #1dd5d2;
-      color: #ffffff;
+      background: $color-form-checkbox;
+      border-color: $color-form-checkbox;
+      color: $blank-white;
     }
 
     &.disabled + .cr,
@@ -90,7 +90,7 @@
           &:before {
             opacity: 1;
             background: transparent;
-            color: #1dd5d2;
+            color: $color-form-checkbox;
             border-color: transparent;
           }
         }
@@ -103,13 +103,13 @@
 
     &.checkbox-#{$value} input[type=checkbox]:checked + .cr:before {
       background: nth($color-bt-color, $i);
+      color: $blank-white;
       border-color: nth($color-bt-color, $i);
-      color: #ffffff;
     }
 
     &.checkbox-fill.checkbox-#{$value} input[type=checkbox]:checked + .cr:before {
-      background: transparent;
       color: nth($color-bt-color, $i);
+      background: transparent;
       border-color: transparent;
     }
   }
@@ -140,7 +140,7 @@
         margin-right: 10px;
         border-radius: 50%;
         vertical-align: bottom;
-        background: #fff;
+        background: $blank-white;
         color: transparent;
         cursor: pointer;
         transition: all 0.2s ease-in-out;
@@ -164,7 +164,7 @@
     &:checked {
       + .cr {
         &:before {
-          border-color: #1dd5d2;
+          border-color: $color-form-checkbox;
         }
 
         &:after {

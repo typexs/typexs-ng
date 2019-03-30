@@ -263,15 +263,15 @@ p.text-muted {
   &.show {
     &:before {
       content: "\63";
-      font-family: "pct";
+      font-family: $font-family-layout-icon;
       position: absolute;
       left: 15px;
       top: -5px;
       z-index: 1001;
       font-size: 40px;
       line-height: 0;
-      color: #fff;
       text-shadow: 0 -2px 2px rgba(69, 90, 100, 0.12);
+      color: $blank-white;
     }
 
     &.dropdown-menu-right {
@@ -511,7 +511,7 @@ p.text-muted {
 
 .card .animated {
   animation-duration: 1s;
-  border: 5px solid #fff;
+  border: 5px solid $blank-white;
   margin-bottom: 30px;
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.2);
 }
@@ -525,7 +525,7 @@ p.text-muted {
   width: 100%;
   height: 100%;
   text-align: center;
-  color: #fff;
+  color: $blank-white;
   font-family: "Courier New", Courier, monospace;
   padding: 50px 0;
 
@@ -534,14 +534,14 @@ p.text-muted {
   }
 
   h1 {
-    color: #fff;
+    color: $blank-white;
   }
 
   .iew-container {
     min-width: 1024px;
     width: 100%;
     height: 200px;
-    background: #fff;
+    background: $blank-white;
     margin: 50px 0;
   }
 

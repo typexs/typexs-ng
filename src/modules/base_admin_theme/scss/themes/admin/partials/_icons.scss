@@ -1,6 +1,6 @@
 
 .fas {
-  font-family: 'Font Awesome 5 Free';
+  font-family: $font-family-fa-icon;
   font-weight: 900;
 }
 
@@ -11,15 +11,12 @@ menu-link {
       margin-right: .3rem;
     }
   }
-
 }
 
 .icon {
   @extend %fa-icon;
   @extend .fas;
-
   vertical-align: 0;
-
 
   &.icon-admin-system-modules {
     &:before {

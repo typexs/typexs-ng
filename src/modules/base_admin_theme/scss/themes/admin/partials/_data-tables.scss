@@ -42,7 +42,7 @@
 .table {
   .thead-dark {
     th {
-      color: #fff;
+      color: $blank-white;
       background-color: $dark-color;
       border-color: darken($dark-color, 10%);
     }
@@ -50,7 +50,7 @@
 }
 
 .table-dark {
-  color: #fff;
+  color: $blank-white;
   background-color: $dark-color;
 
   td,

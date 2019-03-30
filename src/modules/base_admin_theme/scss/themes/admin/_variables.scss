@@ -1,7 +1,13 @@
 $header-height: 70px;
-$Menu-width: 264px;
-$Menu-collapsed-width: 80px;
+$menu-width: 264px;
+$menu-collapsed-width: 80px;
 
+// font
+$font-family-fa-icon: 'Font Awesome 5 Free';
+$font-family-layout-icon: 'pct';
+
+// colors
+$blank-white: #fff;
 $primary-color: #04a9f5;
 $warning-color: #f4c22b;
 $danger-color: #f44236;
@@ -15,33 +21,31 @@ $dark-color: #37474f;
 $inverse-color: $dark-color;
 $theme-border: #eaeaea;
 
-
 $theme-color: linear-gradient(-135deg, $danger-color 0%, $warning-color 100%);
 $theme-color-reverse: linear-gradient(-135deg, $warning-color 0%, $danger-color 100%);
 $theme-color2: linear-gradient(-135deg, $success-color 0%, $info-color 100%);
 
-
 // header
 $brand-background: #3f4d67;
 $header-dark-background: #3f4d67;
-$header-dark-text-color: #fff;
-$header-light-background: #fff;
+$header-dark-text-color: $blank-white;
+$header-light-background: $blank-white;
 $header-light-text-color: #3f4d67;
 
-// Menu
+// menu
 $menu-caption-color: #14171d;
 $menu-dark-background: #3f4d67;
 $menu-dark-text-color: #a9b7d0;
-$menu-light-background: #fff;
+$menu-light-background: $blank-white;
 $menu-light-text-color: #3f4d67;
 $menu-active-color: #04a9f5;
+$menu-icon-color: $primary-color, #ff5252, #01a9ac, #9575CD, #23b7e5, $warning-color;
 
 // dark layout colors
 $dark-layout: #212224;
 $dark-layout-font: #adb7be;
 
 
-$menu-icon-color: $primary-color, #ff5252, #01a9ac, #9575CD, #23b7e5, $warning-color;
 $color-header-name: blue, red, purple, lightblue, dark;
 $color-header-color: $primary-color, #ff5252, #9575CD, #23b7e5, lighten($dark-layout, 7%);
 $color-menu-name: blue, red, purple, lightblue, dark;
@@ -54,6 +58,13 @@ $color-title-color: $primary-color, #ff5252, #9575CD, #23b7e5, lighten($dark-lay
 $layout-6-bg-color: #23b7e5;
 
 
+// form
+$color-form-placeholder: #aaaeb3;
+$color-form-radio: #1dd5d2;
+$color-form-checkbox: #1dd5d2;
+$form-bg: #f0f3f6;
+
+
 $theme-font-family: 'Open Sans', sans-serif;
 $theme-font-size: 1rem;
 $theme-background: #f4f7fa;
@@ -64,8 +75,6 @@ $color-name: c-blue, c-red, c-green, c-yellow, c-purple;
 $color-color: $primary-color, $danger-color, $success-color, $warning-color, $purple-color;
 $color-bt-name: primary, danger, success, warning, info;
 $color-bt-color: $primary-color, $danger-color, $success-color, $warning-color, $info-color;
-
-$form-bg: #f0f3f6;
 
 $theme-colors: () !default;
 $theme-colors: map-merge(
@@ -80,10 +89,11 @@ $theme-colors: map-merge(
       "light": $light-color,
       "dark": $dark-color), $theme-colors);
 
-// Color contrast
+
+// color contrast
 $yiq-contrasted-threshold: 200 !default;
 $yiq-dark-color: #37474f;
-$yiq-light-color: #fff;
+$yiq-light-color: $blank-white;
 $theme-color-interval: 8% !default;
 $alert-bg-level: -10 !default;
 $alert-border-level: -9 !default;

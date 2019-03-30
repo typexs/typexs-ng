@@ -12,14 +12,14 @@
     justify-content: center;
 
     i {
-      color: #fff;
+      color: $blank-white;
     }
   }
 
   .b-title {
     margin-left: 10px;
     font-weight: 100;
-    color: #fff;
+    color: $blank-white;
     font-size: 18px;
   }
 }
@@ -93,57 +93,22 @@
   }
 }
 
-@keyframes mbar {
-  0% {
-    left: -35%;
-    right: 100%;
-  }
-
-  60% {
-    left: 100%;
-    right: -90%;
-  }
-
-  100% {
-    left: 100%;
-    right: -35%;
-  }
-}
-
-@keyframes m_s {
-  0% {
-    left: -200%;
-    right: 100%;
-  }
-
-  60% {
-    left: 107%;
-    right: -8%;
-  }
-
-  100% {
-    left: 107%;
-    right: -8%;
-  }
-}
-
 .txs-header {
-  z-index: 1028;
   position: relative;
   display: flex;
+  z-index: 1028;
   min-height: $header-height;
   padding: 0;
   position: relative;
   top: 0;
   background: transparent;
   color: $header-light-text-color;
-  width: calc(100% - #{$Menu-width});
-  margin-left: $Menu-width;
+  width: calc(100% - #{$menu-width});
+  margin-left: $menu-width;
   transition: all 0.3s ease-in-out;
 
   .m-header {
     display: none;
-
     .logo-dark,
     .logo-thumb {
       display: none;
@@ -177,14 +142,14 @@
   }
 
   .navbar-nav {
+    display: inline-block;
     padding-left: 0;
     list-style: none;
     margin-bottom: 0;
-    display: inline-block;
 
     > li {
-      line-height: $header-height;
       display: inline-block;
+      line-height: $header-height;
       padding: 0 12px;
 
       .nav-link {
@@ -223,9 +188,9 @@
       .form-control,
       .input-group-text {
         background: transparent;
+        padding: 0;
         border: none;
         border-radius: 0;
-        padding: 0;
       }
 
       .search-close {
@@ -259,7 +224,7 @@
 
     &.open {
       .input-group {
-        background: #fff;
+        background: $blank-white;
         border: 1px solid #f1f1f1;
         box-shadow: 0 6px 12px -5px rgba(65, 76, 78, 0.08);
         padding: 5px 5px 5px 20px;
@@ -275,7 +240,7 @@
           border-color: $primary-color;
 
           .input-group-text {
-            color: #fff;
+            color: $blank-white;
           }
         }
 
@@ -305,7 +270,7 @@
 
       &:after {
         content: fa-content($fa-var-angle-down);
-        font-family: 'Font Awesome 5 Free';
+        font-family: $font-family-fa-icon;
         font-size: 15px;
         border: none;
         position: absolute;
@@ -348,14 +313,14 @@
     &.show {
       &:before {
         content: "\63";
-        font-family: "pct";
+        font-family: $font-family-layout-icon;
         position: absolute;
         left: -5px;
         top: $header-height - 10;
         z-index: 1001;
         font-size: 40px;
         line-height: 0;
-        color: #fff;
+        color: $blank-white;
         text-shadow: 0 -2px 2px rgba(65, 76, 78, 0.12);
       }
     }
@@ -444,7 +409,7 @@
       overflow: hidden;
 
       .pro-head {
-        color: #fff;
+        color: $blank-white;
         border-radius: 0.25rem 0.25rem 0 0;
         padding: 15px;
         position: relative;
@@ -456,7 +421,7 @@
         }
 
         .dud-logout {
-          color: #fff;
+          color: $blank-white;
           padding-right: 0;
           position: absolute;
           right: 0;
@@ -523,7 +488,7 @@
     display: block;
     width: 100%;
     height: 2.8px;
-    background-color: #fff;
+    background-color: $blank-white;
     transition: all 0.3s ease-in-out;
     backface-visibility: hidden;
     border-radius: 2px;
@@ -534,7 +499,7 @@
       position: absolute;
       left: 0;
       height: 2.8px;
-      background-color: #fff;
+      background-color: $blank-white;
       transition: all 0.3s;
       backface-visibility: hidden;
       border-radius: 2px;
@@ -608,7 +573,7 @@
     float: left;
     height: $header-height;
     text-align: center;
-    width: $Menu-width;
+    width: $menu-width;
     margin-right: 0;
     padding: 10px 20px;
     transition: all 0.3s ease-in-out;
@@ -745,7 +710,7 @@
         > a {
           &:after {
             content: "\e844";
-            font-family: 'Font Awesome 5 Free';
+            font-family: $font-family-fa-icon;
             font-size: 15px;
             border: none;
             position: absolute;
@@ -828,7 +793,7 @@
     }
   }
 
-  width: $Menu-width;
+  width: $menu-width;
   height: 100vh;
   top: 0;
   background: $menu-dark-background;
@@ -850,12 +815,12 @@
   }
 
   &.navbar-collapsed {
-    width: $Menu-collapsed-width;
+    width: $menu-collapsed-width;
     height: 100%;
     transition: all 0.3s ease-in-out;
 
     .header-logo {
-      width: $Menu-collapsed-width;
+      width: $menu-collapsed-width;
 
       img {
         transform: rotateY(-90deg);
@@ -868,7 +833,7 @@
         transform: rotateY(0deg);
         transform-origin: 0 0;
         opacity: 1;
-        left: calc((#{$Menu-collapsed-width} / 2) - 20px);
+        left: calc((#{$menu-collapsed-width} / 2) - 20px);
       }
 
       .mobile-menu {
@@ -945,7 +910,7 @@
               content: "";
               position: absolute;
               top: 49px;
-              left: calc(calc(#{$Menu-collapsed-width} / 2) - 3px);
+              left: calc(calc(#{$menu-collapsed-width} / 2) - 3px);
               width: 1px;
               height: calc(100% - 49px);
               background: transparentize($menu-dark-text-color, 0.8);
@@ -971,12 +936,12 @@
     }
 
     ~ .txs-header {
-      width: calc(100% - #{$Menu-collapsed-width});
+      width: calc(100% - #{$menu-collapsed-width});
     }
 
     ~ .txs-header,
     ~ .txs-main-container {
-      margin-left: $Menu-collapsed-width;
+      margin-left: $menu-collapsed-width;
     }
 
     .txs-badge {
@@ -987,7 +952,7 @@
     }
 
     &:hover {
-      width: $Menu-width !important;
+      width: $menu-width !important;
 
       .txs-badge {
         transition-delay: 0.3s;
@@ -996,7 +961,7 @@
       }
 
       .header-logo {
-        width: $Menu-width;
+        width: $menu-width;
 
         img {
           transform: rotateY(0deg);
@@ -1134,7 +1099,7 @@
 
         > a {
           background: darken($menu-dark-background, 6%);
-          color: #fff;
+          color: $blank-white;
         }
       }
     }
@@ -1155,7 +1120,7 @@
   &.navbar-collapsed:hover {
     ~ .txs-header,
     ~ .txs-main-container {
-      margin-left: $Menu-collapsed-width;
+      margin-left: $menu-collapsed-width;
 
       &:before {
         position: absolute;
@@ -1251,7 +1216,7 @@
         &:hover {
           a {
             box-shadow: none;
-            color: #fff;
+            color: $blank-white;
             background: transparent;
           }
         }
@@ -1264,7 +1229,7 @@
               position: absolute;
               bottom: -34px;
               left: 0;
-              font-family: "pct";
+              font-family: $font-family-layout-icon;
               z-index: 1001;
               font-size: 50px;
               line-height: 1;
@@ -1326,7 +1291,7 @@
           border-radius: 4px;
           padding: 15px;
           box-shadow: 0 4px 24px 0 rgba(62, 57, 107, 0.18);
-          background: #fff;
+          background: $blank-white;
 
           a {
             color: $menu-dark-background;
@@ -1362,11 +1327,11 @@
               position: absolute;
               top: 8px;
               left: -31px;
-              font-family: "pct";
+              font-family: $font-family-layout-icon;
               z-index: 1001;
               font-size: 50px;
               line-height: 1;
-              color: #fff;
+              color: $blank-white;
               width: 40px;
               height: 100%;
               text-shadow: -8px 0 13px rgba(62, 57, 107, 0.08);
@@ -1427,7 +1392,7 @@
 
       &[class*='header-'] {
         .b-title {
-          color: #fff;
+          color: $blank-white;
         }
       }
 
@@ -1497,7 +1462,7 @@
           color: rgba(256, 256, 256, 0.8);
 
           &:hover {
-            color: #fff;
+            color: $blank-white;
           }
         }
 
@@ -1513,7 +1478,7 @@
           //             border-color: $primary-color;
           //
           //             .input-group-text {
-          //                 color: #fff;
+          //                 color: $blank-white;
           //             }
           //         }
           //     }
@@ -1533,11 +1498,11 @@
 
           .profile-notification {
             .pro-head {
-              color: #fff;
+              color: $blank-white;
               background: $primary-color;
 
               .dud-logout {
-                color: #fff;
+                color: $blank-white;
               }
             }
           }
@@ -1571,7 +1536,7 @@
   clear: both;
   float: unset;
   right: 0;
-  margin-left: $Menu-width;
+  margin-left: $menu-width;
   min-height: 100vh;
   transition: all 0.3s ease-in-out;
 }
@@ -1598,7 +1563,7 @@
 
     > .collapse:not(.show) {
       display: flex;
-      background: #fff;
+      background: $blank-white;
       box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
     }
 
@@ -1638,7 +1603,7 @@
   }
 
   .txs-navbar {
-    margin-left: -#{$Menu-width};
+    margin-left: -#{$menu-width};
     position: absolute;
     height: 100%;
     box-shadow: none;
@@ -1803,12 +1768,12 @@
       ~ .txs-header {
         > .collapse:not(.show) {
           display: inline-flex;
-          background: #fff;
+          background: $blank-white;
           box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
         }
 
         .b-title {
-          color: #fff;
+          color: $blank-white;
         }
       }
 
@@ -1918,7 +1883,7 @@
 
   .sidenav-horizontal-next,
   .sidenav-horizontal-prev {
-    background: #fff;
+    background: $blank-white;
   }
 
   .mobile-menu {
@@ -2054,7 +2019,7 @@ body {
 
       > li.txs-trigger > a > .txs-micon,
       > li.active > a > .txs-micon {
-        color: #fff;
+        color: $blank-white;
       }
     }
   }
@@ -2091,7 +2056,7 @@ body {
 }
 
 .theme-horizontal ~ .txs-header {
-  background: #fff;
+  background: $blank-white;
   box-shadow: 0 1px 20px 0 rgba(63, 77, 103, 0.15);
   @media only screen and (max-width: 991px) {
     background: $menu-dark-background;
@@ -2181,7 +2146,7 @@ body {
         color: rgba(256, 256, 256, 0.8);
 
         &:hover {
-          color: #fff;
+          color: $blank-white;
         }
 
         @media only screen and (max-width: 991px) {
@@ -2205,7 +2170,7 @@ body {
               border-color: nth($color-header-color, $i);
 
               .input-group-text {
-                color: #fff;
+                color: $blank-white;
               }
             }
           }
@@ -2225,11 +2190,11 @@ body {
 
         .profile-notification {
           .pro-head {
-            color: #fff;
+            color: $blank-white;
             background: nth($color-header-color, $i);
 
             .dud-logout {
-              color: #fff;
+              color: $blank-white;
             }
           }
         }
@@ -2242,7 +2207,7 @@ body {
       }
 
       .b-bg {
-        background: #fff;
+        background: $blank-white;
 
         i {
           color: nth($color-header-color, $i);
@@ -2261,7 +2226,7 @@ body {
       span,
       span:after,
       span:before {
-        background: #fff;
+        background: $blank-white;
       }
 
       &.on span {
@@ -2270,7 +2235,7 @@ body {
     }
 
     .b-bg {
-      background: #fff;
+      background: $blank-white;
 
       i {
         color: $success-color;
@@ -2292,13 +2257,13 @@ body {
           background: $theme-color;
 
           i {
-            color: #fff;
+            color: $blank-white;
             -webkit-text-fill-color: unset;
           }
         }
       } @else {
         .b-bg {
-          background: #fff;
+          background: $blank-white;
 
           i {
             color: nth($color-header-color, $i);
@@ -2324,11 +2289,11 @@ body {
 
       .mobile-menu {
         span {
-          background-color: #fff;
+          background-color: $blank-white;
 
           &:after,
           &:before {
-            background-color: #fff;
+            background-color: $blank-white;
           }
         }
 
@@ -2344,7 +2309,7 @@ body {
           background: nth($color-menu-color, $i);
 
           i {
-            color: #fff;
+            color: $blank-white;
             -webkit-text-fill-color: unset;
           }
         }
@@ -2356,20 +2321,20 @@ body {
       }
 
       .txs-menu-caption {
-        color: #fff;
+        color: $blank-white;
       }
 
       .txs-inner-navbar {
         li {
           a {
-            color: #fff;
+            color: $blank-white;
           }
 
           &.active,
           &:focus,
           &:hover {
             > a {
-              color: #fff;
+              color: $blank-white;
             }
           }
 
@@ -2379,7 +2344,7 @@ body {
             &:hover {
               > a {
                 &:before {
-                  background: #fff;
+                  background: $blank-white;
                 }
               }
             }
@@ -2392,7 +2357,7 @@ body {
           &.txs-trigger {
             > a {
               background: rgba(0, 0, 0, 0.08);
-              color: #fff;
+              color: $blank-white;
               box-shadow: none;
             }
           }
@@ -2406,7 +2371,7 @@ body {
           color: rgba(256, 256, 256, 0.8);
 
           &:hover {
-            color: #fff;
+            color: $blank-white;
           }
         }
 
@@ -2447,12 +2412,12 @@ body {
             box-shadow: inset -1px 0 0 0 rgba(255, 255, 255, 0.3);
 
             li.active:after {
-              background: #fff;
+              background: $blank-white;
             }
 
             li a {
 
-              color: #fff;
+              color: $blank-white;
 
               &:after {
                 border-bottom: 1px solid rgba(255, 255, 255, 0.3);
@@ -2515,7 +2480,7 @@ body {
 
             > a {
               background: darken($header-dark-background, 6%);
-              color: #fff;
+              color: $blank-white;
             }
           }
         }
@@ -2815,7 +2780,7 @@ body {
     width: 130px;
     height: 80px;
     display: inline-block;
-    border: 3px solid #fff;
+    border: 3px solid $blank-white;
     margin-right: 5px;
     background: $theme-background;
     overflow: hidden;
@@ -2964,7 +2929,7 @@ body {
 
   &.title-color {
     > a[data-value="title-default"] {
-      background: #fff;
+      background: $blank-white;
     }
 
     @each $value in $color-title-name {
@@ -3086,7 +3051,7 @@ body {
         &:focus,
         &:hover {
           > a {
-            color: #fff;
+            color: $blank-white;
           }
         }
 
@@ -3097,7 +3062,7 @@ body {
             &:hover {
               > a {
                 &:before {
-                  background: #fff;
+                  background: $blank-white;
                 }
               }
             }
@@ -3166,7 +3131,7 @@ body {
         span,
         span:after,
         span:before {
-          background: #fff;
+          background: $blank-white;
         }
 
         &.on span {
@@ -3176,7 +3141,7 @@ body {
 
       .b-brand {
         .b-bg {
-          background: #fff;
+          background: $blank-white;
 
           i {
             color: $success-color;
@@ -3195,7 +3160,7 @@ body {
 
       .b-brand {
         .b-bg {
-          background: #fff;
+          background: $blank-white;
 
           i {
             color: $success-color;
@@ -3222,7 +3187,7 @@ body.layout-6 {
   .txs-header .navbar-nav > li > .dropdown > .dropdown-toggle,
   .txs-header .navbar-nav > li > .dropdown-toggle,
   .txs-header .navbar-nav > li > a {
-    color: #fff;
+    color: $blank-white;
   }
 
   .mobile-menu span,
@@ -3231,7 +3196,7 @@ body.layout-6 {
   .txs-navbar.menu-light .mobile-menu span,
   .txs-navbar.menu-light .mobile-menu span:after,
   .txs-navbar.menu-light .mobile-menu span:before {
-    background: #fff;
+    background: $blank-white;
   }
 
   .breadcrumb-item + .breadcrumb-item::before,
@@ -3267,7 +3232,7 @@ body.layout-6 {
   }
 
   .txs-navbar.menu-light .navbar-content {
-    background: #fff;
+    background: $blank-white;
     box-shadow: 7px 0 15px 0 rgba(69, 90, 100, 0.09);
     // .slimScrollBar {
     //     z-index: 1028 !important;
@@ -3620,7 +3585,7 @@ body {
       &.hide-sidemenu {
         .sidemenu {
           position: absolute;
-          left: -#{$Menu-collapsed-width};
+          left: -#{$menu-collapsed-width};
         }
 
         .toggle-sidemenu i {

@@ -3,7 +3,7 @@
 .btn-theme,
 a.btn-theme {
   background: $theme-color;
-  color: #fff;
+  color: $blank-white;
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.2);
   border-color: #1de1c2;
   border-radius: 0.25rem;
@@ -13,12 +13,12 @@ a.btn-theme {
   &:focus,
   &:not(:disabled):not(.disabled):active {
     background-image: $theme-color;
-    color: #fff;
+    color: $blank-white;
     box-shadow: none;
   }
 
   &.active {
-    background-image: #fff !important;
+    background-image: $blank-white !important;
     color: $default-color;
     border: 1px solid $theme-border;
     box-shadow: none;
@@ -26,7 +26,7 @@ a.btn-theme {
 }
 
 .btn-outline-theme {
-  background-image: #fff !important;
+  background-image: $blank-white !important;
   color: $default-color;
   border: 1px solid $theme-border;
   box-shadow: none;
@@ -34,14 +34,14 @@ a.btn-theme {
   &:active,
   &:focus,
   &:not(:disabled):not(.disabled):active {
-    background-image: #fff;
+    background-image: $blank-white;
     color: $default-color;
     border: 1px solid $theme-border;
   }
 
   &.active {
     background: $theme-color !important;
-    color: #fff;
+    color: $blank-white;
     box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.2);
     border: 1px solid transparent;
   }
@@ -49,7 +49,7 @@ a.btn-theme {
 
 .btn-theme2 {
   background: $theme-color2;
-  color: #fff;
+  color: $blank-white;
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.2);
   border: 1px solid transparent;
   border-radius: 10px;
@@ -59,12 +59,12 @@ a.btn-theme {
   &:focus,
   &:not(:disabled):not(.disabled):active {
     background-image: $theme-color2;
-    color: #fff;
+    color: $blank-white;
     box-shadow: none;
   }
 
   &.active {
-    background-image: #fff !important;
+    background-image: $blank-white !important;
     color: $default-color;
     border: 1px solid $theme-border;
     box-shadow: none;
@@ -72,7 +72,7 @@ a.btn-theme {
 }
 
 .btn-outline-theme2 {
-  background-image: #fff !important;
+  background-image: $blank-white !important;
   color: $default-color;
   border: 1px solid $theme-border;
   box-shadow: none;
@@ -80,14 +80,14 @@ a.btn-theme {
   &:active,
   &:focus,
   &:not(:disabled):not(.disabled):active {
-    background-image: #fff;
+    background-image: $blank-white;
     color: $default-color;
     border: 1px solid $theme-border;
   }
 
   &.active {
     background: $theme-color2 !important;
-    color: #fff;
+    color: $blank-white;
     box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.2);
     border: 1px solid transparent;
   }
