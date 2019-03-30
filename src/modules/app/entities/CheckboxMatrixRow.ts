@@ -13,7 +13,7 @@ export class CheckboxMatrixRow {
   label: string;
 
   @FormCheckbox({enum:'rolesValues'})
-  @Property(<any>{type: 'string', cardinality: 0})
+  @Property({type: 'string', cardinality: 0})
   roles: string[];
 
   rolesValues: ISelectOption[] = [
