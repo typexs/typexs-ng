@@ -73,3 +73,6 @@ tmp/
 
 
 src/*.metadata.json
+
+
+docker/*/local
