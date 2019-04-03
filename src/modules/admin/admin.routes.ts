@@ -19,6 +19,10 @@ import {StorageViewComponent} from '../storage/view/storage-view.component';
 import {StorageDeleteComponent} from '../storage/delete/storage-delete.component';
 import {StorageQueryComponent} from '../storage/query/storage-query.component';
 import {StorageBackendsComponent} from '../storage/backends/storage-backends.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
+import {TasksMetadataComponent} from '../tasks/metadata/tasks-metadata.component';
+import {TasksExecutionComponent} from '../tasks/execution/tasks-execution.component';
+import {TaskStatusComponent} from '../tasks/status/task-status.component';
 
 
 export const ADMIN_ROUTES: Routes = [
@@ -27,6 +31,12 @@ export const ADMIN_ROUTES: Routes = [
     canActivate: [AuthGuardService],
     data: {label: 'Admin', group: 'admin'},
     children: [
+      {
+        path: '',
+        component: DashboardComponent,
+        canActivate: [AuthGuardService],
+        data: {label: 'Dashboard', group: 'admin'}
+      },
       {
         path: 'system/modules',
         component: SystemModulesComponent,
@@ -57,11 +67,30 @@ export const ADMIN_ROUTES: Routes = [
         canActivate: [AuthGuardService]
       },
       {
+        path: 'tasks/list',
+        component: TasksMetadataComponent,
+        data: {label: 'List', group: 'admin'},
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'tasks/run/:taskName',
+        component: TasksExecutionComponent,
+        data: {label: 'Execute', group: 'admin', skip: true},
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'tasks/status/:nodeId/:runnerId',
+        component: TaskStatusComponent,
+        data: {label: 'Status', group: 'admin', skip: true},
+        canActivate: [AuthGuardService]
+      },
+      {
         path: 'entity/types',
         component: EntityTypesComponent,
         data: {label: 'Types', group: 'admin'},
         canActivate: [AuthGuardService]
       },
+
       {
         path: 'entity/:machineName/create',
         component: EntityModifyComponent,
@@ -143,7 +172,7 @@ export const ADMIN_ROUTES: Routes = [
       {
         path: 'storage/backends',
         component: StorageBackendsComponent,
-        data: {label: 'Backend', group:'admin'},
+        data: {label: 'Backend', group: 'admin'},
         canActivate: [AuthGuardService]
       },
 

@@ -1,0 +1,17 @@
+<div class="card">
+  <div class="card-header">
+    <h3>Tasks</h3>
+  </div>
+  <div class="card-body">
+
+    <div class="row" *ngFor="let task of tasks">
+      <div class="col-md-2">{{task.name}}</div>
+      <div class="col-md-3">{{task.description}}</div>
+      <div class="col-md-1">{{task.getType()}}</div>
+      <div class="col-md-3">{{task.nodeIds}}</div>
+      <div class="col-md-3"><a class="btn btn-sm btn-primary"
+                               [routerLink]="[tasksService.getNgUrlPrefix(),'run',task.machineName]">Execute</a></div>
+    </div>
+
+  </div>
+</div>

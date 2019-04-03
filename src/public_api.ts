@@ -49,6 +49,10 @@ export * from './modules/entity/entity.module';
 export * from './modules/entity/entity.service';
 export * from './modules/entity/entity-options.service';
 
+
+// system module
+export * from './modules/tasks/tasks.module';
+
 // storage module
 export * from './modules/storage/storage.module';
 export * from './modules/storage/storage.service';

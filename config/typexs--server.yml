@@ -1,5 +1,12 @@
 
 
+
+
+workers:
+  access:
+    - name: '*'
+      access: allow
+
 server:
   default:
     type: web
