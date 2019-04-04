@@ -28,75 +28,82 @@ export class SystemInfoService {
 
   nodes: SystemNodeInfo[];
 
-  api:string = '/api';
-
+  api: string = '/api';
 
 
   constructor(private http: HttpClientWrapper) {
   }
 
 
-  usedMemoryPercent(info:SystemNodeInfo){
-    return Math.round(((this.info.memory.total - this.info.memory.free) / this.info.memory.total * 10000))/100;
+  usedMemoryPercent(info: SystemInfo) {
+    return Math.round(((info.memory.total - info.memory.free) / info.memory.total * 10000)) / 100;
   }
 
-  memoryScale(i:number){
-    return Math.round(i / 1024 / 1024)
+  memoryScale(i: number) {
+    return Math.round(i / 1024 / 1024);
   }
 
 
-  refresh():Observable<boolean>{
+  refresh(): Observable<boolean> {
     let subject = new Subject<boolean>();
     let x = 0;
     this.loadRuntimeInfo((err, info) => {
       this.info = info;
       x += 1;
-      if(x == 7) {subject.next(true);subject.complete();}
+      if (x == 7) {
+        subject.next(true);
+        subject.complete();
+      }
     });
     this.loadRuntimeNode((err, node) => {
       this.node = node;
       x += 2;
-      if(x == 7) {subject.next(true);subject.complete();}
+      if (x == 7) {
+        subject.next(true);
+        subject.complete();
+      }
     });
     this.loadRuntimeNodes((err, nodes) => {
       this.nodes = nodes;
       x += 4;
-      if(x == 7) {subject.next(true);subject.complete();}
+      if (x == 7) {
+        subject.next(true);
+        subject.complete();
+      }
     });
     return subject.asObservable();
   }
 
-  loadRuntimeInfo(callback?: (err:Error,info: SystemInfo) => void) {
+  loadRuntimeInfo(callback?: (err: Error, info: SystemInfo) => void) {
     return this.http.get<SystemInfo>(this.api + API_SYSTEM_RUNTIME_INFO, callback);
   }
 
-  loadRuntimeNode(callback?: (err:Error,node: SystemNodeInfo) => void) {
+  loadRuntimeNode(callback?: (err: Error, node: SystemNodeInfo) => void) {
     return this.http.get<SystemNodeInfo>(this.api + API_SYSTEM_RUNTIME_NODE, callback);
   }
 
-  loadRuntimeNodes(callback?: (err:Error,nodes: SystemNodeInfo[]) => void) {
+  loadRuntimeNodes(callback?: (err: Error, nodes: SystemNodeInfo[]) => void) {
     return this.http.get<SystemNodeInfo[]>(this.api + API_SYSTEM_RUNTIME_NODES, callback);
   }
 
-  loadModules(callback?: (err:Error,modules: IModule[]) => void) {
+  loadModules(callback?: (err: Error, modules: IModule[]) => void) {
     return this.http.get<IModule[]>(this.api + API_SYSTEM_MODULES, callback);
   }
 
-  loadStorages(callback?: (err:Error,storageOptions: IStorageOptions[]) => void) {
+  loadStorages(callback?: (err: Error, storageOptions: IStorageOptions[]) => void) {
     return this.http.get<IStorageOptions[]>(this.api + API_SYSTEM_STORAGES, callback);
   }
 
-  loadConfig(callback?: (err:Error,config: ITypexsOptions[]) => void) {
+  loadConfig(callback?: (err: Error, config: ITypexsOptions[]) => void) {
     return this.http.get<ITypexsOptions[]>(this.api + API_SYSTEM_CONFIG, callback);
   }
 
-  loadRoutes(callback?: (err:Error,routes: IRoute[]) => void) {
+  loadRoutes(callback?: (err: Error, routes: IRoute[]) => void) {
     return this.http.get<IRoute[]>(this.api + API_SYSTEM_ROUTES, callback);
   }
 
 
-
-  loadWorkers(callback?: (err:Error,routes: IWorkerInfo[]) => void) {
+  loadWorkers(callback?: (err: Error, routes: IWorkerInfo[]) => void) {
     return this.http.get<IWorkerInfo[]>(this.api + API_SYSTEM_WORKERS, callback);
   }
 

@@ -16,6 +16,10 @@ export class TasksMetadataComponent implements OnInit {
   constructor(private tasksService: BackendTasksService) {
   }
 
+  baseUrl(){
+    return this.tasksService.getNgUrlPrefix();
+  }
+
 
   ngOnInit() {
     this.tasksService.taskList(true).subscribe(x => {
