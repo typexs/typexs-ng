@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 
-import {IFindOptions} from '@typexs/schema/libs/framework/IFindOptions';
+
 import {AuthService} from '../system/api/auth/auth.service';
 import {HttpClientWrapper} from '../system/http-client-wrapper.service';
 import {
@@ -14,7 +14,7 @@ import {
   API_STORAGE_PREFIX,
   API_STORAGE_SAVE_ENTITY, API_STORAGE_UPDATE_ENTITY, IStorageRefMetadata
 } from '@typexs/server/browser';
-import {REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base/browser';
+import {IFindOptions, REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base/browser';
 import {IEntityRef, ILookupRegistry, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
 import {Expressions} from 'commons-expressions/browser';
 import {Subject} from 'rxjs/Subject';
@@ -164,20 +164,28 @@ export class StorageService {
 
 
   query(entityName: string, query: any = null, options: IFindOptions = {}) {
+    let _opts = _.clone(options);
     let entityDef = this.getEntityRefForName(entityName);
     let obs = new BehaviorSubject<any>(null);
     let queryParts = [];
     if (_.isPlainObject(query)) {
       queryParts.push('query=' + JSON.stringify(query));
     }
-    if (_.isNumber(options.limit)) {
-      queryParts.push('limit=' + options.limit);
+    if (_.isNumber(_opts.limit)) {
+      queryParts.push('limit=' + _opts.limit);
+      delete _opts.limit;
     }
-    if (_.isNumber(options.offset)) {
-      queryParts.push('offset=' + options.offset);
+    if (_.isNumber(_opts.offset)) {
+      queryParts.push('offset=' + _opts.offset);
+      delete _opts.offset;
     }
-    if (_.isPlainObject(options.sort)) {
-      queryParts.push('sort=' + JSON.stringify(options.sort));
+    if (_.isPlainObject(_opts.sort)) {
+      queryParts.push('sort=' + JSON.stringify(_opts.sort));
+      delete _opts.sort;
+    }
+
+    if(!_.isEmpty(_opts)){
+      queryParts.push('opts=' + JSON.stringify(_opts));
     }
 
     let url = this.url(API_STORAGE_FIND_ENTITY, {name: entityName});
