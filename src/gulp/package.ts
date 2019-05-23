@@ -31,12 +31,6 @@ gulp.task('packageCompile', () => {
     .pipe(sourcemaps.init())
     .pipe(tsProject());
 
-  return [
-    tsResult.dts.pipe(gulp.dest('./build/package')),
-    tsResult.js
-      .pipe(sourcemaps.write('.', {sourceRoot: '', includeContent: true}))
-      .pipe(gulp.dest('./build/package'))
-  ];
 
   return m(
     tsResult.dts.pipe(gulp.dest('./build/package')),
@@ -138,6 +132,14 @@ gulp.task('packagePreparePackageFile', () => {
 /**
  * Creates a package that can be published to npm.
  */
+gulp.task('packageNg', gulp.series(
+  'ngClean',
+  'packageNgCompile'
+));
+
+/**
+ * Creates a package that can be published to npm.
+ */
 gulp.task('package', gulp.series(
   'clean',
   'packageNg',
@@ -169,13 +171,6 @@ gulp.task('packageNoClean', gulp.series(
 ));
 
 
-/**
- * Creates a package that can be published to npm.
- */
-gulp.task('packageNg', gulp.series(
-  'ngClean',
-  'packageNgCompile'
-));
 
 // gulp.task('watchPackage', () => {
 //   return watch(["src/**/*.(ts|json|css|scss)"], {ignoreInitial: true, read: false}, (file: any) => {
