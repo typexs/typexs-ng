@@ -2,8 +2,6 @@ import {Injectable} from '@angular/core';
 import * as _ from 'lodash';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
-
-
 import {AuthService} from '../system/api/auth/auth.service';
 import {HttpClientWrapper} from '../system/http-client-wrapper.service';
 import {
@@ -25,19 +23,45 @@ import {Helper} from '../../libs/observable/Helper';
 @Injectable()
 export class StorageService {
 
-  private registry: ILookupRegistry = null;//TypeOrmEntityRegistry.$();
+  constructor(private http: HttpClientWrapper, private authService: AuthService) {
+    this.registry = TypeOrmEntityRegistry.$();
+    this.reloadMetadata();
+  }
+
+  private registry: ILookupRegistry = null; // TypeOrmEntityRegistry.$();
 
   private entityDefs: IEntityRef[] = [];
 
   private _isReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  private _ready: boolean = false;
+  private _ready = false;
 
-  private prefix: string = '/storage';
+  private prefix = '/storage';
 
-  constructor(private http: HttpClientWrapper, private authService: AuthService) {
-    this.registry = TypeOrmEntityRegistry.$();
-    this.reloadMetadata();
+
+  private static _beforeBuild(entityDef: IEntityRef, from: any, to: any) {
+    _.keys(from).filter(k => k.startsWith('$')).forEach(k => {
+      to[k] = from[k];
+    });
+  }
+
+
+  private static _buildEntitySingle(entityDef: IEntityRef, entity: any) {
+    return entityDef.build(entity, {
+      beforeBuild: StorageService._beforeBuild
+    });
+  }
+
+  private static _buildEntity(entityDef: IEntityRef, rawEntities: any | any[]) {
+
+    let result = null;
+    if (_.isArray(rawEntities)) {
+      result = rawEntities.map(r => StorageService._buildEntitySingle(entityDef, r));
+    } else {
+      result = StorageService._buildEntitySingle(entityDef, rawEntities);
+    }
+
+    return result;
   }
 
   getRegistry() {
@@ -104,8 +128,8 @@ export class StorageService {
           if (_.isArray(entities)) {
             this.entityDefs = [];
             entities.forEach(entityDefJson => {
-              let entity:any = TypeOrmEntityRegistry.$().getEntityRefByName(entityDefJson.name);
-              if(!entity){
+              let entity: any = TypeOrmEntityRegistry.$().getEntityRefByName(entityDefJson.name);
+              if (!entity) {
                 entity = this.registry.fromJson(entityDefJson);
               }
               this.entityDefs.push(entity);
@@ -119,7 +143,7 @@ export class StorageService {
 
 
   getStorages(): Observable<IStorageRefMetadata[]> {
-    let obs = new Subject<IStorageRefMetadata[]>();
+    const obs = new Subject<IStorageRefMetadata[]>();
     this.http.get(this.url(API_STORAGE_METADATA_ALL_STORES),
       (err: Error, entities: IStorageRefMetadata[]) => {
         if (err) {
@@ -145,15 +169,15 @@ export class StorageService {
 
 
   get(entityName: string, entityId: any) {
-    let entityDef = this.getEntityRefForName(entityName);
-    let obs = new BehaviorSubject<any>(null);
+    const entityDef = this.getEntityRefForName(entityName);
+    const obs = new BehaviorSubject<any>(null);
     this.http.get(this.url(API_STORAGE_GET_ENTITY, {name: entityName, id: entityId}),
       (err: Error, res: any) => {
         if (err) {
           obs.error(err);
           obs.complete();
         } else if (res) {
-          let result = StorageService._buildEntity(entityDef, res);
+          const result = StorageService._buildEntity(entityDef, res);
           obs.next(result);
           obs.complete();
         }
@@ -164,10 +188,10 @@ export class StorageService {
 
 
   query(entityName: string, query: any = null, options: IFindOptions = {}) {
-    let _opts = _.clone(options);
-    let entityDef = this.getEntityRefForName(entityName);
-    let obs = new BehaviorSubject<any>(null);
-    let queryParts = [];
+    const _opts = _.clone(options);
+    const entityDef = this.getEntityRefForName(entityName);
+    const obs = new BehaviorSubject<any>(null);
+    const queryParts = [];
     if (_.isPlainObject(query)) {
       queryParts.push('query=' + JSON.stringify(query));
     }
@@ -184,7 +208,7 @@ export class StorageService {
       delete _opts.sort;
     }
 
-    if(!_.isEmpty(_opts)){
+    if (!_.isEmpty(_opts)) {
       queryParts.push('opts=' + JSON.stringify(_opts));
     }
 
@@ -208,14 +232,14 @@ export class StorageService {
 
 
   save(entityName: string, entity: any): Observable<any> {
-    let entityDef = this.getEntityRefForName(entityName);
-    let obs = new BehaviorSubject<any>(null);
+    const entityDef = this.getEntityRefForName(entityName);
+    const obs = new BehaviorSubject<any>(null);
     this.http.post(this.url(API_STORAGE_SAVE_ENTITY, {name: entityName}), entity, (err: Error, res: any) => {
       if (err) {
         obs.error(err);
         obs.complete();
       } else if (res) {
-        let result = StorageService._buildEntity(entityDef, res);
+        const result = StorageService._buildEntity(entityDef, res);
         obs.next(result);
         obs.complete();
       }
@@ -226,19 +250,19 @@ export class StorageService {
 
   update(entityName: string, entityId: any, entity: any) {
     // TODO if empty entity ???
-    let entityDef = this.getEntityRefForName(entityName);
-    let id = Expressions.buildLookupConditions(entityDef, entity);
+    const entityDef = this.getEntityRefForName(entityName);
+    const id = Expressions.buildLookupConditions(entityDef, entity);
     if (entityId != id) {
       throw new Error('something is wrong');
     }
-    let obs = new BehaviorSubject<any>(null);
+    const obs = new BehaviorSubject<any>(null);
     const url = this.url(API_STORAGE_UPDATE_ENTITY, {name: entityName, id: entityId});
     this.http.post(url, entity, (err: Error, res: any) => {
       if (err) {
         obs.error(err);
         obs.complete();
       } else if (res) {
-        let result = StorageService._buildEntity(entityDef, res);
+        const result = StorageService._buildEntity(entityDef, res);
         obs.next(result);
         obs.complete();
       }
@@ -248,45 +272,19 @@ export class StorageService {
 
 
   delete(entityName: string, entityId: any) {
-    let entityDef = this.getEntityRefForName(entityName);
-    let obs = new BehaviorSubject<any>(null);
+    const entityDef = this.getEntityRefForName(entityName);
+    const obs = new BehaviorSubject<any>(null);
     const url = this.url(API_STORAGE_DELETE_ENTITY, {name: entityName, id: entityId});
     this.http.delete(url, (err: Error, res: any) => {
       if (err) {
         obs.error(err);
         obs.complete();
       } else {
-        let result = StorageService._buildEntity(entityDef, res);
+        const result = StorageService._buildEntity(entityDef, res);
         obs.next(result);
         obs.complete();
       }
     });
     return obs.asObservable();
-  }
-
-
-  private static _beforeBuild(entityDef: IEntityRef, from: any, to: any) {
-    _.keys(from).filter(k => k.startsWith('$')).forEach(k => {
-      to[k] = from[k];
-    });
-  }
-
-
-  private static _buildEntitySingle(entityDef: IEntityRef, entity: any) {
-    return entityDef.build(entity, {
-      beforeBuild: StorageService._beforeBuild
-    });
-  }
-
-  private static _buildEntity(entityDef: IEntityRef, rawEntities: any | any[]) {
-
-    let result = null;
-    if (_.isArray(rawEntities)) {
-      result = rawEntities.map(r => StorageService._buildEntitySingle(entityDef, r));
-    } else {
-      result = StorageService._buildEntitySingle(entityDef, rawEntities);
-    }
-
-    return result;
   }
 }

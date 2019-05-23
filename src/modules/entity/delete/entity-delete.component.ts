@@ -10,7 +10,7 @@ import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
 })
 export class EntityDeleteComponent implements OnInit {
 
-  ready: boolean = false;
+  ready = false;
 
   machineName: string;
 
@@ -22,7 +22,7 @@ export class EntityDeleteComponent implements OnInit {
 
   error: any = null;
 
-  deleted: boolean = false;
+  deleted = false;
 
   constructor(public entityService: EntityService,
               private route: ActivatedRoute,

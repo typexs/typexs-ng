@@ -66,7 +66,8 @@ export class AdminModule {
 
   constructor(private navigator: NavigatorService,
               private entityService: EntityService,
-              private storageService: StorageService,private taskService:BackendTasksService) {
+              private storageService: StorageService,
+              private taskService: BackendTasksService) {
     // Startup stuff should be done once!
     entityService.setNgUrlPrefix('/admin/entity');
     storageService.setNgUrlPrefix('/admin/storage');
