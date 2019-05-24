@@ -34,12 +34,12 @@ module.exports = function (config) {
     },
     colors: true,
     logLevel: config.LOG_DEBUG,
-    autoWatch: true,
+    autoWatch: false,
     browsers: ['ChromeHeadless'],
     singleRun: false,
-    preprocessors: {
-      './src/app/test.ts': ['@angular-devkit/build-angular']
-    },
+    //preprocessors: {
+    //  './src/app/test.ts': ['@angular-devkit/build-angular']
+    //},
     reporters:  [ 'mocha'],
     mime: {
       'text/x-typescript': ['ts','tsx']
