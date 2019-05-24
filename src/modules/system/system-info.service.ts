@@ -4,8 +4,11 @@ import {
   API_SYSTEM_CONFIG,
   API_SYSTEM_MODULES,
   API_SYSTEM_ROUTES,
-  API_SYSTEM_RUNTIME_INFO, API_SYSTEM_RUNTIME_NODE, API_SYSTEM_RUNTIME_NODES,
-  API_SYSTEM_STORAGES, API_SYSTEM_WORKERS,
+  API_SYSTEM_RUNTIME_INFO,
+  API_SYSTEM_RUNTIME_NODE,
+  API_SYSTEM_RUNTIME_NODES,
+  API_SYSTEM_STORAGES,
+  API_SYSTEM_WORKERS,
   IRoute
 } from '@typexs/server/browser';
 import {IModule, IStorageOptions, ITypexsOptions} from '@typexs/base/browser';
@@ -13,7 +16,6 @@ import {SystemInfo} from '@typexs/base/libs/system/SystemInfo';
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
 import {HttpClientWrapper} from './http-client-wrapper.service';
 import {IWorkerInfo} from '@typexs/base/libs/worker/IWorkerInfo';
-import {ObserveOnMessage} from 'rxjs/operators/observeOn';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 
@@ -28,7 +30,7 @@ export class SystemInfoService {
 
   nodes: SystemNodeInfo[];
 
-  api: string = '/api';
+  api = '/api';
 
 
   constructor(private http: HttpClientWrapper) {
@@ -45,12 +47,12 @@ export class SystemInfoService {
 
 
   refresh(): Observable<boolean> {
-    let subject = new Subject<boolean>();
+    const subject = new Subject<boolean>();
     let x = 0;
     this.loadRuntimeInfo((err, info) => {
       this.info = info;
       x += 1;
-      if (x == 7) {
+      if (x === 7) {
         subject.next(true);
         subject.complete();
       }
@@ -58,7 +60,7 @@ export class SystemInfoService {
     this.loadRuntimeNode((err, node) => {
       this.node = node;
       x += 2;
-      if (x == 7) {
+      if (x === 7) {
         subject.next(true);
         subject.complete();
       }
@@ -66,7 +68,7 @@ export class SystemInfoService {
     this.loadRuntimeNodes((err, nodes) => {
       this.nodes = nodes;
       x += 4;
-      if (x == 7) {
+      if (x === 7) {
         subject.next(true);
         subject.complete();
       }

@@ -23,6 +23,7 @@ function clearTree(tree: any[]) {
 describe('Service: NavigatorService', () => {
 
   describe('build navigation tree from route paths', () => {
+
     let service: NavigatorService;
 
     class MockRouter {
@@ -46,7 +47,8 @@ describe('Service: NavigatorService', () => {
       TestBed.configureTestingModule({
         imports: [
           BrowserTestingModule,
-          RouterTestingModule],
+          RouterTestingModule
+        ],
         providers: [
           {provide: APP_BASE_HREF, useValue: '/'},
           ApplicationInitStatus,
@@ -59,10 +61,10 @@ describe('Service: NavigatorService', () => {
 
     it('auto grouping paths', () => {
       service = TestBed.get(NavigatorService);
-      let entries = service.getEntries();
+      const entries = service.getEntries();
       expect(entries).to.have.length(5);
 
-      let routesConfig = service.getRebuildRoutes();
+      const routesConfig = service.getRebuildRoutes();
       expect(routesConfig).to.have.length(1);
       expect(routesConfig[0].children).to.have.length(2);
       expect(routesConfig[0].path).to.eq('admin');
@@ -77,7 +79,7 @@ describe('Service: NavigatorService', () => {
       service = TestBed.get(NavigatorService);
       expect(service.getEntries()).to.have.length(5);
 
-      let roots = service.getRoots();
+      const roots = service.getRoots();
       expect(roots).to.have.length(1);
 
       service.addGroupEntry('admin/.*', {
@@ -86,7 +88,7 @@ describe('Service: NavigatorService', () => {
       });
       expect(service.getEntries()).to.have.length(6);
 
-      let tree = service.getTree();
+      const tree = service.getTree();
       clearTree(tree);
       expect(tree).to.deep.eq([
         {
@@ -131,7 +133,7 @@ describe('Service: NavigatorService', () => {
       ]);
 
 
-      let treeAdmin = service.getTree('admin');
+      const treeAdmin = service.getTree('admin');
       clearTree(treeAdmin);
       expect(treeAdmin).to.deep.eq([
         {
@@ -215,10 +217,10 @@ describe('Service: NavigatorService', () => {
 
     it('auto grouping paths', () => {
       service = TestBed.get(NavigatorService);
-      let entries = service.getEntries();
+      const entries = service.getEntries();
       expect(entries).to.have.length(8);
 
-      let tree = service.getRebuildRoutes();
+      const tree = service.getRebuildRoutes();
       expect(tree).to.have.length(4);
       expect(tree[0].path).to.eq('admin');
       expect(tree[0].children).to.have.length(2);
@@ -235,7 +237,7 @@ describe('Service: NavigatorService', () => {
       service = TestBed.get(NavigatorService);
       expect(service.getEntries()).to.have.length(8);
 
-      let roots = service.getRoots();
+      const roots = service.getRoots();
       expect(roots).to.have.length(4);
 
       service.addGroupEntry('admin/.*', {
@@ -244,7 +246,7 @@ describe('Service: NavigatorService', () => {
       });
       expect(service.getEntries()).to.have.length(9);
 
-      let tree = service.getTree();
+      const tree = service.getTree();
       clearTree(tree);
       expect(tree).to.deep.eq([
         {
@@ -307,7 +309,7 @@ describe('Service: NavigatorService', () => {
       ]);
 
 
-      let treeAdmin = service.getTree('admin');
+      const treeAdmin = service.getTree('admin');
       clearTree(treeAdmin);
       expect(treeAdmin).to.deep.eq([
         {
@@ -350,7 +352,7 @@ describe('Service: NavigatorService', () => {
       service = TestBed.get(NavigatorService);
       expect(service.getEntries()).to.have.length(8);
 
-      let roots = service.getRoots();
+      const roots = service.getRoots();
       expect(roots).to.have.length(4);
 
       service.addGroupEntry('admin/.*', {
@@ -359,7 +361,7 @@ describe('Service: NavigatorService', () => {
       });
       expect(service.getEntries()).to.have.length(9);
 
-      let routes: Route[] = service.getRebuildRoutes();
+      const routes: Route[] = service.getRebuildRoutes();
       expect(routes).to.have.length(4);
       expect(routes[0].children).to.have.length(2);
 
@@ -367,7 +369,7 @@ describe('Service: NavigatorService', () => {
     });
 
     it('rebuild routes before and after group added', () => {
-      let router = TestBed.get(Router);
+      const router = TestBed.get(Router);
       service = TestBed.get(NavigatorService);
 
       service.read(router.config);
@@ -376,9 +378,9 @@ describe('Service: NavigatorService', () => {
         label: 'System',
         group: 'admin'
       });
-      let entries1 = service.getEntries();
+      const entries1 = service.getEntries();
       expect(entries1).to.have.length(9);
-      let treeBefore = service.getTree();
+      const treeBefore = service.getTree();
       expect(treeBefore[0].path).to.eq('admin');
       expect(treeBefore[0].children).to.have.length(1);
       expect(treeBefore[0].children[0].label).to.be.eq('System');
@@ -387,9 +389,9 @@ describe('Service: NavigatorService', () => {
       expect(treeBefore[0].children[0].children[1].label).to.eq('Storages');
 
       service.read(router.config);
-      let entries2 = service.getEntries();
+      const entries2 = service.getEntries();
       expect(entries2).to.have.length(9);
-      let treeAfter = service.getTree();
+      const treeAfter = service.getTree();
       expect(treeAfter[0].path).to.eq('admin');
       expect(treeAfter[0].children).to.have.length(1);
       expect(treeAfter[0].children[0].label).to.be.eq('System');
@@ -405,19 +407,19 @@ describe('Service: NavigatorService', () => {
      * Manuel regrouping put user entries into demo
      */
     it('rebuild routes after manuel regroup with path renaming', () => {
-      let router = TestBed.get(Router);
+      const router = TestBed.get(Router);
       service = TestBed.get(NavigatorService);
 
-      let demoEntries = service.getEntry('demo');
-      let entries = service.getEntriesByPathPattern(/^user\//);
+      const demoEntries = service.getEntry('demo');
+      const entries = service.getEntriesByPathPattern(/^user\//);
       entries.forEach(e => {
         e.setParent(demoEntries);
       });
-      let routes = service.getRebuildRoutes();
+      const routes = service.getRebuildRoutes();
       router.resetConfig(routes);
       service.read(router.config);
 
-      let demoTree = service.getTree('demo');
+      const demoTree = service.getTree('demo');
 
       // check if paths are correctly set
       expect(demoTree).to.have.length(2);
@@ -429,20 +431,20 @@ describe('Service: NavigatorService', () => {
      * Manuel regrouping put user entries into demo
      */
     it('rebuild routes after manuel regroup without path renaming', () => {
-      let router = TestBed.get(Router);
+      const router = TestBed.get(Router);
       service = TestBed.get(NavigatorService);
 
-      let demoEntries = service.getEntry('demo');
-      let entries = service.getEntriesByPathPattern(/^user\//);
+      const demoEntries = service.getEntry('demo');
+      const entries = service.getEntriesByPathPattern(/^user\//);
       entries.forEach(e => {
         e.markAsFixedPath();
         e.setParent(demoEntries);
       });
-      let routes = service.getRebuildRoutes();
+      const routes = service.getRebuildRoutes();
       router.resetConfig(routes);
       service.read(router.config);
 
-      let demoTree = service.getTree('demo');
+      const demoTree = service.getTree('demo');
 
       // check if paths are correctly set
       expect(demoTree).to.have.length(2);
@@ -495,18 +497,18 @@ describe('Service: NavigatorService', () => {
 
     it('auto grouping paths', () => {
       service = TestBed.get(NavigatorService);
-      let entries = service.getEntries();
+      const entries = service.getEntries();
       expect(entries).to.have.length(9);
 
-      let tree = service.getRebuildRoutes();
+      const tree = service.getRebuildRoutes();
       expect(tree).to.have.length(1);
       expect(tree[0].path).to.eq('');
       expect(tree[0].children).to.have.length(4);
       expect(_.map(tree[0].children, p => p.path)).to.deep.eq([
-        "admin",
-        "level",
-        "group/two",
-        "group/one"
+        'admin',
+        'level',
+        'group/two',
+        'group/one'
       ]);
       /*
       expect(tree[0].children[0].data.label).to.eq('Config');
@@ -527,14 +529,14 @@ describe('Service: NavigatorService', () => {
       });
       expect(service.getEntries()).to.have.length(10);
 
-      let tree = service.getTree();
-      let t = clearTree(tree);
+      const tree = service.getTree();
+      const t = clearTree(tree);
       expect(tree).to.have.length(1);
       expect(tree[0].children).to.have.length(3);
       expect(_.map(tree[0].children, p => p.label)).to.deep.eq([
-        "Admin",
-        "Level",
-        "Group"
+        'Admin',
+        'Level',
+        'Group'
       ]);
     });
 

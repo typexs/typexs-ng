@@ -17,11 +17,11 @@ import {TaskLog} from '@typexs/base';
 @Injectable()
 export class BackendTasksService {
 
-  api: string = '/api';
+  api = '/api';
 
   tasks: Tasks;
 
-  prefix: string = '/tasks';
+  prefix = '/tasks';
 
 
   constructor(private http: HttpClientWrapper,
@@ -30,8 +30,8 @@ export class BackendTasksService {
 
 
   execute(name: string, parameters: any = {}, targetIds: string[] = []): Observable<TaskEvent> {
-    let obs = new Subject<TaskEvent>();
-    let queryParts = [];
+    const obs = new Subject<TaskEvent>();
+    const queryParts = [];
     if (_.isPlainObject(parameters) && !_.isEmpty(parameters)) {
       queryParts.push('parameters=' + JSON.stringify(parameters));
     }
@@ -67,12 +67,13 @@ export class BackendTasksService {
   }
 
   taskStatus(runnerId: string, nodeId: string): Observable<TaskLog> {
-    let x = new Subject<TaskLog>();
+    const x = new Subject<TaskLog>();
 
-    this.http.get(this.api + '/' + API_TASK_STATUS.replace(':nodeId', nodeId).replace(':runnerId', runnerId), (err, data: TaskLog) => {
-      if(err){
-        x.error(err)
-      }else{
+    this.http.get(this.api + '/' + API_TASK_STATUS.replace(':nodeId', nodeId)
+      .replace(':runnerId', runnerId), (err, data: TaskLog) => {
+      if (err) {
+        x.error(err);
+      } else {
         x.next(data);
       }
       x.complete();
@@ -81,13 +82,14 @@ export class BackendTasksService {
     return x.asObservable();
   }
 
-  taskLog(runnerId: string, nodeId: string, tail:number = 50): Observable<any[]> {
-    let x = new Subject<any[]>();
+  taskLog(runnerId: string, nodeId: string, tail: number = 50): Observable<any[]> {
+    const x = new Subject<any[]>();
 
-    this.http.get(this.api + '/' + API_TASK_LOG.replace(':nodeId', nodeId).replace(':runnerId', runnerId)+'?tail='+tail, (err, data: any[]) => {
-      if(err){
-        x.error(err)
-      }else{
+    this.http.get(this.api + '/' + API_TASK_LOG.replace(':nodeId', nodeId)
+      .replace(':runnerId', runnerId) + '?tail=' + tail, (err, data: any[]) => {
+      if (err) {
+        x.error(err);
+      } else {
         x.next(data);
       }
       x.complete();
@@ -95,21 +97,20 @@ export class BackendTasksService {
 
     return x.asObservable();
   }
-
 
 
   taskList(refresh: boolean = false): Observable<Tasks> {
-    let x = new Subject<Tasks>();
+    const x = new Subject<Tasks>();
     if (refresh || !this.tasks) {
       this.infoService.refresh().subscribe(noop => {
         // filter worker with task_queue_worker
         let nodeIdWorker: string[] = [];
 
-        let nodes = _.concat([], [this.infoService.node], this.infoService.nodes);
-        let workers = _.filter(nodes, c => {
-          let x = _.find(c.contexts, cc => cc.context == C_WORKERS);
+        const nodes = _.concat([], [this.infoService.node], this.infoService.nodes);
+        const workers = _.filter(nodes, c => {
+          const x = _.find(c.contexts, cc => cc.context === C_WORKERS);
           if (x) {
-            return !!_.find(x.workers, w => w.name == 'task_queue_worker');
+            return !!_.find(x.workers, w => w.name === 'task_queue_worker');
           }
           return false;
         });

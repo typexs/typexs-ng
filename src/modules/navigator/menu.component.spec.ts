@@ -64,14 +64,13 @@ describe('Component: Menu', () => {
       }
     }
 
-    8;
-
 
     beforeEach(async () => {
       await TestBed.configureTestingModule({
         imports: [
           BrowserTestingModule,
-          RouterTestingModule],
+          RouterTestingModule
+        ],
         providers: [
           {provide: APP_BASE_HREF, useValue: '/'},
           ApplicationInitStatus,
@@ -80,7 +79,8 @@ describe('Component: Menu', () => {
           MockGuard
         ],
         declarations: [
-          MenuComponent, MenuLinkComponent
+          MenuComponent,
+          MenuLinkComponent
         ]
       }).compileComponents();
       fixture = TestBed.createComponent(MenuComponent);
@@ -115,7 +115,7 @@ describe('Component: Menu', () => {
 
 
     it('create submenu for base entry is "level/one"', () => {
-      component.options = {base: 'level/one'};//= 'level/one';
+      component.options = {base: 'level/one'};
       component.ngOnInit();
       expect(component.tree).to.have.length(2);
       expect(_.map(component.tree, e => e.path)).to.be.deep.eq(['level/one/subone',

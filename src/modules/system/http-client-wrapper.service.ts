@@ -3,13 +3,14 @@ import {MessageService} from './messages/message.service';
 import {MessageChannel} from './messages/MessageChannel';
 import {LogMessage} from './messages/types/LogMessage';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {b} from '@angular/core/src/render3';
 
 
 @Injectable()
 export class HttpClientWrapper {
 
+
   logChannel: MessageChannel<LogMessage>;
+
 
   constructor(private http: HttpClient, private messageService: MessageService) {
     this.logChannel = messageService.getLogService();

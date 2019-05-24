@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "importHelpers": true,
     "lib": [
       "dom",
       "es5",
@@ -23,7 +24,8 @@
     "suppressImplicitAnyIndexErrors": true,
     "typeRoots": [
       "./node_modules/@types"
-    ]
+    ],
+    "baseUrl": "./"
   },
   "exclude": [
     "archive",
@@ -32,6 +34,5 @@
     "tmp",
     "src/**/files"
   ],
-  //"include": ["node_modules/rxjs-compat/*.ts"],
   "compileOnSave": true
 }

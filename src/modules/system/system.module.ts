@@ -17,18 +17,18 @@ import {HttpClientWrapper} from './http-client-wrapper.service';
 import {DatatableComponent} from './datatable/datatable.component';
 
 
-
 const PROVIDERS = [
+  MessageService,
+  HttpClientWrapper,
   SystemInfoService,
   AuthService,
   AuthGuardService,
   {provide: AuthService, useClass: NoopAuthService},
   {provide: AuthGuardService, useClass: DefaultAuthGuardService},
-  MessageService,
+
   PagerService,
   AppStateService,
-  InvokerService,
-  HttpClientWrapper
+  InvokerService
 ];
 
 const COMPONENTS = [
@@ -40,7 +40,7 @@ const COMPONENTS = [
 @NgModule({
   declarations: COMPONENTS,
   imports: [BrowserModule],
-  exports:  COMPONENTS,
+  exports: COMPONENTS,
   providers: PROVIDERS
 })
 export class SystemModule {

@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {EntityService} from './entity.service';
 import {EntityRef, PropertyRef} from '@typexs/schema/browser';
-
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import {ISelectOptionsService} from '../forms/libs/ISelectOptionsService';
@@ -17,17 +16,17 @@ export class EntityOptionsService implements ISelectOptionsService {
 
 
   options(propertyDef: PropertyRef, limit: number = 25, page: number = 0): Observable<ISelectOption[]> {
-    let bs = new BehaviorSubject<ISelectOption[]>(null);
+    const bs = new BehaviorSubject<ISelectOption[]>(null);
     if (propertyDef.targetRef.isEntity) {
-      let entityDef = <EntityRef>propertyDef.getTargetRef().getEntityRef();
+      const entityDef = <EntityRef>propertyDef.getTargetRef().getEntityRef();
       this.entityService.query(entityDef.machineName, null, {limit: limit}).subscribe(
         result => {
           if (result) {
-            let _entities: ISelectOption[] = [];
+            const _entities: ISelectOption[] = [];
 
             if (result.entities) {
               result.entities.forEach((e: any) => {
-                let option: ISelectOption = {};
+                const option: ISelectOption = {};
                 option.value = entityDef.buildLookupConditions(e);
                 option.label = entityDef.label(e);
                 _entities.push(option);

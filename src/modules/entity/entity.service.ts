@@ -16,16 +16,42 @@ import {Helper} from '../../libs/observable/Helper';
 @Injectable()
 export class EntityService {
 
+  constructor(private http: HttpClientWrapper, private authService: AuthService) {
+    this.reloadMetadata();
+  }
+
   private entityDefs: EntityRef[] = [];
 
   private _isReady: Subject<boolean> = new Subject<boolean>();
 
-  private _ready: boolean = false;
+  private _ready = false;
 
-  private prefix: string = '/entity';
+  private prefix = '/entity';
 
-  constructor(private http: HttpClientWrapper, private authService: AuthService) {
-    this.reloadMetadata();
+
+  private static _beforeBuild(entityDef: EntityRef, from: any, to: any) {
+    _.keys(from).filter(k => k.startsWith('$')).forEach(k => {
+      to[k] = from[k];
+    });
+  }
+
+
+  private static _buildEntitySingle(entityDef: EntityRef, entity: any) {
+    return entityDef.build(entity, {
+      beforeBuild: EntityService._beforeBuild
+    });
+  }
+
+  private static _buildEntity(entityDef: EntityRef, rawEntities: any | any[]) {
+
+    let result = null;
+    if (_.isArray(rawEntities)) {
+      result = rawEntities.map(r => EntityService._buildEntitySingle(entityDef, r));
+    } else {
+      result = EntityService._buildEntitySingle(entityDef, rawEntities);
+    }
+
+    return result;
   }
 
 
@@ -81,7 +107,7 @@ export class EntityService {
             this.entityDefs = [];
             entities.forEach(entityDefJson => {
               let entity = EntityRegistry.$().getEntityRefByName(entityDefJson.name);
-              if(!entity){
+              if (!entity) {
                 entity = EntityRegistry.fromJson(entityDefJson);
               }
               this.entityDefs.push(entity);
@@ -100,15 +126,15 @@ export class EntityService {
 
 
   get(entityName: string, entityId: any) {
-    let entityDef = EntityRegistry.$().getEntityRefByName(entityName);
-    let obs = new BehaviorSubject<any>(null);
+    const entityDef = EntityRegistry.$().getEntityRefByName(entityName);
+    const obs = new BehaviorSubject<any>(null);
     this.http.get('api/entity/' + entityName + '/' + entityId,
       (err: Error, res: any) => {
         if (err) {
           obs.error(err);
           obs.complete();
         } else if (res) {
-          let result = EntityService._buildEntity(entityDef, res);
+          const result = EntityService._buildEntity(entityDef, res);
           obs.next(result);
           obs.complete();
         }
@@ -119,9 +145,9 @@ export class EntityService {
 
 
   query(entityName: string, query: any = null, options: IFindOptions = {}) {
-    let entityDef = EntityRegistry.$().getEntityRefByName(entityName);
-    let obs = new BehaviorSubject<any>(null);
-    let queryParts = [];
+    const entityDef = EntityRegistry.$().getEntityRefByName(entityName);
+    const obs = new BehaviorSubject<any>(null);
+    const queryParts = [];
     if (_.isPlainObject(query)) {
       queryParts.push('query=' + JSON.stringify(query));
     }
@@ -155,14 +181,14 @@ export class EntityService {
 
 
   save(entityName: string, entity: any): Observable<any> {
-    let entityDef = EntityRegistry.$().getEntityRefByName(entityName);
-    let obs = new BehaviorSubject<any>(null);
+    const entityDef = EntityRegistry.$().getEntityRefByName(entityName);
+    const obs = new BehaviorSubject<any>(null);
     this.http.post('api/entity/' + entityName, entity, (err: Error, res: any) => {
       if (err) {
         obs.error(err);
         obs.complete();
       } else if (res) {
-        let result = EntityService._buildEntity(entityDef, res);
+        const result = EntityService._buildEntity(entityDef, res);
         obs.next(result);
         obs.complete();
       }
@@ -173,18 +199,18 @@ export class EntityService {
 
   update(entityName: string, entityId: any, entity: any) {
     // TODO if empty entity ???
-    let entityDef = EntityRegistry.$().getEntityRefByName(entityName);
-    let id = entityDef.buildLookupConditions(entity);
+    const entityDef = EntityRegistry.$().getEntityRefByName(entityName);
+    const id = entityDef.buildLookupConditions(entity);
     if (entityId != id) {
       throw new Error('something is wrong');
     }
-    let obs = new BehaviorSubject<any>(null);
+    const obs = new BehaviorSubject<any>(null);
     this.http.post('api/entity/' + entityName + '/' + entityId, entity, (err: Error, res: any) => {
       if (err) {
         obs.error(err);
         obs.complete();
       } else if (res) {
-        let result = EntityService._buildEntity(entityDef, res);
+        const result = EntityService._buildEntity(entityDef, res);
         obs.next(result);
         obs.complete();
       }
@@ -194,45 +220,19 @@ export class EntityService {
 
 
   delete(entityName: string, entityId: any) {
-    let entityDef = EntityRegistry.$().getEntityRefByName(entityName);
-    let obs = new BehaviorSubject<any>(null);
+    const entityDef = EntityRegistry.$().getEntityRefByName(entityName);
+    const obs = new BehaviorSubject<any>(null);
     this.http.delete('api/entity/' + entityName + '/' + entityId,
       (err: Error, res: any) => {
         if (err) {
           obs.error(err);
           obs.complete();
         } else {
-          let result = EntityService._buildEntity(entityDef, res);
+          const result = EntityService._buildEntity(entityDef, res);
           obs.next(result);
           obs.complete();
         }
       });
     return obs.asObservable();
-  }
-
-
-  private static _beforeBuild(entityDef: EntityRef, from: any, to: any) {
-    _.keys(from).filter(k => k.startsWith('$')).forEach(k => {
-      to[k] = from[k];
-    });
-  }
-
-
-  private static _buildEntitySingle(entityDef: EntityRef, entity: any) {
-    return entityDef.build(entity, {
-      beforeBuild: EntityService._beforeBuild
-    });
-  }
-
-  private static _buildEntity(entityDef: EntityRef, rawEntities: any | any[]) {
-
-    let result = null;
-    if (_.isArray(rawEntities)) {
-      result = rawEntities.map(r => EntityService._buildEntitySingle(entityDef, r));
-    } else {
-      result = EntityService._buildEntitySingle(entityDef, rawEntities);
-    }
-
-    return result;
   }
 }

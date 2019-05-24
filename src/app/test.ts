@@ -1,6 +1,6 @@
 // This file is required by karma.conf.js and loads recursively all the .spec and framework files
 
-//import 'zone.js/dist/zone-testing';
+// import 'zone.js/dist/zone-testing';
 import 'zone.js/dist/async-test';
 import 'zone.js/dist/fake-async-test';
 import 'zone.js/dist/sync-test';
@@ -13,7 +13,7 @@ import { getTestBed } from '@angular/core/testing';
 
 // TODO check if theme initialization is necassary at this point
 import {THEMES} from './themes';
-import {ThemeRegistry} from "../libs/angular/ThemeRegistry";
+import {ThemeRegistry} from '../libs/angular/ThemeRegistry';
 ThemeRegistry.register(THEMES);
 
 import {

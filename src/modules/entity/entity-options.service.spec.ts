@@ -11,34 +11,36 @@ describe('Service: EntityOptionsService', () => {
   describe('initialize by string', () => {
     let service: EntityOptionsService;
 
+
     beforeEach(() => {
       const bed = TestBed.configureTestingModule({
         imports: [
-          SystemModule,
-          HttpClientTestingModule
+          HttpClientTestingModule,
+          SystemModule
         ],
         providers: [
           EntityService,
           EntityOptionsService,
-          { provide: "EntityOptionsService", useClass: EntityOptionsService }
+          {provide: 'EntityOptionsService', useClass: EntityOptionsService}
         ]
       });
     });
 
 
     it('do initialization by string', () => {
-      service = TestBed.get("EntityOptionsService");
+      service = TestBed.get('EntityOptionsService');
       expect(service).to.be.instanceOf(EntityOptionsService);
 
       let error = null;
-      try{
-        service = TestBed.get("EntityOptionsServiceDummy");
-      }catch (e) {
+      try {
+        service = TestBed.get('EntityOptionsServiceDummy');
+      } catch (e) {
         error = e;
       }
 
 //      expect(error).to.be.instanceOf(StaticInjectorError);
-      expect(error.message).to.be.eq('StaticInjectorError[EntityOptionsServiceDummy]: \n  NullInjectorError: No provider for EntityOptionsServiceDummy!');
+      expect(error.message).to.be.eq('StaticInjectorError[EntityOptionsServiceDummy]: \n' +
+        '  NullInjectorError: No provider for EntityOptionsServiceDummy!');
 
 
     });

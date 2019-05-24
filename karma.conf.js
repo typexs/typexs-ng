@@ -7,7 +7,7 @@ module.exports = function (config) {
   config.set({
     basePath: 'src',
     exclude: ['test/**'],
-    frameworks: ['es6-shim','mocha', 'chai', 'sinon-chai', '@angular/cli'],
+    frameworks: ['es6-shim','mocha', 'chai', 'sinon-chai', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-mocha'),
       require('karma-chai'),
@@ -15,23 +15,19 @@ module.exports = function (config) {
       require('karma-sinon'),
       require('karma-sinon-chai'),
       require('karma-chrome-launcher'),
-      require('karma-phantomjs-launcher'),
       require('karma-mocha-reporter'),
-      require('@angular/cli/plugins/karma')
+      require('@angular-devkit/build-angular/plugins/karma')
     ],
     client: {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     /*
     coverageIstanbulReporter: {
-      reports: ['html', 'lcovonly'],
+      dir: require('path').join(__dirname, 'coverage'), reports: ['html', 'lcovonly'],
       fixWebpackSourcePaths: true
     },
     */
-    angularCli: {
-      config:'./.angular-cli.json',
-      environment: 'dev'
-    },
+    
     port: 9876,
     proxies: {
       "/api":"http://localhost:4500/api"
@@ -42,7 +38,7 @@ module.exports = function (config) {
     browsers: ['ChromeHeadless'],
     singleRun: false,
     preprocessors: {
-      './src/app/test.ts': ['@angular/cli']
+      './src/app/test.ts': ['@angular-devkit/build-angular']
     },
     reporters:  [ 'mocha'],
     mime: {
