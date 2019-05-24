@@ -1,10 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-
-import {TaskRef, Tasks} from '@typexs/base/browser';
 import {ActivatedRoute} from '@angular/router';
 import {BackendTasksService} from '../backend-tasks.service';
-import {IPropertyRef} from 'commons-schema-api';
-import {TaskLog} from '@typexs/base';
+import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {DatePipe} from '@angular/common';
 
 
@@ -27,7 +24,7 @@ export class TaskStatusComponent implements OnInit {
 
   constructor(private tasksService: BackendTasksService,
               private route: ActivatedRoute,
-              private datePipe:DatePipe) {
+              private datePipe: DatePipe) {
   }
 
 
@@ -41,11 +38,11 @@ export class TaskStatusComponent implements OnInit {
     }, 1000);
   }
 
-  buildLog(){
+  buildLog() {
 
 
-    if(this.log){
-      return this.log.map(e => this.datePipe.transform(new Date(parseInt(e.timestamp)),'yyyy-MM-dd HH:mm:ss.SSS') + '' + ' ['+e.level +'] '+ e.message).join('\n')
+    if (this.log) {
+      return this.log.map(e => this.datePipe.transform(new Date(parseInt(e.timestamp,0)), 'yyyy-MM-dd HH:mm:ss.SSS') + '' + ' [' + e.level + '] ' + e.message).join('\n');
     }
     return '';
   }

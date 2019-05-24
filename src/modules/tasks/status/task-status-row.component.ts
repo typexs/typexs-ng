@@ -23,7 +23,7 @@ export class TaskStatusRowComponent implements OnInit, OnDestroy {
   constructor(private tasksService: BackendTasksService) {
   }
 
-  baseUrl(){
+  baseUrl() {
     return this.tasksService.getNgUrlPrefix();
   }
 

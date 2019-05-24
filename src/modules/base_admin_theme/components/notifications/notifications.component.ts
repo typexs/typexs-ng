@@ -32,7 +32,7 @@ export class NotificationsComponent implements OnInit {
 
 
   close(index: number, done?: () => void) {
-    if (typeof index !== 'number') return;
+    if (typeof index !== 'number') { return; }
     this.onRemoveMessage(this.items[index], done);
   }
 
@@ -49,7 +49,7 @@ export class NotificationsComponent implements OnInit {
 
 
   onRemoveMessage(msg: NotifyItem, done?: () => void) {
-    if (!msg || !this.items || !this.items.length) return;
+    if (!msg || !this.items || !this.items.length) { return; }
 
     let curMsg: NotifyItem;
     let curMsgIdx: number;
@@ -60,7 +60,7 @@ export class NotificationsComponent implements OnInit {
       }
     }
 
-    if (!curMsg || curMsg.closing) return;
+    if (!curMsg || curMsg.closing) { return; }
 
     curMsg.closing = true;
     setTimeout(() => {

@@ -19,13 +19,13 @@ import {Helper} from '../../libs/observable/Helper';
   // styleUrls: ['./base_admin_theme.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class BaseAdminThemeComponent implements OnInit,OnDestroy {
+export class BaseAdminThemeComponent implements OnInit, OnDestroy {
 
   @Input('content')
   ref: TemplateRef<any>;
 
   @Input()
-  title: string = 'TypeXs';
+  title = 'TypeXs';
 
   @Input()
   menuOptions: IMenuOptions = {};
@@ -37,7 +37,7 @@ export class BaseAdminThemeComponent implements OnInit,OnDestroy {
   };
 
   @Input()
-  baseRouterLink: string = '/';
+  baseRouterLink = '/';
 
   @Input()
   userRouterLinks: { profile: string, logout: string } = {profile: 'user/profile', logout: 'user/logout'};
@@ -48,9 +48,9 @@ export class BaseAdminThemeComponent implements OnInit,OnDestroy {
 
   viewContext: string;
 
-  private initSubscription:Subscription;
+  private initSubscription: Subscription;
 
-  private userChannelSubscription:Subscription;
+  private userChannelSubscription: Subscription;
 
   constructor(public authService: AuthService,
               public renderer: Renderer2,
@@ -80,9 +80,9 @@ export class BaseAdminThemeComponent implements OnInit,OnDestroy {
   }
 
   async getUser(): Promise<IUser> {
-    if(this.authService.isLoggedIn()){
+    if (this.authService.isLoggedIn()) {
       return await this.authService.getUser();
-    }else{
+    } else {
       return null;
     }
 
@@ -91,14 +91,14 @@ export class BaseAdminThemeComponent implements OnInit,OnDestroy {
 
   async ngOnInit() {
     Helper.after(this.authService.isInitialized(), s => {
-      if(s){
+      if (s) {
         this.userChannelSubscription = this.authService.getChannel().subscribe(async msg => {
-          if(msg instanceof AuthMessage){
-            if(this.authService.isLoggedIn()){
+          if (msg instanceof AuthMessage) {
+            if (this.authService.isLoggedIn()) {
               this.user = await this.getUser();
             }
           }
-        })
+        });
       }
     });
 
@@ -114,10 +114,10 @@ export class BaseAdminThemeComponent implements OnInit,OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if(this.userChannelSubscription){
+    if (this.userChannelSubscription) {
       this.userChannelSubscription.unsubscribe();
     }
-    if(this.initSubscription){
+    if (this.initSubscription) {
       this.initSubscription.unsubscribe();
     }
 
@@ -127,11 +127,11 @@ export class BaseAdminThemeComponent implements OnInit,OnDestroy {
   async enableMenuScrollBar() {
 
     const _$ = document.querySelector;
-    let classList = document.querySelector('.txs-navbar').classList;
+    const classList = document.querySelector('.txs-navbar').classList;
     if (!classList.contains('theme-horizontal')) {
       const minScrollbarLength = 40;
       const minScrollbarYOffset = 0;
-      let vw = window.innerWidth;
+      const vw = window.innerWidth;
       if (vw < 992 || classList.contains('menupos-static')) {
         this.menuScrollBar = new PerfectScrollbar('.navbar-content', {
           wheelSpeed: .5,
@@ -149,7 +149,7 @@ export class BaseAdminThemeComponent implements OnInit,OnDestroy {
           suppressScrollX: true,
           wheelPropagation: true,
           minScrollbarLength: minScrollbarLength,
-          scrollYMarginOffset:minScrollbarYOffset
+          scrollYMarginOffset: minScrollbarYOffset
         });
       }
     }
@@ -158,10 +158,10 @@ export class BaseAdminThemeComponent implements OnInit,OnDestroy {
 
 
   togglemenu() {
-    let vw = window.innerWidth;
-    let elem = document.querySelector('.txs-navbar');
-    let classList = elem.classList;
-    if (classList.contains('theme-horizontal') == false) {
+    const vw = window.innerWidth;
+    const elem = document.querySelector('.txs-navbar');
+    const classList = elem.classList;
+    if (classList.contains('theme-horizontal') === false) {
       if (vw <= 1200 && vw >= 992) {
         this.renderer.addClass(elem, 'navbar-collapsed');
       }

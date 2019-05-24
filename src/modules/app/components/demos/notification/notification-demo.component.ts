@@ -7,7 +7,7 @@ import {NotificationsService} from '../../../../base_admin_theme/components/noti
 })
 export class NotificationDemoComponent implements OnInit {
 
-  constructor(private notifyService:NotificationsService){
+  constructor(private notifyService: NotificationsService) {
 
   }
 
@@ -15,12 +15,12 @@ export class NotificationDemoComponent implements OnInit {
   }
 
 
-  show(type:string){
+  show(type: string) {
     this.notifyService.addMessage({
-      type:<any>type.toUpperCase(),
+      type: <any>type.toUpperCase(),
       topic: 'Test message',
       content: 'This is a message for you!'
 
-    })
+    });
   }
 }

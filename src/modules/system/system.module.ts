@@ -1,9 +1,7 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
 import {SystemInfoService} from './system-info.service';
-
 import {DefaultAuthGuardService} from './api/auth/default-auth-guard.service';
 import {NoopAuthService} from './api/auth/noop-auth.service';
-
 import {AuthService} from './api/auth/auth.service';
 import {AuthGuardService} from './api/auth/auth-guard.service';
 import {MessageService} from './messages/message.service';

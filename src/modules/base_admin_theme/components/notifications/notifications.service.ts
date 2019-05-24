@@ -7,7 +7,7 @@ import {NotifyItem} from './NotifyItem';
 @Injectable()
 export class NotificationsService {
 
-  displayTime: number = 3000;
+  displayTime = 3000;
 
   OnAddMessage: EventEmitter<any> = new EventEmitter();
   OnRemoveMessage: EventEmitter<any> = new EventEmitter();
@@ -21,7 +21,7 @@ export class NotificationsService {
     msg = NotificationsService._createMessage(msg);
 
     // need id to know that the right one is being removed
-    let message = new NotifyItem();
+    const message = new NotifyItem();
     _.assign(message, {
       heading: msg.topic,
       message: msg.content,
@@ -44,9 +44,9 @@ export class NotificationsService {
   }
 
   addMessage(msg: IMessage, displayTime: number = null) {
-    if (!msg) return;
+    if (!msg) { return; }
     const arrayMsg: IMessage[] | string[] = _.isArray(msg) ? msg : [msg];
-    for (let item of arrayMsg) {
+    for (const item of arrayMsg) {
       this.message(item, displayTime);
     }
   }

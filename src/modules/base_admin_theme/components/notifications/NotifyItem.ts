@@ -11,9 +11,10 @@ export class NotifyItem {
   time: number;
 
 
-  getTypeAsLowerCase():string{
-    if(!_.isNull(this.type)){
-      return MessageType[this.type].toLowerCase()
+  getTypeAsLowerCase(): string {
+    if (!_.isNull(this.type)) {
+      const name = MessageType[this.type];
+      return name.toLowerCase();
     }
     return null;
 

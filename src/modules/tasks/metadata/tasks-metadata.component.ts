@@ -16,7 +16,7 @@ export class TasksMetadataComponent implements OnInit {
   constructor(private tasksService: BackendTasksService) {
   }
 
-  baseUrl(){
+  baseUrl() {
     return this.tasksService.getNgUrlPrefix();
   }
 
@@ -26,7 +26,7 @@ export class TasksMetadataComponent implements OnInit {
       this._tasks = x;
       this.tasks = [];
       x.names(true).forEach(y => {
-        let ref = x.get(y);
+        const ref = x.get(y);
 
         this.tasks.push(ref);
       });

@@ -10,9 +10,9 @@ import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
 })
 export class EntityModifyComponent implements OnInit {
 
-  ready: boolean = false;
+  ready = false;
 
-  new: boolean = true;
+  new = true;
 
   id: any;
 
@@ -44,7 +44,7 @@ export class EntityModifyComponent implements OnInit {
     if (this.entityDef) {
       if (this.id) {
         this.new = false;
-        this.entityService.get(this.machineName, this.id).subscribe((entity) => {
+        this.entityService.get(this.machineName, this.id).subscribe((entity: any) => {
           if (entity) {
             this.instance = entity;
           }
@@ -64,11 +64,11 @@ export class EntityModifyComponent implements OnInit {
 
   onSubmit($event: any) {
     if ($event.data.isValidated && $event.data.isSuccessValidated) {
-      let instance = $event.data.instance;
+      const instance = $event.data.instance;
       if (this.new) {
         this.entityService.save(this.machineName, instance).subscribe(async (res: any) => {
           if (res) {
-            let idStr = this.entityDef.buildLookupConditions(res);
+            const idStr = this.entityDef.buildLookupConditions(res);
             // TODO flash message
             await this.router.navigate([this.entityService.getNgUrlPrefix(), this.machineName, 'view', idStr]);
           } else {
@@ -78,7 +78,7 @@ export class EntityModifyComponent implements OnInit {
       } else {
         this.entityService.update(this.machineName, this.id, instance).subscribe(async (res: any) => {
           if (res) {
-            let idStr = this.entityDef.buildLookupConditions(res);
+            const idStr = this.entityDef.buildLookupConditions(res);
             // TODO flash message
             await this.router.navigate([this.entityService.getNgUrlPrefix(), this.machineName, 'view', idStr]);
           } else {

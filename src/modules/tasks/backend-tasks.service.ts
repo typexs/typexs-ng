@@ -11,7 +11,7 @@ import {C_WORKERS} from '@typexs/base/libs/worker/Constants';
 import {HttpClientWrapper} from '../system/http-client-wrapper.service';
 import {SystemInfoService} from '../system/system-info.service';
 import {TaskEvent} from '@typexs/base/libs/tasks/worker/TaskEvent';
-import {TaskLog} from '@typexs/base';
+import {TaskLog} from '@typexs/base/entities/TaskLog';
 
 
 @Injectable()
@@ -108,6 +108,7 @@ export class BackendTasksService {
 
         const nodes = _.concat([], [this.infoService.node], this.infoService.nodes);
         const workers = _.filter(nodes, c => {
+          // tslint:disable-next-line:no-shadowed-variable
           const x = _.find(c.contexts, cc => cc.context === C_WORKERS);
           if (x) {
             return !!_.find(x.workers, w => w.name === 'task_queue_worker');

@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 
-import {TaskRef, Tasks} from '@typexs/base/browser';
+import {TaskRef} from '@typexs/base/browser';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BackendTasksService} from '../backend-tasks.service';
 import {IPropertyRef} from 'commons-schema-api';
 import {TaskEvent} from '@typexs/base/libs/tasks/worker/TaskEvent';
-import {TaskLog} from '@typexs/base';
+import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {StorageService} from '../../storage/storage.service';
 
 
@@ -15,9 +15,9 @@ import {StorageService} from '../../storage/storage.service';
 })
 export class TasksExecutionComponent implements OnInit {
 
-  waiting: boolean = false;
+  waiting = false;
 
-  done: boolean = false;
+  done = false;
 
   taskName: string;
 
@@ -48,7 +48,7 @@ export class TasksExecutionComponent implements OnInit {
       this.taskName = this.route.snapshot.paramMap.get('taskName');
       this.taskRef = tasks.get(this.taskName);
       this.taskRef.getPropertyRefs().forEach(p => {
-        if (p.descriptor.type == 'incoming') {
+        if (p.descriptor.type === 'incoming') {
           this.parameters[p.machineName] = null;
           this.properties.push(p);
         }
@@ -63,12 +63,11 @@ export class TasksExecutionComponent implements OnInit {
       event => {
         this.waiting = false;
         this.event = event;
-        event.state
         if (event.errors && event.errors.length > 0) {
           return;
         } else {
           this.done = true;
-          //this.router.navigate([this.tasksService.getNgUrlPrefix(), 'status', event.id]);
+          // this.router.navigate([this.tasksService.getNgUrlPrefix(), 'status', event.id]);
         }
       },
       error => {
@@ -78,7 +77,7 @@ export class TasksExecutionComponent implements OnInit {
     );
   }
 
-  reset(){
+  reset() {
     this.event = null;
     this.done = false;
     this.waiting = false;

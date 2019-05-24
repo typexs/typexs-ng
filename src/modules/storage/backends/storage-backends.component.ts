@@ -9,7 +9,7 @@ import {IStorageRefMetadata} from '@typexs/server/browser';
 })
 export class StorageBackendsComponent implements OnInit {
 
-  storages:IStorageRefMetadata[];
+  storages: IStorageRefMetadata[];
 
   constructor(private storageService: StorageService) {
   }
@@ -20,7 +20,7 @@ export class StorageBackendsComponent implements OnInit {
 
 
   getStorages() {
-    this.storageService.getStorages().subscribe(e => {
+    this.storageService.getStorages().subscribe((e: any) => {
       this.storages = e;
     });
   }
