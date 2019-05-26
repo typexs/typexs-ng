@@ -7,7 +7,7 @@
     "doc": "docs/de"
   },
   "scripts": {
-    "test": "nyc mocha --opts test/mocha.all.opts && karma start --single-run --browsers ChromeHeadless --code-coverage",
+    "test": "nyc mocha --opts test/mocha.all.opts && ng test typexs-ng --code-coverage=true --watch=false",
     "posttest": "nyc report --reporter=json && codecov -f coverage/backend/*.json && codecov -f coverage/karma/*.json",
     "ng": "ng",
     "start": "./node_modules/.bin/concurrently \"./node_modules/.bin/ng serve -pc proxy.conf.json --open\" \"./node_modules/.bin/typexs server --nodeId server\"",
@@ -15,7 +15,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "mocha": "mocha --opts test/mocha.all.opts",
-    "karma": "karma start --single-run --browsers ChromeHeadless",
+    "karma": "ng test typexs-ng --code-coverage=true --watch=false",
     "build:lib": "ng-packagr -p bundles/package.json"
   },
   "repository": {
@@ -143,6 +143,12 @@
     "require": [
       "ts-node/register"
     ],
+    "reporter": [
+      "html",
+      "json",
+      "lcovonly"
+    ],
+    "report-dir": "coverage/backend",
     "sourceMap": true,
     "instrument": true,
     "cache": false
