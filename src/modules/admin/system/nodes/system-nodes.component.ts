@@ -24,7 +24,7 @@ export class SystemNodesComponent implements OnInit {
 
 
   selectContext(node: SystemNodeInfo, type: 'tasks' | 'workers'): any[] {
-    const x = _.find(node.contexts, (x: INodeInfo) => x.name === type);
+    const x = _.find(node.contexts, (y: INodeInfo) => y.name === type);
     if (!x) {
       return [];
     }
