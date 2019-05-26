@@ -3,21 +3,21 @@ import * as _ from 'lodash';
 
 export class NavEntry {
 
-  static inc: number = 0;
+  static inc = 0;
 
   readonly id: number = 0;
 
-  ignore: boolean = false;
+  ignore = false;
 
-  private fixedPath: boolean = false;
+  private fixedPath = false;
 
   private orgPath: string = null;
 
-  data:any = {};
+  data: any = {};
 
   path: string;
 
-  //realPath: string = null;
+  // realPath: string = null;
 
   route: Route = null;
 
@@ -37,7 +37,7 @@ export class NavEntry {
 
   outlet: string = null;
 
-  //groupPattern: string = null;
+  // groupPattern: string = null;
 
   constructor() {
     this.id = NavEntry.inc++;
@@ -50,7 +50,7 @@ export class NavEntry {
     route['navId'] = this.id;
     this.path = route.path;
     this.paths = this.path.split('/');
-    let fixedPath = [];
+    const fixedPath = [];
 
     for (let i = 0; i < this.paths.length; i++) {
       const entry = this.paths[i];
@@ -84,7 +84,7 @@ export class NavEntry {
         this.label = data.label;
       }
       if (_.has(data, 'group') || _.has(data, 'groups')) {
-        let groups = _.get(data, 'group', _.get(data, 'groups'));
+        const groups = _.get(data, 'group', _.get(data, 'groups'));
         this.groups = _.isArray(groups) ? groups : [groups];
       }
       if (_.has(data, 'skip')) {
@@ -104,16 +104,16 @@ export class NavEntry {
     return !!this.route;
   }
 
-  markAsFixedPath(){
+  markAsFixedPath() {
     this.fixedPath = true;
   }
 
   setParent(route: NavEntry) {
-    if (this.parent != route && this != route) {
-      let localPath = this.getFullPath();
+    if (this.parent !== route && this !== route) {
+      const localPath = this.getFullPath();
       this.parent = route;
       if (!this.fixedPath) {
-        let parentPath = this.parent.getFullPath();
+        const parentPath = this.parent.getFullPath();
         if (localPath && localPath.startsWith(parentPath + '/')) {
           this.path = localPath.replace(parentPath + '/', '');
         }
@@ -133,12 +133,16 @@ export class NavEntry {
   }
 
   getParentId() {
-    if (this.parent) return this.parent.id;
+    if (this.parent) {
+      return this.parent.id;
+    }
     return -1;
   }
 
   getComponentName() {
-    if (this.route && this.route.component) return this.route.component.name;
+    if (this.route && this.route.component) {
+      return this.route.component.name;
+    }
     return null;
   }
 
@@ -154,15 +158,17 @@ export class NavEntry {
 
 
   getFullPath(): string {
-    if(this.fixedPath) return this.path;
-    let path = [];
+    if (this.fixedPath) {
+      return this.path;
+    }
+    const path = [];
     if (this.parent) {
       path.push(this.parent.getFullPath());
     }
     if (this.path) {
       path.push(this.path);
     }
-    return path.join('/');
+    return path.filter(x => !_.isEmpty(x)).join('/');
   }
 
 
@@ -178,8 +184,8 @@ export class NavEntry {
   }
 
   getParentPath(): string {
-    let path = this.getFullPath();
-    let f = path.split('/');
+    const path = this.getFullPath();
+    const f = path.split('/');
     f.pop();
     return f.join('/');
   }

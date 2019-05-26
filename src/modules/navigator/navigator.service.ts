@@ -147,7 +147,9 @@ export class NavigatorService {
     const children = _.filter(entries, e => {
       const id = e.getParentId();
 
-      if (id && selected.indexOf(id) !== -1) { return false; }
+      if (id && selected.indexOf(id) !== -1) {
+        return false;
+      }
       const fullPath = e.getFullPath();
       const res = e.route != null && regex.test(fullPath);
 
@@ -165,7 +167,7 @@ export class NavigatorService {
   getTree(from: string | NavEntry = null, filter?: (entry: NavEntry) => boolean): INavTreeEntry[] {
     const fromEntry = !_.isNull(from) ? (from instanceof NavEntry ? from : this.getEntry(from)) : null;
     const _routes: NavEntry[] = _.filter(this.entries,
-        e => e.parent === fromEntry && (filter ? filter(e) : true) && !e.isRedirect() && !e.toIgnore());
+      e => e.parent === fromEntry && (filter ? filter(e) : true) && !e.isRedirect() && !e.toIgnore());
     const routes = _.map(_routes, route => {
       const r: INavTreeEntry = {
         label: route.label,
@@ -190,10 +192,15 @@ export class NavigatorService {
   findMatch(path: string) {
     const split = path.split('/');
     let base = null;
-    while (split.length > 0 && base === null) {
+    while (split.length > 0 && !base) {
       split.pop();
       const lookup = split.join('/');
-      base = _.find(this.entries, e => e.route != null && e.getFullPath() === lookup && !e.isRedirect() && !e.toIgnore());
+      base = _.find(this.entries, e =>
+        e.route != null &&
+        e.getFullPath() === lookup &&
+        !e.isRedirect() &&
+        !e.toIgnore()
+      );
     }
     return base;
   }
