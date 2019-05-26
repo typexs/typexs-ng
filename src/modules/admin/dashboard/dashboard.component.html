@@ -54,22 +54,26 @@
             </div>
           </div>
         </div>
-
-        {{infos().info | json }}
       </div>
     </div>
   </div>
 
-  <div class="col-md-6 col-xl-4">
+  <div class="col-md-6 col-xl-4" *ngIf="workerInfos.length == 0">
     <div class="card">
       <div class="card-header">Workers</div>
       <div class="card-block">
-
         <div class="row">
-          {{infos().node | json}}
-
+          <div class="col-md-3"><strong>Classname</strong></div>
+          <div class="col-md-3"><strong>Running</strong></div>
+          <div class="col-md-3"><strong>Done</strong></div>
+          <div class="col-md-3"><strong>All</strong></div>
         </div>
-
+        <div class="row" *ngFor="let wi of workerInfos">
+          <div class="col-md-3">{{wi.className}}</div>
+          <div class="col-md-3">{{wi.statistics.stats.running}}</div>
+          <div class="col-md-3">{{wi.statistics.stats.done}}</div>
+          <div class="col-md-3">{{wi.statistics.stats.all}}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -78,7 +82,18 @@
     <div class="card">
       <div class="card-header">Network</div>
       <div class="card-block">
-        {{infos().nodes | json}}
+        <div class="row">
+          <div class="col-md-6"><strong>Node-ID</strong></div>
+          <div class="col-md-6"><strong>Hostname</strong></div>
+        </div>
+        <div class="row" *ngFor="let n of infos().nodes">
+          <div class="col-md-6">{{infos().node.nodeId}}</div>
+          <div class="col-md-6">{{infos().node.hostname}}</div>
+        </div>
+        <div class="row" *ngFor="let n of infos().nodes">
+          <div class="col-md-6">{{n.nodeId}}</div>
+          <div class="col-md-6">{{n.hostname}}</div>
+        </div>
       </div>
     </div>
   </div>

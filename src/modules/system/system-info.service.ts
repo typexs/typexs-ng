@@ -105,7 +105,7 @@ export class SystemInfoService {
   }
 
 
-  loadWorkers(callback?: (err: Error, routes: IWorkerInfo[]) => void) {
+  loadWorkers(callback?: (err: Error, workerInfos: IWorkerInfo[]) => void) {
     return this.http.get<IWorkerInfo[]>(this.api + API_SYSTEM_WORKERS, callback);
   }
 

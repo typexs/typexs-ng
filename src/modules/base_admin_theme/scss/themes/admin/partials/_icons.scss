@@ -18,6 +18,19 @@ menu-link {
   @extend .fas;
   vertical-align: 0;
 
+
+  &.icon-admin {
+    &:before {
+      content: fa-content($fa-var-chalkboard);
+    }
+  }
+
+  &.icon-admin-system-nodes {
+    &:before {
+      content: fa-content($fa-var-network-wired);
+    }
+  }
+
   &.icon-admin-system-modules {
     &:before {
       content: fa-content($fa-var-cubes);
@@ -57,6 +70,12 @@ menu-link {
     }
   }
 
+  &.icon-admin-tasks-list {
+    &:before {
+      content: fa-content($fa-var-tasks);
+    }
+  }
+
   &.icon-admin-entity {
     &:before {
       content: fa-content($fa-var-project-diagram);
@@ -66,7 +85,20 @@ menu-link {
 
   &.icon-admin-entity-types {
     &:before {
-      content: fa-content($fa-var-list-alt);
+      content: fa-content($fa-var-list);
+    }
+  }
+
+
+  &.icon-admin-storage-types {
+    &:before {
+      content: fa-content($fa-var-list);
+    }
+  }
+
+  &.icon-admin-storage-backends {
+    &:before {
+      content: fa-content($fa-var-database);
     }
   }
 

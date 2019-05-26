@@ -22,6 +22,8 @@ import {StorageModule} from '../storage/storage.module';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {TasksModule} from '../tasks/tasks.module';
 import {BackendTasksService} from '../tasks/backend-tasks.service';
+import {SystemNodesComponent} from './system/nodes/system-nodes.component';
+import {SystemNodeInfoComponent} from './system/nodes/node-info/system-node-info.component';
 
 
 const PROVIDERS: Provider[] = [];
@@ -34,8 +36,10 @@ const PROVIDERS: Provider[] = [];
     SystemRoutesComponent,
     SystemStoragesComponent,
     SystemConfigComponent,
+    SystemNodesComponent,
     NgRoutesComponent,
-    DashboardComponent
+    DashboardComponent,
+    SystemNodeInfoComponent
   ],
   imports: [
     BaseAdminThemeModule,

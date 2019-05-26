@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {SystemInfoService} from '../../system/system-info.service';
+import {IWorkerInfo} from '@typexs/base/libs/worker/IWorkerInfo';
 
 @Component({
   selector: 'dashboard',
@@ -10,7 +11,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   pushTimer: any = null;
 
-  interval: number = 5000;
+  interval = 5000;
+
+  workerInfos: IWorkerInfo[] = [];
 
 
   constructor(private infoService: SystemInfoService) {
@@ -24,6 +27,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.infoService.refresh();
+    this.infoService.loadWorkers((err, workerInfos) => {
+      if (!err) {
+        this.workerInfos = workerInfos;
+      }
+    });
     this.pushTimer = setInterval(() => {
       this.infoService.refresh();
     }, this.interval);

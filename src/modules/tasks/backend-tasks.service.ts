@@ -111,7 +111,7 @@ export class BackendTasksService {
           // tslint:disable-next-line:no-shadowed-variable
           const x = _.find(c.contexts, cc => cc.context === C_WORKERS);
           if (x) {
-            return !!_.find(x.workers, w => w.name === 'task_queue_worker');
+            return !!_.find(x.workerInfos1, w => w.name === 'task_queue_worker');
           }
           return false;
         });

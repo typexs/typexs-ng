@@ -25,9 +25,9 @@ export class SystemConfigComponent implements OnInit {
 
   ngOnInit() {
     this.infoService.loadConfig((err: Error, x: ITypexsOptions[]) => {
-      if(_.isArray(x)){
+      if (_.isArray(x)) {
         this.config = x.shift();
-      }else{
+      } else {
         this.config = x;
       }
     });

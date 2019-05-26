@@ -23,6 +23,7 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {TasksMetadataComponent} from '../tasks/metadata/tasks-metadata.component';
 import {TasksExecutionComponent} from '../tasks/execution/tasks-execution.component';
 import {TaskStatusComponent} from '../tasks/status/task-status.component';
+import {SystemNodesComponent} from './system/nodes/system-nodes.component';
 
 
 export const ADMIN_ROUTES: Routes = [
@@ -36,6 +37,12 @@ export const ADMIN_ROUTES: Routes = [
         component: DashboardComponent,
         canActivate: [AuthGuardService],
         data: {label: 'Dashboard', group: 'admin'}
+      },
+      {
+        path: 'system/nodes',
+        component: SystemNodesComponent,
+        canActivate: [AuthGuardService],
+        data: {label: 'Nodes', group: 'admin'}
       },
       {
         path: 'system/modules',
