@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 
 
 import * as _ from 'lodash';
-import {ITypexsOptions} from '@typexs/base/libs/ITypexsOptions';
 import {SystemInfoService} from '../../../system/system-info.service';
-import {INodeInfo, SystemNodeInfo} from '@typexs/base';
+import {INodeInfo} from '@typexs/base/libs/system/INodeInfo';
+import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
 
 
 @Component({
