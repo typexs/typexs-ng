@@ -13,7 +13,7 @@
       </div>
 
       <ul>
-        <li *ngFor="let x of this.tasksService.getWorkerNodes()">
+        <li *ngFor="let x of getWorkerNodes()">
           <div>"{{x.nodeId}}" on {{x.hostname}}</div>
         </li>
       </ul>

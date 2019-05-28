@@ -26,6 +26,10 @@ export class TasksMetadataComponent implements OnInit {
     return this.tasksService.hasWorkerNodes();
   }
 
+  getWorkerNodes() {
+    return this.tasksService.getWorkerNodes();
+  }
+
 
   ngOnInit() {
     this.tasksService.taskList(true).subscribe(x => {
