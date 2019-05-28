@@ -27,15 +27,14 @@ export class NoopAuthService implements IAuthServiceProvider {
   init() {
     this._initialized.next(true);
     this._initialized.complete();
-    let msg = new AuthMessage();
+    const msg = new AuthMessage();
     msg.type = MessageType.SUCCESS;
     msg.topic = 'set user';
     this.getChannel().publish(msg);
-
   }
 
   isInitialized(): Observable<boolean> | boolean  {
-    if(this._initialized.value){
+    if (this._initialized.value) {
       return this._initialized.value;
     }
     return this._initialized;

@@ -12,6 +12,7 @@ import {HttpClientWrapper} from '../system/http-client-wrapper.service';
 import {SystemInfoService} from '../system/system-info.service';
 import {TaskEvent} from '@typexs/base/libs/tasks/worker/TaskEvent';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
+import {SystemNodeInfo} from '@typexs/base';
 
 
 @Injectable()
@@ -22,6 +23,8 @@ export class BackendTasksService {
   tasks: Tasks;
 
   prefix = '/tasks';
+
+  workerNodes: SystemNodeInfo[] = [];
 
 
   constructor(private http: HttpClientWrapper,
@@ -66,6 +69,14 @@ export class BackendTasksService {
     return this.prefix;
   }
 
+  hasWorkerNodes() {
+    return !_.isEmpty(this.workerNodes);
+  }
+
+  getWorkerNodes() {
+    return this.workerNodes;
+  }
+
   taskStatus(runnerId: string, nodeId: string): Observable<TaskLog> {
     const x = new Subject<TaskLog>();
 
@@ -94,7 +105,6 @@ export class BackendTasksService {
       }
       x.complete();
     });
-
     return x.asObservable();
   }
 
@@ -104,23 +114,21 @@ export class BackendTasksService {
     if (refresh || !this.tasks) {
       this.infoService.refresh().subscribe(noop => {
         // filter worker with task_queue_worker
-        let nodeIdWorker: string[] = [];
-
         const nodes = _.concat([], [this.infoService.node], this.infoService.nodes);
-        const workers = _.filter(nodes, c => {
+        this.workerNodes = _.filter(nodes, c => {
           // tslint:disable-next-line:no-shadowed-variable
           const x = _.find(c.contexts, cc => cc.context === C_WORKERS);
           if (x) {
-            return !!_.find(x.workerInfos1, w => w.name === 'task_queue_worker');
+            return !!_.find(x.workers, w => w.name === 'task_queue_worker');
           }
           return false;
         });
-        nodeIdWorker = workers.map(n => n.nodeId);
+
 
         this.http.get(this.api + '/' + API_TASKS_METADATA, (err, data: IEntityRefMetadata[]) => {
           this.tasks = new Tasks(null);
           data.forEach((d: any) => {
-            d.nodeIds = _.intersection(d.nodeIds, nodeIdWorker);
+            d.nodeIds = _.intersection(d.nodeIds, this.workerNodes.map(w => w.nodeId));
             this.tasks.fromJson(d);
           });
           x.next(this.tasks);
