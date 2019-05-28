@@ -13,7 +13,7 @@ import {
   API_STORAGE_SAVE_ENTITY, API_STORAGE_UPDATE_ENTITY, IStorageRefMetadata
 } from '@typexs/server/browser';
 import {IFindOptions, REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base/browser';
-import {IEntityRef, ILookupRegistry, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
+import {IBuildOptions, IEntityRef, ILookupRegistry, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
 import {Expressions} from 'commons-expressions/browser';
 import {Subject} from 'rxjs/Subject';
 import {AuthMessage} from '../system/messages/types/AuthMessage';
@@ -45,22 +45,29 @@ export class StorageService {
     });
   }
 
-
-  private static _buildEntitySingle(entityDef: IEntityRef, entity: any) {
-    return entityDef.build(entity, {
-      beforeBuild: StorageService._beforeBuild
+  private static _beforeBuildRaw(entityDef: IEntityRef, from: any, to: any) {
+    _.keys(from).filter(k => !k.startsWith('$')).forEach(k => {
+      to[k] = from[k];
     });
   }
 
-  private static _buildEntity(entityDef: IEntityRef, rawEntities: any | any[]) {
+  private static _buildEntitySingle(entityDef: IEntityRef, entity: any, options?: IBuildOptions) {
+    const opts = _.defaults(options, {
+      beforeBuild: StorageService._beforeBuild
+    });
+    if (_.get(options, 'raw', false)) {
+      opts.beforeBuild = StorageService._beforeBuildRaw;
+    }
+    return entityDef.build(entity, opts);
+  }
 
+  private static _buildEntity(entityDef: IEntityRef, rawEntities: any | any[], options?: IBuildOptions) {
     let result = null;
     if (_.isArray(rawEntities)) {
-      result = rawEntities.map(r => StorageService._buildEntitySingle(entityDef, r));
+      result = rawEntities.map(r => StorageService._buildEntitySingle(entityDef, r, options));
     } else {
-      result = StorageService._buildEntitySingle(entityDef, rawEntities);
+      result = StorageService._buildEntitySingle(entityDef, rawEntities, options);
     }
-
     return result;
   }
 
@@ -72,6 +79,7 @@ export class StorageService {
   setNgUrlPrefix(prefix: string) {
     this.prefix = prefix;
   }
+
 
   getNgUrlPrefix() {
     return this.prefix;
@@ -87,6 +95,7 @@ export class StorageService {
     });
   }
 
+
   url(url: string, replace: any = null) {
     url = 'api' + API_STORAGE_PREFIX + url;
     if (replace) {
@@ -96,6 +105,7 @@ export class StorageService {
     }
     return url;
   }
+
 
   reloadMetadata() {
     Helper.after(this.authService.isInitialized(), x => {
@@ -159,7 +169,7 @@ export class StorageService {
 
   getEntityRefForName(name: string): IEntityRef {
     return LookupRegistry.$(REGISTRY_TYPEORM).find(XS_TYPE_ENTITY, (e: IEntityRef) => {
-      return e.machineName == _.snakeCase(name);
+      return e.machineName === _.snakeCase(name);
     });
   }
 
@@ -217,12 +227,17 @@ export class StorageService {
       url += '?' + queryParts.join('&');
     }
 
+    const buildOptions: IBuildOptions = {};
+    if (_.get(options, 'raw', false)) {
+      _.set(options, 'raw', options.raw);
+    }
+
     this.http.get(url, (err: Error, res: any) => {
       if (err) {
         obs.error(err);
         obs.complete();
       } else if (res) {
-        res.entities = StorageService._buildEntity(entityDef, res.entities);
+        res.entities = StorageService._buildEntity(entityDef, res.entities, buildOptions);
         obs.next(res);
         obs.complete();
       }
@@ -252,7 +267,7 @@ export class StorageService {
     // TODO if empty entity ???
     const entityDef = this.getEntityRefForName(entityName);
     const id = Expressions.buildLookupConditions(entityDef, entity);
-    if (entityId != id) {
+    if (entityId !== id) {
       throw new Error('something is wrong');
     }
     const obs = new BehaviorSubject<any>(null);
