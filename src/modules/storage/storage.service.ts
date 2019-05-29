@@ -51,7 +51,25 @@ export class StorageService {
     });
   }
 
+  /**
+   * Postprocess retrieved entity by declared build options. By default the build copy "$"
+   * starting members and pass only members by entity schema definition.
+   *
+   * - supports "raw" find option to by pass schema filter
+   * - with "skipBuilds" the build process can be overruled
+   *
+   *
+   * @param entityDef
+   * @param entity
+   * @param options
+   * @private
+   */
   private static _buildEntitySingle(entityDef: IEntityRef, entity: any, options?: IBuildOptions) {
+    if (_.get(options, 'skipBuilds', false)) {
+      const x = entityDef.create();
+      _.assign(x, entity);
+      return x;
+    }
     const opts = _.defaults(options, {
       beforeBuild: StorageService._beforeBuild
     });
