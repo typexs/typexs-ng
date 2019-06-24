@@ -92,6 +92,12 @@ export class StorageService {
     return result;
   }
 
+  static buildOptions(options: any, buildOptions: any) {
+    if (_.get(options, 'raw', false)) {
+      _.set(buildOptions, 'raw', options.raw);
+    }
+  }
+
   getRegistry() {
     return this.registry;
   }
@@ -222,12 +228,6 @@ export class StorageService {
       }
     );
     return obs.asObservable();
-  }
-
-  static buildOptions(options: any, buildOptions: any) {
-    if (_.get(options, 'raw', false)) {
-      _.set(options, 'raw', options.raw);
-    }
   }
 
 
