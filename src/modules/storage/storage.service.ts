@@ -8,11 +8,14 @@ import {
   API_STORAGE_DELETE_ENTITY,
   API_STORAGE_FIND_ENTITY,
   API_STORAGE_GET_ENTITY,
-  API_STORAGE_METADATA_ALL_ENTITIES, API_STORAGE_METADATA_ALL_STORES,
+  API_STORAGE_METADATA_ALL_ENTITIES,
+  API_STORAGE_METADATA_ALL_STORES,
   API_STORAGE_PREFIX,
-  API_STORAGE_SAVE_ENTITY, API_STORAGE_UPDATE_ENTITY, IStorageRefMetadata
+  API_STORAGE_SAVE_ENTITY,
+  API_STORAGE_UPDATE_ENTITY,
+  IStorageRefMetadata
 } from '@typexs/server/browser';
-import {IFindOptions, REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base/browser';
+import {IFindOptions, ISaveOptions, REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base/browser';
 import {IBuildOptions, IEntityRef, ILookupRegistry, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
 import {Expressions} from 'commons-expressions/browser';
 import {Subject} from 'rxjs/Subject';
@@ -196,22 +199,35 @@ export class StorageService {
   }
 
 
-  get(entityName: string, entityId: any) {
+  get(entityName: string, entityId: any, options: IFindOptions = {}) {
     const entityDef = this.getEntityRefForName(entityName);
     const obs = new BehaviorSubject<any>(null);
-    this.http.get(this.url(API_STORAGE_GET_ENTITY, {name: entityName, id: entityId}),
+    let url = this.url(API_STORAGE_GET_ENTITY, {name: entityName, id: entityId});
+    if (!_.isEmpty(options)) {
+      url += '?opts=' + JSON.stringify(options);
+    }
+    const buildOptions: IBuildOptions = {};
+    StorageService.buildOptions(options, buildOptions);
+
+    this.http.get(url,
       (err: Error, res: any) => {
         if (err) {
           obs.error(err);
           obs.complete();
         } else if (res) {
-          const result = StorageService._buildEntity(entityDef, res);
+          const result = StorageService._buildEntity(entityDef, res, buildOptions);
           obs.next(result);
           obs.complete();
         }
       }
     );
     return obs.asObservable();
+  }
+
+  static buildOptions(options: any, buildOptions: any) {
+    if (_.get(options, 'raw', false)) {
+      _.set(options, 'raw', options.raw);
+    }
   }
 
 
@@ -246,9 +262,7 @@ export class StorageService {
     }
 
     const buildOptions: IBuildOptions = {};
-    if (_.get(options, 'raw', false)) {
-      _.set(options, 'raw', options.raw);
-    }
+    StorageService.buildOptions(options, buildOptions);
 
     this.http.get(url, (err: Error, res: any) => {
       if (err) {
@@ -264,15 +278,24 @@ export class StorageService {
   }
 
 
-  save(entityName: string, entity: any): Observable<any> {
+  save(entityName: string, entity: any, options: ISaveOptions = {}): Observable<any> {
     const entityDef = this.getEntityRefForName(entityName);
     const obs = new BehaviorSubject<any>(null);
-    this.http.post(this.url(API_STORAGE_SAVE_ENTITY, {name: entityName}), entity, (err: Error, res: any) => {
+
+
+    const buildOptions: IBuildOptions = {};
+    StorageService.buildOptions(options, buildOptions);
+    let url = this.url(API_STORAGE_SAVE_ENTITY, {name: entityName});
+    if (!_.isEmpty(options)) {
+      url += '?opts=' + JSON.stringify(options);
+    }
+
+    this.http.post(url, entity, (err: Error, res: any) => {
       if (err) {
         obs.error(err);
         obs.complete();
       } else if (res) {
-        const result = StorageService._buildEntity(entityDef, res);
+        const result = StorageService._buildEntity(entityDef, res, buildOptions);
         obs.next(result);
         obs.complete();
       }
@@ -281,7 +304,7 @@ export class StorageService {
   }
 
 
-  update(entityName: string, entityId: any, entity: any) {
+  update(entityName: string, entityId: any, entity: any, options: ISaveOptions = {}) {
     // TODO if empty entity ???
     const entityDef = this.getEntityRefForName(entityName);
     const id = Expressions.buildLookupConditions(entityDef, entity);
@@ -289,13 +312,21 @@ export class StorageService {
       throw new Error('something is wrong');
     }
     const obs = new BehaviorSubject<any>(null);
-    const url = this.url(API_STORAGE_UPDATE_ENTITY, {name: entityName, id: entityId});
+    let url = this.url(API_STORAGE_UPDATE_ENTITY, {name: entityName, id: entityId});
+
+
+    const buildOptions: IBuildOptions = {};
+    StorageService.buildOptions(options, buildOptions);
+    if (!_.isEmpty(options)) {
+      url += '?opts=' + JSON.stringify(options);
+    }
+
     this.http.post(url, entity, (err: Error, res: any) => {
       if (err) {
         obs.error(err);
         obs.complete();
       } else if (res) {
-        const result = StorageService._buildEntity(entityDef, res);
+        const result = StorageService._buildEntity(entityDef, res, buildOptions);
         obs.next(result);
         obs.complete();
       }
@@ -304,16 +335,24 @@ export class StorageService {
   }
 
 
-  delete(entityName: string, entityId: any) {
+  delete(entityName: string, entityId: any, options: any = {}) {
     const entityDef = this.getEntityRefForName(entityName);
     const obs = new BehaviorSubject<any>(null);
-    const url = this.url(API_STORAGE_DELETE_ENTITY, {name: entityName, id: entityId});
+    let url = this.url(API_STORAGE_DELETE_ENTITY, {name: entityName, id: entityId});
+
+
+    const buildOptions: IBuildOptions = {};
+    StorageService.buildOptions(options, buildOptions);
+    if (!_.isEmpty(options)) {
+      url += '?opts=' + JSON.stringify(options);
+    }
+
     this.http.delete(url, (err: Error, res: any) => {
       if (err) {
         obs.error(err);
         obs.complete();
       } else {
-        const result = StorageService._buildEntity(entityDef, res);
+        const result = StorageService._buildEntity(entityDef, res, buildOptions);
         obs.next(result);
         obs.complete();
       }
