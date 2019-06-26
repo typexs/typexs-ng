@@ -13,12 +13,12 @@ import {Expressions} from 'commons-expressions/browser';
 
 export abstract class AbstractFormComponent<T extends FormObject> extends AbstractComponent<T> {
 
-  static _inc: number = 0;
+  static _inc = 0;
 
 
   data: DataContainer<any>;
 
-  inc: number = 0;
+  inc = 0;
 
   private _defaultValue: any = null;
 
@@ -91,12 +91,12 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
   }
 
   getValue() {
-    let path = this.context.path();
+    const path = this.context.path();
     return _.get(this.data.instance, path, null);
   }
 
   setValue(v: any) {
-    let path = this.context.path();
+    const path = this.context.path();
     return _.set(this.data.instance, path, v);
   }
 
@@ -106,17 +106,17 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
     } else {
       this._value = this.getValue();
       if (this._value) {
-        let binding = this.elem.getBinding();
+        const binding = this.elem.getBinding();
         if (binding.isEntityReference()) {
           if (_.isArray(this._value)) {
             this._value = this._value.map(v => Expressions.buildLookupConditions((<ClassRef>binding.getTargetRef()).getEntityRef(), v) + '');
           } else {
-            let cond = Expressions.buildLookupConditions((<ClassRef>binding.getTargetRef()).getEntityRef(), this._value);
+            const cond = Expressions.buildLookupConditions((<ClassRef>binding.getTargetRef()).getEntityRef(), this._value);
             this._value = [cond];
           }
-        }else if(binding.isCollection()){
-          if(this._value){
-            if(!_.isArray(this._value)){
+        } else if (binding.isCollection()) {
+          if (this._value) {
+            if (!_.isArray(this._value)) {
               this._value = [this._value];
             }
           }
@@ -129,7 +129,7 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
 
   set value(v: any) {
     this._value = v;
-    let binding = this.elem.getBinding();
+    const binding = this.elem.getBinding();
     if (binding.isEntityReference()) {
       let data = [];
       if (_.isArray(v)) {
@@ -162,22 +162,22 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
 
 
   build(form: FormObject): AbstractComponent<T>[] {
-    let comp: AbstractComponent<T>[] = [];
+    const comp: AbstractComponent<T>[] = [];
     form.getChildren().forEach(formObject => {
       if (isFormObject(formObject)) {
 
-        let handle = ContentComponentRegistry.$().getOrCreateDef(formObject.type);
+        const handle = ContentComponentRegistry.$().getOrCreateDef(formObject.type);
         if (handle && handle.component) {
           if (this.vc) {
-            let factory = this.r.resolveComponentFactory(<any>handle.component);
-            let ref = this.vc.createComponent(factory);
-            let instance = <AbstractFormComponent<any>>ref.instance;
+            const factory = this.r.resolveComponentFactory(<any>handle.component);
+            const ref = this.vc.createComponent(factory);
+            const instance = <AbstractFormComponent<any>>ref.instance;
             instance.data = this.data;
             instance.setData(formObject, this.context);
             instance.build(formObject);
             comp.push(instance);
           } else {
-            //console.error('No view content setted');
+            // console.error('No view content setted');
           }
         } else {
           throw new NoFormTypeDefinedError(formObject.type);
