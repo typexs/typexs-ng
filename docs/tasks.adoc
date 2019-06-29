@@ -1,0 +1,35 @@
+## Tasks
+
+
+### Navigation
+
+
+*List registered tasks*
+
+Show all registered tasks with given metadata
+
+* Name of task
+* Description
+* Worker (allowed)
+* Input-Parameters
+* Last execution
+* Running?
+* Execute Link
+
+
+*Execution of registered tasks with demanded or optional parameters*
+
+* Input - Parameters Form
+* After exec "show tasks runtime status"
+
+
+*Show running task*
+
+
+*List running tasks*
+
+
+*List execut(-ed/-ing) tasks (task log)*
+
+
+*Show task process(-ed/-ing) data*

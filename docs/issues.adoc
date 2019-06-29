@@ -81,25 +81,3 @@ https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/
 
 data or label can be empty
 
-
-**@ISSUE {counter:issue} 20180605** +
-
-Happens on first init of an empty project
-
-
- [0] ERROR in node_modules/commons-config/utils/Utils.d.ts(1,23): error TS2688: Cannot find type definition file for 'deepmerge'.
- [0] node_modules/typexs-base/libs/logging/ILoggerOptions.d.ts(1,23): error TS2688: Cannot find type definition file for 'winston'.
- [0] node_modules/typexs-base/libs/logging/Log.d.ts(1,23): error TS2688: Cannot find type definition file for 'winston'.
- [0] node_modules/typexs-base/libs/utils/BaseUtils.d.ts(1,23): error TS2688: Cannot find type definition file for 'deepmerge'.
-
-
-**@ISSUE {counter:issue} 20181031** +
-
-Upgrade/modify to/for angular 6.
-
-
-
-**@ISSUE {counter:issue} 20181101** +
-
-Direct storage data modification in admin mode.
-Create an storage modul and an entity modul.
