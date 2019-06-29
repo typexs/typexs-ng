@@ -26,6 +26,11 @@ import {LogoutComponent} from './dummy/logout/logout.component';
 import {ProfileComponent} from './dummy/profile/profile.component';
 import {NotificationDemoComponent} from './components/demos/notification/notification-demo.component';
 import {InputDemoComponent} from './components/demos/form-input/input-demo.component';
+import {TablesDemoComponent} from './components/demos/tables/tables-demo.component';
+import {AgGridWrapperComponent} from './addons/ag-grid/ag-grid-wrapper.component';
+import {NavigatorService} from '../navigator/navigator.service';
+import {SimpleHtmlTableComponent} from '../system/datatable/simple-html-table/simple-html-table.component';
+import {SimpleHtmlTableDemoComponent} from './components/demos/tables/simple-html-table-demo.component';
 
 
 @NgModule({
@@ -33,6 +38,7 @@ import {InputDemoComponent} from './components/demos/form-input/input-demo.compo
     AppComponent,
     DemosComponent,
     InputDemoComponent,
+    TablesDemoComponent,
     GroupDemoComponent,
     CheckboxMatrixDemoComponent,
     ContentDemoComponent,
@@ -49,13 +55,16 @@ import {InputDemoComponent} from './components/demos/form-input/input-demo.compo
     EmbeddedContent2Component,
     LogoutComponent,
     ProfileComponent,
-    NotificationDemoComponent
+    NotificationDemoComponent,
+    AgGridWrapperComponent,
+    SimpleHtmlTableDemoComponent
   ],
   entryComponents: [
     ...FORM_COMPONENTS,
     SearchResultComponent,
     SearchEntryComponent,
-    ViewParentComponent
+    ViewParentComponent,
+    AgGridWrapperComponent
   ],
   imports: APP_MODULES,
   providers: [
@@ -66,8 +75,9 @@ import {InputDemoComponent} from './components/demos/form-input/input-demo.compo
 })
 export class AppModule {
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private navigatorService: NavigatorService) {
     authService.init();
+    // navigatorService.addGroupEntry('tables', {label: 'Tables', group: 'demo'});
   }
 }
 

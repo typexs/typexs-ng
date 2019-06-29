@@ -57,12 +57,12 @@ export class TasksExecutionComponent implements OnInit {
   }
 
   execute() {
-    console.log('execute', this.taskName, this.parameters, this.nodeIds);
     this.waiting = true;
     this.tasksService.execute(this.taskName, this.parameters, this.nodeIds).subscribe(
       event => {
         this.waiting = false;
         this.event = event;
+        console.log(this.event);
         if (event.errors && event.errors.length > 0) {
           return;
         } else {
@@ -71,7 +71,7 @@ export class TasksExecutionComponent implements OnInit {
         }
       },
       error => {
-        this.waiting = true;
+        this.waiting = false;
         this.error = error;
       }
     );

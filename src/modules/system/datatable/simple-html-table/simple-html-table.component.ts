@@ -1,0 +1,161 @@
+import * as _ from 'lodash';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AbstractGridComponent} from '../abstract-grid.component';
+import {PagerAction} from '../../pager/PagerAction';
+import {PagerService} from '../../pager/PagerService';
+import {Pager} from '../../pager/Pager';
+import {IGridColumn} from '../IGridColumn';
+import {Eq, Like, Value} from 'commons-expressions';
+
+
+@Component({
+  selector: 'txs-simple-html-table',
+  templateUrl: 'simple-html-table.component.html',
+  styleUrls: ['./simple-html-table.component.scss']
+})
+export class SimpleHtmlTableComponent extends AbstractGridComponent implements OnInit, OnDestroy {
+
+//  offset = 0;
+
+  pager: Pager;
+
+  filterOpened: string = null;
+
+  filterValue: any = null;
+
+  constructor(private pagerService: PagerService) {
+    super();
+  }
+
+  ngOnInit(): void {
+    if (this.options.enablePager) {
+      this.pager = this.pagerService.get(this.options.pagerId);
+    }
+
+    this.params.limit = _.get(this.options, 'limit', 25);
+    this.params.offset = _.get(this.options, 'offset', 0);
+
+
+    if (!this.maxRows && this.rows) {
+      // if maxRows is empty and rows already given then derive max
+      this.maxRows = this.rows.length;
+      if (this.options.enablePager) {
+        this.calcPager();
+      }
+    }
+  }
+
+  isSorted(column: IGridColumn, sort: 'asc' | 'desc' | 'none') {
+    if (!column.sorting) {
+      return false;
+    }
+
+    const _sort = _.get(this.params.sorting, column.field);
+
+    if (!_sort && sort === 'none') {
+      return true;
+    } else if (_sort === sort) {
+      return true;
+    }
+
+    return false;
+  }
+
+  doSort(column: IGridColumn) {
+    if (!this.params.sorting) {
+      this.params.sorting = {};
+    }
+    const _sort = _.get(this.params.sorting, column.field);
+    if (_sort) {
+      if (_sort === 'asc') {
+        _.set(this.params.sorting, column.field, 'desc');
+      } else {
+        delete this.params.sorting[column.field];
+      }
+    } else {
+      _.set(this.params.sorting, column.field, 'asc');
+    }
+    this.doQuery.emit(this);
+  }
+
+
+  openFilter(column: IGridColumn) {
+    this.filterOpened = column.field;
+    const filter = _.get(this.params.filters, column.field);
+    if (filter) {
+      this.filterValue = filter.value;
+    } else {
+      this.filterValue = null;
+    }
+  }
+
+  closeFilter(column: IGridColumn) {
+    if (!this.params.filters) {
+      this.params.filters = {};
+    }
+    if (this.filterValue) {
+
+      let value: any = null;
+      switch (column.filterDataType) {
+        case 'date':
+          value = new Date(this.filterValue);
+          break;
+        case 'double':
+          value = parseFloat(this.filterValue);
+          break;
+        case 'number':
+          value = parseInt(this.filterValue, 0);
+          break;
+        default:
+          value = this.filterValue;
+      }
+
+      switch (column.filterType) {
+        case 'contains':
+          _.set(this.params.filters, column.field, Like(column.field, Value(value)));
+          break;
+        case 'suggest':
+        case 'equal':
+        default:
+          _.set(this.params.filters, column.field, Eq(column.field, Value(value)));
+          break;
+      }
+    } else {
+      delete this.params.filters[column.field];
+    }
+    this.filterOpened = null;
+    this.doQuery.emit(this);
+  }
+
+
+  updateRows(action: PagerAction) {
+    if (action.name === this.options.pagerId && action.type === 'set') {
+      this.params.offset = (action.page - 1) * this.options.limit;
+      this.params.limit = this.options.limit;
+      this.doQuery.emit(this);
+    }
+  }
+
+
+  calcPager() {
+    this.pager.totalPages = Math.ceil(this.maxRows * 1.0 / this.options.limit * 1.0);
+    this.pager.currentPage = (this.params.offset / this.options.limit) + 1;
+    this.pager.calculatePages();
+  }
+
+
+  rebuild() {
+    this.calcPager();
+    this.gridReady.emit();
+  }
+
+
+  ngOnDestroy(): void {
+    if (this.pager) {
+      this.pager.free();
+    }
+
+  }
+
+
+}

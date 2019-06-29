@@ -3,43 +3,43 @@
     <h3>Entity Types</h3>
   </div>
   <div class="card-body">
-    <txs-datatable>
-      <table class="table hover">
-        <thead>
-        <tr>
-          <th>Storage</th>
-          <th>Schema</th>
-          <th>Name</th>
-          <th>machineName</th>
-          <th>Options</th>
-          <th>Ops</th>
-        </tr>
-        </thead>
 
-        <tbody>
-        <tr *ngFor="let entityDef of getEntityRefs()">
-          <td>{{entityDef.getClassRef().getSchema()}}</td>
-          <td>{{entityDef.getOptions('storage')}}</td>
-          <td>{{entityDef.name}}</td>
-          <td>{{entityDef.machineName}}</td>
-          <td>
-            <details>
-              <summary>JSON</summary>
-              <pre class="language-json">{{entityDef.getOptions() | json}}</pre>
-            </details>
+    <table class="table hover">
+      <thead>
+      <tr>
+        <th>Storage</th>
+        <th>Schema</th>
+        <th>Name</th>
+        <th>machineName</th>
+        <th>Options</th>
+        <th>Ops</th>
+      </tr>
+      </thead>
 
-          </td>
-          <td>
-            <a class="btn btn-primary"
-               [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'query']">Query</a>
-            <a class="btn btn-success"
-               [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'create']">New</a>
-            <a class="btn btn-warning"
-               [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'structure']">Schema</a>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </txs-datatable>
+      <tbody>
+      <tr *ngFor="let entityDef of getEntityRefs()">
+        <td>{{entityDef.getClassRef().getSchema()}}</td>
+        <td>{{entityDef.getOptions('storage')}}</td>
+        <td>{{entityDef.name}}</td>
+        <td>{{entityDef.machineName}}</td>
+        <td>
+          <details>
+            <summary>JSON</summary>
+            <pre class="language-json">{{entityDef.getOptions() | json}}</pre>
+          </details>
+
+        </td>
+        <td>
+          <a class="btn btn-primary"
+             [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'query']">Query</a>
+          <a class="btn btn-success"
+             [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'create']">New</a>
+          <a class="btn btn-warning"
+             [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'structure']">Schema</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
   </div>
 </div>

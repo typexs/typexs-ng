@@ -3,6 +3,23 @@
     <h3>Taskstatus for {{taskLog.taskName}} on {{taskLog.respId}}</h3>
   </div>
   <div class="card-body">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="row ">
+          <div class="col-xl">TaskName</div>
+          <div class="col-xl">{{taskLog.taskName}}</div>
+        </div>
+        <div class="row ">
+          <div class="col-xl">State</div>
+          <div class="col-xl">{{taskLog.state}}</div>
+        </div>
+        <div class="row ">
+          <div class="col-xl">Started</div>
+          <div class="col-xl">{{taskLog.started}}</div>
+        </div>
+      </div>
+    </div>
+
     {{taskLog | json}}
 
     <div class="log" *ngIf="log">

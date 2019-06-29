@@ -1,0 +1,15 @@
+<div class="card-embedded">
+
+  <txs-free-query-input
+    (queryState)="onQueryAction($event)"
+    [entityRef]="entityRef">
+  </txs-free-query-input>
+
+  <txs-datatable #datatable
+                 [columns]="columns"
+                 [options]="options"
+                 (doQuery)="doQuery($event)"
+  ></txs-datatable>
+
+</div>
+

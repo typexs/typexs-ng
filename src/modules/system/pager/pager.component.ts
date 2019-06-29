@@ -16,16 +16,19 @@ export class PagerComponent implements OnInit, OnDestroy {
    * Query identifier name for this pager
    */
   @Input()
-  name: string = 'pager';
+  name = 'pager';
 
 
   /**
    * Emit events on pagechanges
    */
   @Output()
-  onPageChange: EventEmitter<PagerAction> = new EventEmitter();
+  pageChange: EventEmitter<PagerAction> = new EventEmitter();
 
   _cache: any[] = [];
+
+
+  wait: NodeJS.Timer;
 
   /**
    * Frame Size
@@ -85,21 +88,23 @@ export class PagerComponent implements OnInit, OnDestroy {
 
   setPage(nr: number) {
     if (0 < nr && nr <= this.totalPages) {
-      this.currentPage = nr;
+      this.pager.once(() => {
+        this.currentPage = nr;
 
-      let action = new PagerAction(nr, this.name);
-      this.onPageChange.emit(action);
-      this.pager.calculatePages();
-      let params: any = {};
-      params[this.name] = nr;
+        const action = new PagerAction(nr, this.name);
+        this.pageChange.emit(action);
+        this.pager.calculatePages();
+        const params: any = {};
+        params[this.name] = nr;
 
-      const urlTree = this.router.createUrlTree([], {
-        queryParams: params,
-        queryParamsHandling: 'merge',
-        preserveFragment: true
+        const urlTree = this.router.createUrlTree([], {
+          queryParams: params,
+          queryParamsHandling: 'merge',
+          preserveFragment: true
+        });
+
+        this.router.navigateByUrl(urlTree);
       });
-
-      this.router.navigateByUrl(urlTree);
     } else {
       throw new Error('pager is out of range ' + nr + ' of max ' + this.totalPages);
     }
@@ -111,7 +116,7 @@ export class PagerComponent implements OnInit, OnDestroy {
       this.totalPages = 0;
     } else {
       if (_.isString(this.totalPages)) {
-        this.totalPages = parseInt(this.totalPages);
+        this.totalPages = parseInt(this.totalPages, 0);
       }
     }
   }
@@ -122,7 +127,7 @@ export class PagerComponent implements OnInit, OnDestroy {
       this.currentPage = 1;
     } else {
       if (_.isString(this.currentPage)) {
-        this.currentPage = parseInt(this.currentPage);
+        this.currentPage = parseInt(this.currentPage, 0);
       }
     }
   }
@@ -132,7 +137,7 @@ export class PagerComponent implements OnInit, OnDestroy {
       this.frameSize = 1;
     } else {
       if (_.isString(this.frameSize)) {
-        this.frameSize = parseInt(this.frameSize);
+        this.frameSize = parseInt(this.frameSize, 0);
       }
     }
   }
@@ -140,18 +145,18 @@ export class PagerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.pager = this.pagerService.get(this.name);
-    for(let c of this._cache){
+    for (const c of this._cache) {
       this[c.key] = c.value;
     }
     this.checkCurrent();
     this.checkTotal();
     this.checkFrameSize();
-    let pagerValue = this.activatedRoute.snapshot.queryParamMap.has(this.name);
+    const pagerValue = this.activatedRoute.snapshot.queryParamMap.has(this.name);
     if (pagerValue) {
-      let page = this.activatedRoute.snapshot.queryParamMap.get(this.name);
+      const page = this.activatedRoute.snapshot.queryParamMap.get(this.name);
       if (/^\d+$/.test(page)) {
         try {
-          this.setPage(parseInt(page));
+          this.setPage(parseInt(page, 0));
           return;
         } catch (e) {
         }

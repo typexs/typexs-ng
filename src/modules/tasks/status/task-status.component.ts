@@ -19,8 +19,9 @@ export class TaskStatusComponent implements OnInit {
 
   log: any[];
 
-  timer: NodeJS.Timer;
+  t: any;
 
+  // logBoundry
 
   constructor(private tasksService: BackendTasksService,
               private route: ActivatedRoute,
@@ -32,23 +33,25 @@ export class TaskStatusComponent implements OnInit {
     this.runnerId = this.route.snapshot.paramMap.get('runnerId');
     this.nodeId = this.route.snapshot.paramMap.get('nodeId');
 
-    this.update();
-    this.timer = setInterval(() => {
+    // this.update();
+    const v = setInterval(() => {
       this.update();
     }, 1000);
+    this.t = v;
+
   }
 
   buildLog() {
-
-
     if (this.log) {
-      return this.log.map(e => this.datePipe.transform(new Date(parseInt(e.timestamp,0)), 'yyyy-MM-dd HH:mm:ss.SSS') + '' + ' [' + e.level + '] ' + e.message).join('\n');
+      return this.log.map(e => this.datePipe.transform(new Date(parseInt(e.timestamp, 0)), 'yyyy-MM-dd HH:mm:ss.SSS') + ''
+        + ' [' + e.level + '] ' + e.message).join('\n');
     }
     return '';
   }
 
 
   update() {
+    console.log('update');
     this.tasksService.taskStatus(this.runnerId, this.nodeId).subscribe(tasks => {
       if (tasks) {
         this.taskLog = tasks;
@@ -68,7 +71,7 @@ export class TaskStatusComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.timer);
+    clearInterval(this.t);
   }
 
 }

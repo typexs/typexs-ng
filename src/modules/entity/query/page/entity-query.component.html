@@ -1,0 +1,22 @@
+<div class="card">
+  <div class="card-header">
+    <h3>Entity list</h3>
+  </div>
+  <div class="card-body">
+
+    <txs-free-query-input
+      (queryState)="onQueryAction($event)"
+      [entityRef]="entityRef">
+    </txs-free-query-input>
+
+
+    <txs-datatable #datatable
+                   [columns]="columns"
+                   [options]="options"
+                   (doQuery)="doQuery($event)"
+    ></txs-datatable>
+
+
+  </div>
+</div>
+

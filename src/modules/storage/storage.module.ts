@@ -9,11 +9,11 @@ import {StorageTypesComponent} from './types/storage-types.component';
 import {StorageStructComponent} from './struct/storage-struct.component';
 import {StorageModifyComponent} from './modify/storage-modify.component';
 import {StorageViewComponent} from './view/storage-view.component';
-import {StorageQueryComponent} from './query/storage-query.component';
+import {StorageQueryComponent} from './query/page/storage-query.component';
 import {StorageDeleteComponent} from './delete/storage-delete.component';
-import {StorageQueryInputComponent} from './query/storage-query-input.component';
 import {StorageBackendsComponent} from './backends/storage-backends.component';
 import {CommonModule} from '@angular/common';
+import {StorageQueryEmbeddedComponent} from './query/embedded/storage-query-embedded.component';
 
 const PROVIDERS = [
   StorageService,
@@ -25,7 +25,7 @@ const COMPONENTS = [
   StorageModifyComponent,
   StorageViewComponent,
   StorageQueryComponent,
-  StorageQueryInputComponent,
+  StorageQueryEmbeddedComponent,
   StorageDeleteComponent,
   StorageBackendsComponent
 ];

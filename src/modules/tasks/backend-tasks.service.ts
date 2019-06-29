@@ -93,11 +93,19 @@ export class BackendTasksService {
     return x.asObservable();
   }
 
-  taskLog(runnerId: string, nodeId: string, tail: number = 50): Observable<any[]> {
+  taskLog(runnerId: string, nodeId: string, from: number = null, offset: number = null, tail: number = 50): Observable<any[]> {
     const x = new Subject<any[]>();
 
-    this.http.get(this.api + '/' + API_TASK_LOG.replace(':nodeId', nodeId)
-      .replace(':runnerId', runnerId) + '?tail=' + tail, (err, data: any[]) => {
+    let url = this.api + '/' + API_TASK_LOG.replace(':nodeId', nodeId).replace(':runnerId', runnerId);
+    if (from && offset && _.isNumber(from) && _.isNumber(offset)) {
+      url += `?from=${from}&offset=${offset}`;
+    } else if (from && _.isNumber(from)) {
+      url += `?from=${from}`;
+    } else {
+      url += `?tail=${tail}`;
+    }
+
+    this.http.get(url, (err, data: any[]) => {
       if (err) {
         x.error(err);
       } else {

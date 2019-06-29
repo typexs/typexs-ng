@@ -7,7 +7,7 @@ import {SystemConfigComponent} from './system/config/system-config.component';
 import {NgRoutesComponent} from './ng/routes/ng-routes.component';
 import {EntityTypesComponent} from './../entity/types/entity-types.component';
 import {EntityModifyComponent} from './../entity/modify/entity-modify.component';
-import {EntityQueryComponent} from './../entity/query/entity-query.component';
+import {EntityQueryComponent} from './../entity/query/page/entity-query.component';
 import {EntityViewComponent} from './../entity/view/entity-view.component';
 import {EntityStructComponent} from './../entity/struct/entity-struct.component';
 import {EntityDeleteComponent} from './../entity/delete/entity-delete.component';
@@ -17,13 +17,14 @@ import {StorageStructComponent} from '../storage/struct/storage-struct.component
 import {StorageModifyComponent} from '../storage/modify/storage-modify.component';
 import {StorageViewComponent} from '../storage/view/storage-view.component';
 import {StorageDeleteComponent} from '../storage/delete/storage-delete.component';
-import {StorageQueryComponent} from '../storage/query/storage-query.component';
+import {StorageQueryComponent} from '../storage/query/page/storage-query.component';
 import {StorageBackendsComponent} from '../storage/backends/storage-backends.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {TasksMetadataComponent} from '../tasks/metadata/tasks-metadata.component';
 import {TasksExecutionComponent} from '../tasks/execution/tasks-execution.component';
 import {TaskStatusComponent} from '../tasks/status/task-status.component';
 import {SystemNodesComponent} from './system/nodes/system-nodes.component';
+import {TasksLogComponent} from '../tasks/log/tasks-log.component';
 
 
 export const ADMIN_ROUTES: Routes = [
@@ -77,6 +78,12 @@ export const ADMIN_ROUTES: Routes = [
         path: 'tasks/list',
         component: TasksMetadataComponent,
         data: {label: 'List', group: 'admin'},
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'tasks/logs',
+        component: TasksLogComponent,
+        data: {label: 'Logs', group: 'admin'},
         canActivate: [AuthGuardService]
       },
       {

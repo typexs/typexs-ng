@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 
 export class Pager {
 
-  readonly name:string;
+  readonly name: string;
 
   private _inc = 0;
 
@@ -11,7 +11,7 @@ export class Pager {
 
   private frameEnd: number;
 
-  frameSize: number = 3;
+  frameSize = 3;
 
   currentPage: number;
 
@@ -20,17 +20,25 @@ export class Pager {
   /**
    * Minimum pages
    */
-  minPage: number = 1;
+  minPage = 1;
 
   /**
    * Pages for display
    */
   pages: number[] = [];
 
+  wait: NodeJS.Timer;
 
-  constructor(id:string){
+  constructor(id: string) {
     this.name = id;
   }
+
+
+  once(fn: () => void) {
+    clearTimeout(this.wait);
+    this.wait = setTimeout(fn, 50);
+  }
+
 
   calculatePages() {
     if (this.minPage > 0 && this.totalPages > 0) {
@@ -60,13 +68,13 @@ export class Pager {
           ' end=' + this.frameEnd +
           ' total=' + this.totalPages);
       }
-      /*
-      console.log(' min=' + this.minPage +
-        ' start=' + this.frameStart +
-        ' current=' + this.currentPage +
-        ' end=' + this.frameEnd +
-        ' total=' + this.totalPages, this.pages);
-        */
+
+      // console.log(' min=' + this.minPage +
+      //   ' start=' + this.frameStart +
+      //   ' current=' + this.currentPage +
+      //   ' end=' + this.frameEnd +
+      //   ' total=' + this.totalPages, this.pages);
+
     }
   }
 
@@ -88,15 +96,15 @@ export class Pager {
     return !(this.currentPage < this.totalPages);
   }
 
-  inc(){
+  inc() {
     this._inc++;
   }
 
-  dec(){
+  dec() {
     this._inc--;
   }
 
-  free(){
-    return this._inc <= 0
+  free() {
+    return this._inc <= 0;
   }
 }

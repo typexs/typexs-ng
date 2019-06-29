@@ -21,10 +21,11 @@ import {Expressions} from 'commons-expressions/browser';
 import {Subject} from 'rxjs/Subject';
 import {AuthMessage} from '../system/messages/types/AuthMessage';
 import {Helper} from '../../libs/observable/Helper';
+import {IQueringService} from '../system/api/querying/IQueringService';
 
 
 @Injectable()
-export class StorageService {
+export class StorageService implements IQueringService {
 
   constructor(private http: HttpClientWrapper, private authService: AuthService) {
     this.registry = TypeOrmEntityRegistry.$();

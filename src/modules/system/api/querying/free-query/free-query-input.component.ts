@@ -3,46 +3,45 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 import {Expressions} from 'commons-expressions/browser';
 
-import {StorageQueryAction} from './StorageQueryAction';
-
 import {IEntityRef} from 'commons-schema-api/browser';
 import {TypeOrmSqlConditionsBuilder} from '@typexs/base/libs/storage/framework/typeorm/TypeOrmSqlConditionsBuilder';
 import {IConditionJoin} from '@typexs/base/browser';
+import {QueryAction} from '../QueryAction';
 
 
 @Component({
-  selector: 'txs-storage-query-input',
-  templateUrl: './storage-query-input.component.html',
-  styleUrls: ['./storage-query-input.component.scss']
+  selector: 'txs-free-query-input',
+  templateUrl: './free-query-input.component.html',
+  styleUrls: ['./free-query-input.component.scss']
 })
-export class StorageQueryInputComponent {
+export class FreeQueryInputComponent {
 
   @Input()
-  entityDef: IEntityRef;
+  entityRef: IEntityRef;
 
   @Output()
-  queryState: EventEmitter<StorageQueryAction> = new EventEmitter();
+  queryState: EventEmitter<QueryAction> = new EventEmitter();
 
-  freeTextQuery: string = '';
+  freeTextQuery = '';
 
   freeTextQueryError: string[] = [];
 
   jsonQuery: any = null;
 
-  sqlWhere: string = '';
+  sqlWhere = '';
 
   sqlJoins: IConditionJoin[] = [];
 
 
   doQuery() {
-    if (this.jsonQuery && this.freeTextQueryError.length == 0) {
-      this.queryState.emit(new StorageQueryAction(this.jsonQuery));
+    if (this.jsonQuery && this.freeTextQueryError.length === 0) {
+      this.queryState.emit(new QueryAction(this.jsonQuery));
     }
   }
 
 
   doResetQuery() {
-    this.queryState.emit(new StorageQueryAction(null));
+    this.queryState.emit(new QueryAction(null));
   }
 
   onQueryInput($event: any) {
@@ -51,13 +50,13 @@ export class StorageQueryInputComponent {
     this.freeTextQueryError = [];
     if (!_.isEmpty(this.freeTextQuery)) {
       try {
-        let errors: string[] = [];
+        const errors: string[] = [];
 
-        let expr = Expressions.parse(this.freeTextQuery);
+        const expr = Expressions.parse(this.freeTextQuery);
         if (expr) {
-          if (expr.test(this.entityDef.getClassRef(), errors)) {
+          if (expr.test(this.entityRef.getClassRef(), errors)) {
             this.jsonQuery = expr;
-            let builder = new TypeOrmSqlConditionsBuilder(this.entityDef);
+            const builder = new TypeOrmSqlConditionsBuilder(this.entityRef);
             this.sqlWhere = builder.build(this.jsonQuery.toJson());
             this.sqlJoins = builder.getJoins();
           }

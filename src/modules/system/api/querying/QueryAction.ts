@@ -1,7 +1,13 @@
 import {ExprDesc} from 'commons-expressions/browser';
 
 
-export class EntityQueryAction {
+export class QueryAction {
+
+
+  /**
+   * Mango-Query
+   */
+  readonly mango: ExprDesc;
 
   /**
    * Mango-Query as JSON
@@ -10,12 +16,12 @@ export class EntityQueryAction {
 
   constructor(q: any) {
     if (q instanceof ExprDesc) {
+      this.mango = q;
       this.query = q.toJson();
-    }else{
+    } else {
       this.query = q;
     }
   }
-
 
 
 }

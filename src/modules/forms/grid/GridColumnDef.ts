@@ -2,7 +2,7 @@ import {FormObject} from '../../../libs/forms/FormObject';
 
 export class GridColumnDef {
 
-  idx: number = 0;
+  idx = 0;
 
   label: string;
 

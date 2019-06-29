@@ -11,10 +11,11 @@ import {AuthService} from '../system/api/auth/auth.service';
 import {HttpClientWrapper} from '../system/http-client-wrapper.service';
 import {AuthMessage} from '../system/messages/types/AuthMessage';
 import {Helper} from '../../libs/observable/Helper';
+import {IQueringService} from '../system/api/querying/IQueringService';
 
 
 @Injectable()
-export class EntityService {
+export class EntityService implements IQueringService {
 
   constructor(private http: HttpClientWrapper, private authService: AuthService) {
     this.reloadMetadata();
@@ -201,7 +202,7 @@ export class EntityService {
     // TODO if empty entity ???
     const entityDef = EntityRegistry.$().getEntityRefByName(entityName);
     const id = entityDef.buildLookupConditions(entity);
-    if (entityId != id) {
+    if (entityId !== id) {
       throw new Error('something is wrong');
     }
     const obs = new BehaviorSubject<any>(null);

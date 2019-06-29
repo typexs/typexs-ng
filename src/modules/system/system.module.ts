@@ -13,6 +13,25 @@ import {AppStateService} from './app.state.service';
 import {InvokerService} from './invoker.service';
 import {HttpClientWrapper} from './http-client-wrapper.service';
 import {DatatableComponent} from './datatable/datatable.component';
+import {SimpleHtmlTableComponent} from './datatable/simple-html-table/simple-html-table.component';
+import {AppConfigService} from './app.config.service';
+import {SimpleHtmlCellComponent} from './datatable/simple-html-table/simple-html-cell.component';
+import {SimpleHtmlCellValueComponent} from './datatable/simple-html-table/simple-html-cell-value.component';
+import {
+  C_DEFAULT,
+  CC_GRID,
+  CC_GRID_CELL_ENTITY_OPERATIONS,
+  CC_GRID_CELL_ENTITY_REFERENCE,
+  CC_GRID_CELL_OBJECT_REFERENCE,
+  CC_GRID_CELL_VALUE,
+  SIMPLE_TABLE
+} from './constants';
+import {FormsModule} from '@angular/forms';
+import {SimpleHtmlCellEntityReferenceRendererComponent} from './datatable/simple-html-table/simple-html-cell-entity-reference-renderer.component';
+import {SimpleHtmlCellObjectReferenceRendererComponent} from './datatable/simple-html-table/simple-html-cell-object-reference-renderer.component';
+import {SimpleHtmlCellEntityOperationsRendererComponent} from './datatable/simple-html-table/simple-html-cell-entity-operations-renderer.component';
+import {RouterModule} from '@angular/router';
+import {FreeQueryInputComponent} from './api/querying/free-query/free-query-input.component';
 
 
 const PROVIDERS = [
@@ -23,7 +42,7 @@ const PROVIDERS = [
   AuthGuardService,
   {provide: AuthService, useClass: NoopAuthService},
   {provide: AuthGuardService, useClass: DefaultAuthGuardService},
-
+  AppConfigService,
   PagerService,
   AppStateService,
   InvokerService
@@ -32,12 +51,32 @@ const PROVIDERS = [
 const COMPONENTS = [
   AlertComponent,
   PagerComponent,
-  DatatableComponent
+  DatatableComponent,
+  SimpleHtmlTableComponent,
+  SimpleHtmlCellComponent,
+  SimpleHtmlCellValueComponent,
+  SimpleHtmlCellEntityReferenceRendererComponent,
+  SimpleHtmlCellObjectReferenceRendererComponent,
+  SimpleHtmlCellEntityOperationsRendererComponent,
+  FreeQueryInputComponent
 ];
+
 
 @NgModule({
   declarations: COMPONENTS,
-  imports: [BrowserModule],
+  entryComponents: [
+    SimpleHtmlTableComponent,
+    SimpleHtmlCellComponent,
+    SimpleHtmlCellValueComponent,
+    SimpleHtmlCellEntityReferenceRendererComponent,
+    SimpleHtmlCellObjectReferenceRendererComponent,
+    SimpleHtmlCellEntityOperationsRendererComponent
+  ],
+  imports: [
+    BrowserModule,
+    RouterModule,
+    FormsModule
+  ],
   exports: COMPONENTS,
   providers: PROVIDERS
 })
@@ -48,6 +87,20 @@ export class SystemModule {
       ngModule: SystemModule,
       providers: PROVIDERS
     };
+  }
+
+  /**
+   * declaring default parameters
+   *
+   * @param appConfig
+   */
+  constructor(private appConfig: AppConfigService) {
+    appConfig.setComponentClass([C_DEFAULT, CC_GRID], SimpleHtmlTableComponent);
+    appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_VALUE], SimpleHtmlCellValueComponent);
+    appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_ENTITY_REFERENCE], SimpleHtmlCellEntityReferenceRendererComponent);
+    appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_OBJECT_REFERENCE], SimpleHtmlCellObjectReferenceRendererComponent);
+    appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_ENTITY_OPERATIONS], SimpleHtmlCellEntityOperationsRendererComponent);
+
   }
 
 }
