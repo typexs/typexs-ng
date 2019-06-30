@@ -24,7 +24,10 @@
 
     <div class="log" *ngIf="log">
       <pre class="language-shell">{{buildLog()}}</pre>
+    </div>
 
+    <div class="alert alert-danger rounded" *ngIf="logError">
+      <pre class="language-shell">{{logError}}</pre>
     </div>
 
   </div>

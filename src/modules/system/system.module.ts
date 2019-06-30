@@ -23,6 +23,7 @@ import {
   CC_GRID_CELL_ENTITY_OPERATIONS,
   CC_GRID_CELL_ENTITY_REFERENCE,
   CC_GRID_CELL_OBJECT_REFERENCE,
+  CC_GRID_CELL_ROUTER_LINK,
   CC_GRID_CELL_VALUE,
   SIMPLE_TABLE
 } from './constants';
@@ -32,6 +33,7 @@ import {SimpleHtmlCellObjectReferenceRendererComponent} from './datatable/simple
 import {SimpleHtmlCellEntityOperationsRendererComponent} from './datatable/simple-html-table/simple-html-cell-entity-operations-renderer.component';
 import {RouterModule} from '@angular/router';
 import {FreeQueryInputComponent} from './api/querying/free-query/free-query-input.component';
+import {SimpleHtmlCellRouterLinkRendererComponent} from './datatable/simple-html-table/simple-html-cell-router-link-renderer.component';
 
 
 const PROVIDERS = [
@@ -58,6 +60,7 @@ const COMPONENTS = [
   SimpleHtmlCellEntityReferenceRendererComponent,
   SimpleHtmlCellObjectReferenceRendererComponent,
   SimpleHtmlCellEntityOperationsRendererComponent,
+  SimpleHtmlCellRouterLinkRendererComponent,
   FreeQueryInputComponent
 ];
 
@@ -70,7 +73,8 @@ const COMPONENTS = [
     SimpleHtmlCellValueComponent,
     SimpleHtmlCellEntityReferenceRendererComponent,
     SimpleHtmlCellObjectReferenceRendererComponent,
-    SimpleHtmlCellEntityOperationsRendererComponent
+    SimpleHtmlCellEntityOperationsRendererComponent,
+    SimpleHtmlCellRouterLinkRendererComponent
   ],
   imports: [
     BrowserModule,
@@ -100,6 +104,7 @@ export class SystemModule {
     appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_ENTITY_REFERENCE], SimpleHtmlCellEntityReferenceRendererComponent);
     appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_OBJECT_REFERENCE], SimpleHtmlCellObjectReferenceRendererComponent);
     appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_ENTITY_OPERATIONS], SimpleHtmlCellEntityOperationsRendererComponent);
+    appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_ROUTER_LINK], SimpleHtmlCellRouterLinkRendererComponent);
 
   }
 

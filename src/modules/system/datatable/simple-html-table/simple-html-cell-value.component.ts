@@ -1,11 +1,12 @@
 import {Component, Input} from '@angular/core';
 import {IGridColumn} from '../IGridColumn';
 import * as _ from 'lodash';
+import {DatePipe} from '@angular/common';
 
 
 @Component({
   selector: 'txs-simple-html-cell-value',
-  template: '{{ getValue() }}'
+  templateUrl: 'simple-html-cell-value.component.html'
 })
 export class SimpleHtmlCellValueComponent {
 
@@ -15,16 +16,27 @@ export class SimpleHtmlCellValueComponent {
   @Input()
   row: any;
 
+  constructor(private datePipe: DatePipe) {
+
+  }
+
 
   getValue() {
     if (this.column.valueHandler) {
       return this.column.valueHandler(this.row);
     } else if (this.column.field) {
-      return _.get(this.row, this.column.field);
+      const v = _.get(this.row, this.column.field);
+      return v;
     } else {
       return null;
     }
   }
 
-
+  format(v: any) {
+    if (_.isDate(v)) {
+      return this.datePipe.transform(v, 'yyyy-MM-dd HH:mm:ss.SSS');
+    } else {
+      return v;
+    }
+  }
 }

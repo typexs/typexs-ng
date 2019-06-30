@@ -13,6 +13,7 @@ import {SystemInfoService} from '../system/system-info.service';
 import {TaskEvent} from '@typexs/base/libs/tasks/worker/TaskEvent';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {SystemNodeInfo} from '@typexs/base';
+import {HttpResponseError} from '@typexs/server';
 
 
 @Injectable()
@@ -105,7 +106,7 @@ export class BackendTasksService {
       url += `?tail=${tail}`;
     }
 
-    this.http.get(url, (err, data: any[]) => {
+    this.http.get({url: url, logging: false}, (err: HttpResponseError, data: any[]) => {
       if (err) {
         x.error(err);
       } else {

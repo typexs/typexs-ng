@@ -3,6 +3,9 @@ export const C_DEFAULT = 'default';
 export const C_PROPERTY = 'property';
 export const C_ENTITY_REF = 'entityRef';
 export const C_URL_PREFIX = 'urlPrefix';
+export const C_URL_HANDLER = 'urlHandler';
+export const C_URL_TITLE = 'urlTitle';
+
 
 /**
  * Component class reference
@@ -12,6 +15,7 @@ export const CC_GRID_CELL_VALUE = 'cell-value';
 export const CC_GRID_CELL_ENTITY_REFERENCE = 'cell-entity-reference';
 export const CC_GRID_CELL_ENTITY_OPERATIONS = 'cell-entity-operations';
 export const CC_GRID_CELL_OBJECT_REFERENCE = 'cell-object-reference';
+export const CC_GRID_CELL_ROUTER_LINK = 'cell-router-link';
 
 export const CTXT_ROUTE_USER_PROFILE = 'user_profile';
 export const CTXT_ROUTE_USER_LOGOUT = 'user_logout';

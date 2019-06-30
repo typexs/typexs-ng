@@ -19,7 +19,9 @@ export class TaskStatusComponent implements OnInit {
 
   log: any[];
 
-  t: any;
+  logError: string;
+
+  t: NodeJS.Timeout;
 
   // logBoundry
 
@@ -33,44 +35,48 @@ export class TaskStatusComponent implements OnInit {
     this.runnerId = this.route.snapshot.paramMap.get('runnerId');
     this.nodeId = this.route.snapshot.paramMap.get('nodeId');
 
-    // this.update();
-    const v = setInterval(() => {
+    this.t = setInterval(() => {
       this.update();
     }, 1000);
-    this.t = v;
 
   }
 
   buildLog() {
     if (this.log) {
-      return this.log.map(e => this.datePipe.transform(new Date(parseInt(e.timestamp, 0)), 'yyyy-MM-dd HH:mm:ss.SSS') + ''
-        + ' [' + e.level + '] ' + e.message).join('\n');
+      return this.log
+        .map(e => this.datePipe.transform(new Date(parseInt(e.timestamp, 0)), 'yyyy-MM-dd HH:mm:ss.SSS') + ''
+          + ' [' + e.level + '] ' + e.message).join('\n');
+    }
+    if (this.logError) {
+      return this.logError;
     }
     return '';
   }
 
 
   update() {
-    console.log('update');
     this.tasksService.taskStatus(this.runnerId, this.nodeId).subscribe(tasks => {
       if (tasks) {
         this.taskLog = tasks;
-        if (this.taskLog.state && ['stopped', 'errored', 'request_error'].indexOf(this.taskLog.state) == -1) {
+        if (this.taskLog.state && ['stopped', 'errored', 'request_error'].indexOf(this.taskLog.state) !== -1) {
           this.ngOnDestroy();
         }
       }
     }, error => {
+      console.log(error);
       this.ngOnDestroy();
     });
     this.tasksService.taskLog(this.runnerId, this.nodeId).subscribe(x => {
       this.log = x;
-
     }, error => {
+      console.log(error);
+      this.logError = 'Log file not found.';
       this.ngOnDestroy();
     });
   }
 
   ngOnDestroy(): void {
+    console.log('clear');
     clearInterval(this.t);
   }
 
