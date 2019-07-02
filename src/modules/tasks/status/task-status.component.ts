@@ -3,13 +3,27 @@ import {ActivatedRoute} from '@angular/router';
 import {BackendTasksService} from '../backend-tasks.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {DatePipe} from '@angular/common';
+import {Subscription} from 'rxjs/Subscription';
 
-
+/**
+ * Show status of a task (running or finished)
+ *
+ * - show base task data
+ * - show results, incomigs, outgoing
+ * - show log if present as tail or scrollable content
+ * - show error or running status
+ *
+ * Actions:
+ * - abort running task!
+ * - rerun with same configuration (incomming)
+ */
 @Component({
   selector: 'task-status',
-  templateUrl: './task-status.component.html'
+  templateUrl: './task-status.component.html',
+  styleUrls: ['./task-status.component.scss']
 })
 export class TaskStatusComponent implements OnInit {
+
 
   nodeId: string;
 
@@ -17,13 +31,19 @@ export class TaskStatusComponent implements OnInit {
 
   taskLog: TaskLog;
 
-  log: any[];
+  log: string;
 
   logError: string;
 
   t: NodeJS.Timeout;
 
-  // logBoundry
+  logSub: Subscription;
+
+  position = 0;
+
+  fetchSize = 500;
+
+  contentContainer = 'log';
 
   constructor(private tasksService: BackendTasksService,
               private route: ActivatedRoute,
@@ -41,16 +61,11 @@ export class TaskStatusComponent implements OnInit {
 
   }
 
-  buildLog() {
-    if (this.log) {
-      return this.log
-        .map(e => this.datePipe.transform(new Date(parseInt(e.timestamp, 0)), 'yyyy-MM-dd HH:mm:ss.SSS') + ''
-          + ' [' + e.level + '] ' + e.message).join('\n');
-    }
-    if (this.logError) {
-      return this.logError;
-    }
-    return '';
+
+  buildLog(log: any[]): string[] {
+    return log
+      .map(e => this.datePipe.transform(new Date(parseInt(e.timestamp, 0)), 'yyyy-MM-dd HH:mm:ss.SSS') + ''
+        + ' [' + e.level + '] ' + e.message);
   }
 
 
@@ -67,7 +82,9 @@ export class TaskStatusComponent implements OnInit {
       this.ngOnDestroy();
     });
     this.tasksService.taskLog(this.runnerId, this.nodeId).subscribe(x => {
-      this.log = x;
+      if (x) {
+        this.log = this.buildLog(x).join('\n');
+      }
     }, error => {
       console.log(error);
       this.logError = 'Log file not found.';
@@ -75,8 +92,30 @@ export class TaskStatusComponent implements OnInit {
     });
   }
 
+
+  getLog(from: number = 1, offset: number = 50) {
+    this.tasksService.taskLog(this.runnerId, this.nodeId, from, offset).subscribe(x => {
+        if (x) {
+          this.log += this.buildLog(x).join('\n') + '\n';
+          this.position += x.length;
+          this.getLog(this.position, offset);
+        }
+      },
+      error => {
+        console.log(error);
+      });
+  }
+
+
+  loadLog() {
+    console.log(this.position);
+    this.position = 0;
+    this.log = '';
+    this.getLog(this.position, this.fetchSize);
+  }
+
+
   ngOnDestroy(): void {
-    console.log('clear');
     clearInterval(this.t);
   }
 

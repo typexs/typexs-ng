@@ -18,15 +18,30 @@
     <div class="parameters" *ngIf="properties.length > 0">
       <h5>Parameters</h5>
 
-      <div class="form-control" *ngFor="let prop of properties">
-        <label [for]="prop.id()">{{prop.name}}</label>
-        <input id="{{prop.id()}}"
-               type="text"
-               class="form-control"
-               placeholder="Placeholder ..."
-               [(ngModel)]="parameters[prop.machineName]"
-               name="{{ prop.name }}"
-        >
+      <div *ngFor="let prop of properties">
+        <div class="form-group" *ngIf="!hasValueProvider(prop)">
+          <label [for]="prop.id()">{{prop.name}}</label>
+          <input id="{{prop.id()}}"
+                 type="text"
+                 class="form-control"
+                 placeholder="Placeholder ..."
+                 [required]="isRequired(prop)"
+                 [(ngModel)]="parameters[prop.machineName]"
+                 name="{{ prop.name }}"
+          >
+        </div>
+        <div class="form-group" *ngIf="hasValueProvider(prop)">
+          <label [for]="prop.id()">{{prop.name}}</label>
+          <select id="{{ prop.id() }}"
+                  class="form-control"
+                  [required]="isRequired(prop)"
+                  [(ngModel)]="parameters[prop.machineName]"
+                  name="{{ prop.name }}"
+                  [multiple]="prop.isCollection()"
+          >
+            <option *ngFor="let obj of _cachedValues[prop.name]" [value]="obj">{{obj}}</option>
+          </select>
+        </div>
       </div>
     </div>
 
@@ -46,9 +61,9 @@
     <div *ngIf="event">
       {{event | json }}
 
-      <div  *ngFor="let targetId of event.targetIds">
+      <div *ngFor="let targetId of event.targetIds">
         <task-status-row [runnerId]="event.id" [nodeId]="targetId"
-                         ></task-status-row>
+        ></task-status-row>
       </div>
 
     </div>

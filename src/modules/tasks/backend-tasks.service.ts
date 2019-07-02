@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {API_TASK_EXEC, API_TASK_LOG, API_TASK_STATUS, API_TASKS_METADATA} from '@typexs/server/browser';
+import {API_TASK_EXEC, API_TASK_GET_METADATA_VALUE, API_TASK_LOG, API_TASK_STATUS, API_TASKS_METADATA} from '@typexs/server/browser';
 import {Tasks} from '@typexs/base/browser';
 import {IEntityRefMetadata} from 'commons-schema-api';
 import {Observable} from 'rxjs/Observable';
@@ -14,6 +14,7 @@ import {TaskEvent} from '@typexs/base/libs/tasks/worker/TaskEvent';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {SystemNodeInfo} from '@typexs/base';
 import {HttpResponseError} from '@typexs/server';
+import {ExprDesc} from 'commons-expressions/browser';
 
 
 @Injectable()
@@ -98,9 +99,9 @@ export class BackendTasksService {
     const x = new Subject<any[]>();
 
     let url = this.api + '/' + API_TASK_LOG.replace(':nodeId', nodeId).replace(':runnerId', runnerId);
-    if (from && offset && _.isNumber(from) && _.isNumber(offset)) {
+    if (_.isNumber(from) && _.isNumber(offset) && from >= 0 && offset >= 0) {
       url += `?from=${from}&offset=${offset}`;
-    } else if (from && _.isNumber(from)) {
+    } else if (_.isNumber(from) && from >= 0) {
       url += `?from=${from}`;
     } else {
       url += `?tail=${tail}`;
@@ -108,6 +109,7 @@ export class BackendTasksService {
 
     this.http.get({url: url, logging: false}, (err: HttpResponseError, data: any[]) => {
       if (err) {
+        console.log(err)
         x.error(err);
       } else {
         x.next(data);
@@ -148,6 +150,45 @@ export class BackendTasksService {
     } else {
       x.next(this.tasks);
     }
+    return x.asObservable();
+  }
+
+
+  /**
+   * Backend callback to get the allowed values for an incoming parameter
+   *
+   * @param runnerId
+   * @param nodeId
+   */
+  taskIncomingValues(taskName: string, incomingName: string, hint: ExprDesc = null, instance: any = null): Observable<any> {
+    const x = new Subject<any>();
+
+    let _url = this.api + '/' + API_TASK_GET_METADATA_VALUE
+      .replace(':taskName', taskName)
+      .replace(':incomingName', incomingName);
+
+    const queries: any[] = [];
+    if (hint) {
+      queries.push('hint=' + JSON.stringify(hint.toJson()));
+    }
+    if (instance) {
+      queries.push('instance=' + JSON.stringify(instance));
+
+    }
+
+    if (queries.length > 0) {
+      _url += '?' + queries.join('&');
+    }
+
+    this.http.get(_url, (err, data: any) => {
+      if (err) {
+        x.error(err);
+      } else {
+        x.next(data);
+      }
+      x.complete();
+    });
+
     return x.asObservable();
   }
 

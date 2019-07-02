@@ -1,12 +1,10 @@
+import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
 
-import {TaskRef} from '@typexs/base/browser';
-import {ActivatedRoute, Router} from '@angular/router';
+import {TaskExchangeRef, TaskRef} from '@typexs/base/browser';
+import {ActivatedRoute} from '@angular/router';
 import {BackendTasksService} from '../backend-tasks.service';
-import {IPropertyRef} from 'commons-schema-api';
 import {TaskEvent} from '@typexs/base/libs/tasks/worker/TaskEvent';
-import {TaskLog} from '@typexs/base/entities/TaskLog';
-import {StorageService} from '../../storage/storage.service';
 
 
 @Component({
@@ -27,19 +25,16 @@ export class TasksExecutionComponent implements OnInit {
 
   nodeIds: string[] = [];
 
-  properties: IPropertyRef[] = [];
+  properties: TaskExchangeRef[] = [];
 
   parameters: any = {};
 
   event: TaskEvent;
 
-  logs: TaskLog[] = [];
-
+  _cachedValues: { [k: string]: any } = {};
 
   constructor(private tasksService: BackendTasksService,
-              private route: ActivatedRoute,
-              private router: Router,
-              private storageService: StorageService) {
+              private route: ActivatedRoute) {
   }
 
 
@@ -50,11 +45,51 @@ export class TasksExecutionComponent implements OnInit {
       this.taskRef.getPropertyRefs().forEach(p => {
         if (p.descriptor.type === 'incoming') {
           this.parameters[p.machineName] = null;
-          this.properties.push(p);
+          this.properties.push(<TaskExchangeRef>p);
+          if (!this._cachedValues[p.name]) {
+            const valueProvider = p.getOptions('valueProvider');
+            if (valueProvider) {
+              const optional = p.isOptional();
+              if (_.isString(valueProvider)) {
+                this.tasksService.taskIncomingValues(this.taskName, p.name).subscribe(value => {
+                  this.setCachedValues(p.name, value, optional);
+                });
+              } else {
+                this.setCachedValues(p.name, valueProvider, optional);
+              }
+            }
+          }
         }
       });
     });
   }
+
+
+  setCachedValues(name: string, values: any[], optional: boolean = false) {
+    if (optional) {
+      values.unshift(null);
+    }
+    this._cachedValues[name] = values;
+  }
+
+
+  isRequired(p: TaskExchangeRef) {
+    return !p.isOptional();
+  }
+
+
+  isCollection(p: TaskExchangeRef) {
+    const cardinality = p.getOptions('cardinality');
+    return _.isNumber(cardinality) && (cardinality === 0 || cardinality > 1);
+  }
+
+
+  hasValueProvider(p: TaskExchangeRef) {
+    const valueProvider = p.getOptions('valueProvider');
+    const b = !!valueProvider;
+    return b;
+  }
+
 
   execute() {
     this.waiting = true;
@@ -62,7 +97,6 @@ export class TasksExecutionComponent implements OnInit {
       event => {
         this.waiting = false;
         this.event = event;
-        console.log(this.event);
         if (event.errors && event.errors.length > 0) {
           return;
         } else {
