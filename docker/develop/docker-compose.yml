@@ -3,8 +3,15 @@ services:
 
 
   typexs_ng_dev_redis:
+    networks:
+      - typexs_ng_dev
     image: redis
     ports:
       - 127.0.0.1:6379:6379
     volumes:
       - ./local/redis/db:/data
+
+
+networks:
+  typexs_ng_dev:
+    external: false
