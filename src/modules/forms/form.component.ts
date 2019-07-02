@@ -17,8 +17,8 @@ import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
   selector: 'xform',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']
-  //host: {'(submit)': 'onSubmit($event)', '(reset)': 'onReset()'},
-  //outputs: ['ngSubmit'],
+  // host: {'(submit)': 'onSubmit($event)', '(reset)': 'onReset()'},
+  // outputs: ['ngSubmit'],
 })
 export class FormComponent extends AbstractFormComponent<Form> implements OnInit, OnDestroy {
 

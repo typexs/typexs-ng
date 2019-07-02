@@ -5,7 +5,7 @@ import {ResolveDataValue} from './ResolveDataValue';
 import * as _ from 'lodash';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
 import {ContentComponentRegistry} from '../views/ContentComponentRegistry';
-import {NotYetImplementedError} from "@typexs/base/browser"
+import {NotYetImplementedError} from '@typexs/base/browser';
 import {AbstractRef, ClassRef, IEntityRef, IPropertyRef, XS_TYPE_ENTITY, XS_TYPE_PROPERTY} from 'commons-schema-api/browser';
 
 export class FormBuilder {
@@ -39,9 +39,9 @@ export class FormBuilder {
       formObject.handle('binding', entity);
     } else if ((<AbstractRef><any>entity).baseType == XS_TYPE_PROPERTY) {
       // TODO support also other types
-      let property:IPropertyRef = <IPropertyRef>entity;
+      const property: IPropertyRef = <IPropertyRef>entity;
 
-      let formType = <string>property.getOptions(<any>'form');// || 'text';
+      let formType = <string>property.getOptions(<any>'form'); // || 'text';
       if (!formType) {
         // TODO Defaults for the field
         if (property.isIdentifier()) {
@@ -60,7 +60,7 @@ export class FormBuilder {
         property.setOption('form', formType);
       }
 
-      let methodName = 'for' + _.capitalize(formType);
+      const methodName = 'for' + _.capitalize(formType);
       if (this[methodName]) {
         formObject = this[methodName](formType, property);
       } else {
@@ -79,28 +79,28 @@ export class FormBuilder {
 
     const nextLevel = options.level + 1;
     if ((<AbstractRef><any>entity).baseType == XS_TYPE_ENTITY) {
-      if(options.level == 0 || formObject.isStruct()){
-        let properties = (<IEntityRef>entity).getPropertyRefs();
-        for (let property of properties) {
-          let childObject = this._buildFormObject(property, formObject,{level:nextLevel});
+      if (options.level == 0 || formObject.isStruct()) {
+        const properties = (<IEntityRef>entity).getPropertyRefs();
+        for (const property of properties) {
+          const childObject = this._buildFormObject(property, formObject, {level: nextLevel});
           formObject.insert(childObject);
         }
       }
     } else if ((<AbstractRef><any>entity).baseType == XS_TYPE_PROPERTY) {
       // TODO for properties which points to Entity / Entities
-      //property.getEntityRef
-      //formObject;
-      let property = <IPropertyRef>entity;
+      // property.getEntityRef
+      // formObject;
+      const property = <IPropertyRef>entity;
       if (property.isReference()) {
         if (property.isEntityReference()) {
           // build for new entity
-          let entity = (<ClassRef>property.getTargetRef()).getEntityRef();
-          this._buildFormObject(entity, formObject,{level:nextLevel});
+          const entity = (<ClassRef>property.getTargetRef()).getEntityRef();
+          this._buildFormObject(entity, formObject, {level: nextLevel});
         } else {
           // insert property form elements
-          let properties = property.getTargetRef().getPropertyRefs();
-          for (let property of properties) {
-            let childObject = this._buildFormObject(property, formObject,{level:nextLevel});
+          const properties = property.getTargetRef().getPropertyRefs();
+          for (const property of properties) {
+            const childObject = this._buildFormObject(property, formObject, {level: nextLevel});
             formObject.insert(childObject);
           }
         }
@@ -112,7 +112,7 @@ export class FormBuilder {
 
 
   private forDefault(formType: string, property: IPropertyRef) {
-    let formObject = ContentComponentRegistry.createHandler(formType);
+    const formObject = ContentComponentRegistry.createHandler(formType);
     if (formObject) {
       formObject.handle('variant', formType);
       this._applyValues(formObject, property);
@@ -138,7 +138,7 @@ export class FormBuilder {
 
 
   private forReadonly(formType: string, property: IPropertyRef) {
-    let input = this._forInput('text', property);
+    const input = this._forInput('text', property);
     input.handle('readonly', true);
     return input;
   }
@@ -149,7 +149,7 @@ export class FormBuilder {
   }
 
   private _forInput(formType: string, property: IPropertyRef) {
-    let formObject = ContentComponentRegistry.createHandler('input');
+    const formObject = ContentComponentRegistry.createHandler('input');
     formObject.handle('variant', formType);
     this._applyValues(formObject, property);
     return formObject;
@@ -162,11 +162,11 @@ export class FormBuilder {
     formObject.handle('label', property.label() ? property.label() : _.capitalize(property.name));
     formObject.handle('binding', property);
 
-    let options = property.getOptions();
+    const options = property.getOptions();
     if (options) {
       Object.keys(options).forEach(opt => {
-        if (/^(source|target|property)/.test(opt)) return;
-        let value = options[opt];
+        if (/^(source|target|property)/.test(opt)) { return; }
+        const value = options[opt];
         formObject.handle(opt, value);
       });
     }
@@ -174,7 +174,7 @@ export class FormBuilder {
 
 
   private _buildForm(data: any, parent: FormObject = null) {
-    let keys = _.remove(Object.keys(data), (e: string) => ['children', 'type'].indexOf(e) === -1);
+    const keys = _.remove(Object.keys(data), (e: string) => ['children', 'type'].indexOf(e) === -1);
 
     let formObject: FormObject = null;
     if (data.type) {
@@ -190,7 +190,7 @@ export class FormBuilder {
 
     formObject.setParent(parent);
 
-    for (let key of keys) {
+    for (const key of keys) {
       let value = data[key];
       if (_.isString(value)) {
         if (/^\$/.test(value)) {
@@ -202,10 +202,10 @@ export class FormBuilder {
 
 
     if (data.children) {
-      let value = data.children;
+      const value = data.children;
       if (_.isArray(value)) {
-        for (let entry of value) {
-          let childObject = this._buildForm(entry, formObject);
+        for (const entry of value) {
+          const childObject = this._buildForm(entry, formObject);
           formObject.insert(childObject);
         }
       } else {
