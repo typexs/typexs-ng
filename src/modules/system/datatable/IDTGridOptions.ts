@@ -1,6 +1,6 @@
 import {IGridColumn} from './IGridColumn';
 
-export interface IGridOptions {
+export interface IDTGridOptions {
 
   /**
    * enable or disable pager

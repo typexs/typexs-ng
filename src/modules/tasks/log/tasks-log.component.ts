@@ -5,7 +5,7 @@ import {BackendTasksService} from '../backend-tasks.service';
 import {SystemInfoService} from '../../system/system-info.service';
 import {StorageService} from '../../storage/storage.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
-import {IGridOptions} from '../../system/datatable/IGridOptions';
+import {IDTGridOptions} from '../../system/datatable/IDTGridOptions';
 import {IGridColumn} from '../../system/datatable/IGridColumn';
 import {C_URL_HANDLER, C_URL_TITLE, CC_GRID_CELL_ROUTER_LINK} from '../../system/constants';
 
@@ -27,7 +27,7 @@ export class TasksLogComponent implements OnInit {
 
   ready = false;
 
-  options: IGridOptions = {
+  options: IDTGridOptions = {
     enablePager: true,
     limit: 25,
     pagerId: 'page',

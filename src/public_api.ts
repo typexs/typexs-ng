@@ -25,8 +25,23 @@ export * from './modules/system/messages/types/LogMessage';
 export * from './modules/system/pager/PagerService';
 export * from './modules/system/pager/Pager';
 export * from './modules/system/pager/PagerAction';
+export * from './modules/system/pager/pager.component';
 
+export * from './modules/system/datatable/abstract-grid.component';
+export * from './modules/system/datatable/datatable.component';
+export * from './modules/system/datatable/IGridApi';
+export * from './modules/system/datatable/IQueryParams';
+export * from './modules/system/datatable/IGridColumn';
+export * from './modules/system/datatable/IDTGridOptions';
 
+export * from './modules/system/datatable/simple-html-table/simple-html-table.component';
+export * from './modules/system/datatable/simple-html-table/simple-html-cell.component';
+export * from './modules/system/datatable/simple-html-table/simple-html-cell-value.component';
+
+export * from './modules/system/api/querying/abstract-query-embedded.component';
+export * from './modules/system/api/querying/IQueringService';
+export * from './modules/system/api/querying/QueryAction';
+export * from './modules/system/api/querying/free-query/free-query-input.component';
 
 
 // base_admin_theme module
@@ -52,6 +67,13 @@ export * from './modules/entity/entity-options.service';
 
 // system module
 export * from './modules/tasks/tasks.module';
+export * from './modules/tasks/backend-tasks.service';
+export * from './modules/tasks/execution/tasks-execution.component';
+export * from './modules/tasks/log/tasks-log.component';
+export * from './modules/tasks/metadata/tasks-metadata.component';
+export * from './modules/tasks/status/task-status-row.component';
+export * from './modules/tasks/status/task-status.component';
+
 
 // storage module
 export * from './modules/storage/storage.module';

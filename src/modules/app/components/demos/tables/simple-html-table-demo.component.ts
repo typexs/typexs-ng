@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import {Component} from '@angular/core';
 import {IGridColumn} from '../../../../system/datatable/IGridColumn';
 import {SimpleHtmlTableComponent} from '../../../../system/datatable/simple-html-table/simple-html-table.component';
-import {IGridOptions} from '../../../../system/datatable/IGridOptions';
+import {IDTGridOptions} from '../../../../system/datatable/IDTGridOptions';
 import {IGridApi} from '../../../../system/datatable/IGridApi';
 import {And, ExprDesc} from 'commons-expressions';
 
@@ -19,7 +19,7 @@ export class SimpleHtmlTableDemoComponent {
   maxRows: number;
 
 
-  options: IGridOptions = {
+  options: IDTGridOptions = {
     pagerId: 'page',
     limit: 25,
     enablePager: true

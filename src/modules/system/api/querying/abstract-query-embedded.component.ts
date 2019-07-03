@@ -5,7 +5,7 @@ import {IEntityRef, JS_DATA_TYPES, LookupRegistry, XS_TYPE_ENTITY} from 'commons
 import {IFindOptions, REGISTRY_TYPEORM} from '@typexs/base/browser';
 import {And, ExprDesc, Expressions} from 'commons-expressions/browser';
 
-import {IGridOptions} from '../../../system/datatable/IGridOptions';
+import {IDTGridOptions} from '../../../system/datatable/IDTGridOptions';
 import {IGridColumn} from '../../../system/datatable/IGridColumn';
 import {
   C_PROPERTY,
@@ -43,7 +43,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit /*, OnDestroy */ {
   limit = 25;
 
   @Input()
-  options: IGridOptions = {
+  options: IDTGridOptions = {
     pagerId: 'page',
     enablePager: true,
     limit: 25
