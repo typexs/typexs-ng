@@ -20,6 +20,13 @@ import {IQueringService} from './IQueringService';
 import {QueryAction} from './QueryAction';
 
 
+export const DEFAULT_GRID_OPTIONS: IDTGridOptions = {
+  pagerId: 'page',
+  enablePager: true,
+  limit: 25,
+  freeQueryBuilder: true
+};
+
 /**
  * Storage query embedded component
  *
@@ -43,11 +50,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit /*, OnDestroy */ {
   limit = 25;
 
   @Input()
-  options: IDTGridOptions = {
-    pagerId: 'page',
-    enablePager: true,
-    limit: 25
-  };
+  options: IDTGridOptions = DEFAULT_GRID_OPTIONS;
 
   entityRef: IEntityRef;
 

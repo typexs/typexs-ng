@@ -12,6 +12,7 @@ import {TaskStatusRowComponent} from './status/task-status-row.component';
 import {StorageModule} from '../storage/storage.module';
 import {DatePipe} from '@angular/common';
 import {TasksLogComponent} from './log/tasks-log.component';
+import {TaskStatusPageComponent} from './status/task-status-page.component';
 
 const PROVIDERS = [
   BackendTasksService,
@@ -23,6 +24,7 @@ const PROVIDERS = [
     TasksMetadataComponent,
     TasksExecutionComponent,
     TaskStatusComponent,
+    TaskStatusPageComponent,
     TasksLogComponent,
     TaskStatusRowComponent,
   ],

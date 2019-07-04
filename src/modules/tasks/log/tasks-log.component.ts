@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
-import {TaskRef, Tasks} from '@typexs/base/browser';
+import {TaskRef} from '@typexs/base/browser';
 import {BackendTasksService} from '../backend-tasks.service';
 import {SystemInfoService} from '../../system/system-info.service';
 import {StorageService} from '../../storage/storage.service';
@@ -19,8 +19,6 @@ import {C_URL_HANDLER, C_URL_TITLE, CC_GRID_CELL_ROUTER_LINK} from '../../system
 })
 export class TasksLogComponent implements OnInit {
 
-  private _tasks: Tasks;
-
   tasks: TaskRef[];
 
   entries: TaskLog[] = [];
@@ -31,6 +29,7 @@ export class TasksLogComponent implements OnInit {
     enablePager: true,
     limit: 25,
     pagerId: 'page',
+    freeQueryBuilder: true,
     columnsPostProcess: this.columnsPostProcess.bind(this)
   };
 

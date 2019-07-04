@@ -73,6 +73,7 @@ export * from './modules/tasks/log/tasks-log.component';
 export * from './modules/tasks/metadata/tasks-metadata.component';
 export * from './modules/tasks/status/task-status-row.component';
 export * from './modules/tasks/status/task-status.component';
+export * from './modules/tasks/status/task-status-page.component';
 
 
 // storage module

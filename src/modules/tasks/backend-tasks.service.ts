@@ -81,9 +81,9 @@ export class BackendTasksService {
 
   taskStatus(runnerId: string, nodeId: string): Observable<TaskLog> {
     const x = new Subject<TaskLog>();
+    const url = this.api + '/' + API_TASK_STATUS.replace(':nodeId', nodeId).replace(':runnerId', runnerId);
 
-    this.http.get(this.api + '/' + API_TASK_STATUS.replace(':nodeId', nodeId)
-      .replace(':runnerId', runnerId), (err, data: TaskLog) => {
+    this.http.get(url, (err, data: TaskLog) => {
       if (err) {
         x.error(err);
       } else {
@@ -109,7 +109,7 @@ export class BackendTasksService {
 
     this.http.get({url: url, logging: false}, (err: HttpResponseError, data: any[]) => {
       if (err) {
-        console.log(err)
+        console.log(err);
         x.error(err);
       } else {
         x.next(data);

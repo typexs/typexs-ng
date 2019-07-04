@@ -1,0 +1,24 @@
+<div class="card" *ngIf="taskLog">
+
+  <div class="card-header">
+    <h3>Taskstatus for <strong>{{taskLog.taskName}}</strong> on <strong>{{taskLog.respId}}</strong> <span
+      *ngIf="taskLog.running">(running)</span>
+      <div class="float-right">
+        <span class="badge badge" [ngClass]="{
+          'badge-warning':taskLog.running,
+          'badge-success':taskLog.done && !taskLog.hasError,
+          'badge-danger':taskLog.done && taskLog.hasError}">{{taskLog.state}}</span>
+      </div>
+    </h3>
+  </div>
+
+
+  <div class="card-body">
+
+    <txs-task-status [taskLog]="taskLog">
+
+
+    </txs-task-status>
+
+  </div>
+</div>

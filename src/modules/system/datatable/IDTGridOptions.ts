@@ -19,6 +19,11 @@ export interface IDTGridOptions {
 
 
   /**
+   * Free Query builder
+   */
+  freeQueryBuilder?: boolean;
+
+  /**
    * Define a function which can modify columns
    *
    * @param columns

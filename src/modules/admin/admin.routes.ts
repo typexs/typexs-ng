@@ -25,6 +25,7 @@ import {TasksExecutionComponent} from '../tasks/execution/tasks-execution.compon
 import {TaskStatusComponent} from '../tasks/status/task-status.component';
 import {SystemNodesComponent} from './system/nodes/system-nodes.component';
 import {TasksLogComponent} from '../tasks/log/tasks-log.component';
+import {TaskStatusPageComponent} from '../tasks/status/task-status-page.component';
 
 
 export const ADMIN_ROUTES: Routes = [
@@ -94,7 +95,7 @@ export const ADMIN_ROUTES: Routes = [
       },
       {
         path: 'tasks/status/:nodeId/:runnerId',
-        component: TaskStatusComponent,
+        component: TaskStatusPageComponent,
         data: {label: 'Status', group: 'admin', skip: true},
         canActivate: [AuthGuardService]
       },

@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {Component, Input, OnInit} from '@angular/core';
 import {BackendTasksService} from '../backend-tasks.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {DatePipe} from '@angular/common';
@@ -18,17 +17,19 @@ import {Subscription} from 'rxjs/Subscription';
  * - rerun with same configuration (incomming)
  */
 @Component({
-  selector: 'task-status',
+  selector: 'txs-task-status',
   templateUrl: './task-status.component.html',
   styleUrls: ['./task-status.component.scss']
 })
 export class TaskStatusComponent implements OnInit {
 
-
+  @Input()
   nodeId: string;
 
+  @Input()
   runnerId: string;
 
+  @Input()
   taskLog: TaskLog;
 
   log: string;
@@ -46,14 +47,20 @@ export class TaskStatusComponent implements OnInit {
   contentContainer = 'log';
 
   constructor(private tasksService: BackendTasksService,
-              private route: ActivatedRoute,
+              //            private route: ActivatedRoute,
               private datePipe: DatePipe) {
   }
 
 
   ngOnInit() {
+    /*
     this.runnerId = this.route.snapshot.paramMap.get('runnerId');
     this.nodeId = this.route.snapshot.paramMap.get('nodeId');
+*/
+    if (this.taskLog) {
+      this.runnerId = this.taskLog.tasksId;
+      this.nodeId = this.taskLog.respId;
+    }
 
     this.t = setInterval(() => {
       this.update();
@@ -108,7 +115,6 @@ export class TaskStatusComponent implements OnInit {
 
 
   loadLog() {
-    console.log(this.position);
     this.position = 0;
     this.log = '';
     this.getLog(this.position, this.fetchSize);
