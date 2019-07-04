@@ -1,6 +1,5 @@
 import * as _ from 'lodash';
 import {Input, OnInit, ViewChild} from '@angular/core';
-
 import {IEntityRef, JS_DATA_TYPES, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
 import {IFindOptions, REGISTRY_TYPEORM} from '@typexs/base/browser';
 import {And, ExprDesc, Expressions} from 'commons-expressions/browser';
@@ -52,19 +51,19 @@ export class AbstractQueryEmbeddedComponent implements OnInit /*, OnDestroy */ {
   @Input()
   options: IDTGridOptions = DEFAULT_DT_GRID_OPTIONS;
 
+  @Input()
+  freeQuery: any;
+
 
   entityRef: IEntityRef;
 
-
-//  entities: any[] = [];
-
-  _freeQuery: any = null;
 
   error: any = null;
 
 
   @ViewChild('datatable')
   datatable: DatatableComponent;
+
 
   private queringService: IQueringService;
 
@@ -155,7 +154,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit /*, OnDestroy */ {
 
 
   onQueryAction(action: QueryAction) {
-    this._freeQuery = action.query;
+    this.freeQuery = action.query;
     this.doQuery(this.datatable.api());
   }
 
@@ -173,8 +172,8 @@ export class AbstractQueryEmbeddedComponent implements OnInit /*, OnDestroy */ {
       });
     }
 
-    if (this._freeQuery) {
-      mangoQuery = Expressions.fromJson(this._freeQuery);
+    if (this.freeQuery) {
+      mangoQuery = Expressions.fromJson(this.freeQuery);
       if (!_.isEmpty(mangoQuery)) {
         filterQuery.push(mangoQuery);
       }

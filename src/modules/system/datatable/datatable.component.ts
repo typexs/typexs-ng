@@ -38,7 +38,6 @@ export class DatatableComponent extends AbstractGridComponent implements OnInit,
   component: any;
 
   @ViewChild('content', {read: ViewContainerRef}) vc: ViewContainerRef;
-
   componentRef: ComponentRef<any>;
 
   constructor(@Inject(Injector) public injector: Injector,
