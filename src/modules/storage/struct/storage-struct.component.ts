@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
 import {MetadataStorage} from 'class-validator/metadata/MetadataStorage';
 import {getFromContainer} from 'class-validator/container';
@@ -28,7 +28,7 @@ export class StorageStructComponent implements OnInit {
   propertyDefs: { property: IPropertyRef, level: number }[] = [];
 
 
-  constructor(public entityService: StorageService, private route: ActivatedRoute, private router: Router) {
+  constructor(public entityService: StorageService, private route: ActivatedRoute) {
 
   }
 
@@ -48,14 +48,14 @@ export class StorageStructComponent implements OnInit {
     this.propertyDefs = [];
 
     this.machineName = machineName;
-    //this.entityService.getRegistry().getEntityRefFor(this.machineName);
-    this.entityDef = LookupRegistry.$(REGISTRY_TYPEORM).find(XS_TYPE_ENTITY, (e:IEntityRef) => {
-      return e.machineName == machineName;
+    // this.entityService.getRegistry().getEntityRefFor(this.machineName);
+    this.entityDef = LookupRegistry.$(REGISTRY_TYPEORM).find(XS_TYPE_ENTITY, (e: IEntityRef) => {
+      return e.machineName === machineName;
     });
 
 
     this.referrerProps = LookupRegistry.$(REGISTRY_TYPEORM).filter(XS_TYPE_PROPERTY, (referrer: IPropertyRef) => {
-      return referrer.isReference() && referrer.getTargetRef() == this.entityDef.getClassRef();
+      return referrer.isReference() && referrer.getTargetRef() === this.entityDef.getClassRef();
     });
     this.scan(this.entityDef);
   }
@@ -71,8 +71,10 @@ export class StorageStructComponent implements OnInit {
 
 
   scan(source: IClassRef | IEntityRef, level: number = 0) {
-    if (level > 8) return;
-    for (let props of source.getPropertyRefs()) {
+    if (level > 8) {
+      return;
+    }
+    for (const props of source.getPropertyRefs()) {
       this.propertyDefs.push({property: props, level: level});
       if (props.isReference()) {
         this.scan(props.getTargetRef(), level + 1);
@@ -82,7 +84,7 @@ export class StorageStructComponent implements OnInit {
 
 
   validator(property: IPropertyRef) {
-    let validators = getFromContainer(MetadataStorage).getTargetValidationMetadatas(this.entityDef.getClassRef().getClass(), null);
+    const validators = getFromContainer(MetadataStorage).getTargetValidationMetadatas(this.entityDef.getClassRef().getClass(), null);
     return _.filter(validators, v => v.propertyName === property.name);
   }
 
@@ -93,7 +95,7 @@ export class StorageStructComponent implements OnInit {
 
 
   options(propDef: IPropertyRef) {
-    let opts = _.clone(propDef.getOptions());
+    const opts = _.clone(propDef.getOptions());
     if (opts.target) {
       delete opts.target;
     }
