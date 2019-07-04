@@ -12,7 +12,7 @@ import * as _ from 'lodash';
 })
 export class StorageViewComponent implements OnInit {
 
-  ready: boolean = false;
+  ready = false;
 
   machineName: string;
 
@@ -38,7 +38,8 @@ export class StorageViewComponent implements OnInit {
   load() {
     this.machineName = this.route.snapshot.paramMap.get('machineName');
     this.id = this.route.snapshot.paramMap.get('id');
-    this.entityDef = LookupRegistry.$(REGISTRY_TYPEORM).find(XS_TYPE_ENTITY, (e:IEntityRef) => {return e.machineName == _.snakeCase(this.machineName)});
+    this.entityDef = LookupRegistry.$(REGISTRY_TYPEORM).find(XS_TYPE_ENTITY,
+      (e: IEntityRef) => e.machineName === _.snakeCase(this.machineName));
     if (this.entityDef) {
       this.entityService.get(this.machineName, this.id).subscribe((entity: any) => {
         this.instance = entity;
