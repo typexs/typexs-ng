@@ -7,7 +7,7 @@ import {IGridApi} from './IGridApi';
 
 export abstract class AbstractGridComponent implements IGridApi {
 
-
+  
   params: IQueryParams = {};
 
   @Input()

@@ -23,7 +23,6 @@ import {Subject} from 'rxjs/Subject';
 @Injectable()
 export class SystemInfoService {
 
-
   info: SystemInfo;
 
   node: SystemNodeInfo;
