@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {Input, OnInit, ViewChild} from '@angular/core';
+import {EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {IEntityRef, JS_DATA_TYPES, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
 import {IFindOptions, REGISTRY_TYPEORM} from '@typexs/base/browser';
 import {And, ExprDesc, Expressions} from 'commons-expressions/browser';
@@ -54,14 +54,15 @@ export class AbstractQueryEmbeddedComponent implements OnInit /*, OnDestroy */ {
   @Input()
   freeQuery: any;
 
+  @Output()
+  freeQueryChange: EventEmitter<any> = new EventEmitter();
 
   entityRef: IEntityRef;
-
 
   error: any = null;
 
 
-  @ViewChild('datatable')
+  @ViewChild('datatable', {static: true})
   datatable: DatatableComponent;
 
 
@@ -127,19 +128,21 @@ export class AbstractQueryEmbeddedComponent implements OnInit /*, OnDestroy */ {
         column.cellValueRenderer = cellRenderer;
         if (!x.isReference()) {
           column.sorting = true;
-          const datatype = <JS_DATA_TYPES>x.getType().toLowerCase();
-          switch (datatype) {
-            case 'number':
-              column.filter = true;
-              column.filterType = 'equal';
-              column.filterDataType = datatype;
-              break;
-            case 'text':
-            case 'string':
-              column.filter = true;
-              column.filterType = 'contains';
-              column.filterDataType = datatype;
-              break;
+          const datatype = <JS_DATA_TYPES>x.getType();
+          if (datatype) {
+            switch (datatype.toLowerCase()) {
+              case 'number':
+                column.filter = true;
+                column.filterType = 'equal';
+                column.filterDataType = datatype;
+                break;
+              case 'text':
+              case 'string':
+                column.filter = true;
+                column.filterType = 'contains';
+                column.filterDataType = datatype;
+                break;
+            }
           }
         }
 
@@ -205,7 +208,6 @@ export class AbstractQueryEmbeddedComponent implements OnInit /*, OnDestroy */ {
       .subscribe(
         (results: any) => {
           if (results) {
-//            this.entities = results.entities;
             api.setRows(results.entities);
             api.setMaxRows(results.$count);
             api.rebuild();

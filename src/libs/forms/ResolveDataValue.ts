@@ -1,4 +1,4 @@
-import {FormObject} from './FormObject';
+// import {FormObject} from './FormObject';
 import {Form} from './elements/Form';
 import {IResolver} from './IResolver';
 
@@ -12,9 +12,16 @@ export class ResolveDataValue implements IResolver {
 
   private property: string = null;
 
-  private object: FormObject = null;
+  private object: any = null;
 
-  constructor(value: string, object: FormObject, property: string) {
+  /**
+   * object is an FormObject
+   *
+   * @param value
+   * @param object
+   * @param property
+   */
+  constructor(value: string, object: any, property: string) {
     this.property = property;
     this.object = object;
     this.orgValue = value.replace(/^\$/, '');
@@ -28,7 +35,7 @@ export class ResolveDataValue implements IResolver {
 
 
   resolve(form: Form) {
-    let elem = form.get(this.path.join('.'));
+    const elem = form.get(this.path.join('.'));
     if (elem) {
       this.object[this.property] = elem[this.fetchKey];
       return elem[this.fetchKey];

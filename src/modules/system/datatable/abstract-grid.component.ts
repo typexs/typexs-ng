@@ -7,8 +7,11 @@ import {IGridApi} from './IGridApi';
 
 export abstract class AbstractGridComponent implements IGridApi {
 
-  
+  @Input()
   params: IQueryParams = {};
+
+  @Output()
+  paramsChange: EventEmitter<IQueryParams> = new EventEmitter<IQueryParams>();
 
   @Input()
   columns: IGridColumn[];

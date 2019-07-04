@@ -13,7 +13,8 @@ export abstract class AbstractComponent<T extends TreeObject> {
 
   elem: T;
 
-  @ViewChild('content', {read: ViewContainerRef}) vc: ViewContainerRef;
+  @ViewChild('content', {read: ViewContainerRef, static: true})
+  vc: ViewContainerRef;
 
 
   constructor(@Inject(Injector) public injector: Injector,
@@ -50,15 +51,15 @@ export abstract class AbstractComponent<T extends TreeObject> {
         instance.setElem(content);
 
         if (instance.build) {
-          let refs = instance.build(content);
+          const refs = instance.build(content);
 
           if (metadata) {
             Object.keys(metadata).forEach(key => {
-              let v = metadata[key];
+              const v = metadata[key];
               if (!_.isEmpty(v)) {
 
                 if (_.isArray(v) && v.length === 1) {
-                  let propDecorator = _.first(v);
+                  const propDecorator = _.first(v);
                   if (_.isFunction(propDecorator.selector)) {
                     if (propDecorator.first) {
                       // simple ViewChild
@@ -71,7 +72,7 @@ export abstract class AbstractComponent<T extends TreeObject> {
                     }
                   }
                 } else {
-                  //console.error('can\'t resolve metadata', instance.constructor, key, v);
+                  // console.error('can\'t resolve metadata', instance.constructor, key, v);
                 }
               }
             });
@@ -90,16 +91,18 @@ export abstract class AbstractComponent<T extends TreeObject> {
 
 
   build(content: T): AbstractComponent<T>[] {
-    let refs: AbstractComponent<T>[] = [];
+    const refs: AbstractComponent<T>[] = [];
     content.getChildren().forEach(contentObject => {
-      let ref = this.buildSingle(<T>contentObject);
+      const ref = this.buildSingle(<T>contentObject);
       refs.push(ref);
     });
     return refs;
   }
 
-  reset(){
-    this.vc.clear();
+  reset() {
+    if (this.vc) {
+      this.vc.clear();
+    }
   }
 
 }

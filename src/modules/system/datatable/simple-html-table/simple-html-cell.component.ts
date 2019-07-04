@@ -27,7 +27,8 @@ export class SimpleHtmlCellComponent implements OnInit, OnDestroy {
   @Input()
   row: any;
 
-  @ViewChild('cell', {read: ViewContainerRef}) vc: ViewContainerRef;
+  @ViewChild('cell', {read: ViewContainerRef, static: true})
+  vc: ViewContainerRef;
 
   ref: ComponentRef<any>;
 

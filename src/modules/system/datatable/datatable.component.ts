@@ -19,8 +19,8 @@ import {AppConfigService} from '../app.config.service';
 import {C_DEFAULT, CC_GRID} from '../constants';
 
 
-const inputKeys = ['columns', 'rows', 'maxRows', 'options'];
-const outputKeys = ['doQuery', 'gridReady'];
+const inputKeys = ['columns', 'rows', 'maxRows', 'options', 'params'];
+const outputKeys = ['doQuery', 'gridReady', 'paramsChange'];
 
 /**
  * Wrapper component for different grid implementiations
@@ -37,7 +37,9 @@ export class DatatableComponent extends AbstractGridComponent implements OnInit,
   @Input()
   component: any;
 
-  @ViewChild('content', {read: ViewContainerRef}) vc: ViewContainerRef;
+  @ViewChild('content', {read: ViewContainerRef, static: true})
+  vc: ViewContainerRef;
+
   componentRef: ComponentRef<any>;
 
   constructor(@Inject(Injector) public injector: Injector,

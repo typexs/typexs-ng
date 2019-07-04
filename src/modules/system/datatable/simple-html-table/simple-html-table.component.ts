@@ -15,8 +15,6 @@ import {Eq, Like, Value} from 'commons-expressions';
 })
 export class SimpleHtmlTableComponent extends AbstractGridComponent implements OnInit, OnDestroy {
 
-//  offset = 0;
-
   pager: Pager;
 
   filterOpened: string = null;
@@ -75,6 +73,7 @@ export class SimpleHtmlTableComponent extends AbstractGridComponent implements O
     } else {
       _.set(this.params.sorting, column.field, 'asc');
     }
+    this.paramsChange.emit(this.params);
     this.doQuery.emit(this);
   }
 
@@ -88,6 +87,7 @@ export class SimpleHtmlTableComponent extends AbstractGridComponent implements O
       this.filterValue = null;
     }
   }
+
 
   closeFilter(column: IGridColumn) {
     if (!this.params.filters) {
@@ -123,6 +123,7 @@ export class SimpleHtmlTableComponent extends AbstractGridComponent implements O
     } else {
       delete this.params.filters[column.field];
     }
+    this.paramsChange.emit(this.params);
     this.filterOpened = null;
     this.doQuery.emit(this);
   }
@@ -132,6 +133,7 @@ export class SimpleHtmlTableComponent extends AbstractGridComponent implements O
     if (action.name === this.options.pagerId && action.type === 'set') {
       this.params.offset = (action.page - 1) * this.options.limit;
       this.params.limit = this.options.limit;
+      this.paramsChange.emit(this.params);
       this.doQuery.emit(this);
     }
   }
