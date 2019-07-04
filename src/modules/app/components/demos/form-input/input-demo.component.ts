@@ -33,7 +33,7 @@ export class InputDemoComponent implements OnInit {
     this.result = $event;
     console.log($event);
 
-    let msg = new LogMessage();
+    const msg = new LogMessage();
     msg.type = $event.data.isSuccessValidated ? MessageType.SUCCESS : MessageType.ERROR;
     msg.content = $event.data.isSuccessValidated ?
       'Successful submitted and validated.' : 'Error on validation.';

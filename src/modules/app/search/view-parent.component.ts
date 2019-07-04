@@ -17,23 +17,24 @@ export class ViewParent extends TreeObject {
   templateUrl: 'view-parent.component.html',
 
 })
-export class ViewParentComponent extends AbstractComponent<ViewParent> implements AfterViewInit,OnInit{
+export class ViewParentComponent extends AbstractComponent<ViewParent> implements AfterViewInit, OnInit {
 
-  @ViewChild(SearchEntryComponent) searchEntry: SearchEntryComponent;
+  @ViewChild(SearchEntryComponent, {static: true})
+  searchEntry: SearchEntryComponent;
 
   searchEntry2: SearchEntryComponent;
 
   title = 'ViewParent';
 
-  ngOnInit(){
-    console.log('INIT',this.searchEntry)
-    console.log('INIT',this.searchEntry2)
+  ngOnInit() {
+    console.log('INIT', this.searchEntry);
+    console.log('INIT', this.searchEntry2);
 
   }
 
-  ngAfterViewInit(){
-    console.log('AFTERVIEWINIT',this.searchEntry)
-    console.log('AFTERVIEWINIT',this.searchEntry2)
+  ngAfterViewInit() {
+    console.log('AFTERVIEWINIT', this.searchEntry);
+    console.log('AFTERVIEWINIT', this.searchEntry2);
   }
 
 

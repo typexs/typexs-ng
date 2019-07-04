@@ -1,4 +1,3 @@
-
 import {FormText} from '../../../libs/forms/decorators/FormText';
 import {FormType} from '../../../libs/forms/decorators/FormType';
 import {Property} from '@typexs/schema/libs/decorators/Property';
@@ -7,7 +6,9 @@ import {IsEmail, MaxLength, MinLength} from 'class-validator';
 import {EqualWith} from '../../../libs/validators/EqualWith';
 import {OptionsService} from '../services/OptionsService';
 
-@Entity({storeable:false})
+
+
+@Entity({storeable: false})
 export class InputDemoObject {
 
   // HTML Type text
@@ -15,17 +16,17 @@ export class InputDemoObject {
   @Property({type: 'string'})
   @MinLength(8, {message: 'username is too short'})
   @MaxLength(32, {message: 'username is too long'})
-  username: string = 'Test';
+  username = 'Test';
 
   // HTML Type password
-  @FormType({form:'password'})
+  @FormType({form: 'password'})
   @Property({type: 'string'})
   @MinLength(8, {message: 'password is too short'})
   @MaxLength(64, {message: 'password is a little too long'})
   password: string;
 
   // HTML Type password confirmation
-  @FormType({form:'password'})
+  @FormType({form: 'password'})
   @Property({type: 'string'})
   @EqualWith('password', {message: 'password is not equal'})
   passwordConfirm: string;
@@ -45,7 +46,7 @@ export class InputDemoObject {
 
   // HTML Type checkbox
   @Property(<any>{type: 'boolean', form: 'checkbox', label: 'Allow no access'})
-  allowNoAccess: boolean = true;
+  allowNoAccess = true;
 
   // HTML Type radio
   @Property(<any>{type: 'boolean', form: 'radio', label: 'Use radio'})

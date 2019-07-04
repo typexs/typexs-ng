@@ -13,7 +13,7 @@ import {ViewBuilderComponent} from '../views/view-builder.component';
 export class ContentViewChildDemoComponent implements OnInit {
   treeContent: any;
 
-  @ViewChild(ViewBuilderComponent) builder: ViewBuilderComponent<any>;
+  @ViewChild(ViewBuilderComponent, {static: true}) builder: ViewBuilderComponent<any>;
 
   ngOnInit() {
     this.treeContent = new ViewParent();
