@@ -33,7 +33,6 @@ export class TasksMetadataComponent implements OnInit {
 
   ngOnInit() {
     this.tasksService.taskList(true).subscribe(x => {
-      console.log('');
       this._tasks = x;
       this.tasks = [];
       x.names(true).forEach(y => {

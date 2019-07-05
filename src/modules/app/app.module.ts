@@ -29,8 +29,9 @@ import {InputDemoComponent} from './components/demos/form-input/input-demo.compo
 import {TablesDemoComponent} from './components/demos/tables/tables-demo.component';
 import {AgGridWrapperComponent} from './addons/ag-grid/ag-grid-wrapper.component';
 import {NavigatorService} from '../navigator/navigator.service';
-import {SimpleHtmlTableComponent} from '../system/datatable/simple-html-table/simple-html-table.component';
 import {SimpleHtmlTableDemoComponent} from './components/demos/tables/simple-html-table-demo.component';
+import {EmbeddedStorageComponent} from './components/demos/embedded-storage/embedded-storage.component';
+import {StorageModule} from '../storage/storage.module';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import {SimpleHtmlTableDemoComponent} from './components/demos/tables/simple-htm
     ProfileComponent,
     NotificationDemoComponent,
     AgGridWrapperComponent,
-    SimpleHtmlTableDemoComponent
+    SimpleHtmlTableDemoComponent,
+    EmbeddedStorageComponent
   ],
   entryComponents: [
     ...FORM_COMPONENTS,
@@ -66,7 +68,10 @@ import {SimpleHtmlTableDemoComponent} from './components/demos/tables/simple-htm
     ViewParentComponent,
     AgGridWrapperComponent
   ],
-  imports: APP_MODULES,
+  imports: [
+    APP_MODULES,
+    StorageModule
+  ],
   providers: [
     OptionsService,
     MenuAccessService

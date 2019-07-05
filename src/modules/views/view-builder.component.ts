@@ -13,7 +13,7 @@ import {AbstractComponent} from '../../libs/views/AbstractComponent';
 })
 export class ViewBuilderComponent<T extends TreeObject> extends AbstractComponent<T> implements OnInit {
 
-  private _build:boolean = false;
+  private _build = false;
 
 
   _instance: any;
@@ -32,8 +32,8 @@ export class ViewBuilderComponent<T extends TreeObject> extends AbstractComponen
     this.__build();
   }
 
-  private __build(){
-    if(!this._build){
+  private __build() {
+    if (!this._build) {
       this.vc.clear();
       this.buildSingle(this._instance);
       this._build = true;

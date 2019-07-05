@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import {EntityService} from './../../entity.service';
 import {ActivatedRoute} from '@angular/router';
 import {EntityQueryEmbeddedComponent} from './../embedded/entity-query-embedded.component';

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {StorageService} from '../../storage.service';
 import {StorageQueryEmbeddedComponent} from './../embedded/storage-query-embedded.component';

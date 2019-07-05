@@ -60,8 +60,16 @@ export class DatatableComponent extends AbstractGridComponent implements OnInit,
 
     // passing through input parameters
     for (const prop of inputKeys) {
-      instance[prop] = this[prop];
-      // Object.defineProperty(instance, prop, Object.getOwnPropertyDescriptor(this, prop));
+      // instance[prop] = this[prop];
+      try {
+        const propDesc = Object.getOwnPropertyDescriptor(this, prop);
+        if (propDesc) {
+          // copy only if exists
+          Object.defineProperty(instance, prop, propDesc);
+        }
+      } catch (e) {
+
+      }
     }
     // passing through output eventemitter
     for (const prop of outputKeys) {
@@ -91,7 +99,9 @@ export class DatatableComponent extends AbstractGridComponent implements OnInit,
     if (this.componentRef && this.componentRef.instance) {
       for (const key of _.keys(changes)) {
         this.componentRef.instance[key] = changes[key].currentValue;
-
+        if (this.componentRef.instance[key + 'Change']) {
+          this.componentRef.instance[key + 'Change'].emit(changes[key].currentValue);
+        }
       }
       this.rebuild();
     }

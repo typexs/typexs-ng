@@ -63,12 +63,12 @@ export abstract class AbstractComponent<T extends TreeObject> {
                   if (_.isFunction(propDecorator.selector)) {
                     if (propDecorator.first) {
                       // simple ViewChild
-                      instance[key] = _.find(refs, ref => ref.constructor == propDecorator.selector);
-                      instance[key + '2'] = _.find(refs, ref => ref.constructor == propDecorator.selector);
+                      instance[key] = _.find(refs, ref => ref.constructor === propDecorator.selector);
+                      instance[key + '2'] = _.find(refs, ref => ref.constructor === propDecorator.selector);
                     } else {
                       // simple ViewChildren
-                      instance[key] = _.filter(refs, ref => ref.constructor == propDecorator.selector);
-                      instance[key + '2'] = _.filter(refs, ref => ref.constructor == propDecorator.selector);
+                      instance[key] = _.filter(refs, ref => ref.constructor === propDecorator.selector);
+                      instance[key + '2'] = _.filter(refs, ref => ref.constructor === propDecorator.selector);
                     }
                   }
                 } else {

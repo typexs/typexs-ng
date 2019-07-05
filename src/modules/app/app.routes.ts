@@ -17,6 +17,7 @@ import {InputDemoComponent} from './components/demos/form-input/input-demo.compo
 import {TablesDemoComponent} from './components/demos/tables/tables-demo.component';
 import {SimpleHtmlTableComponent} from '../system/datatable/simple-html-table/simple-html-table.component';
 import {SimpleHtmlTableDemoComponent} from './components/demos/tables/simple-html-table-demo.component';
+import {EmbeddedStorageComponent} from './components/demos/embedded-storage/embedded-storage.component';
 
 
 export const APP_ROUTES: Routes = [
@@ -54,6 +55,11 @@ export const APP_ROUTES: Routes = [
         path: 'tables-simple',
         component: SimpleHtmlTableDemoComponent,
         data: {label: 'Simple Table', group: 'demo'},
+      },
+      {
+        path: 'embedded-storage',
+        component: EmbeddedStorageComponent,
+        data: {label: 'Embedded Storage', group: 'demo'},
       },
       {
         path: 'content',

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import {AbstractQueryEmbeddedComponent} from '../../../system/api/querying/abstract-query-embedded.component';
 import {StorageService} from '../../storage.service';
 

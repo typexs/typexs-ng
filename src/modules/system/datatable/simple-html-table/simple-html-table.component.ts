@@ -5,7 +5,8 @@ import {PagerAction} from '../../pager/PagerAction';
 import {PagerService} from '../../pager/PagerService';
 import {Pager} from '../../pager/Pager';
 import {IGridColumn} from '../IGridColumn';
-import {Eq, Like, Value} from 'commons-expressions';
+import {Eq, ExprDesc, Like, Value, ValueDesc} from 'commons-expressions/browser';
+import {IDTGridOptions} from '../IDTGridOptions';
 
 
 @Component({
@@ -26,13 +27,24 @@ export class SimpleHtmlTableComponent extends AbstractGridComponent implements O
   }
 
   ngOnInit(): void {
+
+    if (!this.options) {
+      this.options = {enablePager: true, limit: 25};
+    }
+    _.defaults(this.options, <IDTGridOptions>{enablePager: true});
+
+
     if (this.options.enablePager) {
       this.pager = this.pagerService.get(this.options.pagerId);
     }
 
-    this.params.limit = _.get(this.options, 'limit', 25);
-    this.params.offset = _.get(this.options, 'offset', 0);
-
+    if (!this.params) {
+      // if params not set set default values
+      this.params = {
+        limit: 25,
+        offset: 0
+      };
+    }
 
     if (!this.maxRows && this.rows) {
       // if maxRows is empty and rows already given then derive max
@@ -55,9 +67,9 @@ export class SimpleHtmlTableComponent extends AbstractGridComponent implements O
     } else if (_sort === sort) {
       return true;
     }
-
     return false;
   }
+
 
   doSort(column: IGridColumn) {
     if (!this.params.sorting) {
@@ -80,9 +92,9 @@ export class SimpleHtmlTableComponent extends AbstractGridComponent implements O
 
   openFilter(column: IGridColumn) {
     this.filterOpened = column.field;
-    const filter = _.get(this.params.filters, column.field);
+    const filter: ExprDesc = _.get(this.params.filters, column.field);
     if (filter) {
-      this.filterValue = filter.value;
+      this.filterValue = filter.value instanceof ValueDesc ? filter.value.value : filter.value;
     } else {
       this.filterValue = null;
     }
@@ -140,9 +152,15 @@ export class SimpleHtmlTableComponent extends AbstractGridComponent implements O
 
 
   calcPager() {
-    this.pager.totalPages = Math.ceil(this.maxRows * 1.0 / this.options.limit * 1.0);
-    this.pager.currentPage = (this.params.offset / this.options.limit) + 1;
-    this.pager.calculatePages();
+    if (this.params && _.isNumber(this.maxRows) && _.isNumber(this.params.limit)) {
+      if (!this.params.offset) {
+        this.params.offset = 0;
+        this.paramsChange.emit(this._params);
+      }
+      this.pager.totalPages = Math.ceil(this.maxRows * 1.0 / this.params.limit * 1.0);
+      this.pager.currentPage = (this.params.offset / this.options.limit) + 1;
+      this.pager.calculatePages();
+    }
   }
 
 

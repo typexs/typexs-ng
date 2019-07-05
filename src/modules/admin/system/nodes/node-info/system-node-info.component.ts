@@ -31,7 +31,6 @@ export class SystemNodeInfoComponent {
   }
 
   toggle() {
-    console.log('toggle', this.collapsed);
     this.collapsed = !this.collapsed;
   }
 

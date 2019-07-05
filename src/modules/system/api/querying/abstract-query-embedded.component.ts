@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {IEntityRef, JS_DATA_TYPES, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
 import {IFindOptions, REGISTRY_TYPEORM} from '@typexs/base/browser';
 import {And, ExprDesc, Expressions} from 'commons-expressions/browser';
@@ -17,6 +17,7 @@ import {IGridApi} from '../../../system/datatable/IGridApi';
 import {DatatableComponent} from '../../../system/datatable/datatable.component';
 import {IQueringService} from './IQueringService';
 import {QueryAction} from './QueryAction';
+import {IQueryParams} from '../../datatable/IQueryParams';
 
 
 export const DEFAULT_DT_GRID_OPTIONS: IDTGridOptions = {
@@ -34,7 +35,7 @@ export const DEFAULT_DT_GRID_OPTIONS: IDTGridOptions = {
  * - filters
  * - extend/add specialized columns
  */
-export class AbstractQueryEmbeddedComponent implements OnInit /*, OnDestroy */ {
+export class AbstractQueryEmbeddedComponent implements OnInit {
 
   @Input()
   machineName: string;
@@ -57,6 +58,23 @@ export class AbstractQueryEmbeddedComponent implements OnInit /*, OnDestroy */ {
   @Output()
   freeQueryChange: EventEmitter<any> = new EventEmitter();
 
+  _params: IQueryParams = {};
+
+  @Input()
+  get params() {
+    return this._params;
+  }
+
+  set params(v: IQueryParams) {
+    this._params = v;
+    console.log('set', v);
+    this.paramsChange.emit(this._params);
+  }
+
+  @Output()
+  paramsChange: EventEmitter<IQueryParams> = new EventEmitter();
+
+
   entityRef: IEntityRef;
 
   error: any = null;
@@ -71,8 +89,8 @@ export class AbstractQueryEmbeddedComponent implements OnInit /*, OnDestroy */ {
 
   constructor(storageService: IQueringService) {
     this.queringService = storageService;
-
   }
+
 
   getQueryService() {
     return this.queringService;
@@ -83,6 +101,15 @@ export class AbstractQueryEmbeddedComponent implements OnInit /*, OnDestroy */ {
     this.queringService.isReady(() => {
       this.findEntityDef();
       this.initialiseColumns();
+
+      if (!this.params) {
+        this.params = {};
+      }
+
+      if (this.options) {
+        this.params.limit = _.get(this.options, 'limit', 25);
+      }
+
 
       // api maybe not loaded
       setTimeout(() => {
@@ -102,6 +129,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit /*, OnDestroy */ {
       this.error = `Can't find entity type for ${this.machineName}.`;
     }
   }
+
 
   initialiseColumns() {
     if (!this.columns) {
@@ -155,6 +183,13 @@ export class AbstractQueryEmbeddedComponent implements OnInit /*, OnDestroy */ {
     }
   }
 
+  /**
+   * Re-Query
+   */
+  requery() {
+    this.doQuery(this.datatable.api());
+  }
+
 
   onQueryAction(action: QueryAction) {
     this.freeQuery = action.query;
@@ -167,7 +202,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit /*, OnDestroy */ {
     let mangoQuery: ExprDesc = null;
     const filterQuery: ExprDesc[] = [];
 
-    if (!_.isEmpty(api.params.filters)) {
+    if (api.params && !_.isEmpty(api.params.filters)) {
       _.keys(api.params.filters).map(k => {
         if (!_.isEmpty(api.params.filters[k])) {
           filterQuery.push(api.params.filters[k]);
