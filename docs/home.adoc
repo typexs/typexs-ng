@@ -1,0 +1,16 @@
+# typeXs - NG
+
+The module implements major functionality and connectivity which allows
+in a simply matter the usage of angular as frontend for
+the typeXs backend.
+
+Different modules are implemented which access the backend functionality.
+
+* System
+* Storage
+* EntitySchema (@typexs/schema)
+* Form Generator for Entities (StorageEntities and Entities by Schema)
+* Admin UI
+* Navigator
+* Tasks
+* Views
