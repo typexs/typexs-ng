@@ -120,7 +120,7 @@
     "@angular/router": "^8.1.0",
     "@typexs/base": "^0.9.19",
     "@typexs/schema": "^0.6.15",
-    "@typexs/server": "^0.4.12",
+    "@typexs/server": "^0.4.13",
     "ajv": "^6.10.0",
     "commons-expressions": "^1.0.4",
     "commons-schema-api": "^1.1.3",
