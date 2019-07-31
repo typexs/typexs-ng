@@ -37,6 +37,11 @@ const PROVIDERS = [
     StorageModule
   ],
   exports: [
+    TasksMetadataComponent,
+    TasksExecutionComponent,
+    TaskStatusComponent,
+    TasksLogComponent,
+    TaskStatusRowComponent,
   ],
   providers: PROVIDERS
 })

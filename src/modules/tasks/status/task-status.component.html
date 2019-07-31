@@ -37,7 +37,7 @@
           <th>Running / Done</th>
           <td>
                 <span class="badge"
-                      [ngClass]="{'badge-warning':taskLog.running,'badge-success':!taskLog.running}">{{taskLog.running}}</span>
+                      [ngClass]="{'badge-warning':!taskLog.running,'badge-success':taskLog.running}">{{taskLog.running}}</span>
             /
             <span class="badge"
                   [ngClass]="{'badge-warning':!taskLog.done,'badge-success':taskLog.done}">{{taskLog.done}}</span>
@@ -47,7 +47,7 @@
           <th>State</th>
           <td>
                 <span class="badge badge" [ngClass]="{
-                  'badge-warning':taskLog.running,
+                  'badge-warning':taskLog.done,
                   'badge-success':taskLog.done && !taskLog.hasError,
                   'badge-danger':taskLog.done && taskLog.hasError}">{{taskLog.state}}</span>
           </td>
