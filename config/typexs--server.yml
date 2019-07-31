@@ -1,6 +1,11 @@
 
 
-
+tasks:
+  access:
+    - task: '*'
+      access: deny
+    - task: simple_task
+      access: allow
 
 workers:
   access:
