@@ -109,7 +109,6 @@ export class BackendTasksService {
 
     this.http.get({url: url, logging: false}, (err: HttpResponseError, data: any[]) => {
       if (err) {
-        console.log(err);
         x.error(err);
       } else {
         x.next(data);

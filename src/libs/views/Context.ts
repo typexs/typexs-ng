@@ -32,13 +32,10 @@ export class Context {
     }
 
     if (this.idx > -1) {
-      //arr[arr.length - 1] = arr[arr.length - 1] + '[' + this.idx + ']';
       arr[arr.length - 1] = arr[arr.length - 1] + '.' + this.idx + '';
-      // arr.push(this.name + '[' + this.idx + ']');
     } else {
       arr.push(this.name);
     }
-    //  console.log(arr);
     return _.filter(arr, (x: string) => !_.isEmpty(x)).join('.');
   }
 

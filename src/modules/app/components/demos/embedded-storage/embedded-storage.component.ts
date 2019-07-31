@@ -8,6 +8,7 @@ import {IEntityRef} from 'commons-schema-api/browser';
 import {StorageService} from '../../../../storage/storage.service';
 
 
+
 export class C {
   sort: string = null;
   sortDir: string = null;
@@ -58,12 +59,11 @@ export class EmbeddedStorageComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
+
   }
 
 
   setFilterText() {
-    console.log('set filter text');
     const p = this.simpleItemParams;
     _.set(p, 'filters.text', Like('text', Value('Text 5*')));
     this.simpleItemParams = p;
@@ -72,7 +72,6 @@ export class EmbeddedStorageComponent implements OnInit, OnChanges {
   }
 
   setSortText() {
-    console.log('set filter id');
     const p = this.simpleItemParams;
     _.set(p, 'filters.text', Like('text', Value('Text 5*')));
     this.simpleItemParams = p;
@@ -89,7 +88,8 @@ export class EmbeddedStorageComponent implements OnInit, OnChanges {
     }
 
     if (!_.isEmpty(this.simpleQueryModul.filterKey)) {
-      _.set(p, 'filters.' + this.simpleQueryModul.filterKey, Like(this.simpleQueryModul.filterKey, Value(this.simpleQueryModul.filterValue ? this.simpleQueryModul.filterValue : '')));
+      _.set(p, 'filters.' + this.simpleQueryModul.filterKey, Like(this.simpleQueryModul.filterKey,
+        Value(this.simpleQueryModul.filterValue ? this.simpleQueryModul.filterValue : '')));
     } else {
       _.set(p, 'filters', {});
     }

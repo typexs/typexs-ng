@@ -67,7 +67,6 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
 
   set params(v: IQueryParams) {
     this._params = v;
-    console.log('set', v);
     this.paramsChange.emit(this._params);
   }
 
