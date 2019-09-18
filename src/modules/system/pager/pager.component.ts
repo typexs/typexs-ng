@@ -28,8 +28,6 @@ export class PagerComponent implements OnInit, OnDestroy {
   _cache: any[] = [];
 
 
-  wait: NodeJS.Timer;
-
   /**
    * Frame Size
    */
@@ -71,6 +69,7 @@ export class PagerComponent implements OnInit, OnDestroy {
     return this.pager.totalPages;
   }
 
+
   @Input()
   set totalPages(nr: number) {
     if (this.pager) {
@@ -80,9 +79,12 @@ export class PagerComponent implements OnInit, OnDestroy {
     }
   }
 
+  @Input()
   pager: Pager;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private pagerService: PagerService) {
+  constructor(private router: Router,
+              private activatedRoute: ActivatedRoute,
+              private pagerService: PagerService) {
 
   }
 
@@ -144,10 +146,15 @@ export class PagerComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.pager = this.pagerService.get(this.name);
     for (const c of this._cache) {
       this[c.key] = c.value;
     }
+
+    if (this.pager) {
+      return;
+    }
+    this.pager = this.pagerService.get(this.name);
+
     this.checkCurrent();
     this.checkTotal();
     this.checkFrameSize();

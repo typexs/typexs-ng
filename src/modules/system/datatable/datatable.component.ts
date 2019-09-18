@@ -42,6 +42,7 @@ export class DatatableComponent extends AbstractGridComponent implements OnInit,
 
   componentRef: ComponentRef<any>;
 
+
   constructor(@Inject(Injector) public injector: Injector,
               @Inject(ComponentFactoryResolver) public r: ComponentFactoryResolver,
               @Inject(AppConfigService) public config: AppConfigService) {
@@ -56,7 +57,7 @@ export class DatatableComponent extends AbstractGridComponent implements OnInit,
     this.vc.clear();
     const factory = this.r.resolveComponentFactory(<any>this.component);
     this.componentRef = this.vc.createComponent(factory);
-    const instance = <AbstractGridComponent>this.componentRef.instance;
+
 
     // passing through input parameters
     for (const prop of inputKeys) {
@@ -65,7 +66,7 @@ export class DatatableComponent extends AbstractGridComponent implements OnInit,
         const propDesc = Object.getOwnPropertyDescriptor(this, prop);
         if (propDesc) {
           // copy only if exists
-          Object.defineProperty(instance, prop, propDesc);
+          Object.defineProperty(this.api(), prop, propDesc);
         }
       } catch (e) {
 
@@ -73,7 +74,7 @@ export class DatatableComponent extends AbstractGridComponent implements OnInit,
     }
     // passing through output eventemitter
     for (const prop of outputKeys) {
-      (<EventEmitter<any>>instance[prop]).subscribe(
+      (<EventEmitter<any>>this.api()[prop]).subscribe(
         (v: any) => (<EventEmitter<any>>this[prop]).emit(v),
         (error: any) => (<EventEmitter<any>>this[prop]).error(error),
         () => (<EventEmitter<any>>this[prop]).complete(),
@@ -81,7 +82,10 @@ export class DatatableComponent extends AbstractGridComponent implements OnInit,
       // Object.defineProperty(instance, prop, Object.getOwnPropertyDescriptor(this, prop));
     }
 
-    this.rebuild = instance.rebuild.bind(instance);
+    this.rebuild = this.api().rebuild.bind(this.api());
+    this.setMaxRows = this.api().setMaxRows.bind(this.api());
+    this.setRows = this.api().setRows.bind(this.api());
+
 
   }
 

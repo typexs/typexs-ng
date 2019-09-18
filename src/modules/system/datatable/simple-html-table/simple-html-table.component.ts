@@ -38,7 +38,7 @@ export class SimpleHtmlTableComponent extends AbstractGridComponent implements O
       this.pager = this.pagerService.get(this.options.pagerId);
     }
 
-    if (!this.params) {
+    if (_.isEmpty(this.params)) {
       // if params not set set default values
       this.params = {
         limit: 25,
@@ -54,6 +54,7 @@ export class SimpleHtmlTableComponent extends AbstractGridComponent implements O
       }
     }
   }
+
 
   isSorted(column: IGridColumn, sort: 'asc' | 'desc' | 'none') {
     if (!column.sorting) {
