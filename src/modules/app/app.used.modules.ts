@@ -13,6 +13,7 @@ import {ViewsModule} from '../views/views.module';
 import {SystemModule} from '../system/system.module';
 import {BaseAdminThemeModule} from '../base_admin_theme/base_admin_theme.module';
 import {AgGridModule} from 'ag-grid-angular';
+import {StorageModule} from '../storage/storage.module';
 
 
 export const APP_MODULES: Array<Type<any> | ModuleWithProviders | any[]> = [
@@ -25,7 +26,8 @@ export const APP_MODULES: Array<Type<any> | ModuleWithProviders | any[]> = [
   AdminModule,
   SystemModule.forRoot(),
   BaseAdminThemeModule,
-  AgGridModule.withComponents()
+  AgGridModule.withComponents(),
+  StorageModule
 
 
 ];

@@ -31,7 +31,6 @@ import {AgGridWrapperComponent} from './addons/ag-grid/ag-grid-wrapper.component
 import {NavigatorService} from '../navigator/navigator.service';
 import {SimpleHtmlTableDemoComponent} from './components/demos/tables/simple-html-table-demo.component';
 import {EmbeddedStorageComponent} from './components/demos/embedded-storage/embedded-storage.component';
-import {StorageModule} from '../storage/storage.module';
 
 
 @NgModule({
@@ -68,10 +67,7 @@ import {StorageModule} from '../storage/storage.module';
     ViewParentComponent,
     AgGridWrapperComponent
   ],
-  imports: [
-    APP_MODULES,
-    StorageModule
-  ],
+  imports: APP_MODULES,
   providers: [
     OptionsService,
     MenuAccessService
