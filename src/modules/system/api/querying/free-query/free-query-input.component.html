@@ -1,17 +1,24 @@
 <div class="free-query-input">
-  <label for="textarea-entity-query" class="txs-title">Query:</label>
-  <textarea id="textarea-entity-query" class="query-input"
-            rows="1" cols="128"
-            placeholder=" insert query string ... " [(ngModel)]="freeTextQuery"
-            (ngModelChange)="onQueryInput($event)"></textarea>
-
+  <div class="form-group">
+    <label for="textarea-entity-query" class="txs-title">Query:</label>
+    <textarea id="textarea-entity-query" class="query-input"
+              rows="1" cols="128"
+              placeholder=" insert query string ... "
+              [(ngModel)]="freeTextQuery"
+              (ngModelChange)="onQueryInput($event)"></textarea>
+    <div class="query-view-toggle"
+         (click)="enabled = !enabled">
+      <i class="icon"
+         [ngClass]="{'icon-eye':enabled, 'icon-eye-slash':!enabled}"></i>
+    </div>
+  </div>
   <div *ngIf="freeTextQueryError.length > 0">
     <ul class="list-group">
       <li *ngFor="let error of freeTextQueryError" class="list-group-item list-group-item-warning">{{error}}</li>
     </ul>
   </div>
 
-  <div *ngIf="jsonQuery" class="alert alert-success">
+  <div *ngIf="jsonQuery && enabled" class="alert alert-success">
     <div class="row">
       <div class="col-md-6">
         <p class="txs-title">Mango-JSON</p>

@@ -7,6 +7,7 @@ import {IEntityRef} from 'commons-schema-api/browser';
 import {TypeOrmSqlConditionsBuilder} from '@typexs/base/libs/storage/framework/typeorm/TypeOrmSqlConditionsBuilder';
 import {IConditionJoin} from '@typexs/base/browser';
 import {QueryAction} from '../QueryAction';
+import Timeout = NodeJS.Timeout;
 
 
 @Component({
@@ -32,6 +33,9 @@ export class FreeQueryInputComponent {
 
   sqlJoins: IConditionJoin[] = [];
 
+  timeout: Timeout;
+
+  enabled: boolean = false;
 
   doQuery() {
     if (this.jsonQuery && this.freeTextQueryError.length === 0) {
@@ -45,6 +49,11 @@ export class FreeQueryInputComponent {
   }
 
   onQueryInput($event: any) {
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(this.build.bind(this), 300);
+  }
+
+  build() {
     this.sqlWhere = null;
     this.jsonQuery = null;
     this.freeTextQueryError = [];
@@ -69,6 +78,4 @@ export class FreeQueryInputComponent {
       }
     }
   }
-
-
 }
