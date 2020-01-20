@@ -1,6 +1,6 @@
 {
   "name": "@typexs/ng",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "description": "Angular for typexs",
   "main": "index.js",
   "directories": {
@@ -120,7 +120,7 @@
     "@angular/platform-browser": "^8.2.13",
     "@angular/platform-browser-dynamic": "^8.2.13",
     "@angular/router": "^8.2.13",
-    "@typexs/base": "^0.10.0",
+    "@typexs/base": "0.x",
     "ajv": "^6.10.2",
     "commons-expressions": "^1.0.7",
     "commons-schema-api": "^1.1.4",
@@ -130,8 +130,8 @@
     "zone.js": "~0.10.2"
   },
   "peerDependencies": {
-    "@typexs/schema": "^0.6.16",
-    "@typexs/server": "^0.4.19"
+    "@typexs/schema": "0.x",
+    "@typexs/server": "0.x"
   },
   "private": true,
   "nyc": {
