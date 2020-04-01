@@ -2,7 +2,18 @@ import {Observable} from 'rxjs/Observable';
 
 export interface IQueringService {
 
+  /**
+   * isReady checks if metadata is loaded and executes callback after
+   *
+   * @param callback
+   */
   isReady(callback: Function): void;
+
+  /**
+   * isReady checks if metadata is loaded and publishes state on Obervable
+   *
+   */
+  isReady(): Observable<boolean>;
 
   get(entityName: string, entityId: any, options?: any): Observable<any>;
 

@@ -48,7 +48,7 @@ export class StorageStructComponent implements OnInit {
     this.propertyDefs = [];
 
     this.machineName = machineName;
-    // this.entityService.getRegistry().getEntityRefFor(this.machineName);
+    // this.storageService.getRegistry().getEntityRefFor(this.machineName);
     this.entityDef = LookupRegistry.$(REGISTRY_TYPEORM).find(XS_TYPE_ENTITY, (e: IEntityRef) => {
       return e.machineName === machineName;
     });

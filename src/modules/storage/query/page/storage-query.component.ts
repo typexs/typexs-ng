@@ -14,9 +14,9 @@ import {CC_GRID_CELL_ENTITY_OPERATIONS} from '../../../system/constants';
 export class StorageQueryComponent extends StorageQueryEmbeddedComponent {
 
 
-  constructor(public entityService: StorageService,
+  constructor(public _storageService: StorageService,
               private route: ActivatedRoute) {
-    super(entityService);
+    super(_storageService);
   }
 
   ngOnInit() {

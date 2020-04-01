@@ -15,11 +15,11 @@ export class PagerDemoComponent implements OnInit {
   page_01: number;
 
 
-  currentPage_3:number = 4;
+  currentPage_3: number = 4;
 
   pager3: Pager = null;
 
-  constructor(private pagerService:PagerService){
+  constructor(private pagerService: PagerService) {
   }
 
   onPageChange($event: PagerAction) {
@@ -27,6 +27,7 @@ export class PagerDemoComponent implements OnInit {
 
 
   ngOnInit(): void {
+    console.log('pager ...')
     this.pager3 = this.pagerService.get('pager3');
   }
 }

@@ -1,6 +1,4 @@
-import {AnnotationsHelper} from 'commons-schema-api/browser';
-import {ClassRef} from "commons-schema-api/browser";
-import {ISelectOptions} from '../elements/ISelectOptions';
+import {AnnotationsHelper, ClassRef} from 'commons-schema-api/browser';
 
 export function FormText() {
   return function (object: any, property: string) {

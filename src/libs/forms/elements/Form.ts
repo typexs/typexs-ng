@@ -15,10 +15,10 @@ export class Form extends FormObject {
   resolver: IResolver[] = [];
 
   combine(otherForm: Form) {
-    let resolverCache: IResolver[] = [];
+    const resolverCache: IResolver[] = [];
 
     while (this.resolver.length > 0) {
-      let resolver = this.resolver.shift();
+      const resolver = this.resolver.shift();
       if (resolver instanceof ResolveDataValue) {
         resolver.resolve(otherForm);
       } else {
@@ -28,7 +28,7 @@ export class Form extends FormObject {
 
     while (resolverCache.length > 0) {
 
-      let resolver = resolverCache.shift();
+      const resolver = resolverCache.shift();
       if (resolver instanceof Ref) {
         resolver.resolve(otherForm);
       }
@@ -38,20 +38,20 @@ export class Form extends FormObject {
   }
 
   get(path: string) {
-    let _path = path.split('.');
+    const _path = path.split('.');
     let tmpElem: FormObject = this;
     let element = null;
     while (_path.length > 0) {
-      let _p = _path.shift();
-      let ret = _.find(<FormObject[]>tmpElem.getChildren(), {name: _p});
-      //if(isFormObject(ret)){
+      const _p = _path.shift();
+      const ret = _.find(<FormObject[]>tmpElem.getChildren(), {name: _p});
+      // if(isFormObject(ret)){
       tmpElem = ret;
       if (!tmpElem) {
         break;
       } else {
         element = tmpElem;
       }
-      //}
+      // }
     }
     return _path.length == 0 && element ? element : null;
 
