@@ -5,7 +5,7 @@ services:
   typexs_ng_dev_redis:
     networks:
       - typexs_ng_dev
-    image: redis
+    image: redis:5
     ports:
       - 127.0.0.1:6379:6379
     volumes:
