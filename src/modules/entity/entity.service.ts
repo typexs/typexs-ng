@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import * as _ from 'lodash';
-import {Subject} from 'rxjs/Subject';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 
@@ -9,23 +8,37 @@ import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
 import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
 import {AuthService} from '../system/api/auth/auth.service';
 import {HttpClientWrapper} from '../system/http-client-wrapper.service';
-import {AuthMessage} from '../system/messages/types/AuthMessage';
-import {Helper} from '../../libs/observable/Helper';
 import {IQueringService} from '../system/api/querying/IQueringService';
+import {AbstractQueryService} from '../system/api/querying/abstract-query.service';
+import {
+  API_ENTITY_DELETE_ENTITY,
+  API_ENTITY_FIND_ENTITY,
+  API_ENTITY_GET_ENTITY,
+  API_ENTITY_METADATA_ALL_ENTITIES,
+  API_ENTITY_PREFIX,
+  API_ENTITY_SAVE_ENTITY,
+  API_ENTITY_UPDATE_ENTITY
+} from '@typexs/schema/browser';
 
 
 @Injectable()
-export class EntityService implements IQueringService {
+export class EntityService extends AbstractQueryService implements IQueringService {
 
   constructor(private http: HttpClientWrapper, private authService: AuthService) {
-    this.reloadMetadata();
+    super(http, authService, EntityRegistry.$(), {
+      ngRoutePrefix: API_ENTITY_PREFIX,
+      urlRegistryMetadata: 'api' + API_ENTITY_METADATA_ALL_ENTITIES,
+      urlUpdateEntity: '',
+      urlSaveEntity: '',
+      urlDeleteEntity: '',
+      urlQueryEntity: '',
+      urlGetEntity: null,
+      registryName: 'default'
+    });
   }
 
-  private entityDefs: EntityRef[] = [];
 
-  private _isReady: Subject<boolean> = new Subject<boolean>();
-
-  private _ready = false;
+  // private _ready = false;
 
   private prefix = '/entity';
 
@@ -56,80 +69,12 @@ export class EntityService implements IQueringService {
   }
 
 
-  setNgUrlPrefix(prefix: string) {
-    this.prefix = prefix;
-  }
-
-
-  getNgUrlPrefix() {
-    return this.prefix;
-  }
-
-
-  isReady(callback: Function): void {
-    if (this._ready) {
-      callback();
-    }
-    this._isReady.asObservable().subscribe(null, null, () => {
-      callback();
-    });
-  }
-
-
-  reloadMetadata() {
-    Helper.after(this.authService.isInitialized(), x => {
-      if (x) {
-        this.authService.getChannel().subscribe(s => {
-          if (s instanceof AuthMessage) {
-            this.userState();
-          }
-        });
-      }
-    });
-  }
-
-
-  userState() {
-    if (this.authService.isLoggedIn()) {
-      // TODO load for use permissions
-      this.loadEntityMetadata();
-    } else {
-      this._ready = false;
-      this.entityDefs = [];
-    }
-  }
-
-
-  loadEntityMetadata() {
-    if (!this._ready) {
-      this.http.get('api/metadata/entities',
-        (err: Error, entities: Object) => {
-          if (_.isArray(entities)) {
-            this.entityDefs = [];
-            entities.forEach(entityDefJson => {
-              let entity = EntityRegistry.$().getEntityRefByName(entityDefJson.name);
-              if (!entity) {
-                entity = EntityRegistry.fromJson(entityDefJson);
-              }
-              this.entityDefs.push(entity);
-            });
-          }
-          this._isReady.complete();
-          this._ready = true;
-        });
-    }
-  }
-
-
-  getEntityRefs() {
-    return this.entityDefs;
-  }
-
-
   get(entityName: string, entityId: any) {
     const entityDef = EntityRegistry.$().getEntityRefByName(entityName);
     const obs = new BehaviorSubject<any>(null);
-    this.http.get('api/entity/' + entityName + '/' + entityId,
+    this.http.get(
+      'api' + API_ENTITY_PREFIX + API_ENTITY_GET_ENTITY.replace(':name', entityName).replace(':id', entityId),
+      // 'api/entity/' + entityName + '/' + entityId,
       (err: Error, res: any) => {
         if (err) {
           obs.error(err);
@@ -162,7 +107,8 @@ export class EntityService implements IQueringService {
       queryParts.push('sort=' + JSON.stringify(options.sort));
     }
 
-    let url = 'api/entity/' + entityName;
+    // let url = 'api/entity/' + entityName;
+    let url = 'api' + API_ENTITY_PREFIX + API_ENTITY_FIND_ENTITY.replace(':name', entityName);
     if (queryParts.length > 0) {
       url += '?' + queryParts.join('&');
     }
@@ -184,7 +130,8 @@ export class EntityService implements IQueringService {
   save(entityName: string, entity: any): Observable<any> {
     const entityDef = EntityRegistry.$().getEntityRefByName(entityName);
     const obs = new BehaviorSubject<any>(null);
-    this.http.post('api/entity/' + entityName, entity, (err: Error, res: any) => {
+    const url = 'api' + API_ENTITY_PREFIX + API_ENTITY_SAVE_ENTITY.replace(':name', entityName);
+    this.http.post(url, entity, (err: Error, res: any) => {
       if (err) {
         obs.error(err);
         obs.complete();
@@ -206,7 +153,10 @@ export class EntityService implements IQueringService {
       throw new Error('something is wrong');
     }
     const obs = new BehaviorSubject<any>(null);
-    this.http.post('api/entity/' + entityName + '/' + entityId, entity, (err: Error, res: any) => {
+    const url = 'api' + API_ENTITY_PREFIX + API_ENTITY_UPDATE_ENTITY
+      .replace(':name', entityName)
+      .replace(':id', entityId);
+    this.http.post(url, entity, (err: Error, res: any) => {
       if (err) {
         obs.error(err);
         obs.complete();
@@ -223,7 +173,10 @@ export class EntityService implements IQueringService {
   delete(entityName: string, entityId: any) {
     const entityDef = EntityRegistry.$().getEntityRefByName(entityName);
     const obs = new BehaviorSubject<any>(null);
-    this.http.delete('api/entity/' + entityName + '/' + entityId,
+    const url = 'api' + API_ENTITY_PREFIX + API_ENTITY_DELETE_ENTITY
+      .replace(':name', entityName)
+      .replace(':id', entityId);
+    this.http.delete(url,
       (err: Error, res: any) => {
         if (err) {
           obs.error(err);
