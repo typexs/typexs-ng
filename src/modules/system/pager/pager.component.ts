@@ -25,14 +25,15 @@ export class PagerComponent implements OnInit, OnDestroy {
   @Output()
   pageChange: EventEmitter<PagerAction> = new EventEmitter();
 
-  _cache: any[] = [];
+
+  _frameSize: number;
 
 
   /**
    * Frame Size
    */
   get frameSize() {
-    return this.pager.frameSize;
+    return this.pager ? this.pager.frameSize : this._frameSize;
   }
 
   @Input()
@@ -40,17 +41,17 @@ export class PagerComponent implements OnInit, OnDestroy {
     if (this.pager) {
       this.pager.frameSize = nr;
     } else {
-      this._cache.push({key: 'frameSize', value: nr});
+      this._frameSize = nr;
     }
-
   }
 
+  _currentPage: number;
 
   /**
    * Current page
    */
   get currentPage() {
-    return this.pager.currentPage;
+    return this.pager ? this.pager.currentPage : this._currentPage;
   }
 
   @Input()
@@ -58,15 +59,17 @@ export class PagerComponent implements OnInit, OnDestroy {
     if (this.pager) {
       this.pager.currentPage = nr;
     } else {
-      this._cache.push({key: 'currentPage', value: nr});
+      this._currentPage = nr;
     }
   }
+
+  _totalPages: number;
 
   /**
    * Maximum pages
    */
   get totalPages() {
-    return this.pager.totalPages;
+    return this.pager ? this.pager.totalPages : this._totalPages;
   }
 
 
@@ -75,7 +78,7 @@ export class PagerComponent implements OnInit, OnDestroy {
     if (this.pager) {
       this.pager.totalPages = nr;
     } else {
-      this._cache.push({key: 'totalPages', value: nr});
+      this._totalPages = nr;
     }
   }
 
@@ -146,14 +149,34 @@ export class PagerComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    for (const c of this._cache) {
-      this[c.key] = c.value;
+    // console.log('cache => ', this._cache);
+    // for (const c of this._cache) {
+    //   this[c.key] = c.value;
+    // }
+
+    let exists = true;
+    if (!this.pager) {
+      this.pager = this.pagerService.get(this.name);
+      exists = false;
     }
 
-    if (this.pager) {
+    // Update fields if they where already
+    if (!_.isUndefined(this._totalPages)) {
+      this.totalPages = this._totalPages;
+    }
+
+    if (!_.isUndefined(this._currentPage)) {
+      this.currentPage = this._currentPage;
+    }
+
+    if (!_.isUndefined(this._frameSize)) {
+      this.frameSize = this._frameSize;
+    }
+
+    if (exists) {
       return;
     }
-    this.pager = this.pagerService.get(this.name);
+
 
     this.checkCurrent();
     this.checkTotal();

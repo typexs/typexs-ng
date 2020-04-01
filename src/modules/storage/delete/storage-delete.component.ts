@@ -60,7 +60,7 @@ export class StorageDeleteComponent implements OnInit {
           // TODO maybe wait
           this.instance = entity;
           this.deleted = true;
-//          await this.router.navigate([entityService.getNgUrlPrefix(), this.machineName, 'query']);
+//          await this.router.navigate([storageService.getNgUrlPrefix(), this.machineName, 'query']);
         });
       }
     }

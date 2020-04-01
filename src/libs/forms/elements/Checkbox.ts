@@ -8,8 +8,8 @@ export class Checkbox extends Input {
 
   postProcess() {
     super.postProcess();
-    if(this.isMultiple() && this.isSelection()){
-      this.handle('replicable',true);
+    if (this.isMultiple() && this.isSelection()) {
+      this.handle('replicable', true);
     }
   }
 

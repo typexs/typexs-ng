@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {ChangeDetectorRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {IEntityRef, JS_DATA_TYPES, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
 import {IFindOptions, REGISTRY_TYPEORM} from '@typexs/base/browser';
 import {And, ExprDesc, Expressions} from 'commons-expressions/browser';
@@ -97,7 +97,11 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
 
 
   ngOnInit() {
-    this.queringService.isReady(() => {
+    this.queringService.isReady((value: boolean, error: Error) => {
+      if (!value) {
+        return;
+      }
+
       this.findEntityDef();
       this.initialiseColumns();
 
@@ -197,6 +201,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
 
 
   doQuery(api: IGridApi): void {
+    console.log('do query', api);
     let executeQuery: any = null;
     let mangoQuery: ExprDesc = null;
     const filterQuery: ExprDesc[] = [];
@@ -242,9 +247,11 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
       .subscribe(
         (results: any) => {
           if (results) {
-            api.setRows(results.entities);
-            api.setMaxRows(results.$count);
-            api.rebuild();
+            if (results.entities && _.has(results, '$count') && _.isNumber(results.$count)) {
+              api.setRows(results.entities);
+              api.setMaxRows(results.$count);
+              api.rebuild();
+            }
           }
         }
       );

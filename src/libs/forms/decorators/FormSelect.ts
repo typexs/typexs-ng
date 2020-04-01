@@ -1,5 +1,5 @@
 import {AnnotationsHelper} from 'commons-schema-api/browser';
-import {ClassRef} from "commons-schema-api/browser";
+import {ClassRef} from 'commons-schema-api/browser';
 import {ISelectOptions} from '../elements/ISelectOptions';
 
 export function FormSelect(options: ISelectOptions) {

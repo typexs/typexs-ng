@@ -3,6 +3,8 @@ import * as _ from 'lodash';
 
 export class Pager {
 
+  static inc = 0;
+
   readonly name: string;
 
   private _inc = 0;
@@ -29,7 +31,7 @@ export class Pager {
 
   wait: NodeJS.Timer;
 
-  constructor(id: string) {
+  constructor(id: string = 'dummy') {
     this.name = id;
   }
 

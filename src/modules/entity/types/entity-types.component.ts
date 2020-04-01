@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {EntityService} from './../entity.service';
+import {EntityRef} from '@typexs/schema/browser';
 
 
 @Component({
@@ -8,10 +9,10 @@ import {EntityService} from './../entity.service';
 })
 export class EntityTypesComponent {
 
-  constructor(public entityService:EntityService){
+  constructor(public entityService: EntityService) {
   }
 
-  getEntityRefs(){
-    return this.entityService.getEntityRefs().filter(e => e.isStoreable());
+  getEntityRefs() {
+    return this.entityService.getEntityRefs().filter(e => (e as EntityRef).isStoreable());
   }
 }

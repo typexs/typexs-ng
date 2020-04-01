@@ -59,7 +59,7 @@ export class AppStateService {
 
 
   isViewContext(str: string) {
-    return this.getViewContextValue() == str;
+    return this.getViewContextValue() === str;
   }
 
 
