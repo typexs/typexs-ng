@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/typexs/typexs-ng#readme",
   "devDependencies": {
-    "@allgemein/packaging": "^1.0.6",
+    "@allgemein/packaging": "^1.0.7",
     "@angular-devkit/core": "8.3.18",
     "@angular-devkit/schematics": "8.3.18",
     "@angular/compiler": "^8.2.13",
@@ -57,7 +57,8 @@
     "@types/string-template": "^1.0.2",
     "@types/superagent": "^4.1.4",
     "@types/supertest": "^2.0.8",
-    "@typexs/schema": "0.x",
+    "@typexs/base": "0.x",
+    "@typexs/schema": "^0.7.1",
     "@typexs/server": "0.x",
     "ag-grid-angular": "^21.2.2",
     "ag-grid-community": "^21.2.2",
