@@ -21,7 +21,7 @@ export class TestUser {
   @MaxLength(32, {message: 'username is too long'})
   username: string = '';
 
-  @FormType({form:'password'})
+  @FormType({form: 'password'})
   @Property({type: 'string'})
   @MinLength(8, {message: 'password is too short'})
   @MaxLength(64, {message: 'password is a little too long'})
@@ -34,7 +34,7 @@ export class TestUser {
 
 
 @suite('functional/forms/form_parse')
-class Form_parseSpec {
+class FormParseSpec {
 
   /*
   before() {
@@ -50,7 +50,7 @@ class Form_parseSpec {
   @test.skip()
   async 'parse json form'() {
 
-    let formJSON: any = {
+    const formJSON: any = {
       name: 'test-form',
       type: 'form',
       styles: ['form-container'],
@@ -78,25 +78,25 @@ class Form_parseSpec {
     };
 
 
-    let entities = EntityRegistry.getSchema('default').getEntities();
+    const entities = EntityRegistry.getSchema('default').getEntities();
 
 
-    let builder1 = new FormBuilder();
-    let form = builder1.buildFromJSON(formJSON);
+    const builder1 = new FormBuilder();
+    const form = builder1.buildFromJSON(formJSON);
     // console.log(form);
 
 
 
-    let entityDef = EntityRegistry.getEntityRefFor('TestUser');
+    const entityDef = EntityRegistry.getEntityRefFor('TestUser');
 
-    let builder2 = new FormBuilder();
-    let form2 = builder2.buildFromEntity(entityDef);
+    const builder2 = new FormBuilder();
+    const form2 = builder2.buildFromEntity(entityDef);
 
 
     // todo let form2JSON = form2.toJSON();
-    //Log.info(inspect(form2,null,10));
+    // Log.info(inspect(form2,null,10));
 
-    let form3 = (<Form>form).combine(form2);
+    const form3 = (<Form>form).combine(form2);
     Log.info(inspect(form3, null, 10));
 
   }
@@ -106,7 +106,7 @@ class Form_parseSpec {
 
 
     // Idee für den test
-    let formJSONTemplate: any = {
+    const formJSONTemplate: any = {
       tpls: [
         {
           $match: {type: 'form'},

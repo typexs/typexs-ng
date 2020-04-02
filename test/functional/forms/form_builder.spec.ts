@@ -29,20 +29,20 @@ export class TreeTestData {
   @Property({type: 'string'})
   name: string = '';
 
-  @Property({type: TreeTestSub,cardinality:0})
+  @Property({type: TreeTestSub, cardinality: 0})
   sub: TreeTestSub[];
 
 
 }
 @suite('functional/forms/form_builder')
-class Form_parseSpec {
+class FormParseSpec {
 
   @test
   async 'tree data parse'() {
 
-    let builder = new FormBuilder();
-    let entityDef = EntityRegistry.getEntityRefFor('TreeTestData');
-    let tree = builder.buildFromEntity(entityDef);
+    const builder = new FormBuilder();
+    const entityDef = EntityRegistry.getEntityRefFor('TreeTestData');
+    const tree = builder.buildFromEntity(entityDef);
     expect(tree.children).to.have.length(2);
     expect(tree.children[0].type).to.be.eq('input');
     expect((<any>tree.children[0]).variant).to.be.eq('text');

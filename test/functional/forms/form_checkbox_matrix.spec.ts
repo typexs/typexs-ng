@@ -17,7 +17,7 @@ FORM_ELEMENTS;
 
 
 @suite('functional/forms/form_checkbox_matrix')
-class Form_parseSpec {
+class FormParseSpec {
 
   /*
   before() {
@@ -33,26 +33,26 @@ class Form_parseSpec {
   @test
   async 'build'() {
 
-    let checkboxMatrix = new CheckboxMatrix();
+    const checkboxMatrix = new CheckboxMatrix();
     checkboxMatrix.rows = [];
 
-    let row = new CheckboxMatrixRow();
+    const row = new CheckboxMatrixRow();
     row.label = 'allow all';
     checkboxMatrix.rows.push(row);
 
-    let row2 = new CheckboxMatrixRow();
+    const row2 = new CheckboxMatrixRow();
     row2.label = 'deny all';
     checkboxMatrix.rows.push(row2);
 
-    let registry = EntityRegistry.$();
-    let entityRef = registry.getEntityRefByName('CheckboxMatrix');
-    let formBuilder = new FormBuilder();
-    let formElements = formBuilder.buildFromEntity(entityRef);
-    let children = formElements.getChildren();
+    const registry = EntityRegistry.$();
+    const entityRef = registry.getEntityRefByName('CheckboxMatrix');
+    const formBuilder = new FormBuilder();
+    const formElements = formBuilder.buildFromEntity(entityRef);
+    const children = formElements.getChildren();
     expect(children).to.have.length(1);
-    let gridChildren = formElements.getChildren()[0].getChildren();
+    const gridChildren = formElements.getChildren()[0].getChildren();
     expect(gridChildren).to.have.length(2);
-    let checkbox = _.get(formElements,'children.0.children.1');
+    const checkbox = _.get(formElements, 'children.0.children.1');
     expect(checkbox.isMultiple()).to.be.true;
     expect(checkbox.isReplicable()).to.be.true;
    // console.log(inspect(formElements,false,10))
