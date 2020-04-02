@@ -1,8 +1,9 @@
 {
   "name": "@typexs/ng",
-  "version": "0.8.6",
+  "version": "0.8.7",
   "description": "Angular for typexs",
   "main": "index.js",
+  "browser": "browser.js",
   "directories": {
     "doc": "docs/de"
   },
@@ -10,7 +11,7 @@
     "test": "nyc mocha --opts test/mocha.all.opts && ng test typexs-ng --code-coverage=true --watch=false",
     "posttest": "nyc report --reporter=json && codecov -f coverage/backend/*.json && codecov -f coverage/karma/*.json",
     "ng": "ng",
-    "start": "./node_modules/.bin/concurrently \"./node_modules/.bin/ng serve -pc proxy.conf.json --open\" \"./node_modules/.bin/typexs server --nodeId server\"",
+    "start": "./node_modules/.bin/concurrently \"./node_modules/.bin/ng serve\" \"./node_modules/.bin/typexs server --nodeId server\"",
     "build": "ng build --prod",
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -124,7 +125,7 @@
     "@typexs/base": "0.x",
     "ajv": "^6.10.2",
     "commons-expressions": "^1.0.7",
-    "commons-schema-api": "^1.1.4",
+    "commons-schema-api": "^1.1.11",
     "rxjs": "^6.5.3",
     "rxjs-compat": "^6.5.3",
     "string-template": "^1.0.0",
