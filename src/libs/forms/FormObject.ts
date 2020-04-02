@@ -69,9 +69,9 @@ export abstract class FormObject extends TreeObject {
   }
 
   getPath(): string {
-    let arr = [];
+    const arr = [];
 
-    if (this.getBinding()['baseType'] == XS_TYPE_PROPERTY) {
+    if (this.getBinding()['baseType'] === XS_TYPE_PROPERTY) {
       if (this.getParent()) {
         const parent = this.getParent();
         if (isFormObject(parent)) {
@@ -85,14 +85,14 @@ export abstract class FormObject extends TreeObject {
         arr.push('$idx');
       }
     }
-    return _.filter(arr, (x: string) => x.trim() != '').join('.');
+    return _.filter(arr, (x: string) => x.trim() !== '').join('.');
   }
 
 
   getForm(): FormObject {
     if (this.parent && isFormObject(this.parent)) {
       return this.parent.getForm();
-    } else if (this.type == 'form') {
+    } else if (this.type === 'form') {
       return this;
     } else {
       // TODO throw error this should never happen
@@ -103,13 +103,13 @@ export abstract class FormObject extends TreeObject {
   handle(key: string, value: any) {
 
     if (value instanceof ResolveDataValue) {
-      let form = this.getForm(); //
+      const form = this.getForm(); //
       form['resolver'].push(value);
     }
 
 
     this.usedKeys.push(key);
-    let methodName = 'handle' + _.capitalize(key);
+    const methodName = 'handle' + _.capitalize(key);
     if (this[methodName]) {
       this[methodName](value);
     } else {
@@ -129,8 +129,8 @@ export abstract class FormObject extends TreeObject {
 
 
   replace(someObject: FormObject) {
-    let parent = this.getParent();
-    let idx = parent.getChildren().indexOf(this);
+    const parent = this.getParent();
+    const idx = parent.getChildren().indexOf(this);
     if (idx < 0) {
       throw new Error('can not find index, something is wrong');
     }
@@ -148,7 +148,7 @@ export abstract class FormObject extends TreeObject {
   }
 
   protected handleCardinality(value: number) {
-    if (value == 0 || value > 1) {
+    if (value === 0 || value > 1) {
       this.handle('multiple', true);
       if (value > 1) {
         this.handle('limited', value);
