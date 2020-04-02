@@ -149,11 +149,6 @@ export class PagerComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    // console.log('cache => ', this._cache);
-    // for (const c of this._cache) {
-    //   this[c.key] = c.value;
-    // }
-
     let exists = true;
     if (!this.pager) {
       this.pager = this.pagerService.get(this.name);

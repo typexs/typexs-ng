@@ -37,7 +37,7 @@ export class FormBuilder {
       this.form = formObject = ContentComponentRegistry.createHandler('form');
       formObject.handle('name', entity.id());
       formObject.handle('binding', entity);
-    } else if ((<AbstractRef><any>entity).baseType == XS_TYPE_PROPERTY) {
+    } else if ((<AbstractRef><any>entity).baseType === XS_TYPE_PROPERTY) {
       // TODO support also other types
       const property: IPropertyRef = <IPropertyRef>entity;
 
@@ -51,7 +51,7 @@ export class FormBuilder {
         } else if (property.isReference()) {
           formType = 'grid';
         } else {
-          if (property['getType'] && property['getType']() == 'boolean') {
+          if (property['getType'] && property['getType']() === 'boolean') {
             formType = 'checkbox';
           } else {
             formType = 'text';
@@ -66,7 +66,7 @@ export class FormBuilder {
       } else {
         formObject = this.forDefault(formType, property);
       }
-    } else if ((<AbstractRef><any>entity).baseType == XS_TYPE_ENTITY) {
+    } else if ((<AbstractRef><any>entity).baseType === XS_TYPE_ENTITY) {
       // TODO is this necessary
     }
 
@@ -78,15 +78,15 @@ export class FormBuilder {
     }
 
     const nextLevel = options.level + 1;
-    if ((<AbstractRef><any>entity).baseType == XS_TYPE_ENTITY) {
-      if (options.level == 0 || formObject.isStruct()) {
+    if ((<AbstractRef><any>entity).baseType === XS_TYPE_ENTITY) {
+      if (options.level === 0 || formObject.isStruct()) {
         const properties = (<IEntityRef>entity).getPropertyRefs();
         for (const property of properties) {
           const childObject = this._buildFormObject(property, formObject, {level: nextLevel});
           formObject.insert(childObject);
         }
       }
-    } else if ((<AbstractRef><any>entity).baseType == XS_TYPE_PROPERTY) {
+    } else if ((<AbstractRef><any>entity).baseType === XS_TYPE_PROPERTY) {
       // TODO for properties which points to Entity / Entities
       // property.getEntityRef
       // formObject;
@@ -165,7 +165,9 @@ export class FormBuilder {
     const options = property.getOptions();
     if (options) {
       Object.keys(options).forEach(opt => {
-        if (/^(source|target|property)/.test(opt)) { return; }
+        if (/^(source|target|property)/.test(opt)) {
+          return;
+        }
         const value = options[opt];
         formObject.handle(opt, value);
       });

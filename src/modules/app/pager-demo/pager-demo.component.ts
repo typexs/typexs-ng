@@ -27,7 +27,6 @@ export class PagerDemoComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log('pager ...')
     this.pager3 = this.pagerService.get('pager3');
   }
 }

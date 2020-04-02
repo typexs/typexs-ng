@@ -3,7 +3,7 @@ import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import * as _ from 'lodash';
 import {IBuildOptions, IEntityRef, ILookupRegistry, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
-import {Helper} from '../../../..';
+import {Helper} from '../../../../libs/observable/Helper';
 import {AuthMessage} from '../../messages/types/AuthMessage';
 import {HttpClientWrapper} from '../../http-client-wrapper.service';
 import {AuthService} from '../auth/auth.service';
@@ -196,7 +196,7 @@ export abstract class AbstractQueryService implements IQueringService {
 
 
   buildOptions?(method: 'get' | 'update' | 'save' | 'delete' | 'query',
-                options: IFindOptions, buildOptions: IBuildOptions = {}) {
+                options: any /*IFindOptions*/, buildOptions: IBuildOptions = {}) {
   }
 
   buildEntity?(method: 'get' | 'update' | 'save' | 'delete' | 'query',
@@ -204,7 +204,7 @@ export abstract class AbstractQueryService implements IQueringService {
   }
 
 
-  get(entityName: string, entityId: any, options: IFindOptions = {}) {
+  get(entityName: string, entityId: any, options:  IFindOptions = {}) {
     const entityDef = this.getEntityRefForName(entityName);
     const obs = new BehaviorSubject<any>(null);
     let url = this.url(this.options.urlGetEntity, {name: entityName, id: entityId});
@@ -230,7 +230,7 @@ export abstract class AbstractQueryService implements IQueringService {
   }
 
 
-  query(entityName: string, query: any = null, options: IFindOptions = {}) {
+  query(entityName: string, query: any = null, options:  IFindOptions = {}) {
     const _opts = _.clone(options);
     const entityDef = this.getEntityRefForName(entityName);
     const obs = new BehaviorSubject<any>(null);
@@ -277,7 +277,7 @@ export abstract class AbstractQueryService implements IQueringService {
   }
 
 
-  save(entityName: string, entity: any, options: ISaveOptions = {}): Observable<any> {
+  save(entityName: string, entity: any, options:  ISaveOptions = {}): Observable<any> {
     const entityDef = this.getEntityRefForName(entityName);
     const obs = new BehaviorSubject<any>(null);
 
@@ -312,7 +312,7 @@ export abstract class AbstractQueryService implements IQueringService {
    * @param entity
    * @param options
    */
-  update(entityName: string, entityId: any, entity: any, options: ISaveOptions = {}) {
+  update(entityName: string, entityId: any, entity: any, options:  ISaveOptions  = {}) {
     // TODO if empty entity ???
     const entityDef = this.getEntityRefForName(entityName);
     const id = Expressions.buildLookupConditions(entityDef, entity);

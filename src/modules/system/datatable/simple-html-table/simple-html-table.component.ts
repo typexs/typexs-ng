@@ -143,7 +143,6 @@ export class SimpleHtmlTableComponent extends AbstractGridComponent implements O
 
 
   updateRows(action: PagerAction) {
-    console.log('updateRows', action);
     if (action.name === this.options.pagerId && action.type === 'set') {
       this.params.offset = (action.page - 1) * this.options.limit;
       this.params.limit = this.options.limit;

@@ -31,7 +31,6 @@ export class InputDemoComponent implements OnInit {
 
   onSubmit($event: any) {
     this.result = $event;
-    console.log($event);
 
     const msg = new LogMessage();
     msg.type = $event.data.isSuccessValidated ? MessageType.SUCCESS : MessageType.ERROR;

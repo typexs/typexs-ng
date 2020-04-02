@@ -46,13 +46,13 @@ const PROVIDERS: Provider[] = [];
     SystemModule.forRoot(),
     NavigatorModule.forRoot(),
     RouterModule,
+    BrowserModule,
+    HttpClientModule,
+    RouterModule.forChild(ADMIN_ROUTES),
     FormsModule,
     EntityModule,
     TasksModule,
-    StorageModule,
-    BrowserModule,
-    HttpClientModule,
-    RouterModule.forChild(ADMIN_ROUTES)
+    StorageModule
   ],
   exports: [
     AdminComponent

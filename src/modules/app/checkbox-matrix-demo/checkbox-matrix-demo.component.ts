@@ -16,12 +16,12 @@ export class CheckboxMatrixDemoComponent implements OnInit {
     this.checkboxMatrix = new CheckboxMatrix();
     this.checkboxMatrix.rows = [];
 
-    let row = new CheckboxMatrixRow();
+    const row = new CheckboxMatrixRow();
     row.label = 'allow all';
     row.roles = ['admin'];
     this.checkboxMatrix.rows.push(row);
 
-    let row2 = new CheckboxMatrixRow();
+    const row2 = new CheckboxMatrixRow();
     row2.label = 'deny all';
     row2.roles = ['user'];
     this.checkboxMatrix.rows.push(row2);

@@ -12,7 +12,7 @@ export class CheckboxMatrixRow {
   @Property({type: 'string'})
   label: string;
 
-  @FormCheckbox({enum:'rolesValues'})
+  @FormCheckbox({enum: 'rolesValues'})
   @Property({type: 'string', cardinality: 0})
   roles: string[];
 

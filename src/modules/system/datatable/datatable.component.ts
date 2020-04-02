@@ -51,7 +51,6 @@ export class DatatableComponent extends AbstractGridComponent implements OnInit,
 
 
   ngOnInit(): void {
-    console.log('datatable')
     if (!this.component) {
       this.component = this.config.getComponentClass(C_DEFAULT, CC_GRID);
     }

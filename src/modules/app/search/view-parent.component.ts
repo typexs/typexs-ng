@@ -27,14 +27,10 @@ export class ViewParentComponent extends AbstractComponent<ViewParent> implement
   title = 'ViewParent';
 
   ngOnInit() {
-    console.log('INIT', this.searchEntry);
-    console.log('INIT', this.searchEntry2);
 
   }
 
   ngAfterViewInit() {
-    console.log('AFTERVIEWINIT', this.searchEntry);
-    console.log('AFTERVIEWINIT', this.searchEntry2);
   }
 
 

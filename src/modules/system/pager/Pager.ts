@@ -70,13 +70,6 @@ export class Pager {
           ' end=' + this.frameEnd +
           ' total=' + this.totalPages);
       }
-
-      // console.log(' min=' + this.minPage +
-      //   ' start=' + this.frameStart +
-      //   ' current=' + this.currentPage +
-      //   ' end=' + this.frameEnd +
-      //   ' total=' + this.totalPages, this.pages);
-
     }
   }
 

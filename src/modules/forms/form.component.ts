@@ -69,6 +69,7 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
               @Inject(ComponentFactoryResolver)
               public r: ComponentFactoryResolver) {
     super(injector, r);
+    // TODO ...
     if (!this.registry) {
       this.registry = EntityRegistry.$();
     }
@@ -96,7 +97,7 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
 
 
   async onSubmit($event: Event): Promise<boolean> {
-    if ($event.type == 'submit') {
+    if ($event.type === 'submit') {
       // ignore mouse event
       if (this.channel) {
         // clear
@@ -125,10 +126,10 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
 
 
   async onButton(key: string, $event: Event): Promise<boolean> {
-    let btn = _.find(this.options.buttons, b => b.key == key);
-    if (btn.type == 'submit') {
+    const btn = _.find(this.options.buttons, b => b.key === key);
+    if (btn.type === 'submit') {
       return this.onSubmit($event);
-    } else if (btn.type == 'restore') {
+    } else if (btn.type === 'restore') {
       return this.onReset($event);
     } else {
       this.ngButton.emit({button: btn, event: $event, data: this.data});

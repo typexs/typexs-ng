@@ -44,7 +44,6 @@ export class SimpleHtmlTableDemoComponent {
 
 
   update(key: string, v: any): void {
-    console.log(key, v);
     if (key === 'maxRows') {
 
     }
@@ -61,7 +60,6 @@ export class SimpleHtmlTableDemoComponent {
   }
 
   doQuery(api: IGridApi): void {
-    console.log('doQuery', api.params);
     let generated = this.generateData(api.params.offset, api.params.limit);
 
     if (api.params.filters) {
@@ -73,8 +71,6 @@ export class SimpleHtmlTableDemoComponent {
         filter = api.params.filters[keys.shift()];
       }
       const _filter = filter.lookup({});
-      console.log(generated, _filter);
-
       generated = generated.filter(v => _filter(v));
     }
 

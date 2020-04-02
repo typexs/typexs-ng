@@ -22,12 +22,12 @@ import {
 
 
 @Injectable()
-export class EntityService extends AbstractQueryService implements IQueringService {
+export class EntityService  extends AbstractQueryService implements IQueringService  {
 
   constructor(private http: HttpClientWrapper, private authService: AuthService) {
     super(http, authService, EntityRegistry.$(), {
       ngRoutePrefix: API_ENTITY_PREFIX,
-      urlRegistryMetadata: 'api' + API_ENTITY_METADATA_ALL_ENTITIES,
+      urlRegistryMetadata: 'api' + API_ENTITY_PREFIX + API_ENTITY_METADATA_ALL_ENTITIES,
       urlUpdateEntity: '',
       urlSaveEntity: '',
       urlDeleteEntity: '',
@@ -40,7 +40,7 @@ export class EntityService extends AbstractQueryService implements IQueringServi
 
   // private _ready = false;
 
-  private prefix = '/entity';
+  // private prefix = '/entity';
 
 
   private static _beforeBuild(entityDef: EntityRef, from: any, to: any) {

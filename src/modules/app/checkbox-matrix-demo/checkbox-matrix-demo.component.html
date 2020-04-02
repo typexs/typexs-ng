@@ -5,7 +5,9 @@
   <hr/>
 
   <div class="bd">
-    <xform formName="checkbox-matrix" [instance]="checkboxMatrix" (ngSubmit)="onSubmit($event)" ></xform>
+    <xform formName="checkbox-matrix"
+           [instance]="checkboxMatrix"
+           (ngSubmit)="onSubmit($event)"></xform>
     <pre>
       {{result | json}}
     </pre>

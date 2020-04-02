@@ -12,9 +12,9 @@ import {DataContainer} from '@typexs/base/browser';
 
 export class EnumHandle {
 
-  injector: Injector;
+  readonly injector: Injector;
 
-  elem: FormObject;
+  readonly elem: FormObject;
 
   constructor(injector: Injector, elem: FormObject) {
     this.elem = elem;
@@ -27,7 +27,7 @@ export class EnumHandle {
 
   retrieveEnum(instance: any, parentContext?: Context): ISelectOption[] | Observable<ISelectOption[]> {
     let _enum = this.getElement().getEnum();
-    if(this.getElement().getBinding().isEntityReference() && !_enum){
+    if (this.getElement().getBinding().isEntityReference() && !_enum) {
       // set default
       _enum = 'EntityOptionsService';
     }
@@ -35,7 +35,7 @@ export class EnumHandle {
     if (_.isArray(_enum)) {
       return _enum;
     } else if (_.isFunction(_enum)) {
-      let service = (<ISelectOptionsService>this.injector.get(_enum));
+      const service = (<ISelectOptionsService>this.injector.get(_enum));
       return service.options(this.getElement().getBinding());
     } else if (_.isString(_enum)) {
       let error = null;

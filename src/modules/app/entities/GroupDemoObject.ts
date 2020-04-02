@@ -5,7 +5,7 @@ import {FormGrid} from '../../../libs/forms/decorators/FormGrid';
 import {Places} from './Places';
 
 
-@Entity({storeable:false})
+@Entity({storeable: false})
 export class GroupDemoObject {
 
   @FormGrid()

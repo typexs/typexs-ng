@@ -201,7 +201,6 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
 
 
   doQuery(api: IGridApi): void {
-    console.log('do query', api);
     let executeQuery: any = null;
     let mangoQuery: ExprDesc = null;
     const filterQuery: ExprDesc[] = [];

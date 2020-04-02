@@ -5,6 +5,7 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import {ISelectOptionsService} from '../forms/libs/ISelectOptionsService';
 import {ISelectOption} from '../forms/libs/ISelectOption';
+import {ClassRef, IEntityRef} from 'commons-schema-api/browser';
 
 
 @Injectable()
@@ -17,7 +18,18 @@ export class EntityOptionsService implements ISelectOptionsService {
 
   options(propertyDef: PropertyRef, limit: number = 25, page: number = 0): Observable<ISelectOption[]> {
     const bs = new BehaviorSubject<ISelectOption[]>(null);
-    if (propertyDef.targetRef.isEntity) {
+
+    let storeable = true;
+    let sourceRef: ClassRef | IEntityRef = propertyDef.getSourceRef();
+    if (sourceRef.isEntity) {
+      sourceRef = sourceRef.getEntityRef();
+      storeable = sourceRef.getOptions('storeable');
+      if (storeable !== false) {
+        storeable = true;
+      }
+    }
+
+    if (storeable && propertyDef.targetRef.isEntity) {
       const entityDef = <EntityRef>propertyDef.getTargetRef().getEntityRef();
       this.entityService.query(entityDef.machineName, null, {limit: limit}).subscribe(
         result => {
@@ -44,7 +56,12 @@ export class EntityOptionsService implements ISelectOptionsService {
         }
       );
     } else {
-      bs.error(new Error('no entity as target in property'));
+      if (storeable) {
+        bs.error(new Error('no entity as target in property'));
+      } else {
+        bs.error(new Error('is not a storable entity'));
+      }
+
     }
 
     return bs.asObservable();

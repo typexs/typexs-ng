@@ -12,8 +12,8 @@ import {HttpClientWrapper} from '../system/http-client-wrapper.service';
 import {SystemInfoService} from '../system/system-info.service';
 import {TaskEvent} from '@typexs/base/libs/tasks/worker/TaskEvent';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
-import {SystemNodeInfo} from '@typexs/base';
-import {HttpResponseError} from '@typexs/server';
+import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
+import {HttpResponseError} from '@typexs/server/libs/exceptions/HttpResponseError';
 import {ExprDesc} from 'commons-expressions/browser';
 
 
