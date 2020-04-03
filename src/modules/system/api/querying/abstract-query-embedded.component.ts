@@ -58,7 +58,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
   @Output()
   freeQueryChange: EventEmitter<any> = new EventEmitter();
 
-  _params: IQueryParams = {};
+  _params: IQueryParams;
 
   @Input()
   get params() {
@@ -72,7 +72,6 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
 
   @Output()
   paramsChange: EventEmitter<IQueryParams> = new EventEmitter();
-
 
   entityRef: IEntityRef;
 
@@ -97,6 +96,16 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
 
 
   ngOnInit() {
+    if (!this.params) {
+      console.log('init', this.params)
+      this.params = {};
+    }
+
+    if (this.options) {
+      this.params.offset = _.get(this.options, 'offset', 0);
+      this.params.limit = _.get(this.options, 'limit', 25);
+    }
+
     this.queringService.isReady((value: boolean, error: Error) => {
       if (!value) {
         return;
@@ -105,13 +114,6 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
       this.findEntityDef();
       this.initialiseColumns();
 
-      if (!this.params) {
-        this.params = {};
-      }
-
-      if (this.options) {
-        this.params.limit = _.get(this.options, 'limit', 25);
-      }
 
 
       // api maybe not loaded
@@ -195,6 +197,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
 
 
   onQueryAction(action: QueryAction) {
+    this.datatable.api().reset();
     this.freeQuery = action.query;
     this.doQuery(this.datatable.api());
   }
@@ -255,6 +258,10 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
         }
       );
 
+  }
+
+  reset() {
+    this.params.offset = 0;
   }
 
 }

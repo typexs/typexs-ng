@@ -1,12 +1,16 @@
 import * as _ from 'lodash';
 import {Injectable} from '@angular/core';
 import {Pager} from './Pager';
+import {ActivatedRoute, Router} from '@angular/router';
 
 
 @Injectable()
 export class PagerService {
 
   pagers: Pager[] = [];
+
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+  }
 
   find(id: string) {
     return _.find(this.pagers, p => p.name === id);
@@ -15,7 +19,7 @@ export class PagerService {
   get(id: string) {
     let pager = this.find(id);
     if (!pager) {
-      pager = new Pager(id);
+      pager = new Pager(this.router, this.activatedRoute, id);
       this.pagers.push(pager);
     }
     pager.inc();
@@ -23,7 +27,7 @@ export class PagerService {
   }
 
   create() {
-    const pager = new Pager();
+    const pager = new Pager(this.router, this.activatedRoute);
     this.pagers.push(pager);
     pager.inc();
     return pager;

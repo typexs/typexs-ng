@@ -26,18 +26,19 @@ export class PagerComponent implements OnInit, OnDestroy {
   pageChange: EventEmitter<PagerAction> = new EventEmitter();
 
 
-  _frameSize: number;
+  _frameSize: number = 3;
 
 
   /**
    * Frame Size
    */
   get frameSize() {
-    return this.pager ? this.pager.frameSize : this._frameSize;
+    return this.pager && this.pager.frameSize > 0 ? this.pager.frameSize : this._frameSize;
   }
 
   @Input()
   set frameSize(nr: number) {
+    nr = _.isNumber(nr) ? nr : parseInt(nr, 0);
     if (this.pager) {
       this.pager.frameSize = nr;
     } else {
@@ -56,6 +57,7 @@ export class PagerComponent implements OnInit, OnDestroy {
 
   @Input()
   set currentPage(nr: number) {
+    nr = _.isNumber(nr) ? nr : parseInt(nr, 0);
     if (this.pager) {
       this.pager.currentPage = nr;
     } else {
@@ -75,6 +77,7 @@ export class PagerComponent implements OnInit, OnDestroy {
 
   @Input()
   set totalPages(nr: number) {
+    nr = _.isNumber(nr) ? nr : parseInt(nr, 0);
     if (this.pager) {
       this.pager.totalPages = nr;
     } else {
@@ -91,29 +94,30 @@ export class PagerComponent implements OnInit, OnDestroy {
 
   }
 
-  setPage(nr: number) {
-    if (0 < nr && nr <= this.totalPages) {
-      this.pager.once(() => {
-        this.currentPage = nr;
-
-        const action = new PagerAction(nr, this.name);
-        this.pageChange.emit(action);
-        this.pager.calculatePages();
-        const params: any = {};
-        params[this.name] = nr;
-
-        const urlTree = this.router.createUrlTree([], {
-          queryParams: params,
-          queryParamsHandling: 'merge',
-          preserveFragment: true
-        });
-
-        this.router.navigateByUrl(urlTree);
-      });
-    } else {
-      throw new Error('pager is out of range ' + nr + ' of max ' + this.totalPages);
-    }
-  }
+  //
+  // setPage(nr: number) {
+  //   if (0 < nr && nr <= this.totalPages) {
+  //     this.pager.once(() => {
+  //       this.currentPage = nr;
+  //
+  //       const action = new PagerAction(nr, this.name);
+  //       this.pageChange.emit(action);
+  //       this.pager.calculatePages();
+  //       const params: any = {};
+  //       params[this.name] = nr;
+  //
+  //       const urlTree = this.router.createUrlTree([], {
+  //         queryParams: params,
+  //         queryParamsHandling: 'merge',
+  //         preserveFragment: true
+  //       });
+  //
+  //       this.router.navigateByUrl(urlTree);
+  //     });
+  //   } else {
+  //     throw new Error('pager is out of range ' + nr + ' of max ' + this.totalPages);
+  //   }
+  // }
 
 
   checkTotal() {
@@ -169,25 +173,16 @@ export class PagerComponent implements OnInit, OnDestroy {
     }
 
     if (exists) {
+      this.pager.on('page_action', action => this.pageChange.emit(action));
       return;
     }
-
 
     this.checkCurrent();
     this.checkTotal();
     this.checkFrameSize();
-    const pagerValue = this.activatedRoute.snapshot.queryParamMap.has(this.name);
-    if (pagerValue) {
-      const page = this.activatedRoute.snapshot.queryParamMap.get(this.name);
-      if (/^\d+$/.test(page)) {
-        try {
-          this.setPage(parseInt(page, 0));
-          return;
-        } catch (e) {
-        }
-      }
+    if (!this.pager.checkQueryParam()) {
+      this.pager.calculatePages();
     }
-    this.pager.calculatePages();
   }
 
 

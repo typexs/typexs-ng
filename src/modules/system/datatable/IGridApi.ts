@@ -9,4 +9,6 @@ export interface IGridApi {
   setRows(rows: any[]): void;
 
   setMaxRows(maxRows: number): void;
+
+  reset(): void;
 }

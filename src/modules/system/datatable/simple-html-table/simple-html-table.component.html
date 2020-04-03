@@ -2,7 +2,6 @@
 
   <txs-pager *ngIf="options.enablePager"
              [name]="options.pagerId"
-             frameSize="5"
              [pager]="pager"
              (pageChange)="updateRows($event)">
   </txs-pager>

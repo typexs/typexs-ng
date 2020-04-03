@@ -1,7 +1,10 @@
 import * as _ from 'lodash';
+import {ActivatedRoute, Router} from '@angular/router';
+import {PagerAction} from './PagerAction';
+import {EventEmitter} from 'events';
 
 
-export class Pager {
+export class Pager extends EventEmitter {
 
   static inc = 0;
 
@@ -13,7 +16,7 @@ export class Pager {
 
   private frameEnd: number;
 
-  frameSize = 3;
+  frameSize: number = 3;
 
   currentPage: number;
 
@@ -31,12 +34,14 @@ export class Pager {
 
   wait: NodeJS.Timer;
 
-  constructor(id: string = 'dummy') {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, id: string = 'dummy') {
+    super();
     this.name = id;
+
   }
 
 
-  once(fn: () => void) {
+  doOnce(fn: () => void) {
     clearTimeout(this.wait);
     this.wait = setTimeout(fn, 50);
   }
@@ -44,6 +49,10 @@ export class Pager {
 
   calculatePages() {
     if (this.minPage > 0 && this.totalPages > 0) {
+
+      if (this.currentPage > this.totalPages) {
+        this.currentPage = this.totalPages;
+      }
 
       this.frameStart = this.currentPage - this.frameSize;
       this.frameEnd = this.currentPage + this.frameSize;
@@ -73,6 +82,58 @@ export class Pager {
     }
   }
 
+
+  checkQueryParam() {
+    if (!this.activatedRoute || !this.activatedRoute.snapshot) {
+      return false;
+    }
+    const pagerValue = this.activatedRoute.snapshot.queryParamMap.has(this.name);
+    if (pagerValue) {
+      const page = this.activatedRoute.snapshot.queryParamMap.get(this.name);
+      if (/^\d+$/.test(page)) {
+        try {
+          this.setPage(parseInt(page, 0));
+          return true;
+        } catch (e) {
+        }
+      }
+
+    }
+    return false;
+  }
+
+
+  setPage(nr: number) {
+    if (0 < nr && nr <= this.totalPages && nr !== this.currentPage) {
+      this.doOnce(() => {
+        this.currentPage = nr;
+
+        this.calculatePages();
+
+        const action = new PagerAction(this.currentPage, this.name);
+        this.emit('page_action', action);
+
+        this.updateUrl();
+      });
+    } else {
+      throw new Error('pager is out of range ' + nr + ' of max ' + this.totalPages);
+    }
+  }
+
+  updateUrl() {
+    const params: any = {};
+    params[this.name] = this.currentPage;
+
+    const urlTree = this.router.createUrlTree([], {
+      queryParams: params,
+      queryParamsHandling: 'merge',
+      preserveFragment: true
+    });
+
+    this.router.navigateByUrl(urlTree);
+  }
+
+
   hasLeftSpace() {
     return this.minPage < this.frameStart;
   }
@@ -99,7 +160,15 @@ export class Pager {
     this._inc--;
   }
 
+  reset() {
+    this.currentPage = 1;
+    this.updateUrl();
+  }
+
   free() {
+    this.removeAllListeners();
+    this.router = null;
+    this.activatedRoute = null;
     return this._inc <= 0;
   }
 }

@@ -37,7 +37,7 @@ export class EmbeddedStorageComponent implements OnInit, OnChanges {
     pagerId: 'page'
   };
 
-  simpleItemParams: IQueryParams;
+  simpleItemParams: IQueryParams = {};
 
   @ViewChild('simpleItem01', {static: true})
   simpleItemQuery: StorageQueryEmbeddedComponent;

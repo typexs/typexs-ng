@@ -63,7 +63,9 @@ export abstract class AbstractGridComponent implements IGridApi {
     this.maxRows = maxRows;
   }
 
-  // abstract query(): void;
+  reset() {
+    this.params.offset = 0;
+  }
 
 
 }
