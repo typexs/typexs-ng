@@ -1,6 +1,6 @@
 {
   "name": "@typexs/ng",
-  "version": "0.8.8",
+  "version": "0.8.9",
   "description": "Angular for typexs",
   "main": "index.js",
   "browser": "browser.js",
@@ -132,8 +132,8 @@
     "zone.js": "~0.10.2"
   },
   "peerDependencies": {
-    "@typexs/schema": "^0.7.3",
-    "@typexs/server": "^0.4.24"
+    "@typexs/schema": "^0.7.4",
+    "@typexs/server": "^0.4.26"
   },
   "private": true,
   "nyc": {
