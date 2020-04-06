@@ -97,7 +97,6 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
 
   ngOnInit() {
     if (!this.params) {
-      console.log('init', this.params)
       this.params = {};
     }
 

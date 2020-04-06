@@ -172,8 +172,8 @@ export class PagerComponent implements OnInit, OnDestroy {
       this.frameSize = this._frameSize;
     }
 
+    this.pager.on('page_action', action => this.pageChange.emit(action));
     if (exists) {
-      this.pager.on('page_action', action => this.pageChange.emit(action));
       return;
     }
 
