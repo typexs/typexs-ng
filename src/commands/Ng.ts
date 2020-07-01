@@ -1,10 +1,9 @@
-import {Config, FileUtils, Inject, RuntimeLoader, Log} from '@typexs/base';
-import {Module} from 'commons-moduls';
+import {Config, FileUtils, Inject, Log, RuntimeLoader} from '@typexs/base';
+import {ModuleDescriptor} from 'commons-moduls';
 import {NgMetaDataCollector} from '../libs/angular/NgMetaDataCollector';
 import {NgModuleBuilder} from '../libs/angular/NgModuleBuilder';
 import * as glob from 'glob';
 import {join} from 'path';
-
 import * as _ from 'lodash';
 import {ITemplateEntry} from '..';
 import {IStylesheetEntry} from '../libs/angular/IStylesheetEntry';
@@ -56,13 +55,15 @@ export class Ng {
     const modules = this.loader.registry.modules();
     const stylesheets = [];
 
-    let currentModule: Module;
+    let currentModule: ModuleDescriptor;
 
     for (const _module of modules) {
       const minmatch = '' + _module.path + '/?(src)/app/themes/**/*.+(css|less|sass|scss)';
       currentModule = _module;
       const files = glob.sync(minmatch);
-      if (_.isEmpty(files)) { continue; }
+      if (_.isEmpty(files)) {
+        continue;
+      }
 
 
       for (const file of files) {
@@ -116,13 +117,15 @@ export class Ng {
     const modules = this.loader.registry.modules();
     const templeted = [];
 
-    let currentModule: Module;
+    let currentModule: ModuleDescriptor;
 
     for (const _module of modules) {
       const minmatch = '' + _module.path + '/?(src)/app/themes/**/*.html';
       currentModule = _module;
       const files = glob.sync(minmatch);
-      if (_.isEmpty(files)) { continue; }
+      if (_.isEmpty(files)) {
+        continue;
+      }
 
 
       for (const file of files) {

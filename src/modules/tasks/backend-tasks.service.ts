@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {API_TASK_EXEC, API_TASK_GET_METADATA_VALUE, API_TASK_LOG, API_TASK_STATUS, API_TASKS_METADATA} from '@typexs/server/browser';
+import {API_CTRL_TASK_EXEC, API_CTRL_TASK_GET_METADATA_VALUE, API_CTRL_TASK_LOG, API_CTRL_TASK_STATUS, API_CTRL_TASKS_METADATA} from '@typexs/server/browser';
 import {Tasks} from '@typexs/base/browser';
 import {IEntityRefMetadata} from 'commons-schema-api';
 import {Observable} from 'rxjs/Observable';
@@ -45,7 +45,7 @@ export class BackendTasksService {
       queryParts.push('targetIds=' + JSON.stringify(targetIds));
     }
 
-    let url = this.api + API_TASK_EXEC.replace(':taskName', name);
+    let url = this.api + API_CTRL_TASK_EXEC.replace(':taskName', name);
     if (queryParts.length > 0) {
       url += '?' + queryParts.join('&');
     }
@@ -81,7 +81,7 @@ export class BackendTasksService {
 
   taskStatus(runnerId: string, nodeId: string): Observable<TaskLog> {
     const x = new Subject<TaskLog>();
-    const url = this.api + API_TASK_STATUS.replace(':nodeId', nodeId).replace(':runnerId', runnerId);
+    const url = this.api + API_CTRL_TASK_STATUS.replace(':nodeId', nodeId).replace(':runnerId', runnerId);
 
     this.http.get(url, (err, data: TaskLog) => {
       if (err) {
@@ -98,7 +98,7 @@ export class BackendTasksService {
   taskLog(runnerId: string, nodeId: string, from: number = null, offset: number = null, tail: number = 50): Observable<any[]> {
     const x = new Subject<any[]>();
 
-    let url = this.api + API_TASK_LOG.replace(':nodeId', nodeId).replace(':runnerId', runnerId);
+    let url = this.api + API_CTRL_TASK_LOG.replace(':nodeId', nodeId).replace(':runnerId', runnerId);
     if (_.isNumber(from) && _.isNumber(offset) && from >= 0 && offset >= 0) {
       url += `?from=${from}&offset=${offset}`;
     } else if (_.isNumber(from) && from >= 0) {
@@ -135,7 +135,7 @@ export class BackendTasksService {
         });
 
 
-        this.http.get(this.api + API_TASKS_METADATA, (err, data: IEntityRefMetadata[]) => {
+        this.http.get(this.api + API_CTRL_TASKS_METADATA, (err, data: IEntityRefMetadata[]) => {
           this.tasks = new Tasks(null);
           data.forEach((d: any) => {
             d.nodeIds = _.intersection(d.nodeIds, this.workerNodes.map(w => w.nodeId));
@@ -162,7 +162,7 @@ export class BackendTasksService {
   taskIncomingValues(taskName: string, incomingName: string, hint: ExprDesc = null, instance: any = null): Observable<any> {
     const x = new Subject<any>();
 
-    let _url = this.api + API_TASK_GET_METADATA_VALUE
+    let _url = this.api + API_CTRL_TASK_GET_METADATA_VALUE
       .replace(':taskName', taskName)
       .replace(':incomingName', incomingName);
 

@@ -4,14 +4,14 @@ import {Observable} from 'rxjs/Observable';
 import {AuthService} from '../system/api/auth/auth.service';
 import {HttpClientWrapper} from '../system/http-client-wrapper.service';
 import {
-  API_STORAGE_DELETE_ENTITY,
-  API_STORAGE_FIND_ENTITY,
-  API_STORAGE_GET_ENTITY,
-  API_STORAGE_METADATA_ALL_ENTITIES,
-  API_STORAGE_METADATA_ALL_STORES,
-  API_STORAGE_PREFIX,
-  API_STORAGE_SAVE_ENTITY,
-  API_STORAGE_UPDATE_ENTITY,
+  API_CTRL_STORAGE_DELETE_ENTITY,
+  API_CTRL_STORAGE_FIND_ENTITY,
+  API_CTRL_STORAGE_GET_ENTITY,
+  API_CTRL_STORAGE_METADATA_ALL_ENTITIES,
+  API_CTRL_STORAGE_METADATA_ALL_STORES,
+  API_CTRL_STORAGE_PREFIX,
+  API_CTRL_STORAGE_SAVE_ENTITY,
+  API_CTRL_STORAGE_UPDATE_ENTITY,
   IStorageRefMetadata
 } from '@typexs/server/browser';
 import {REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base/browser';
@@ -27,12 +27,12 @@ export class StorageService extends AbstractQueryService implements IQueringServ
   constructor(private http: HttpClientWrapper,
               private authService: AuthService) {
     super(http, authService, TypeOrmEntityRegistry.$(), {
-      urlRegistryMetadata: StorageService.url(API_STORAGE_METADATA_ALL_ENTITIES),
-      urlGetEntity: StorageService.url(API_STORAGE_GET_ENTITY),
-      urlQueryEntity: StorageService.url(API_STORAGE_FIND_ENTITY),
-      urlDeleteEntity: StorageService.url(API_STORAGE_DELETE_ENTITY),
-      urlSaveEntity: StorageService.url(API_STORAGE_SAVE_ENTITY),
-      urlUpdateEntity: StorageService.url(API_STORAGE_UPDATE_ENTITY),
+      urlRegistryMetadata: StorageService.url(API_CTRL_STORAGE_METADATA_ALL_ENTITIES),
+      urlGetEntity: StorageService.url(API_CTRL_STORAGE_GET_ENTITY),
+      urlQueryEntity: StorageService.url(API_CTRL_STORAGE_FIND_ENTITY),
+      urlDeleteEntity: StorageService.url(API_CTRL_STORAGE_DELETE_ENTITY),
+      urlSaveEntity: StorageService.url(API_CTRL_STORAGE_SAVE_ENTITY),
+      urlUpdateEntity: StorageService.url(API_CTRL_STORAGE_UPDATE_ENTITY),
       ngRoutePrefix: '/storage',
       registryName: REGISTRY_TYPEORM
     });
@@ -81,7 +81,7 @@ export class StorageService extends AbstractQueryService implements IQueringServ
 
 
   static url(url: string, replace: any = null) {
-    url = 'api' + API_STORAGE_PREFIX + url;
+    url = 'api' + API_CTRL_STORAGE_PREFIX + url;
     if (replace) {
       _.keys(replace).forEach(k => {
         url = url.replace(':' + k, replace[k]);
@@ -111,7 +111,7 @@ export class StorageService extends AbstractQueryService implements IQueringServ
 
   getStorages(): Observable<IStorageRefMetadata[]> {
     const obs = new Subject<IStorageRefMetadata[]>();
-    this.http.get(StorageService.url(API_STORAGE_METADATA_ALL_STORES),
+    this.http.get(StorageService.url(API_CTRL_STORAGE_METADATA_ALL_STORES),
       (err: Error, entities: IStorageRefMetadata[]) => {
         if (err) {
           obs.error(err);

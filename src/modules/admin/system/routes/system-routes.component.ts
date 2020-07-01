@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import {SystemInfoService} from '../../../system/system-info.service';
 
 
-const API_URL = '/api/routes';
+const API_CTRL_URL = '/api/routes';
 
 @Component({
   selector: 'system-routes',

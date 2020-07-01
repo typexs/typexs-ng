@@ -1,3 +1,4 @@
+import {getMetadataStorage} from 'class-validator';
 import {Component, OnInit} from '@angular/core';
 import {EntityService} from './../entity.service';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
@@ -5,8 +6,6 @@ import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PropertyRef} from '@typexs/schema/libs/registry/PropertyRef';
 import {Observable} from 'rxjs';
-import {MetadataStorage} from 'class-validator/metadata/MetadataStorage';
-import {getFromContainer} from 'class-validator/container';
 import * as _ from 'lodash';
 import {ClassRef, LookupRegistry, XS_TYPE_PROPERTY} from 'commons-schema-api/browser';
 
@@ -67,8 +66,10 @@ export class EntityStructComponent implements OnInit {
   }
 
   scan(source: ClassRef | EntityRef, level: number = 0) {
-    if (level > 8) return;
-    for (let props of <PropertyRef[]>source.getPropertyRefs()) {
+    if (level > 8) {
+      return;
+    }
+    for (const props of <PropertyRef[]>source.getPropertyRefs()) {
       this.propertyDefs.push({property: props, level: level});
       if (props.isReference()) {
         this.scan(props.getTargetRef(), level + 1);
@@ -79,7 +80,7 @@ export class EntityStructComponent implements OnInit {
   }
 
   validator(property: PropertyRef) {
-    let validators = getFromContainer(MetadataStorage).getTargetValidationMetadatas(this.entityDef.getClass(), null);
+    const validators = getMetadataStorage().getTargetValidationMetadatas(this.entityDef.getClass(), null);
     return _.filter(validators, v => v.propertyName === property.name);
   }
 
@@ -88,8 +89,8 @@ export class EntityStructComponent implements OnInit {
   }
 
   options(propDef: PropertyRef) {
-    let opts = _.clone(propDef.getOptions());
-    if(opts.sourceClass){
+    const opts = _.clone(propDef.getOptions());
+    if (opts.sourceClass) {
       delete opts.sourceClass._cacheEntity;
     }
     return opts;

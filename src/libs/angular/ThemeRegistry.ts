@@ -12,6 +12,10 @@ import {IStylesheetEntry} from './IStylesheetEntry';
  */
 export class ThemeRegistry {
 
+
+  private constructor() {
+  }
+
   private static $self: ThemeRegistry = null;
 
   private themes: ITemplateEntry[] = [];
@@ -21,15 +25,56 @@ export class ThemeRegistry {
   private activeTheme: string;
 
 
-  private constructor() {
-  }
-
-
   static _() {
     if (!this.$self) {
       this.$self = new ThemeRegistry();
     }
     return this.$self;
+  }
+
+  static normalize(str: string) {
+    return _.kebabCase(str)
+      .replace(new RegExp('^\-'), '')
+      .replace(new RegExp('[^\d\w\\-\_]'), '_');
+  }
+
+
+  static register(themes: ITemplateEntry[] = [], styles: IStylesheetEntry[] = []) {
+    const registry = this._();
+    registry.setThemes(themes).setStyles(styles);
+
+    const activeUserTheme = registry.getActiveTheme();
+
+    const Component = makeDecorator('Component', function (c) {
+      if (c === void 0) {
+        c = {};
+      }
+      return (__assign({changeDetection: core.ChangeDetectionStrategy.Default}, c));
+    }, core.Directive, null, function (cls: any, annotationInstance: any, decoration: any) {
+      annotationInstance.templateName = ThemeRegistry.normalize(annotationInstance.selector);
+      const overrideTemplate = registry.findTemplate(activeUserTheme, annotationInstance.templateName);
+      if (!_.isNull(overrideTemplate)) {
+        annotationInstance.template = overrideTemplate.template;
+      }
+
+      const overrideStylesheets = registry.findStylesheet(activeUserTheme, annotationInstance.templateName);
+      if (!_.isNull(overrideStylesheets)) {
+        overrideStylesheets.forEach(stylesheet => {
+          if (stylesheet.subcontext === 'append') {
+            annotationInstance.styles.push(stylesheet.stylesheet);
+          } else if (stylesheet.subcontext === 'override') {
+            annotationInstance.styles = [stylesheet.stylesheet];
+          }
+        });
+      }
+    });
+
+    Object.defineProperty(core, 'Component', {
+      get: function () {
+        return Component;
+      }
+    });
+
   }
 
 
@@ -39,21 +84,21 @@ export class ThemeRegistry {
 
 
   findStylesheet(theme: string, templateName: string, type: string = 'css'): IStylesheetEntry[] {
-    let entry = _.filter(this.styles, {
+    const entry = _.filter(this.styles, {
       name: templateName,
       type: type,
       theme: theme
-    })
+    });
     return !_.isEmpty(entry) ? entry : null;
   }
 
 
   findTemplate(theme: string, templateName: string, type: string = 'component'): ITemplateEntry {
-    let entry = _.find(this.themes, {
+    const entry = _.find(this.themes, {
       name: templateName,
       type: type,
       theme: theme
-    })
+    });
     return entry ? entry : null;
   }
 
@@ -66,51 +111,6 @@ export class ThemeRegistry {
   private setStyles(styles: IStylesheetEntry[] = []) {
     this.styles = styles;
     return this;
-  }
-
-  static normalize(str: string) {
-    return _.kebabCase(str)
-      .replace(new RegExp('^\-'), '')
-      .replace(new RegExp('[^\d\w\\-\_]'), '_');
-  }
-
-
-  static register(themes: ITemplateEntry[] = [], styles: IStylesheetEntry[] = []) {
-    let registry = this._();
-    registry.setThemes(themes).setStyles(styles);
-
-    let activeUserTheme = registry.getActiveTheme();
-
-    let Component = makeDecorator("Component", function (c) {
-      if (c === void 0) {
-        c = {};
-      }
-      return (__assign({changeDetection: core.ChangeDetectionStrategy.Default}, c));
-    }, core.Directive, null, function (cls: any, annotationInstance: any, decoration: any) {
-      annotationInstance.templateName = ThemeRegistry.normalize(annotationInstance.selector);
-      let overrideTemplate = registry.findTemplate(activeUserTheme, annotationInstance.templateName);
-      if (!_.isNull(overrideTemplate)) {
-        annotationInstance.template = overrideTemplate.template;
-      }
-
-      let overrideStylesheets = registry.findStylesheet(activeUserTheme, annotationInstance.templateName);
-      if (!_.isNull(overrideStylesheets)) {
-        overrideStylesheets.forEach(stylesheet => {
-          if(stylesheet.subcontext === 'append'){
-            annotationInstance.styles.push(stylesheet.stylesheet);
-          }else if(stylesheet.subcontext === 'override'){
-            annotationInstance.styles = [stylesheet.stylesheet];
-          }
-        })
-      }
-    });
-
-    Object.defineProperty(core, 'Component', {
-      get: function () {
-        return Component;
-      }
-    })
-
   }
 
 }
@@ -147,7 +147,7 @@ export function makeDecorator(
       annotations.push(annotationInstance);
       return cls;
     };
-    if (chainFn) chainFn(TypeDecorator);
+    if (chainFn) { chainFn(TypeDecorator); }
     return TypeDecorator;
   }
 

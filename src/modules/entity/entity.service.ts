@@ -11,23 +11,23 @@ import {HttpClientWrapper} from '../system/http-client-wrapper.service';
 import {IQueringService} from '../system/api/querying/IQueringService';
 import {AbstractQueryService} from '../system/api/querying/abstract-query.service';
 import {
-  API_ENTITY_DELETE_ENTITY,
-  API_ENTITY_FIND_ENTITY,
-  API_ENTITY_GET_ENTITY,
-  API_ENTITY_METADATA_ALL_ENTITIES,
-  API_ENTITY_PREFIX,
-  API_ENTITY_SAVE_ENTITY,
-  API_ENTITY_UPDATE_ENTITY
+  API_CTRL_ENTITY_DELETE_ENTITY,
+  API_CTRL_ENTITY_FIND_ENTITY,
+  API_CTRL_ENTITY_GET_ENTITY,
+  API_CTRL_ENTITY_METADATA_ALL_ENTITIES,
+  API_CTRL_ENTITY_SAVE_ENTITY,
+  API_CTRL_ENTITY_UPDATE_ENTITY,
+  API_ENTITY_PREFIX
 } from '@typexs/schema/browser';
 
 
 @Injectable()
-export class EntityService  extends AbstractQueryService implements IQueringService  {
+export class EntityService extends AbstractQueryService implements IQueringService {
 
   constructor(private http: HttpClientWrapper, private authService: AuthService) {
     super(http, authService, EntityRegistry.$(), {
       ngRoutePrefix: API_ENTITY_PREFIX,
-      urlRegistryMetadata: 'api' + API_ENTITY_PREFIX + API_ENTITY_METADATA_ALL_ENTITIES,
+      urlRegistryMetadata: 'api' + API_CTRL_ENTITY_METADATA_ALL_ENTITIES,
       urlUpdateEntity: '',
       urlSaveEntity: '',
       urlDeleteEntity: '',
@@ -73,7 +73,7 @@ export class EntityService  extends AbstractQueryService implements IQueringServ
     const entityDef = EntityRegistry.$().getEntityRefByName(entityName);
     const obs = new BehaviorSubject<any>(null);
     this.http.get(
-      'api' + API_ENTITY_PREFIX + API_ENTITY_GET_ENTITY.replace(':name', entityName).replace(':id', entityId),
+      'api' + API_CTRL_ENTITY_GET_ENTITY.replace(':name', entityName).replace(':id', entityId),
       // 'api/entity/' + entityName + '/' + entityId,
       (err: Error, res: any) => {
         if (err) {
@@ -108,7 +108,7 @@ export class EntityService  extends AbstractQueryService implements IQueringServ
     }
 
     // let url = 'api/entity/' + entityName;
-    let url = 'api' + API_ENTITY_PREFIX + API_ENTITY_FIND_ENTITY.replace(':name', entityName);
+    let url = 'api' + API_CTRL_ENTITY_FIND_ENTITY.replace(':name', entityName);
     if (queryParts.length > 0) {
       url += '?' + queryParts.join('&');
     }
@@ -130,7 +130,7 @@ export class EntityService  extends AbstractQueryService implements IQueringServ
   save(entityName: string, entity: any): Observable<any> {
     const entityDef = EntityRegistry.$().getEntityRefByName(entityName);
     const obs = new BehaviorSubject<any>(null);
-    const url = 'api' + API_ENTITY_PREFIX + API_ENTITY_SAVE_ENTITY.replace(':name', entityName);
+    const url = 'api' + API_CTRL_ENTITY_SAVE_ENTITY.replace(':name', entityName);
     this.http.post(url, entity, (err: Error, res: any) => {
       if (err) {
         obs.error(err);
@@ -153,7 +153,7 @@ export class EntityService  extends AbstractQueryService implements IQueringServ
       throw new Error('something is wrong');
     }
     const obs = new BehaviorSubject<any>(null);
-    const url = 'api' + API_ENTITY_PREFIX + API_ENTITY_UPDATE_ENTITY
+    const url = 'api' + API_CTRL_ENTITY_UPDATE_ENTITY
       .replace(':name', entityName)
       .replace(':id', entityId);
     this.http.post(url, entity, (err: Error, res: any) => {
@@ -173,7 +173,7 @@ export class EntityService  extends AbstractQueryService implements IQueringServ
   delete(entityName: string, entityId: any) {
     const entityDef = EntityRegistry.$().getEntityRefByName(entityName);
     const obs = new BehaviorSubject<any>(null);
-    const url = 'api' + API_ENTITY_PREFIX + API_ENTITY_DELETE_ENTITY
+    const url = 'api' + API_CTRL_ENTITY_DELETE_ENTITY
       .replace(':name', entityName)
       .replace(':id', entityId);
     this.http.delete(url,

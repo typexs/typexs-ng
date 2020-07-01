@@ -1,17 +1,16 @@
-import {suite, test} from "mocha-typescript";
-import {expect} from "chai";
+import {suite, test} from 'mocha-typescript';
+import {expect} from 'chai';
 import * as _ from 'lodash';
-import {Bootstrap, Config, IFileConfigOptions, PlatformUtils, ClassesLoader, Container} from "@typexs/base";
-import {C_NG_MODUL} from "../../../src/libs/Constants";
-import {NgMetaDataCollector} from "../../../src/libs/angular/NgMetaDataCollector";
-import {NgModuleBuilder} from "../../../src/libs/angular/NgModuleBuilder";
+import {Bootstrap, ClassesLoader, Config, Injector, PlatformUtils} from '@typexs/base';
+import {C_NG_MODUL} from '../../../src/libs/Constants';
+import {NgMetaDataCollector} from '../../../src/libs/angular/NgMetaDataCollector';
+import {NgModuleBuilder} from '../../../src/libs/angular/NgModuleBuilder';
 
 @suite('functional/general/ng_modules_build')
 class GeneralSpec {
 
   before() {
     Bootstrap.reset();
-
   }
 
   after() {
@@ -33,14 +32,14 @@ class GeneralSpec {
     });
 
     bts = await bts.prepareRuntime();
-    let loader = bts.getLoader();
-    let classes = loader.getClasses(C_NG_MODUL);
+    const loader = bts.getLoader();
+    const classes = loader.getClasses(C_NG_MODUL);
     expect(classes).to.have.length(3);
 
-    let ngmd = Container.get(NgMetaDataCollector);
+    const ngmd = Injector.get(NgMetaDataCollector);
     await ngmd.prepare();
 
-    let ngms = ngmd.modules;
+    const ngms = ngmd.modules;
     expect(ngms).to.have.length(3);
     expect(_.map(ngms, n => n.name)).to.deep.eq(['AppModule', 'ContactModule', 'TodoModule']);
   }
@@ -62,25 +61,25 @@ class GeneralSpec {
     });
 
     bts = await bts.prepareRuntime();
-    let loader = bts.getLoader();
+    const loader = bts.getLoader();
 
-    let ngmd = Container.get(NgMetaDataCollector);
+    const ngmd = Injector.get(NgMetaDataCollector);
     await ngmd.prepare();
 
-    let ngms = ngmd.modules;
+    const ngms = ngmd.modules;
 
 
-    let appPath = bts.getAppPath();
+    const appPath = bts.getAppPath();
     let generated = Config.get('ng.generated', '.');
     generated = PlatformUtils.join(appPath, generated, 'app.module.ts');
 
-    let builder = new NgModuleBuilder();
+    const builder = new NgModuleBuilder();
     builder
       .file(generated)
       .selfPackageName('project')
       .addModules(ngms);
 
-    let str = builder.build();
+    const str = builder.build();
     console.log(str);
 
 

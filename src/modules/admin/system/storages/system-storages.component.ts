@@ -6,7 +6,7 @@ import {IStorageOptions} from '@typexs/base/libs/storage/IStorageOptions';
 import {SystemInfoService} from '../../../system/system-info.service';
 
 
-const API_URL = '/api/storages';
+const API_CTRL_URL = '/api/storages';
 
 @Component({
   selector: 'system-storages',

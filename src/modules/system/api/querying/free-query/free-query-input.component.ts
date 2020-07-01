@@ -29,9 +29,9 @@ export class FreeQueryInputComponent {
 
   jsonQuery: any = null;
 
-  sqlWhere = '';
-
-  sqlJoins: IConditionJoin[] = [];
+  // sqlWhere = '';
+  //
+  // sqlJoins: IConditionJoin[] = [];
 
   timeout: Timeout;
 
@@ -54,8 +54,6 @@ export class FreeQueryInputComponent {
   }
 
   build() {
-    this.sqlWhere = null;
-    this.jsonQuery = null;
     this.freeTextQueryError = [];
     if (!_.isEmpty(this.freeTextQuery)) {
       try {
@@ -63,12 +61,7 @@ export class FreeQueryInputComponent {
 
         const expr = Expressions.parse(this.freeTextQuery);
         if (expr) {
-          if (expr.test(this.entityRef.getClassRef(), errors)) {
-            this.jsonQuery = expr;
-            const builder = new TypeOrmSqlConditionsBuilder(this.entityRef);
-            this.sqlWhere = builder.build(this.jsonQuery.toJson());
-            this.sqlJoins = builder.getJoins();
-          }
+          this.jsonQuery = expr;
           this.freeTextQueryError = errors;
         } else {
           this.freeTextQueryError.push('no parseable data');

@@ -6,5 +6,5 @@ export interface ITemplateEntry {
   type: string;
   theme: string;
   template: any;
-  module?:string;
+  module?: string;
 }

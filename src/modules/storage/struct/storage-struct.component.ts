@@ -2,8 +2,7 @@ import {Component, OnInit} from '@angular/core';
 
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
-import {MetadataStorage} from 'class-validator/metadata/MetadataStorage';
-import {getFromContainer} from 'class-validator/container';
+import {getMetadataStorage} from 'class-validator';
 import * as _ from 'lodash';
 import {IClassRef, IEntityRef, IPropertyRef, LookupRegistry, XS_TYPE_ENTITY, XS_TYPE_PROPERTY} from 'commons-schema-api/browser';
 import {StorageService} from '../storage.service';
@@ -84,7 +83,7 @@ export class StorageStructComponent implements OnInit {
 
 
   validator(property: IPropertyRef) {
-    const validators = getFromContainer(MetadataStorage).getTargetValidationMetadatas(this.entityDef.getClassRef().getClass(), null);
+    const validators = getMetadataStorage().getTargetValidationMetadatas(this.entityDef.getClassRef().getClass(), null);
     return _.filter(validators, v => v.propertyName === property.name);
   }
 

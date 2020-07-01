@@ -1,29 +1,29 @@
 import {Injectable} from '@angular/core';
 
 import {
-  API_SYSTEM_CONFIG,
-  API_SYSTEM_MODULES,
-  API_SYSTEM_ROUTES,
-  API_SYSTEM_RUNTIME_INFO,
-  API_SYSTEM_RUNTIME_NODE,
-  API_SYSTEM_RUNTIME_NODES,
-  API_SYSTEM_STORAGES,
-  API_SYSTEM_WORKERS,
+  API_CTRL_SYSTEM_CONFIG,
+  API_CTRL_SYSTEM_MODULES,
+  API_CTRL_SYSTEM_ROUTES,
+  API_CTRL_SYSTEM_RUNTIME_INFO,
+  API_CTRL_SYSTEM_RUNTIME_NODE,
+  API_CTRL_SYSTEM_RUNTIME_NODES,
+  API_CTRL_SYSTEM_STORAGES,
+  API_CTRL_SYSTEM_WORKERS,
   IRoute
 } from '@typexs/server/browser';
 import {IModule, IStorageOptions, ITypexsOptions} from '@typexs/base/browser';
-import {SystemInfo} from '@typexs/base/libs/system/SystemInfo';
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
 import {HttpClientWrapper} from './http-client-wrapper.service';
 import {IWorkerInfo} from '@typexs/base/libs/worker/IWorkerInfo';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
+import {NodeRuntimeInfo} from '@typexs/base/libs/system/NodeRuntimeInfo';
 
 
 @Injectable()
 export class SystemInfoService {
 
-  info: SystemInfo;
+  info: NodeRuntimeInfo;
 
   node: SystemNodeInfo;
 
@@ -36,7 +36,7 @@ export class SystemInfoService {
   }
 
 
-  usedMemoryPercent(info: SystemInfo) {
+  usedMemoryPercent(info: NodeRuntimeInfo) {
     return Math.round(((info.memory.total - info.memory.free) / info.memory.total * 10000)) / 100;
   }
 
@@ -75,37 +75,37 @@ export class SystemInfoService {
     return subject.asObservable();
   }
 
-  loadRuntimeInfo(callback?: (err: Error, info: SystemInfo) => void) {
-    return this.http.get<SystemInfo>(this.api + API_SYSTEM_RUNTIME_INFO, callback);
+  loadRuntimeInfo(callback?: (err: Error, info: NodeRuntimeInfo) => void) {
+    return this.http.get<NodeRuntimeInfo>(this.api + API_CTRL_SYSTEM_RUNTIME_INFO, callback);
   }
 
   loadRuntimeNode(callback?: (err: Error, node: SystemNodeInfo) => void) {
-    return this.http.get<SystemNodeInfo>(this.api + API_SYSTEM_RUNTIME_NODE, callback);
+    return this.http.get<SystemNodeInfo>(this.api + API_CTRL_SYSTEM_RUNTIME_NODE, callback);
   }
 
   loadRuntimeNodes(callback?: (err: Error, nodes: SystemNodeInfo[]) => void) {
-    return this.http.get<SystemNodeInfo[]>(this.api + API_SYSTEM_RUNTIME_NODES, callback);
+    return this.http.get<SystemNodeInfo[]>(this.api + API_CTRL_SYSTEM_RUNTIME_NODES, callback);
   }
 
   loadModules(callback?: (err: Error, modules: IModule[]) => void) {
-    return this.http.get<IModule[]>(this.api + API_SYSTEM_MODULES, callback);
+    return this.http.get<IModule[]>(this.api + API_CTRL_SYSTEM_MODULES, callback);
   }
 
   loadStorages(callback?: (err: Error, storageOptions: IStorageOptions[]) => void) {
-    return this.http.get<IStorageOptions[]>(this.api + API_SYSTEM_STORAGES, callback);
+    return this.http.get<IStorageOptions[]>(this.api + API_CTRL_SYSTEM_STORAGES, callback);
   }
 
   loadConfig(callback?: (err: Error, config: ITypexsOptions[]) => void) {
-    return this.http.get<ITypexsOptions[]>(this.api + API_SYSTEM_CONFIG, callback);
+    return this.http.get<ITypexsOptions[]>(this.api + API_CTRL_SYSTEM_CONFIG, callback);
   }
 
   loadRoutes(callback?: (err: Error, routes: IRoute[]) => void) {
-    return this.http.get<IRoute[]>(this.api + API_SYSTEM_ROUTES, callback);
+    return this.http.get<IRoute[]>(this.api + API_CTRL_SYSTEM_ROUTES, callback);
   }
 
 
   loadWorkers(callback?: (err: Error, workerInfos: IWorkerInfo[]) => void) {
-    return this.http.get<IWorkerInfo[]>(this.api + API_SYSTEM_WORKERS, callback);
+    return this.http.get<IWorkerInfo[]>(this.api + API_CTRL_SYSTEM_WORKERS, callback);
   }
 
 }
