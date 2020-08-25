@@ -6,7 +6,7 @@ the typeXs backend.
 
 Different modules are implemented which access the backend functionality.
 
-* System
+* Base (previous System)
 * Storage
 * EntitySchema (@typexs/schema)
 * Form Generator for Entities (StorageEntities and Entities by Schema)
@@ -14,3 +14,17 @@ Different modules are implemented which access the backend functionality.
 * Navigator
 * Tasks
 * Views
+
+
+## APIs
+
+*AppStateService*
+
+* Loading state
+
+
+*AppConfigService*
+
+* Register
+
+

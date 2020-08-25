@@ -81,3 +81,21 @@ https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/
 
 data or label can be empty
 
+
+**@ISSUE {counter:issue} 20200721**
+
+* BackendService
+
+** rename existing HttpWrapperClient
+** load accessible/permitted routes from host
+
+* single EntityRegistry => txs-base?
+
+* DistributedStorageService
+
+* separate module packages
+
+* task status/running callback
+
+
+
