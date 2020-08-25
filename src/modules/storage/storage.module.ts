@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
-import {FormsModule} from '../forms/forms.module';
+import {FormsModule} from '../forms/module';
 import {BrowserModule} from '@angular/platform-browser';
-import {SystemModule} from '../system/system.module';
+import {BaseModule} from '../base/module';
 import {RouterModule} from '@angular/router';
 import {FormsModule as NgFormsModule} from '@angular/forms';
 import {StorageService} from './storage.service';
@@ -34,7 +34,7 @@ const COMPONENTS = [
   declarations: COMPONENTS,
   imports: [
     CommonModule,
-    SystemModule,
+    BaseModule,
     BrowserModule,
     RouterModule,
     NgFormsModule,

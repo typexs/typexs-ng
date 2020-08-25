@@ -2,12 +2,12 @@ import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
 import {TaskRef} from '@typexs/base/browser';
 import {BackendTasksService} from '../backend-tasks.service';
-import {SystemInfoService} from '../../system/system-info.service';
+import {SystemInfoService} from '../../base/system-info.service';
 import {StorageService} from '../../storage/storage.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
-import {IDTGridOptions} from '../../system/datatable/IDTGridOptions';
-import {IGridColumn} from '../../system/datatable/IGridColumn';
-import {C_URL_HANDLER, C_URL_TITLE, CC_GRID_CELL_ROUTER_LINK} from '../../system/constants';
+import {IDTGridOptions} from '../../base/datatable/IDTGridOptions';
+import {IGridColumn} from '../../base/datatable/IGridColumn';
+import {C_URL_HANDLER, C_URL_TITLE, CC_GRID_CELL_ROUTER_LINK} from '../../base/constants';
 
 /**
  * Show tasks list which should be filtered for running tasks, runned task

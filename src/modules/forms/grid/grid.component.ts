@@ -4,7 +4,7 @@ import {GridRowComponent} from './grid-row.component';
 import * as _ from 'lodash';
 import {ViewComponent} from '../../../libs/views/decorators/ViewComponent';
 import {AbstractFormComponent} from '../../../libs/forms/AbstractFormComponent';
-import {Grid} from '../../../libs/forms/elements';
+import {GridHandle} from '../../../libs/forms/elements';
 import {AbstractComponent} from '../../../libs/views/AbstractComponent';
 import {FormObject, isFormObject} from '../../../libs/forms/FormObject';
 import {EnumHandle} from './../libs/EnumHandle';
@@ -14,10 +14,10 @@ import {GridColumnDef} from './GridColumnDef';
 
 @ViewComponent('grid')
 @Component({
-  selector: 'xgrid',
+  selector: 'txs-grid',
   templateUrl: 'grid.component.html',
 })
-export class GridComponent extends AbstractFormComponent<Grid> implements OnInit {
+export class GridComponent extends AbstractFormComponent<GridHandle> implements OnInit {
 
 
   entries: ComponentRef<GridRowComponent>[] = [];

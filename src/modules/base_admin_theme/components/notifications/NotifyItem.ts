@@ -1,4 +1,4 @@
-import {MessageType} from '../../../system/messages/IMessage';
+import {MessageType} from '../../../base/messages/IMessage';
 import * as _ from 'lodash';
 
 export class NotifyItem {

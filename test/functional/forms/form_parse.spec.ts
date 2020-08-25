@@ -6,7 +6,7 @@ import {Log} from '@typexs/base';
 import {Entity, EntityRegistry, Property} from '@typexs/schema';
 import {Form, FORM_ELEMENTS} from '../../../src/libs/forms/elements';
 import {FormBuilder} from '../../../src/libs/forms/FormBuilder';
-import {FormText, FormType} from '../../../src';
+import {Text, Type} from '../../../src';
 
 FORM_ELEMENTS;
 
@@ -15,13 +15,13 @@ FORM_ELEMENTS;
 @Entity()
 export class TestUser {
 
-  @FormText()
+  @Text()
   @Property({type: 'string'})
   @MinLength(8, {message: 'username is too short'})
   @MaxLength(32, {message: 'username is too long'})
   username: string = '';
 
-  @FormType({form: 'password'})
+  @Type({form: 'password'})
   @Property({type: 'string'})
   @MinLength(8, {message: 'password is too short'})
   @MaxLength(64, {message: 'password is a little too long'})

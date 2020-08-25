@@ -3,7 +3,7 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {IRoute} from '@typexs/server/libs/server/IRoute';
 
 import * as _ from 'lodash';
-import {SystemInfoService} from '../../../system/system-info.service';
+import {SystemInfoService} from '../../../base/system-info.service';
 
 
 const API_CTRL_URL = '/api/routes';

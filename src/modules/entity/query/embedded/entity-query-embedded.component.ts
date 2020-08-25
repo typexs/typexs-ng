@@ -1,8 +1,8 @@
 import {ChangeDetectorRef, Component} from '@angular/core';
-import {AbstractQueryEmbeddedComponent} from '../../../system/api/querying/abstract-query-embedded.component';
+import {AbstractQueryEmbeddedComponent} from '../../../base/api/querying/abstract-query-embedded.component';
 
 import {EntityService} from '../../entity.service';
-import {C_DEFAULT} from '../../../system/constants';
+import {C_DEFAULT} from '../../../base/constants';
 import {EntityRegistry} from '@typexs/schema/browser';
 
 

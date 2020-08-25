@@ -9,7 +9,7 @@ import {ContentComponentRegistry} from '../../../libs/views/ContentComponentRegi
 
 
 @Component({
-  selector: 'xgridrow',
+  selector: 'txs-gridrow',
   templateUrl: './grid-row.component.html',
 })
 export class GridRowComponent extends AbstractFormComponent<any> {

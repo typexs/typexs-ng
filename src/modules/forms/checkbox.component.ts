@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import {Component} from '@angular/core';
 import {ViewComponent} from '../../libs/views/decorators/ViewComponent';
 import {AbstractFormComponent} from '../../libs/forms/AbstractFormComponent';
-import {Checkbox} from '../../libs/forms/elements';
+import {CheckboxHandle} from '../../libs/forms/elements/CheckboxHandle';
 
 
 @ViewComponent('checkbox')
@@ -10,7 +10,7 @@ import {Checkbox} from '../../libs/forms/elements';
   selector: 'xcheckbox',
   templateUrl: './checkbox.component.html',
 })
-export class CheckboxComponent extends AbstractFormComponent<Checkbox> {
+export class CheckboxComponent extends AbstractFormComponent<CheckboxHandle> {
 
   get type() {
     return this.elem.variant;

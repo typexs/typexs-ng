@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import {Injectable, EventEmitter} from '@angular/core';
-import {IMessage} from '../../../system/messages/IMessage';
+import {IMessage} from '../../../base/messages/IMessage';
 import {NotifyItem} from './NotifyItem';
 
 

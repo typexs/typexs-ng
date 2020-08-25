@@ -2,33 +2,33 @@
 import {Tabs} from './Tabs';
 import {Tab} from './Tab';
 import {Ref} from './Ref';
-import {Input} from './Input';
+import {InputHandle} from './InputHandle';
 import {Form} from './Form';
-import {Checkbox} from './Checkbox';
-import {Radio} from './Radio';
-import {Select} from './Select';
-import {Grid} from './Grid';
-import {Label} from './Label';
+import {CheckboxHandle} from './CheckboxHandle';
+import {RadioHandle} from './RadioHandle';
+import {SelectHandle} from './SelectHandle';
+import {GridHandle} from './GridHandle';
+import {LabelHandle} from './LabelHandle';
 
 export * from './Form';
-export * from './Input';
+export * from './InputHandle';
 export * from './Ref';
 export * from './Tab';
 export * from './Tabs';
-export * from './Checkbox';
-export * from './Select';
-export * from './Grid';
-export * from './Label';
+export * from './CheckboxHandle';
+export * from './SelectHandle';
+export * from './GridHandle';
+export * from './LabelHandle';
 
 export const FORM_ELEMENTS = [
   Form,
-  Input,
+  InputHandle,
   Ref,
   Tab,
   Tabs,
-  Checkbox,
-  Radio,
-  Select,
-  Grid,
-  Label
+  CheckboxHandle,
+  RadioHandle,
+  SelectHandle,
+  GridHandle,
+  LabelHandle
 ];

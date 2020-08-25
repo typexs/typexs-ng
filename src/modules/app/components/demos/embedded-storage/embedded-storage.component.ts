@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import {Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {IDTGridOptions} from '../../../../system/datatable/IDTGridOptions';
-import {IQueryParams} from '../../../../system/datatable/IQueryParams';
+import {IDTGridOptions} from '../../../../base/datatable/IDTGridOptions';
+import {IQueryParams} from '../../../../base/datatable/IQueryParams';
 import {Like, Value} from 'commons-expressions/browser';
 import {StorageQueryEmbeddedComponent} from '../../../../storage/query/embedded/storage-query-embedded.component';
 import {IEntityRef} from 'commons-schema-api/browser';

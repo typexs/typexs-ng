@@ -1,6 +1,12 @@
 import {Injectable} from '@angular/core';
 
-import {API_CTRL_TASK_EXEC, API_CTRL_TASK_GET_METADATA_VALUE, API_CTRL_TASK_LOG, API_CTRL_TASK_STATUS, API_CTRL_TASKS_METADATA} from '@typexs/server/browser';
+import {
+  API_CTRL_TASK_EXEC,
+  API_CTRL_TASK_GET_METADATA_VALUE,
+  API_CTRL_TASK_LOG,
+  API_CTRL_TASK_STATUS,
+  API_CTRL_TASKS_METADATA
+} from '@typexs/server/browser';
 import {Tasks} from '@typexs/base/browser';
 import {IEntityRefMetadata} from 'commons-schema-api';
 import {Observable} from 'rxjs/Observable';
@@ -8,19 +14,18 @@ import {Subject} from 'rxjs/Subject';
 
 import * as _ from 'lodash';
 import {C_WORKERS} from '@typexs/base/libs/worker/Constants';
-import {HttpClientWrapper} from '../system/http-client-wrapper.service';
-import {SystemInfoService} from '../system/system-info.service';
+import {BackendClientService} from '../base/backend-client.service';
+import {SystemInfoService} from '../base/system-info.service';
 import {TaskEvent} from '@typexs/base/libs/tasks/worker/TaskEvent';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
-import {HttpResponseError} from '@typexs/server/libs/exceptions/HttpResponseError';
 import {ExprDesc} from 'commons-expressions/browser';
 
 
 @Injectable()
 export class BackendTasksService {
 
-  api = '/api';
+  // api = '/api';
 
   tasks: Tasks;
 
@@ -29,37 +34,39 @@ export class BackendTasksService {
   workerNodes: SystemNodeInfo[] = [];
 
 
-  constructor(private http: HttpClientWrapper,
+  constructor(private http: BackendClientService,
               private infoService: SystemInfoService) {
   }
 
 
   execute(name: string, parameters: any = {}, targetIds: string[] = []): Observable<TaskEvent> {
-    const obs = new Subject<TaskEvent>();
-    const queryParts = [];
-    if (_.isPlainObject(parameters) && !_.isEmpty(parameters)) {
-      queryParts.push('parameters=' + JSON.stringify(parameters));
-    }
-
-    if (_.isArray(targetIds) && !_.isEmpty(targetIds)) {
-      queryParts.push('targetIds=' + JSON.stringify(targetIds));
-    }
-
-    let url = this.api + API_CTRL_TASK_EXEC.replace(':taskName', name);
-    if (queryParts.length > 0) {
-      url += '?' + queryParts.join('&');
-    }
-
-    this.http.get(url, (err, data: TaskEvent) => {
-      if (err) {
-        obs.error(err);
-      } else {
-        obs.next(data);
-      }
-      obs.complete();
-    });
-
-    return obs.asObservable();
+    // const obs = new Subject<TaskEvent>();
+    // const queryParts = [];
+    // if (_.isPlainObject(parameters) && !_.isEmpty(parameters)) {
+    //   queryParts.push('parameters=' + JSON.stringify(parameters));
+    // }
+    //
+    // if (_.isArray(targetIds) && !_.isEmpty(targetIds)) {
+    //   queryParts.push('targetIds=' + JSON.stringify(targetIds));
+    // }
+    //
+    // let url = this.api + API_CTRL_TASK_EXEC.replace(':taskName', name);
+    // if (queryParts.length > 0) {
+    //   url += '?' + queryParts.join('&');
+    // }
+    //
+    // this.http.get(url, (err, data: TaskEvent) => {
+    //   if (err) {
+    //     obs.error(err);
+    //   } else {
+    //     obs.next(data);
+    //   }
+    //   obs.complete();
+    // });
+    //
+    // return obs.asObservable();
+    return this.http.callApi(API_CTRL_TASK_EXEC,
+      {params: {taskName: name}, query: {parameters: parameters, targetIds: targetIds}});
   }
 
 
@@ -80,42 +87,49 @@ export class BackendTasksService {
   }
 
   taskStatus(runnerId: string, nodeId: string): Observable<TaskLog> {
-    const x = new Subject<TaskLog>();
-    const url = this.api + API_CTRL_TASK_STATUS.replace(':nodeId', nodeId).replace(':runnerId', runnerId);
-
-    this.http.get(url, (err, data: TaskLog) => {
-      if (err) {
-        x.error(err);
-      } else {
-        x.next(data);
-      }
-      x.complete();
-    });
-
-    return x.asObservable();
+    // const x = new Subject<TaskLog>();
+    // const url = this.api + API_CTRL_TASK_STATUS.replace(':nodeId', nodeId).replace(':runnerId', runnerId);
+    //
+    // this.http.get(url, (err, data: TaskLog) => {
+    //   if (err) {
+    //     x.error(err);
+    //   } else {
+    //     x.next(data);
+    //   }
+    //   x.complete();
+    // });
+    //
+    // return x.asObservable();
+    return this.http.callApi(API_CTRL_TASK_STATUS, {params: {nodeId: nodeId, runnerId: runnerId}});
   }
 
   taskLog(runnerId: string, nodeId: string, from: number = null, offset: number = null, tail: number = 50): Observable<any[]> {
-    const x = new Subject<any[]>();
+    // const x = new Subject<any[]>();
 
-    let url = this.api + API_CTRL_TASK_LOG.replace(':nodeId', nodeId).replace(':runnerId', runnerId);
+    // let url = this.api + API_CTRL_TASK_LOG.replace(':nodeId', nodeId).replace(':runnerId', runnerId);
+    const opts: any = {};
     if (_.isNumber(from) && _.isNumber(offset) && from >= 0 && offset >= 0) {
-      url += `?from=${from}&offset=${offset}`;
+      // url += `?from=${from}&offset=${offset}`;
+      opts.from = from;
+      opts.offset = offset;
     } else if (_.isNumber(from) && from >= 0) {
-      url += `?from=${from}`;
+      // url += `?from=${from}`;
+      opts.from = from;
     } else {
-      url += `?tail=${tail}`;
+      // url += `?tail=${tail}`;
+      opts.tail = tail;
     }
-
-    this.http.get({url: url, logging: false}, (err: HttpResponseError, data: any[]) => {
-      if (err) {
-        x.error(err);
-      } else {
-        x.next(data);
-      }
-      x.complete();
-    });
-    return x.asObservable();
+    //
+    // this.http.get({url: url, logging: false}, (err: HttpResponseError, data: any[]) => {
+    //   if (err) {
+    //     x.error(err);
+    //   } else {
+    //     x.next(data);
+    //   }
+    //   x.complete();
+    // });
+    // return x.asObservable();
+    return this.http.callApi(API_CTRL_TASK_LOG, {params: {nodeId: nodeId, runnerId: runnerId}, query: opts});
   }
 
 
@@ -134,16 +148,27 @@ export class BackendTasksService {
           return false;
         });
 
-
-        this.http.get(this.api + API_CTRL_TASKS_METADATA, (err, data: IEntityRefMetadata[]) => {
-          this.tasks = new Tasks(null);
-          data.forEach((d: any) => {
-            d.nodeIds = _.intersection(d.nodeIds, this.workerNodes.map(w => w.nodeId));
-            this.tasks.fromJson(d);
-          });
-          x.next(this.tasks);
-          x.complete();
+        this.http.callApi(API_CTRL_TASKS_METADATA, {
+          handle:
+            (err, data: IEntityRefMetadata[]) => {
+              this.tasks = new Tasks(null);
+              data.forEach((d: any) => {
+                d.nodeIds = _.intersection(d.nodeIds, this.workerNodes.map(w => w.nodeId));
+                this.tasks.fromJson(d);
+              });
+              x.next(this.tasks);
+              x.complete();
+            }
         });
+        // this.http.get(this.api + API_CTRL_TASKS_METADATA, (err, data: IEntityRefMetadata[]) => {
+        //   this.tasks = new Tasks(null);
+        //   data.forEach((d: any) => {
+        //     d.nodeIds = _.intersection(d.nodeIds, this.workerNodes.map(w => w.nodeId));
+        //     this.tasks.fromJson(d);
+        //   });
+        //   x.next(this.tasks);
+        //   x.complete();
+        // });
       });
 
     } else {
@@ -160,35 +185,39 @@ export class BackendTasksService {
    * @param nodeId
    */
   taskIncomingValues(taskName: string, incomingName: string, hint: ExprDesc = null, instance: any = null): Observable<any> {
-    const x = new Subject<any>();
+    // const x = new Subject<any>();
+    //
+    // let _url = this.api + API_CTRL_TASK_GET_METADATA_VALUE
+    //   .replace(':taskName', taskName)
+    //   .replace(':incomingName', incomingName);
 
-    let _url = this.api + API_CTRL_TASK_GET_METADATA_VALUE
-      .replace(':taskName', taskName)
-      .replace(':incomingName', incomingName);
-
-    const queries: any[] = [];
+    const opts: any = {};
     if (hint) {
-      queries.push('hint=' + JSON.stringify(hint.toJson()));
+      opts.hint = hint.toJson();
+      // queries.push('hint=' + JSON.stringify(hint.toJson()));
     }
     if (instance) {
-      queries.push('instance=' + JSON.stringify(instance));
+      opts.instance = instance;
+      // queries.push('instance=' + JSON.stringify(instance));
 
     }
+    //
+    // if (queries.length > 0) {
+    //   _url += '?' + queries.join('&');
+    // }
+    //
+    // this.http.get(_url, (err, data: any) => {
+    //   if (err) {
+    //     x.error(err);
+    //   } else {
+    //     x.next(data);
+    //   }
+    //   x.complete();
+    // });
+    //
+    // return x.asObservable();
+    return this.http.callApi(API_CTRL_TASK_GET_METADATA_VALUE, {params: {taskName: taskName, incomingName: incomingName}, query: opts});
 
-    if (queries.length > 0) {
-      _url += '?' + queries.join('&');
-    }
-
-    this.http.get(_url, (err, data: any) => {
-      if (err) {
-        x.error(err);
-      } else {
-        x.next(data);
-      }
-      x.complete();
-    });
-
-    return x.asObservable();
   }
 
 }

@@ -13,30 +13,31 @@ export * from './libs/validators/EqualWith';
 export * from './libs/validators/IsUrl';
 
 export * from './libs/forms/AbstractFormComponent';
-export * from './libs/forms/elements/Checkbox';
+export * from './libs/forms/elements/CheckboxHandle';
 export * from './libs/forms/elements/Form';
-export * from './libs/forms/elements/Grid';
+export * from './libs/forms/elements/GridHandle';
 export * from './libs/forms/elements/index';
-export * from './libs/forms/elements/Input';
-export * from './libs/forms/elements/Radio';
+export * from './libs/forms/elements/InputHandle';
+export * from './libs/forms/elements/RadioHandle';
 export * from './libs/forms/elements/Ref';
-export * from './libs/forms/elements/Select';
+export * from './libs/forms/elements/SelectHandle';
 export * from './libs/forms/elements/Tab';
 export * from './libs/forms/elements/Tabs';
+export * from './libs/forms/elements/LabelHandle';
 
 export * from './libs/forms/elements/ICheckboxOptions';
 export * from './libs/forms/elements/ISelectOptions';
 export * from './libs/forms/elements/IGridOptions';
 
-export * from './libs/forms/decorators/FormGrid';
-export * from './libs/forms/decorators/FormCheckbox';
-export * from './libs/forms/decorators/FormSelect';
-export * from './libs/forms/decorators/FormLabel';
-export * from './libs/forms/decorators/FormRadio';
-export * from './libs/forms/decorators/FormReadonly';
-export * from './libs/forms/decorators/FormHidden';
-export * from './libs/forms/decorators/FormText';
-export * from './libs/forms/decorators/FormType';
+export * from './libs/forms/decorators/Grid';
+export * from './libs/forms/decorators/Checkbox';
+export * from './libs/forms/decorators/Select';
+export * from './libs/forms/decorators/Label';
+export * from './libs/forms/decorators/Radio';
+export * from './libs/forms/decorators/Readonly';
+export * from './libs/forms/decorators/Hidden';
+export * from './libs/forms/decorators/Text';
+export * from './libs/forms/decorators/Type';
 
 export * from './libs/forms/FormBuilder';
 export * from './libs/forms/FormObject';

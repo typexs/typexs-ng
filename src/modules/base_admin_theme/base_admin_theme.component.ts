@@ -1,15 +1,15 @@
 import {AfterViewInit, Component, Input, OnDestroy, OnInit, Renderer2, TemplateRef, ViewEncapsulation} from '@angular/core';
 import {IUser} from '../../libs/api/auth/IUser';
-import {AuthService} from '../system/api/auth/auth.service';
+import {AuthService} from '../base/api/auth/auth.service';
 import PerfectScrollbar from 'perfect-scrollbar';
 import {IMenuOptions} from '../navigator/IMenuOptions';
-import {AppStateService} from '../system/app.state.service';
+import {AppStateService} from '../base/app.state.service';
 import {NavigatorService} from '../navigator/navigator.service';
-import {CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE} from '../system/constants';
-import {LogMessage} from '../system/messages/types/LogMessage';
+import {CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE} from '../base/constants';
+import {LogMessage} from '../base/messages/types/LogMessage';
 import {INotifyOptions} from './components/notifications/INotifyOptions';
 import {NotificationsService} from './components/notifications/notifications.service';
-import {AuthMessage} from '../system/messages/types/AuthMessage';
+import {AuthMessage} from '../base/messages/types/AuthMessage';
 import {Subscription} from 'rxjs/Subscription';
 import {Helper} from '../../libs/observable/Helper';
 

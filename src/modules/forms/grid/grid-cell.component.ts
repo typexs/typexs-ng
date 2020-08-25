@@ -5,7 +5,7 @@ import {GridColumnDef} from './GridColumnDef';
 
 
 @Component({
-  selector: 'xgridcell',
+  selector: 'txs-gridcell',
   templateUrl: './grid-cell.component.html',
 })
 export class GridCellComponent extends AbstractFormComponent<any> {

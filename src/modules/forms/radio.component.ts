@@ -1,15 +1,15 @@
 import {Component, Input} from '@angular/core';
 import {AbstractFormComponent} from '../../libs/forms/AbstractFormComponent';
-import {Radio} from '../../libs/forms/elements/Radio';
+import {RadioHandle} from '../../libs/forms/elements/RadioHandle';
 import {ViewComponent} from '../../libs/views/decorators/ViewComponent';
 
 
 @ViewComponent('radio')
 @Component({
-  selector: 'xradio',
+  selector: 'txs-radio',
   templateUrl: './radio.component.html',
 })
-export class RadioComponent extends AbstractFormComponent<Radio> {
+export class RadioComponent extends AbstractFormComponent<RadioHandle> {
 
   on: string = 'Yes';
 

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {IGridColumn} from '../../../../system/datatable/IGridColumn';
-import {SimpleHtmlTableComponent} from '../../../../system/datatable/simple-html-table/simple-html-table.component';
+import {IGridColumn} from '../../../../base/datatable/IGridColumn';
+import {SimpleHtmlTableComponent} from '../../../../base/datatable/simple-html-table/simple-html-table.component';
 import {AgGridWrapperComponent} from '../../../addons/ag-grid/ag-grid-wrapper.component';
 
 

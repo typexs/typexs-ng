@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import * as _ from 'lodash';
 import {Observable} from 'rxjs/Observable';
-import {AuthService} from '../system/api/auth/auth.service';
-import {HttpClientWrapper} from '../system/http-client-wrapper.service';
+import {AuthService} from '../base/api/auth/auth.service';
+import {BackendClientService} from '../base/backend-client.service';
 import {
   API_CTRL_STORAGE_DELETE_ENTITY,
   API_CTRL_STORAGE_FIND_ENTITY,
@@ -17,14 +17,14 @@ import {
 import {REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base/browser';
 import {IBuildOptions, IEntityRef} from 'commons-schema-api/browser';
 import {Subject} from 'rxjs/Subject';
-import {IQueringService} from '../system/api/querying/IQueringService';
-import {AbstractQueryService} from '../system/api/querying/abstract-query.service';
+import {IQueringService} from '../base/api/querying/IQueringService';
+import {AbstractQueryService} from '../base/api/querying/abstract-query.service';
 
 
 @Injectable()
 export class StorageService extends AbstractQueryService implements IQueringService {
 
-  constructor(private http: HttpClientWrapper,
+  constructor(private http: BackendClientService,
               private authService: AuthService) {
     super(http, authService, TypeOrmEntityRegistry.$(), {
       urlRegistryMetadata: StorageService.url(API_CTRL_STORAGE_METADATA_ALL_ENTITIES),
@@ -110,18 +110,19 @@ export class StorageService extends AbstractQueryService implements IQueringServ
 
 
   getStorages(): Observable<IStorageRefMetadata[]> {
-    const obs = new Subject<IStorageRefMetadata[]>();
-    this.http.get(StorageService.url(API_CTRL_STORAGE_METADATA_ALL_STORES),
-      (err: Error, entities: IStorageRefMetadata[]) => {
-        if (err) {
-          obs.error(err);
-          obs.complete();
-        } else if (_.isArray(entities)) {
-          obs.next(entities);
-          obs.complete();
-        }
-      });
-    return obs.asObservable();
+    return this.http.callApi(API_CTRL_STORAGE_METADATA_ALL_STORES);
+    // const obs = new Subject<IStorageRefMetadata[]>();
+    // this.http.get(StorageService.url(API_CTRL_STORAGE_METADATA_ALL_STORES),
+    //   (err: Error, entities: IStorageRefMetadata[]) => {
+    //     if (err) {
+    //       obs.error(err);
+    //       obs.complete();
+    //     } else if (_.isArray(entities)) {
+    //       obs.next(entities);
+    //       obs.complete();
+    //     }
+    //   });
+    // return obs.asObservable();
   }
 
 

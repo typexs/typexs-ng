@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {SystemInfoService} from '../../system/system-info.service';
+import {SystemInfoService} from '../../base/system-info.service';
 import {IWorkerInfo} from '@typexs/base/libs/worker/IWorkerInfo';
 
 @Component({

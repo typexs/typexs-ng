@@ -6,7 +6,7 @@ import {AbstractComponent} from '../../libs/views/AbstractComponent';
 
 
 @Component({
-  selector: 'view-builder',
+  selector: 'txs-view-builder',
   templateUrl: 'view-builder.component.html',
   // host: {'(submit)': 'onSubmit($event)', '(reset)': 'onReset()'},
   // outputs: ['ngSubmit'],

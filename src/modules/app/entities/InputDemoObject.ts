@@ -1,5 +1,5 @@
-import {FormText} from '../../../libs/forms/decorators/FormText';
-import {FormType} from '../../../libs/forms/decorators/FormType';
+import {Text} from '../../../libs/forms/decorators/Text';
+import {Type} from '../../../libs/forms/decorators/Type';
 import {Property} from '@typexs/schema/libs/decorators/Property';
 import {Entity} from '@typexs/schema/libs/decorators/Entity';
 import {IsEmail, MaxLength, MinLength} from 'class-validator';
@@ -12,21 +12,21 @@ import {OptionsService} from '../services/OptionsService';
 export class InputDemoObject {
 
   // HTML Type text
-  @FormText()
+  @Text()
   @Property({type: 'string'})
   @MinLength(8, {message: 'username is too short'})
   @MaxLength(32, {message: 'username is too long'})
   username = 'Test';
 
   // HTML Type password
-  @FormType({form: 'password'})
+  @Type({form: 'password'})
   @Property({type: 'string'})
   @MinLength(8, {message: 'password is too short'})
   @MaxLength(64, {message: 'password is a little too long'})
   password: string;
 
   // HTML Type password confirmation
-  @FormType({form: 'password'})
+  @Type({form: 'password'})
   @Property({type: 'string'})
   @EqualWith('password', {message: 'password is not equal'})
   passwordConfirm: string;

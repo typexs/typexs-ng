@@ -3,7 +3,7 @@ import {TestBed} from '@angular/core/testing';
 import {EntityOptionsService} from './entity-options.service';
 import {EntityService} from './entity.service';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {SystemModule} from '../system/system.module';
+import {Module} from '../base/base.module';
 
 
 describe('Service: EntityOptionsService', () => {
@@ -16,7 +16,7 @@ describe('Service: EntityOptionsService', () => {
       const bed = TestBed.configureTestingModule({
         imports: [
           HttpClientTestingModule,
-          SystemModule
+          Module
         ],
         providers: [
           EntityService,

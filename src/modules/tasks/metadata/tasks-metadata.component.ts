@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TaskRef, Tasks} from '@typexs/base/browser';
 import {BackendTasksService} from '../backend-tasks.service';
-import {SystemInfoService} from '../../system/system-info.service';
+import {SystemInfoService} from '../../base/system-info.service';
 
 
 @Component({

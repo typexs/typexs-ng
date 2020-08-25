@@ -5,8 +5,8 @@ import {FormService} from './form.service';
 import {ViewComponent} from '../../libs/views/decorators/ViewComponent';
 import {AbstractFormComponent} from '../../libs/forms/AbstractFormComponent';
 import {Form} from '../../libs/forms/elements';
-import {MessageChannel} from '../system/messages/MessageChannel';
-import {IMessage} from '../system/messages/IMessage';
+import {MessageChannel} from '../base/messages/MessageChannel';
+import {IMessage} from '../base/messages/IMessage';
 import {IFormOptions} from './IFormOptions';
 import {DataContainer} from '@typexs/base/browser';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
@@ -14,7 +14,7 @@ import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
 
 @ViewComponent('form')
 @Component({
-  selector: 'xform',
+  selector: 'txs-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']
   // host: {'(submit)': 'onSubmit($event)', '(reset)': 'onReset()'},

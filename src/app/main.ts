@@ -8,7 +8,7 @@ import {STYLES} from './stylesheets';
 import {ThemeRegistry} from '../libs/angular/ThemeRegistry';
 ThemeRegistry.register(THEMES, STYLES);
 
-import {AppModule} from './../modules/app/app.module';
+import {AppModule} from './../modules/app/module';
 import {environment} from './environments/environment';
 // import {FORM_ELEMENTS} from '../libs/form/elements';
 

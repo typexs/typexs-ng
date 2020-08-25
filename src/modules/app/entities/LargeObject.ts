@@ -1,28 +1,28 @@
-import {FormText} from '../../../libs/forms/decorators/FormText';
-import {FormType} from '../../../libs/forms/decorators/FormType';
+import {Text} from '../../../libs/forms/decorators/Text';
+import {Type} from '../../../libs/forms/decorators/Type';
 import {Property} from '@typexs/schema/libs/decorators/Property';
 import {Entity} from '@typexs/schema/libs/decorators/Entity';
 import {IsEmail} from 'class-validator';
 import {EqualWith} from '../../../libs/validators/EqualWith';
 import {OptionsService} from '../services/OptionsService';
-import {FormReadonly, FormSelect} from '../../..';
+import {Readonly, SelectHandle} from '../../..';
 
 @Entity()
 export class LargeObject {
 
 
   // HTML Type text
-  @FormReadonly()
+  @Readonly()
   @Property({type: 'number', auto: true})
   id: number;
 
   // HTML Type text
-  @FormText()
+  @Text()
   @Property({type: 'string'})
   username: string = 'Test';
 
   // HTML Type password
-  @FormType({form: 'password'})
+  @Type({form: 'password'})
   @Property({type: 'string'})
   nickname: string;
 

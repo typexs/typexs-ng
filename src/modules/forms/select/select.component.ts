@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 
 import * as _ from 'lodash';
 import {AbstractFormComponent} from '../../../libs/forms/AbstractFormComponent';
-import {Select} from '../../../libs/forms/elements';
+import {SelectHandle} from '../../../libs/forms/elements';
 import {ViewComponent} from '../../../libs/views/decorators/ViewComponent';
 import {Option} from '../../../libs/forms/elements/Option';
 import {ISelectOption} from './../libs/ISelectOption';
@@ -11,10 +11,10 @@ import {EnumHandle} from '../libs/EnumHandle';
 
 @ViewComponent('select')
 @Component({
-  selector: 'xselect',
+  selector: 'txs-select',
   templateUrl: './select.component.html',
 })
-export class SelectComponent extends AbstractFormComponent<Select> implements OnInit {
+export class SelectComponent extends AbstractFormComponent<SelectHandle> implements OnInit {
 
 
 

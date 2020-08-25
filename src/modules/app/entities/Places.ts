@@ -1,19 +1,19 @@
-import {FormText} from '../../../libs/forms/decorators/FormText';
-import {FormSelect} from '../../../libs/forms/decorators/FormSelect';
+import {Text} from '../../../libs/forms/decorators/Text';
+import {Select} from '../../../libs/forms/decorators/Select';
 import {Property} from '@typexs/schema/libs/decorators/Property';
 
 
 export class Places {
 
-  @FormText()
+  @Text()
   @Property({type: 'string'})
   country: string;
 
-  @FormText()
+  @Text()
   @Property({type: 'string'})
   city: string;
 
-  @FormSelect({enum:'continents'})
+  @Select({enum:'continents'})
   @Property(<any>{type: 'string', label: 'Continent'})
   continent: string;
 

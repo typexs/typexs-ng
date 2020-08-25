@@ -2,8 +2,8 @@ import {ChangeDetectorRef, Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {StorageService} from '../../storage.service';
 import {StorageQueryEmbeddedComponent} from './../embedded/storage-query-embedded.component';
-import {IGridColumn} from '../../../system/datatable/IGridColumn';
-import {CC_GRID_CELL_ENTITY_OPERATIONS} from '../../../system/constants';
+import {IGridColumn} from '../../../base/datatable/IGridColumn';
+import {CC_GRID_CELL_ENTITY_OPERATIONS} from '../../../base/constants';
 
 
 @Component({
