@@ -32,5 +32,15 @@ logging:
       enable: true
       level: debug
       transports:
-      - console: {}
+        - console: {}
 
+filesystem:
+  paths:
+    - ./tmp/accessible/
+    - /tmp/tasklog
+
+
+config:
+  anonymous:
+    allow: true
+  permissions: []
