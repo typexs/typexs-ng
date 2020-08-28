@@ -66,7 +66,7 @@ export class InputDemoObject {
    search
    tel
    time
-   url
+   apiUrl
    week
    */
 

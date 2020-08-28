@@ -4,10 +4,19 @@ import {MessageService} from './messages/message.service';
 import {MessageChannel} from './messages/MessageChannel';
 import {LogMessage} from './messages/types/LogMessage';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {IApiCallOptions} from './lib/http/IApiCallOptions';
 import {API_CTRL_SERVER_PING, API_CTRL_SERVER_ROUTES, IRoute} from '@typexs/server/browser';
 import {IHttpRequestOptions} from './lib/http/IHttpRequestOptions';
+
+/**
+ *
+ * Lifecycle
+ *
+ *  initial -> online -> idle -> offline
+ *          -> offline -> online
+ */
+export type BACKEND_CLIENT_STATE = 'inactive' | 'offline' | 'online' | 'loading' | 'initial';
 
 /**
  * The primary communication handler to the backend
@@ -21,7 +30,8 @@ export class BackendClientService {
 
   private serverTime: Date;
 
-  private active: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private state: BehaviorSubject<BACKEND_CLIENT_STATE> = new BehaviorSubject<BACKEND_CLIENT_STATE>('initial');
+
 
   private routes: IRoute[] = [];
 
@@ -36,6 +46,7 @@ export class BackendClientService {
    */
   constructor(private http: HttpClient, private messageService: MessageService) {
     this.logChannel = messageService.getLogService();
+    this.state.subscribe(x => console.log('backend state changed ' + x));
   }
 
   static url(url: string, replace: any = null) {
@@ -51,32 +62,72 @@ export class BackendClientService {
    * Test if backend is alive
    */
   ping() {
-    const observable = this.getHttpClient().get(API_CTRL_SERVER_PING);
+    const observable = this.get(this.apiUrl(API_CTRL_SERVER_PING));
     observable.subscribe(
       value => {
         if (value && _.has(value, 'time')) {
           this.serverTime = new Date(_.get(value, 'time'));
-          this.active.next(true);
+          this.state.next('online');
         } else {
-          this.active.next(false);
+          this.state.next('inactive');
         }
       },
       error => {
-        this.active.next(false);
+        this.state.next('offline');
         // handle errors for example unreachable
       }
     );
     return observable;
   }
 
+  getState() {
+    return this.state;
+  }
+
   /**
    * Reload route informations from backend, this can happen
    */
   reloadRoutes() {
-    return this.http.get(API_CTRL_SERVER_ROUTES).subscribe((routes: IRoute[]) => {
-      this.routes = routes;
-    });
+    const obs = new Subject();
+    if (this.state.getValue() === 'offline' || this.state.getValue() === 'initial') {
+      setTimeout(() => {
+        obs.next([]);
+        obs.complete();
+      }, 5);
+    } else {
+      this.state.next('loading');
+      this.get(this.apiUrl(API_CTRL_SERVER_ROUTES)).subscribe((routes: IRoute[]) => {
+        this.routes = routes;
+        obs.next(this.routes);
+        obs.complete();
+        this.state.next('online');
+      });
+    }
+    return obs.asObservable();
   }
+
+
+  check() {
+    const obs = new Subject();
+    this.ping().subscribe(x => {
+      const ping = this.state.getValue();
+      if (ping === 'offline') {
+        obs.next(false);
+        obs.complete();
+      } else if (ping === 'online') {
+        this.reloadRoutes().subscribe(value => {
+            obs.next(true);
+            obs.complete();
+          },
+          error => {
+            obs.next(false);
+            obs.complete();
+          });
+      }
+    });
+    return obs.asObservable();
+  }
+
 
   getHttpClient() {
     return this.http;
@@ -87,47 +138,72 @@ export class BackendClientService {
     return this.logChannel;
   }
 
+  apiUrl(context: string) {
+    return this.api + context;
+  }
+
   /**
    *
    * @param context
    * @param options
    */
   callApi<T>(context: string, options?: IApiCallOptions): Observable<T> {
-    const route = this.routes.find(x => x.route === context);
-    const method = route.method;
-
-    const opts: IHttpRequestOptions = {
-      url: 'TODO',
-    };
-
-    if (options.params) {
-      opts.url = this.api + BackendClientService.url(context, options.params);
-    } else {
-      opts.url = this.api + context;
+    if (this.getState().getValue() === 'offline') {
+      const s = new Subject();
+      s.error('Backend is offline.');
+      s.complete();
+      return s.asObservable() as any;
     }
-
-    if (options.query) {
-      const queryParts: string[] = [];
-      for (const q of _.keys(options.query)) {
-        const value = options.query[q];
-        if (_.isObjectLike(value) || _.isArrayLike(value)) {
-          queryParts.push(q + '=' + JSON.stringify(value));
-        } else {
-          queryParts.push(q + '=' + value);
+    // @ts-ignore
+    const ret = new Subject<T>();
+    const state: Observable<BACKEND_CLIENT_STATE> = this.state.asObservable();
+    state.subscribe(x => {
+      if (x === 'online' && this.routes.length > 0) {
+        const apiContext = this.apiUrl(context);
+        const route = this.routes.find(x => x.route === apiContext);
+        if (!route) {
+          ret.error('route ' + apiContext + ' not found.');
+          ret.complete();
+          return;
         }
+        const method = route.method;
+        const opts: IHttpRequestOptions = {
+          url: 'TODO',
+        };
+
+
+        if (options.params) {
+          opts.url = this.apiUrl(BackendClientService.url(context, options.params));
+        } else {
+          opts.url = this.apiUrl(context);
+        }
+
+        if (options.query) {
+          const queryParts: string[] = [];
+          for (const q of _.keys(options.query)) {
+            const value = options.query[q];
+            if (_.isObjectLike(value) || _.isArrayLike(value)) {
+              queryParts.push(q + '=' + JSON.stringify(value));
+            } else {
+              queryParts.push(q + '=' + value);
+            }
+          }
+          opts.url += '?' + queryParts.join('&');
+        }
+
+        if (options.content) {
+          opts.body = options.content;
+        }
+
+        if (options.handle) {
+          opts.callback = options.handle;
+        }
+
+        (this[method](opts) as Observable<T>).subscribe(x => ret.next(x), error => ret.error(error), () => ret.complete());
       }
-      opts.url += '?' + queryParts.join('&');
-    }
+    });
+    return ret.asObservable();
 
-    if (options.content) {
-      opts.body = options.content;
-    }
-
-    if (options.handle) {
-      opts.callback = options.handle;
-    }
-
-    return this[method](opts);
   }
 
   /**
@@ -168,7 +244,7 @@ export class BackendClientService {
   private handleRequest<T>(method: string, reqOptions: IHttpRequestOptions): Observable<T> {
     const logging = _.has(reqOptions, 'logging') ? reqOptions.logging : false;
     const client = this.getHttpClient();
-    const requestMethod = client[method];
+    // const requestMethod = client[method];
 
     let observable: Observable<T> = null;
     if (_.has(reqOptions, 'body')) {
@@ -177,7 +253,7 @@ export class BackendClientService {
       observable = client[method](reqOptions.url, reqOptions);
     }
 
-    if (_.has(reqOptions, 'response')) {
+    if (_.has(reqOptions, 'callback')) {
       observable.subscribe(
         async value => {
           try {

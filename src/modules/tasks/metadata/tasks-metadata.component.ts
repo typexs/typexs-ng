@@ -5,7 +5,7 @@ import {SystemInfoService} from '../../base/system-info.service';
 
 
 @Component({
-  selector: 'tasks-metadata',
+  selector: 'txs-tasks-metadata',
   templateUrl: './tasks-metadata.component.html'
 })
 export class TasksMetadataComponent implements OnInit {

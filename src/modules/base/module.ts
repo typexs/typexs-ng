@@ -9,12 +9,11 @@ import {AlertComponent} from './messages/alert.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {PagerComponent} from './pager/pager.component';
 import {PagerService} from './pager/PagerService';
-import {AppStateService} from './app.state.service';
+import {AppService} from './app.service';
 import {InvokerService} from './invoker.service';
 import {BackendClientService} from './backend-client.service';
 import {DatatableComponent} from './datatable/datatable.component';
 import {SimpleHtmlTableComponent} from './datatable/simple-html-table/simple-html-table.component';
-import {AppConfigService} from './app.config.service';
 import {SimpleHtmlCellComponent} from './datatable/simple-html-table/simple-html-cell.component';
 import {SimpleHtmlCellValueComponent} from './datatable/simple-html-table/simple-html-cell-value.component';
 import {
@@ -44,9 +43,8 @@ const PROVIDERS = [
   AuthGuardService,
   {provide: AuthService, useClass: NoopAuthService},
   {provide: AuthGuardService, useClass: DefaultAuthGuardService},
-  AppConfigService,
+  AppService,
   PagerService,
-  AppStateService,
   InvokerService
 ];
 
@@ -98,7 +96,7 @@ export class BaseModule {
    *
    * @param appConfig
    */
-  constructor(private appConfig: AppConfigService) {
+  constructor(private appConfig: AppService) {
     appConfig.setComponentClass([C_DEFAULT, CC_GRID], SimpleHtmlTableComponent);
     appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_VALUE], SimpleHtmlCellValueComponent);
     appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_ENTITY_REFERENCE], SimpleHtmlCellEntityReferenceRendererComponent);
@@ -106,6 +104,7 @@ export class BaseModule {
     appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_ENTITY_OPERATIONS], SimpleHtmlCellEntityOperationsRendererComponent);
     appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_ROUTER_LINK], SimpleHtmlCellRouterLinkRendererComponent);
 
+    this.appConfig.getBackendClient().check();
   }
 
 }

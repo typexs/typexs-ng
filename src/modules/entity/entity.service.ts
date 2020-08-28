@@ -95,9 +95,9 @@ export class EntityService extends AbstractQueryService implements IQueringServi
   //   // const obs = new BehaviorSubject<any>(null);
   //   const apiParams = {name: entityName, id: entityId};
   //   const additinalQuery: any = {};
-  //   // let url = this.url(this.options.urlGetEntity, );
+  //   // let apiUrl = this.apiUrl(this.options.urlGetEntity, );
   //   if (!_.isEmpty(options)) {
-  //     // url += '?opts=' + JSON.stringify(options);
+  //     // apiUrl += '?opts=' + JSON.stringify(options);
   //     additinalQuery.opts = JSON.stringify(options);
   //   }
   //   const buildOptions: IBuildOptions = {};
@@ -127,13 +127,13 @@ export class EntityService extends AbstractQueryService implements IQueringServi
   //     queryParts.push('sort=' + JSON.stringify(options.sort));
   //   }
   //
-  //   // let url = 'api/entity/' + entityName;
-  //   let url = 'api' + API_CTRL_ENTITY_FIND_ENTITY.replace(':name', entityName);
+  //   // let apiUrl = 'api/entity/' + entityName;
+  //   let apiUrl = 'api' + API_CTRL_ENTITY_FIND_ENTITY.replace(':name', entityName);
   //   if (queryParts.length > 0) {
-  //     url += '?' + queryParts.join('&');
+  //     apiUrl += '?' + queryParts.join('&');
   //   }
   //
-  //   this.http.get(url, (err: Error, res: any) => {
+  //   this.http.get(apiUrl, (err: Error, res: any) => {
   //     if (err) {
   //       obs.error(err);
   //       obs.complete();
@@ -150,8 +150,8 @@ export class EntityService extends AbstractQueryService implements IQueringServi
   // save(entityName: string, entity: any): Observable<any> {
   //   const entityDef = EntityRegistry.$().getEntityRefByName(entityName);
   //   const obs = new BehaviorSubject<any>(null);
-  //   const url = 'api' + API_CTRL_ENTITY_SAVE_ENTITY.replace(':name', entityName);
-  //   this.http.post(url, entity, (err: Error, res: any) => {
+  //   const apiUrl = 'api' + API_CTRL_ENTITY_SAVE_ENTITY.replace(':name', entityName);
+  //   this.http.post(apiUrl, entity, (err: Error, res: any) => {
   //     if (err) {
   //       obs.error(err);
   //       obs.complete();
@@ -173,10 +173,10 @@ export class EntityService extends AbstractQueryService implements IQueringServi
   //     throw new Error('something is wrong');
   //   }
   //   const obs = new BehaviorSubject<any>(null);
-  //   const url = 'api' + API_CTRL_ENTITY_UPDATE_ENTITY
+  //   const apiUrl = 'api' + API_CTRL_ENTITY_UPDATE_ENTITY
   //     .replace(':name', entityName)
   //     .replace(':id', entityId);
-  //   this.http.post(url, entity, (err: Error, res: any) => {
+  //   this.http.post(apiUrl, entity, (err: Error, res: any) => {
   //     if (err) {
   //       obs.error(err);
   //       obs.complete();
@@ -193,10 +193,10 @@ export class EntityService extends AbstractQueryService implements IQueringServi
   // delete(entityName: string, entityId: any) {
   //   const entityDef = EntityRegistry.$().getEntityRefByName(entityName);
   //   const obs = new BehaviorSubject<any>(null);
-  //   const url = 'api' + API_CTRL_ENTITY_DELETE_ENTITY
+  //   const apiUrl = 'api' + API_CTRL_ENTITY_DELETE_ENTITY
   //     .replace(':name', entityName)
   //     .replace(':id', entityId);
-  //   this.http.delete(url,
+  //   this.http.delete(apiUrl,
   //     (err: Error, res: any) => {
   //       if (err) {
   //         obs.error(err);

@@ -6,6 +6,8 @@ import {AuthService} from './api/auth/auth.service';
 import {MessageService} from './messages/message.service';
 import {AuthMessage} from './messages/types/AuthMessage';
 import {CTXT_VIEW_ADMIN, CTXT_VIEW_DEFAULT, CTXT_VIEW_LOADING, CTXT_VIEW_LOGIN} from './constants';
+import * as _ from 'lodash';
+import {BackendClientService} from './backend-client.service';
 
 /**
  * The service is used for app status informations and distribution of this information on the front end.
@@ -15,7 +17,7 @@ import {CTXT_VIEW_ADMIN, CTXT_VIEW_DEFAULT, CTXT_VIEW_LOADING, CTXT_VIEW_LOGIN} 
  *
  */
 @Injectable()
-export class AppStateService {
+export class AppService {
 
   _isAdmin: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
@@ -23,11 +25,16 @@ export class AppStateService {
 
   adminUrl = false;
 
-  constructor(private authService: AuthService,
-              private router: Router,
-              private messageService: MessageService
-              /* private systemInfo:SystemInfoService,
-               private route: ActivatedRoute*/
+  config: any = {};
+
+  components: { [name: string]: Function } = {};
+
+
+  constructor(
+    private backendService: BackendClientService,
+    private authService: AuthService,
+    private router: Router,
+    private messageService: MessageService
   ) {
 
     authService.getChannel().subscribe(this.onMessage.bind(this));
@@ -46,6 +53,22 @@ export class AppStateService {
 
       }
     });
+  }
+
+  getBackendClient() {
+    return this.backendService;
+  }
+
+  getComponentClass(...args: string[]) {
+    const name = args.join('.');
+    return _.get(this.components, name);
+  }
+
+  setComponentClass(name: string | string[], fn: Function) {
+    if (_.isArray(name)) {
+      name = name.join('.');
+    }
+    return _.set(this.components, name, fn);
   }
 
 

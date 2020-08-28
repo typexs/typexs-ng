@@ -27,12 +27,12 @@ export class StorageService extends AbstractQueryService implements IQueringServ
   constructor(private http: BackendClientService,
               private authService: AuthService) {
     super(http, authService, TypeOrmEntityRegistry.$(), {
-      urlRegistryMetadata: StorageService.url(API_CTRL_STORAGE_METADATA_ALL_ENTITIES),
-      urlGetEntity: StorageService.url(API_CTRL_STORAGE_GET_ENTITY),
-      urlQueryEntity: StorageService.url(API_CTRL_STORAGE_FIND_ENTITY),
-      urlDeleteEntity: StorageService.url(API_CTRL_STORAGE_DELETE_ENTITY),
-      urlSaveEntity: StorageService.url(API_CTRL_STORAGE_SAVE_ENTITY),
-      urlUpdateEntity: StorageService.url(API_CTRL_STORAGE_UPDATE_ENTITY),
+      urlRegistryMetadata: API_CTRL_STORAGE_METADATA_ALL_ENTITIES,
+      urlGetEntity: API_CTRL_STORAGE_GET_ENTITY,
+      urlQueryEntity: API_CTRL_STORAGE_FIND_ENTITY,
+      urlDeleteEntity: API_CTRL_STORAGE_DELETE_ENTITY,
+      urlSaveEntity: API_CTRL_STORAGE_SAVE_ENTITY,
+      urlUpdateEntity: API_CTRL_STORAGE_UPDATE_ENTITY,
       ngRoutePrefix: '/storage',
       registryName: REGISTRY_TYPEORM
     });
@@ -79,16 +79,16 @@ export class StorageService extends AbstractQueryService implements IQueringServ
     return entityDef.build(entity, opts);
   }
 
-
-  static url(url: string, replace: any = null) {
-    url = 'api' + API_CTRL_STORAGE_PREFIX + url;
-    if (replace) {
-      _.keys(replace).forEach(k => {
-        url = url.replace(':' + k, replace[k]);
-      });
-    }
-    return url;
-  }
+  //
+  // static url(url: string, replace: any = null) {
+  //   url = 'api' + API_CTRL_STORAGE_PREFIX + url;
+  //   if (replace) {
+  //     _.keys(replace).forEach(k => {
+  //       url = url.replace(':' + k, replace[k]);
+  //     });
+  //   }
+  //   return url;
+  // }
 
 
   buildEntity(method: 'get', entityDef: IEntityRef, rawEntities: any | any[], options?: IBuildOptions) {
@@ -112,7 +112,7 @@ export class StorageService extends AbstractQueryService implements IQueringServ
   getStorages(): Observable<IStorageRefMetadata[]> {
     return this.http.callApi(API_CTRL_STORAGE_METADATA_ALL_STORES);
     // const obs = new Subject<IStorageRefMetadata[]>();
-    // this.http.get(StorageService.url(API_CTRL_STORAGE_METADATA_ALL_STORES),
+    // this.http.get(StorageService.apiUrl(API_CTRL_STORAGE_METADATA_ALL_STORES),
     //   (err: Error, entities: IStorageRefMetadata[]) => {
     //     if (err) {
     //       obs.error(err);

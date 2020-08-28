@@ -1,12 +1,13 @@
 import {Config, FileUtils, Inject, Log, RuntimeLoader} from '@typexs/base';
 import {ModuleDescriptor} from 'commons-moduls';
 import {NgMetaDataCollector} from '../libs/angular/NgMetaDataCollector';
-import {NgModuleBuilder} from '../libs/angular/NgModuleBuilder';
+// import {NgModuleBuilder} from '../libs/angular/NgModuleBuilder';
 import * as glob from 'glob';
 import {join} from 'path';
 import * as _ from 'lodash';
 import {ITemplateEntry} from '..';
 import {IStylesheetEntry} from '../libs/angular/IStylesheetEntry';
+import {NgModuleBuilder} from '../libs/angular/NgModuleBuilder';
 
 
 export class Ng {

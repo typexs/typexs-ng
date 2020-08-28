@@ -3,7 +3,7 @@ export * from './module';
 export * from './constants';
 export * from './backend-client.service';
 export * from './invoker.service';
-export * from './app.state.service';
+export * from './app.service';
 export * from './system-info.service';
 
 export * from './api/auth/IAuthServiceProvider';

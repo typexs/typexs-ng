@@ -18,7 +18,7 @@
 //   SchematicContext,
 //   template,
 //   Tree,
-//   url
+//   apiUrl
 // } from '@angular-devkit/schematics';
 // import {Schema as ApplicationOptions} from './schema';
 // import * as fs from 'fs';
@@ -135,7 +135,7 @@
 //       },
 //       mergeWith(
 //         apply(
-//           url('./files/creation'),
+//           apiUrl('./files/creation'),
 //           [
 //             options.minimal ? filter(minimalPathFilter) : noop(),
 //             template({
@@ -155,7 +155,7 @@
 //
 //       mergeWith(
 //         apply(
-//           url('./files/overwrite'),
+//           apiUrl('./files/overwrite'),
 //           [
 //             options.minimal ? filter(minimalPathFilter) : noop(),
 //             template({

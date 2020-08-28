@@ -11,7 +11,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import {IGridColumn} from '../IGridColumn';
-import {AppConfigService} from '../../app.config.service';
+import {AppService} from '../../app.service';
 import {CC_GRID_CELL_VALUE, SIMPLE_TABLE} from '../../constants';
 
 
@@ -33,7 +33,7 @@ export class SimpleHtmlCellComponent implements OnInit, OnDestroy {
   ref: ComponentRef<any>;
 
   constructor(@Inject(Injector) public injector: Injector,
-              @Inject(AppConfigService) public config: AppConfigService,
+              @Inject(AppService) public config: AppService,
               @Inject(ComponentFactoryResolver) public r: ComponentFactoryResolver) {
   }
 

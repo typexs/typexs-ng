@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import {Component, Input, OnInit} from '@angular/core';
 import {BackendTasksService} from '../backend-tasks.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
@@ -57,6 +58,7 @@ export class TaskStatusComponent implements OnInit {
     this.runnerId = this.route.snapshot.paramMap.get('runnerId');
     this.nodeId = this.route.snapshot.paramMap.get('nodeId');
 */
+    // console.log('init', this.taskLog);
     if (this.taskLog) {
       this.runnerId = this.taskLog.tasksId;
       this.nodeId = this.taskLog.respId;
@@ -77,9 +79,14 @@ export class TaskStatusComponent implements OnInit {
 
 
   update() {
-    this.tasksService.taskStatus(this.runnerId, this.nodeId).subscribe(tasks => {
+    this.tasksService.taskStatus(this.runnerId).subscribe(tasks => {
       if (tasks) {
-        this.taskLog = tasks;
+        if (_.isArray(tasks)) {
+          this.taskLog = tasks.shift();
+        } else {
+          this.taskLog = tasks;
+        }
+
         if (this.taskLog.state && ['stopped', 'errored', 'request_error'].indexOf(this.taskLog.state) !== -1) {
           this.ngOnDestroy();
         }

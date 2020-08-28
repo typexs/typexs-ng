@@ -8,7 +8,7 @@ import {TaskEvent} from '@typexs/base/libs/tasks/worker/TaskEvent';
 
 
 @Component({
-  selector: 'tasks-execution',
+  selector: 'txs-tasks-execution',
   templateUrl: './tasks-execution.component.html'
 })
 export class TasksExecutionComponent implements OnInit {
@@ -29,7 +29,7 @@ export class TasksExecutionComponent implements OnInit {
 
   parameters: any = {};
 
-  event: TaskEvent;
+  events: TaskEvent[];
 
   _cachedValues: { [k: string]: any } = {};
 
@@ -94,15 +94,15 @@ export class TasksExecutionComponent implements OnInit {
   execute() {
     this.waiting = true;
     this.tasksService.execute(this.taskName, this.parameters, this.nodeIds).subscribe(
-      event => {
+      events => {
         this.waiting = false;
-        this.event = event;
-        if (event.errors && event.errors.length > 0) {
-          return;
-        } else {
-          this.done = true;
-          // this.router.navigate([this.tasksService.getNgUrlPrefix(), 'status', event.id]);
-        }
+        this.events = events;
+        // if (event.errors && event.errors.length > 0) {
+        //   return;
+        // } else {
+        //   this.done = true;
+        //   // this.router.navigate([this.tasksService.getNgUrlPrefix(), 'status', event.id]);
+        // }
       },
       error => {
         this.waiting = false;
@@ -112,7 +112,7 @@ export class TasksExecutionComponent implements OnInit {
   }
 
   reset() {
-    this.event = null;
+    this.events = null;
     this.done = false;
     this.waiting = false;
     this.parameters = {};

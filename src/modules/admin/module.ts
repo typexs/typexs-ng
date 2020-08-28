@@ -20,7 +20,7 @@ import {EntityService} from '../entity/entity.service';
 import {StorageService} from '../storage/storage.service';
 import {StorageModule} from '../storage/storage.module';
 import {DashboardComponent} from './dashboard/dashboard.component';
-import {TasksModule} from '../tasks/tasks.module';
+import {TasksModule} from '../tasks/module';
 import {BackendTasksService} from '../tasks/backend-tasks.service';
 import {SystemNodesComponent} from './system/nodes/system-nodes.component';
 import {SystemNodeInfoComponent} from './system/nodes/node-info/system-node-info.component';

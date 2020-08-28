@@ -1,9 +1,9 @@
-import {AfterViewInit, Component, Input, OnDestroy, OnInit, Renderer2, TemplateRef, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, Renderer2, TemplateRef, ViewEncapsulation} from '@angular/core';
 import {IUser} from '../../libs/api/auth/IUser';
 import {AuthService} from '../base/api/auth/auth.service';
 import PerfectScrollbar from 'perfect-scrollbar';
 import {IMenuOptions} from '../navigator/IMenuOptions';
-import {AppStateService} from '../base/app.state.service';
+import {AppService} from '../base/app.service';
 import {NavigatorService} from '../navigator/navigator.service';
 import {CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE} from '../base/constants';
 import {LogMessage} from '../base/messages/types/LogMessage';
@@ -12,15 +12,17 @@ import {NotificationsService} from './components/notifications/notifications.ser
 import {AuthMessage} from '../base/messages/types/AuthMessage';
 import {Subscription} from 'rxjs/Subscription';
 import {Helper} from '../../libs/observable/Helper';
+import {BackendClientService} from '../base/backend-client.service';
 
 @Component({
   selector: 'bat-admin-layout',
   templateUrl: './base_admin_theme.component.html',
-  // styleUrls: ['./base_admin_theme.component.scss'],
+  styleUrls: ['./base_admin_theme.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class BaseAdminThemeComponent implements OnInit, OnDestroy {
 
+  // tslint:disable-next-line:no-input-rename
   @Input('content')
   ref: TemplateRef<any>;
 
@@ -54,7 +56,8 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
 
   constructor(public authService: AuthService,
               public renderer: Renderer2,
-              public appStateService: AppStateService,
+              public backendService: BackendClientService,
+              public appStateService: AppService,
               private navigatorService: NavigatorService,
               private notifyService: NotificationsService) {
 

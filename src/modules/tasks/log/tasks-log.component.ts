@@ -14,7 +14,7 @@ import {C_URL_HANDLER, C_URL_TITLE, CC_GRID_CELL_ROUTER_LINK} from '../../base/c
  *
  */
 @Component({
-  selector: 'tasks-log',
+  selector: 'txs-tasks-log',
   templateUrl: './tasks-log.component.html'
 })
 export class TasksLogComponent implements OnInit {

@@ -49,7 +49,7 @@ export class LargeObject {
    search
    tel
    time
-   url
+   apiUrl
    week
    */
 

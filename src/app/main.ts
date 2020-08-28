@@ -3,10 +3,10 @@ import {enableProdMode} from '@angular/core';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 
 // Theme initialization
-import {THEMES} from './themes';
-import {STYLES} from './stylesheets';
-import {ThemeRegistry} from '../libs/angular/ThemeRegistry';
-ThemeRegistry.register(THEMES, STYLES);
+// import {THEMES} from './themes';
+// import {STYLES} from './stylesheets';
+// import {ThemeRegistry} from '../libs/angular/ThemeRegistry';
+// ThemeRegistry.register(THEMES, STYLES);
 
 import {AppModule} from './../modules/app/module';
 import {environment} from './environments/environment';

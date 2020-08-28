@@ -1,6 +1,8 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {SystemInfoService} from '../../base/system-info.service';
 import {IWorkerInfo} from '@typexs/base/libs/worker/IWorkerInfo';
+import {interval, Observable, Subscription, timer} from 'rxjs';
+import {tap} from 'rxjs/operators';
 
 @Component({
   selector: 'dashboard',
@@ -9,7 +11,9 @@ import {IWorkerInfo} from '@typexs/base/libs/worker/IWorkerInfo';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
-  pushTimer: any = null;
+  subscriptions: Subscription = new Subscription();
+
+  pushTimer: Observable<number> = null;
 
   interval = 5000;
 
@@ -17,6 +21,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
   constructor(private infoService: SystemInfoService) {
+
   }
 
 
@@ -26,20 +31,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.infoService.refresh();
+    // this.infoService.refresh();
     this.infoService.loadWorkers((err, workerInfos) => {
       if (!err) {
         this.workerInfos = workerInfos;
       }
     });
-    this.pushTimer = setInterval(() => {
-      this.infoService.refresh();
-    }, this.interval);
+
+
+    this.pushTimer = timer(0, this.interval);
+    this.subscriptions.add(this.pushTimer.subscribe(x =>  this.infoService.refresh()));
   }
 
 
   ngOnDestroy(): void {
-    clearInterval(this.pushTimer);
+    this.subscriptions.unsubscribe();
   }
 
 }

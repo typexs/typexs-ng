@@ -86,7 +86,7 @@
           <div class="col-md-6"><strong>Node-ID</strong></div>
           <div class="col-md-6"><strong>Hostname</strong></div>
         </div>
-        <div class="row" *ngFor="let n of infos().nodes">
+        <div class="row" *ngIf="infos().node">
           <div class="col-md-6">{{infos().node.nodeId}}</div>
           <div class="col-md-6">{{infos().node.hostname}}</div>
         </div>

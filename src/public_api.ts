@@ -4,11 +4,11 @@ export * from './browser';
 
 
 // system module
-export * from './modules/base/base.module';
+export * from './modules/base/module';
 export * from './modules/base/constants';
 export * from './modules/base/backend-client.service';
 export * from './modules/base/invoker.service';
-export * from './modules/base/app.state.service';
+export * from './modules/base/app.service';
 export * from './modules/base/system-info.service';
 
 export * from './modules/base/api/auth/IAuthServiceProvider';
@@ -55,7 +55,7 @@ export * from './modules/base_admin_theme/components/notifications/notifications
 export * from './modules/base_admin_theme/components/notifications/notifications.service';
 
 // admin module
-export * from './modules/admin/admin.module';
+export * from './modules/admin/module';
 export * from './modules/admin/admin.component';
 
 
@@ -66,7 +66,7 @@ export * from './modules/entity/entity-options.service';
 
 
 // system module
-export * from './modules/tasks/tasks.module';
+export * from './modules/tasks/module';
 export * from './modules/tasks/backend-tasks.service';
 export * from './modules/tasks/execution/tasks-execution.component';
 export * from './modules/tasks/log/tasks-log.component';
@@ -82,7 +82,7 @@ export * from './modules/storage/storage.service';
 
 
 // forms module
-export * from './modules/forms/forms.module';
+export * from './modules/forms/module';
 export * from './modules/forms/checkbox.component';
 export * from './modules/forms/form.component';
 export * from './modules/forms/label.component';
@@ -97,7 +97,7 @@ export * from './modules/forms/grid/grid-cell.component';
 export * from './modules/forms/form.service';
 
 // navigator module
-export * from './modules/navigator/navigator.module';
+export * from './modules/navigator/module';
 export * from './modules/navigator/navigator.service';
 export * from './modules/navigator/IMenuLinkGuard';
 export * from './modules/navigator/NavEntry';

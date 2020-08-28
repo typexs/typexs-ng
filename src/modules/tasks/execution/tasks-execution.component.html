@@ -11,7 +11,7 @@
               name="nodeids"
               multiple="true"
       >
-        <option *ngFor="let obj of taskRef.nodeIds" [value]="obj">{{obj}}</option>
+        <option *ngFor="let obj of taskRef.nodeInfos" [value]="obj.nodeId">{{obj.nodeId}}</option>
       </select>
     </div>
 
@@ -58,13 +58,15 @@
 
     <button class="btn btn-info" (click)="reset()" [attr.disabled]="done ? null : true">Reset</button>
 
-    <div *ngIf="event">
-      {{event | json }}
+    <div *ngIf="events">
+      {{events | json }}
 
-      <div *ngFor="let targetId of event.targetIds">
-        <task-status-row [runnerId]="event.id" [nodeId]="targetId"
-        ></task-status-row>
+      <div *ngFor="let event of events">
+        <div *ngFor="let targetId of event.targetIds">
+          <txs-task-status-row [runnerId]="event.id" [nodeId]="targetId"></txs-task-status-row>
+        </div>
       </div>
+
 
     </div>
   </div>

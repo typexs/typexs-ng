@@ -1,10 +1,12 @@
+import * as _ from 'lodash';
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {BackendTasksService} from '../backend-tasks.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
+import {Observable, Subscription, timer} from 'rxjs';
 
 
 @Component({
-  selector: 'task-status-row',
+  selector: 'txs-task-status-row',
   templateUrl: './task-status-row.component.html'
 })
 export class TaskStatusRowComponent implements OnInit, OnDestroy {
@@ -17,7 +19,9 @@ export class TaskStatusRowComponent implements OnInit, OnDestroy {
 
   taskLog: TaskLog;
 
-  timer: NodeJS.Timer;
+  timer: Observable<number>;
+
+  subscription: Subscription = new Subscription();
 
 
   constructor(private tasksService: BackendTasksService) {
@@ -42,17 +46,23 @@ export class TaskStatusRowComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.update();
-    this.timer = setInterval(() => {
-      this.update();
-    }, 1000);
+    console.log('init');
+    this.timer = timer(0, 1000);
+    this.subscription.add(this.timer.subscribe(x => this.update()));
   }
 
   update() {
-    this.tasksService.taskStatus(this.runnerId, this.nodeId).subscribe(tasks => {
+    console.log('update', this.runnerId, this.nodeId);
+    this.tasksService.taskStatus(this.runnerId, {targetIds: [this.nodeId]}).subscribe(tasks => {
+      console.log(tasks);
       if (tasks) {
-        this.taskLog = tasks;
-        if (this.taskLog.state && ['stopped', 'errored', 'request_error'].indexOf(this.taskLog.state) == -1) {
+        if (_.isArray(tasks)) {
+          this.taskLog = tasks.shift();
+        } else {
+          this.taskLog = tasks;
+        }
+
+        if (this.taskLog.state && ['stopped', 'errored', 'request_error'].indexOf(this.taskLog.state) === -1) {
           this.ngOnDestroy();
         }
       }
@@ -61,7 +71,7 @@ export class TaskStatusRowComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.timer);
+    this.subscription.unsubscribe();
   }
 
 

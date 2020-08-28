@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import {Component} from '@angular/core';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {BackendTasksService} from '../backend-tasks.service';
@@ -39,9 +40,15 @@ export class TaskStatusPageComponent {
     this.runnerId = this.route.snapshot.paramMap.get('runnerId');
     this.nodeId = this.route.snapshot.paramMap.get('nodeId');
 
-    this.tasksService.taskStatus(this.runnerId, this.nodeId).subscribe(tasks => {
+    this.tasksService.taskStatus(this.runnerId).subscribe(tasks => {
       if (tasks) {
-        this.taskLog = tasks;
+        // can have multiple entries from different nodes
+        if (_.isArray(tasks)) {
+          this.taskLog = tasks.shift();
+        } else {
+          this.taskLog = tasks;
+        }
+
       }
     }, error => {
       console.log(error);

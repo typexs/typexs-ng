@@ -69,12 +69,16 @@ export class ThemeRegistry {
       }
     });
 
+
+
     Object.defineProperty(core, 'Component', {
       get: function () {
         return Component;
-      }
+      },
+      configurable: true
     });
 
+    // core['Component'] = Component;
   }
 
 
@@ -147,7 +151,9 @@ export function makeDecorator(
       annotations.push(annotationInstance);
       return cls;
     };
-    if (chainFn) { chainFn(TypeDecorator); }
+    if (chainFn) {
+      chainFn(TypeDecorator);
+    }
     return TypeDecorator;
   }
 
@@ -159,7 +165,6 @@ export function makeDecorator(
   (<any>DecoratorFactory).annotationCls = DecoratorFactory;
   return DecoratorFactory as any;
 }
-
 
 
 function makeMetadataCtor(props?: (...args: any[]) => any): any {

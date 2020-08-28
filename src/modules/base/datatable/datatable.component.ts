@@ -15,7 +15,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import {AbstractGridComponent} from './abstract-grid.component';
-import {AppConfigService} from '../app.config.service';
+import {AppService} from '../app.service';
 import {C_DEFAULT, CC_GRID} from '../constants';
 
 
@@ -45,7 +45,7 @@ export class DatatableComponent extends AbstractGridComponent implements OnInit,
 
   constructor(@Inject(Injector) public injector: Injector,
               @Inject(ComponentFactoryResolver) public r: ComponentFactoryResolver,
-              @Inject(AppConfigService) public config: AppConfigService) {
+              @Inject(AppService) public config: AppService) {
     super();
   }
 

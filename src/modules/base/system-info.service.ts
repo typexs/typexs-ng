@@ -18,6 +18,7 @@ import {IWorkerInfo} from '@typexs/base/libs/worker/IWorkerInfo';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {NodeRuntimeInfo} from '@typexs/base/libs/system/NodeRuntimeInfo';
+import {interval} from 'rxjs';
 
 
 @Injectable()
