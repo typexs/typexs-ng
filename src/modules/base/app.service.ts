@@ -8,6 +8,8 @@ import {AuthMessage} from './messages/types/AuthMessage';
 import {CTXT_VIEW_ADMIN, CTXT_VIEW_DEFAULT, CTXT_VIEW_LOADING, CTXT_VIEW_LOGIN} from './constants';
 import * as _ from 'lodash';
 import {BackendClientService} from './backend-client.service';
+import {switchMap} from 'rxjs/operators';
+import {of} from 'rxjs';
 
 /**
  * The service is used for app status informations and distribution of this information on the front end.
@@ -104,18 +106,42 @@ export class AppService {
 
   async onMessage(m: any) {
     if (m instanceof AuthMessage) {
-      if (this.authService.isLoggedIn()) {
-        const isAdmin = await this.authService.hasRole('admin');
-        this._isAdmin.next(isAdmin);
-        if (this.adminUrl && !this.isViewContext(CTXT_VIEW_ADMIN)) {
-          this.setViewContext(CTXT_VIEW_ADMIN);
-        } else {
-          this.setViewContext(CTXT_VIEW_DEFAULT);
-        }
-      } else {
-        this.setViewContext(CTXT_VIEW_LOGIN);
-        this._isAdmin.next(false);
-      }
+      this.authService
+        .isLoggedIn()
+        .pipe(switchMap(logged => {
+          if (logged) {
+            return this.authService.hasRole('admin');
+          } else {
+            return of(logged);
+          }
+        }))
+        .subscribe(isAdmin => {
+          if (isAdmin) {
+            this._isAdmin.next(isAdmin);
+            if (this.adminUrl && !this.isViewContext(CTXT_VIEW_ADMIN)) {
+              this.setViewContext(CTXT_VIEW_ADMIN);
+            } else {
+              this.setViewContext(CTXT_VIEW_DEFAULT);
+            }
+          } else {
+            this.setViewContext(CTXT_VIEW_LOGIN);
+            this._isAdmin.next(false);
+          }
+        });
+      //
+      // if (this.authService.isLoggedIn()) {
+      //   this.authService.hasRole('admin').subscribe(isAdmin => {
+      //     this._isAdmin.next(isAdmin);
+      //     if (this.adminUrl && !this.isViewContext(CTXT_VIEW_ADMIN)) {
+      //       this.setViewContext(CTXT_VIEW_ADMIN);
+      //     } else {
+      //       this.setViewContext(CTXT_VIEW_DEFAULT);
+      //     }
+      //   } else {
+      //     this.setViewContext(CTXT_VIEW_LOGIN);
+      //     this._isAdmin.next(false);
+      //   }
+      //   });
     }
   }
 

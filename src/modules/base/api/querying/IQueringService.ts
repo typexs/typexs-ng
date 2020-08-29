@@ -20,6 +20,7 @@ export interface IQueringService {
 
   query(entityName: string, query?: any, options?: any): Observable<any>;
 
+  aggregate(entityName: string, aggregate?: any, options?: any): Observable<any>;
 
   save(entityName: string, entity: any, options?: any): Observable<any>;
 
@@ -28,6 +29,7 @@ export interface IQueringService {
 
 
   delete(entityName: string, entityId: any, options?: any): Observable<any>;
+
 
   getNgUrlPrefix(): string;
 

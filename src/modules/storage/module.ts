@@ -14,6 +14,9 @@ import {StorageDeleteComponent} from './delete/storage-delete.component';
 import {StorageBackendsComponent} from './backends/storage-backends.component';
 import {CommonModule} from '@angular/common';
 import {StorageQueryEmbeddedComponent} from './query/embedded/storage-query-embedded.component';
+import {STORAGE_ROUTES} from './routes';
+import {StorageAggregateComponent} from './aggregate/page/storage-aggregate.component';
+import {StorageAggregateEmbeddedComponent} from './aggregate/embedded/storage-aggregate-embedded.component';
 
 const PROVIDERS = [
   StorageService,
@@ -27,7 +30,9 @@ const COMPONENTS = [
   StorageQueryComponent,
   StorageQueryEmbeddedComponent,
   StorageDeleteComponent,
-  StorageBackendsComponent
+  StorageBackendsComponent,
+  StorageAggregateComponent,
+  StorageAggregateEmbeddedComponent
 ];
 
 @NgModule({
@@ -50,6 +55,10 @@ export class StorageModule {
       ngModule: StorageModule,
       providers: PROVIDERS
     };
+  }
+
+  static getRoutes() {
+    return STORAGE_ROUTES;
   }
 
 }

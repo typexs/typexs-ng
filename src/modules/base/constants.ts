@@ -7,6 +7,12 @@ export const C_URL_HANDLER = 'urlHandler';
 export const C_URL_TITLE = 'urlTitle';
 
 
+
+/**
+ * Topic
+ */
+export const MSG_TOPIC_AUTH_SET_USER = 'set user';
+
 /**
  * Component class reference
  */

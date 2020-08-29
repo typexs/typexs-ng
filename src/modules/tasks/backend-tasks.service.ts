@@ -40,7 +40,12 @@ export class BackendTasksService {
 
   execute(name: string, parameters: any = {}, targetIds: string[] = [], options: ITaskExectorOptions = {}): Observable<TaskEvent[]> {
     return this.http.callApi(API_CTRL_TASK_EXEC,
-      {params: {taskName: name}, query: {params: parameters, targetIds: targetIds, options: options}});
+      {
+        params: {
+          taskName: name
+        },
+        query: {params: parameters, targetIds: targetIds, options: options}
+      });
   }
 
 

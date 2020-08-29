@@ -3,19 +3,22 @@ import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import * as _ from 'lodash';
 import {IBuildOptions, IEntityRef, ILookupRegistry, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
-import {Helper} from '../../../../libs/observable/Helper';
-import {AuthMessage} from '../../messages/types/AuthMessage';
 import {BackendClientService} from '../../backend-client.service';
 import {AuthService} from '../auth/auth.service';
 import {IFindOptions, ISaveOptions} from '@typexs/base/browser';
 import {Expressions} from 'commons-expressions/browser';
 import {IApiCallOptions} from '../../lib/http/IApiCallOptions';
+import {of, Subscription} from 'rxjs';
+import {STORAGE_REQUEST_MODE} from './Constants';
 
 /**
  * Options for query service
  */
 export interface IQueryServiceOptions {
 
+  /**
+   * Route name for metadata loading
+   */
   urlRegistryMetadata: string;
 
   /**
@@ -78,8 +81,35 @@ export abstract class AbstractQueryService implements IQueringService {
     this._http = http;
     this._authService = authService;
     this.options = options;
-    this.reloadMetadata();
+    this.initialize();
 
+  }
+
+
+  private initialize() {
+    if (this._authService.isEnabled()) {
+      let subscription: Subscription = null;
+      this._authService.isInitialized().subscribe(x => {
+        if (x) {
+          subscription = this._authService.isLoggedIn().subscribe(isLoggedIn => {
+            if (isLoggedIn) {
+              this.loadEntityMetadata();
+            } else {
+              this.$isReady.next(false);
+              this.entityRefs = [];
+            }
+          });
+        } else {
+          if (subscription) {
+            subscription.unsubscribe();
+            this.$isReady.next(false);
+            this.entityRefs = [];
+          }
+        }
+      });
+    } else {
+      this.loadEntityMetadata();
+    }
   }
 
   getRegistry() {
@@ -114,29 +144,6 @@ export abstract class AbstractQueryService implements IQueringService {
       }, () => {
         // callback();
       });
-    }
-  }
-
-  reloadMetadata() {
-    Helper.after(this._authService.isInitialized(), x => {
-      if (x) {
-        this._authService.getChannel().subscribe(s => {
-          if (s instanceof AuthMessage) {
-            this.userState();
-          }
-        });
-      }
-    });
-  }
-
-
-  userState() {
-    if (this._authService.isLoggedIn()) {
-      // TODO load for use permissions
-      this.loadEntityMetadata();
-    } else {
-      this.$isReady.next(false);
-      this.entityRefs = [];
     }
   }
 
@@ -180,11 +187,11 @@ export abstract class AbstractQueryService implements IQueringService {
   }
 
 
-  buildOptions?(method: 'get' | 'update' | 'save' | 'delete' | 'query',
+  buildOptions?(method: STORAGE_REQUEST_MODE,
                 options: any /*IFindOptions*/, buildOptions: IBuildOptions = {}) {
   }
 
-  buildEntity?(method: 'get' | 'update' | 'save' | 'delete' | 'query',
+  buildEntity?(method: STORAGE_REQUEST_MODE,
                entityRef: IEntityRef, entity: any | any[], buildOptions: IBuildOptions = {}) {
   }
 
@@ -211,33 +218,32 @@ export abstract class AbstractQueryService implements IQueringService {
     return this.callApi(this.options.urlGetEntity, {params: apiParams, query: additinalQuery}, x => {
       return this.buildEntity('get', entityDef, x, buildOptions);
     });
-    //
-    // const observable = this._http
-    //   .callApi();
-    // observable.subscribe(
-    //   value => {
-    //
-    //     obs.next(result);
-    //     obs.complete();
-    //   },
-    //   error => {
-    //     obs.error(error);
-    //     obs.complete();
-    //   });
-    // this._http.get(apiUrl,
-    //   (err: Error, res: any) => {
-    //     if (err) {
-    //       obs.error(err);
-    //       obs.complete();
-    //     } else if (res) {
-    //       const result = this.buildEntity('get', entityDef, res, buildOptions);
-    //       obs.next(result);
-    //       obs.complete();
-    //     }
-    //   }
-    // );
-    // return obs.asObservable();
   }
+
+
+  /**
+   * Return results for an query request to the backend
+   *
+   * @param entityName
+   * @param query
+   * @param options
+   */
+  query(entityName: string, query: any = null, options: IFindOptions = {}) {
+    return this._query(entityName, query, null, options);
+  }
+
+
+  /**
+   * Return results of an aggregation request to the backend
+   *
+   * @param entityName
+   * @param aggr
+   * @param options
+   */
+  aggregate(entityName: string, aggr: any = [], options: IFindOptions = {}) {
+    return this._query(entityName, null, aggr, options);
+  }
+
 
   /**
    * TODO
@@ -245,88 +251,58 @@ export abstract class AbstractQueryService implements IQueringService {
    * @param query
    * @param options
    */
-  query(entityName: string, query: any = null, options: IFindOptions = {}) {
+  private _query(entityName: string, query: any = null, aggr: any = null, options: IFindOptions = {}) {
     const _opts = _.clone(options);
     const entityDef = this.getEntityRefForName(entityName);
-    // const obs = new BehaviorSubject<any>(null);
-
-
     const apiParams = {name: entityName};
     const additinalQuery: any = {};
-    // let apiUrl = this.apiUrl(this.options.urlGetEntity, );
-
-    // const queryParts = [];
+    let aggrMode = false;
     if (_.isPlainObject(query)) {
       additinalQuery.query = query;
-      // queryParts.push('query=' + JSON.stringify(query));
+    } else if (_.isPlainObject(aggr) || _.isArray(aggr)) {
+      additinalQuery.aggr = aggr;
+      aggrMode = true;
+    } else {
+      if (aggr) {
+        return of({entities: [], $count: 0, $limit: 0, $offset: 0});
+      }
     }
     if (_.isNumber(_opts.limit)) {
       additinalQuery.limit = _opts.limit;
-      // queryParts.push('limit=' + _opts.limit);
       delete _opts.limit;
     }
     if (_.isNumber(_opts.offset)) {
       additinalQuery.offset = _opts.offset;
-      // queryParts.push('offset=' + _opts.offset);
       delete _opts.offset;
     }
     if (_.isPlainObject(_opts.sort)) {
       additinalQuery.sort = _opts.sort;
-      // queryParts.push('sort=' + JSON.stringify(_opts.sort));
       delete _opts.sort;
     }
-
     if (!_.isEmpty(_opts)) {
       additinalQuery.opts = _opts;
-      // queryParts.push('opts=' + JSON.stringify(_opts));
     }
-
-    // let apiUrl = this.apiUrl(this.options.urlQueryEntity, {name: entityName});
-    // if (queryParts.length > 0) {
-    //   apiUrl += '?' + queryParts.join('&');
-    // }
-
+    const mode = aggrMode ? 'aggregate' : 'query';
     const buildOptions: IBuildOptions = {};
-    this.buildOptions('query', options, buildOptions);
+    this.buildOptions(mode, options, buildOptions);
 
-    return this.callApi(this.options.urlQueryEntity, {params: apiParams, query: additinalQuery}, x => {
-      x.entities = this.buildEntity('query', entityDef, x.entities, buildOptions);
+    const apiOptions = {params: apiParams, query: additinalQuery};
+    console.log(apiOptions);
+    return this.callApi(this.options.urlQueryEntity, apiOptions, x => {
+      // aggregation ?
+      console.log(x);
+
+
+      x.entities = this.buildEntity(mode, entityDef, x.entities, buildOptions);
       return x;
     });
-
-    //
-    // this._http.get(apiUrl, (err: Error, res: any) => {
-    //   if (err) {
-    //     obs.error(err);
-    //     obs.complete();
-    //   } else if (res) {
-    //     res.entities = this.buildEntity('query', entityDef, res.entities, buildOptions);
-    //     obs.next(res);
-    //     obs.complete();
-    //   }
-    // });
-    // return obs.asObservable();
   }
-
 
   save(entityName: string, entity: any, options: ISaveOptions = {}): Observable<any> {
     const entityDef = this.getEntityRefForName(entityName);
-    // const obs = new BehaviorSubject<any>(null);
-    //
-    //
-    // const buildOptions: IBuildOptions = {};
-    // this.buildOptions('save', options, buildOptions);
-    // let apiUrl = this.apiUrl(this.options.urlSaveEntity, {name: entityName});
-    // if (!_.isEmpty(options)) {
-    //   apiUrl += '?opts=' + JSON.stringify(options);
-    // }
-
-
     const apiParams = {name: entityName};
     const additinalQuery: any = {};
-    // let apiUrl = this.apiUrl(this.options.urlGetEntity, );
     if (!_.isEmpty(options)) {
-      // apiUrl += '?opts=' + JSON.stringify(options);
       additinalQuery.opts = options;
     }
     const buildOptions: IBuildOptions = {};
@@ -335,19 +311,6 @@ export abstract class AbstractQueryService implements IQueringService {
     return this.callApi(this.options.urlSaveEntity, {params: apiParams, query: additinalQuery, content: entity}, x => {
       return this.buildEntity('save', entityDef, x, buildOptions);
     });
-    //
-    //
-    // this._http.post(apiUrl, entity, (err: Error, res: any) => {
-    //   if (err) {
-    //     obs.error(err);
-    //     obs.complete();
-    //   } else if (res) {
-    //     const result = this.buildEntity('save', entityDef, res, buildOptions);
-    //     obs.next(result);
-    //     obs.complete();
-    //   }
-    // });
-    // return obs.asObservable();
   }
 
   /**
@@ -367,21 +330,10 @@ export abstract class AbstractQueryService implements IQueringService {
     if (entityId !== id) {
       throw new Error('something is wrong');
     }
-    // const obs = new BehaviorSubject<any>(null);
-    // let apiUrl = this.apiUrl(this.options.urlUpdateEntity, {name: entityName, id: entityId});
-    //
-    //
-    // const buildOptions: IBuildOptions = {};
-    // this.buildOptions('update', options, buildOptions);
-    // if (!_.isEmpty(options)) {
-    //   apiUrl += '?opts=' + JSON.stringify(options);
-    // }
 
     const apiParams = {name: entityName, id: entityId};
     const additinalQuery: any = {};
-    // let apiUrl = this.apiUrl(this.options.urlGetEntity, );
     if (!_.isEmpty(options)) {
-      // apiUrl += '?opts=' + JSON.stringify(options);
       additinalQuery.opts = options;
     }
     const buildOptions: IBuildOptions = {};
@@ -390,18 +342,6 @@ export abstract class AbstractQueryService implements IQueringService {
     return this.callApi(this.options.urlSaveEntity, {params: apiParams, query: additinalQuery, content: entity}, x => {
       return this.buildEntity('update', entityDef, x, buildOptions);
     });
-
-    // this._http.post(apiUrl, entity, (err: Error, res: any) => {
-    //   if (err) {
-    //     obs.error(err);
-    //     obs.complete();
-    //   } else if (res) {
-    //     const result = this.buildEntity('update', entityDef, res, buildOptions);
-    //     obs.next(result);
-    //     obs.complete();
-    //   }
-    // });
-    // return obs.asObservable();
   }
 
   /**
@@ -413,22 +353,9 @@ export abstract class AbstractQueryService implements IQueringService {
    */
   delete(entityName: string, entityId: any, options: any = {}) {
     const entityDef = this.getEntityRefForName(entityName);
-    // const obs = new BehaviorSubject<any>(null);
-    // let apiUrl = this.apiUrl(this.options.urlDeleteEntity, {name: entityName, id: entityId});
-    //
-    //
-    // const buildOptions: IBuildOptions = {};
-    // this.buildOptions('delete', options, buildOptions);
-    // if (!_.isEmpty(options)) {
-    //   apiUrl += '?opts=' + JSON.stringify(options);
-    // }
-
-
     const apiParams = {name: entityName, id: entityId};
     const additinalQuery: any = {};
-    // let apiUrl = this.apiUrl(this.options.urlGetEntity, );
     if (!_.isEmpty(options)) {
-      // apiUrl += '?opts=' + JSON.stringify(options);
       additinalQuery.opts = options;
     }
     const buildOptions: IBuildOptions = {};
@@ -437,19 +364,8 @@ export abstract class AbstractQueryService implements IQueringService {
     return this.callApi(this.options.urlDeleteEntity, {params: apiParams, query: additinalQuery}, x => {
       return this.buildEntity('delete', entityDef, x, buildOptions);
     });
-
-    // this._http.delete(apiUrl, (err: Error, res: any) => {
-    //   if (err) {
-    //     obs.error(err);
-    //     obs.complete();
-    //   } else {
-    //     const result = this.buildEntity('delete', entityDef, res, buildOptions);
-    //     obs.next(result);
-    //     obs.complete();
-    //   }
-    // });
-    // return obs.asObservable();
   }
+
 
   callApi(context: string, api: IApiCallOptions, resultHandle?: (x: any) => any) {
     const obs = new BehaviorSubject<any>(null);
@@ -470,13 +386,6 @@ export abstract class AbstractQueryService implements IQueringService {
         obs.complete();
       });
     return obs.asObservable();
-  }
-
-
-  /**
-   * TODO aggregation
-   */
-  aggregate() {
   }
 
 

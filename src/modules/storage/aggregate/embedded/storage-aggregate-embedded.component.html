@@ -2,6 +2,7 @@
 
   <txs-free-query-input
     *ngIf="options.freeQueryBuilder"
+    mode="aggregate"
     (queryState)="onQueryAction($event)"
   >
   </txs-free-query-input>
@@ -11,7 +12,7 @@
     [columns]="columns"
     [options]="options"
     [(params)]="params"
-    (doQuery)="doQuery($event)"
+    (doQuery)="doAggregate($event)"
   ></txs-datatable>
 
 </div>

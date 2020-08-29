@@ -9,10 +9,10 @@ import {MessageChannel} from '../../messages/MessageChannel';
 import {MessageType} from '../../messages/IMessage';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Subject} from 'rxjs/Subject';
 
-import {MESSAGE_TYPE_AUTH_SERVICE} from '../../constants';
+import {MESSAGE_TYPE_AUTH_SERVICE, MSG_TOPIC_AUTH_SET_USER} from '../../constants';
 import {AuthMessage} from '../../messages/types/AuthMessage';
+import {of} from 'rxjs';
 
 @Injectable()
 export class NoopAuthService implements IAuthServiceProvider {
@@ -21,59 +21,62 @@ export class NoopAuthService implements IAuthServiceProvider {
 
   private _initialized: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
+  private _loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+
   constructor(private messageService: MessageService) {
   }
 
   init() {
-    this._initialized.next(true);
-    this._initialized.complete();
     const msg = new AuthMessage();
     msg.type = MessageType.SUCCESS;
-    msg.topic = 'set user';
+    msg.topic = MSG_TOPIC_AUTH_SET_USER;
+    this._initialized.next(true);
     this.getChannel().publish(msg);
   }
 
-  isInitialized(): Observable<boolean> | boolean  {
-    if (this._initialized.value) {
-      return this._initialized.value;
-    }
+  isInitialized(): Observable<boolean> {
     return this._initialized;
+  }
+
+
+  isEnabled(): boolean {
+    return false;
   }
 
   getChannel(): MessageChannel<AuthMessage> {
     return <MessageChannel<AuthMessage>>this.messageService.get(MESSAGE_TYPE_AUTH_SERVICE);
   }
 
-  isLoggedIn(): boolean {
-    return true;
+  isLoggedIn(): Observable<boolean> {
+    return this._loggedIn;
   }
 
-  getUser<T extends IUser>(): T {
-    return <T>this.user;
+  getUser<T extends IUser>(): Observable<T> {
+    return of(<T>this.user);
   }
 
-  getPermissions(): string[] {
-    return [];
+  getPermissions(): Observable<string[]> {
+    return of([]);
   }
 
-  getRoles(): string[] {
-    return [];
+  getRoles(): Observable<string[]> {
+    return of([]);
   }
 
-  hasRoutePermissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    return true;
+  hasRoutePermissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    return of(true);
   }
 
-  hasPermissionsFor(object: any): boolean {
-    return true;
+  hasPermissionsFor(object: any): Observable<boolean> {
+    return of(true);
   }
 
-  hasPermission(right: string, params?: any): boolean {
-    return true;
+  hasPermission(right: string, params?: any): Observable<boolean> {
+    return of(true);
   }
 
-  hasRole(role: string): boolean {
-    return true;
+  hasRole(role: string): Observable<boolean> {
+    return of(true);
   }
 }
 

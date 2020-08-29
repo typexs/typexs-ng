@@ -5,30 +5,40 @@ import {MessageChannel} from '../../messages/MessageChannel';
 import {AuthMessage} from '../../messages/types/AuthMessage';
 
 
-
 export interface IAuthServiceProvider {
 
   init(): void;
 
-  isInitialized(): Observable<boolean> | Promise<boolean> | boolean;
+  /**
+   * Returns if the service is online or if auth is not used and the default 'NoopAuthService' will be used
+   *
+   * - false for no auth check
+   */
+  isEnabled(): boolean;
+
+  /**
+   * Returns true if the service is fully initialized
+   */
+  isInitialized(): Observable<boolean>;
+
 
   getChannel(): MessageChannel<AuthMessage>;
 
-  isLoggedIn(): boolean;
+  isLoggedIn(): Observable<boolean>;
 
-  hasRoutePermissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean;
+  hasRoutePermissions(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean>;
 
-  hasPermission(right: string, params?: any): Observable<boolean> | Promise<boolean> | boolean;
+  hasPermission(right: string, params?: any): Observable<boolean>;
 
-  hasPermissionsFor?(object: any): Observable<boolean> | Promise<boolean> | boolean;
+  hasPermissionsFor?(object: any): Observable<boolean>;
 
-  getUser(): Observable<IUser> | Promise<IUser> | IUser;
+  getUser(): Observable<IUser>;
 
-  getRoles?(): Observable<string[]> | Promise<string[]> | string[];
+  getRoles?(): Observable<string[]>;
 
-  hasRole?(role: string): Observable<boolean> | Promise<boolean> | boolean;
+  hasRole?(role: string): Observable<boolean>;
 
-  getPermissions?(): Observable<string[]> | Promise<string[]> | string[];
+  getPermissions?(): Observable<string[]>;
 
 }
 

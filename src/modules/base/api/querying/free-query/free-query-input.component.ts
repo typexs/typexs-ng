@@ -2,10 +2,6 @@ import * as _ from 'lodash';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 import {Expressions} from 'commons-expressions/browser';
-
-import {IEntityRef} from 'commons-schema-api/browser';
-import {TypeOrmSqlConditionsBuilder} from '@typexs/base/libs/storage/framework/typeorm/TypeOrmSqlConditionsBuilder';
-import {IConditionJoin} from '@typexs/base/browser';
 import {QueryAction} from '../QueryAction';
 import Timeout = NodeJS.Timeout;
 
@@ -18,7 +14,10 @@ import Timeout = NodeJS.Timeout;
 export class FreeQueryInputComponent {
 
   @Input()
-  entityRef: IEntityRef;
+  mode: 'aggregate' | 'query' = 'query';
+
+  @Input()
+  lines: number = 1;
 
   @Output()
   queryState: EventEmitter<QueryAction> = new EventEmitter();
@@ -29,23 +28,18 @@ export class FreeQueryInputComponent {
 
   jsonQuery: any = null;
 
-  // sqlWhere = '';
-  //
-  // sqlJoins: IConditionJoin[] = [];
-
   timeout: Timeout;
 
   enabled: boolean = false;
 
   doQuery() {
     if (this.jsonQuery && this.freeTextQueryError.length === 0) {
-      this.queryState.emit(new QueryAction(this.jsonQuery));
+      this.queryState.emit(new QueryAction(this.jsonQuery, this.mode));
     }
   }
 
-
   doResetQuery() {
-    this.queryState.emit(new QueryAction(null));
+    this.queryState.emit(new QueryAction(null, this.mode));
   }
 
   onQueryInput($event: any) {
@@ -54,21 +48,28 @@ export class FreeQueryInputComponent {
   }
 
   build() {
+
     this.freeTextQueryError = [];
     if (!_.isEmpty(this.freeTextQuery)) {
       try {
         const errors: string[] = [];
-
-        const expr = Expressions.parse(this.freeTextQuery);
-        if (expr) {
-          this.jsonQuery = expr;
-          this.freeTextQueryError = errors;
+        if (this.mode === 'query') {
+          const expr = Expressions.parse(this.freeTextQuery);
+          if (expr) {
+            this.jsonQuery = expr;
+            this.freeTextQueryError = errors;
+          } else {
+            this.freeTextQueryError.push('no parseable data');
+          }
         } else {
-          this.freeTextQueryError.push('no parseable data');
+          this.jsonQuery = JSON.parse(this.freeTextQuery);
+          this.freeTextQueryError = errors;
         }
       } catch (e) {
         this.freeTextQueryError.push(e.message);
       }
+
     }
+
   }
 }

@@ -12,20 +12,15 @@ import {EntityViewComponent} from './../entity/view/entity-view.component';
 import {EntityStructComponent} from './../entity/struct/entity-struct.component';
 import {EntityDeleteComponent} from './../entity/delete/entity-delete.component';
 import {AuthGuardService} from '../base/api/auth/auth-guard.service';
-import {StorageTypesComponent} from '../storage/types/storage-types.component';
-import {StorageStructComponent} from '../storage/struct/storage-struct.component';
-import {StorageModifyComponent} from '../storage/modify/storage-modify.component';
-import {StorageViewComponent} from '../storage/view/storage-view.component';
-import {StorageDeleteComponent} from '../storage/delete/storage-delete.component';
-import {StorageQueryComponent} from '../storage/query/page/storage-query.component';
 import {StorageBackendsComponent} from '../storage/backends/storage-backends.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {TasksMetadataComponent} from '../tasks/metadata/tasks-metadata.component';
 import {TasksExecutionComponent} from '../tasks/execution/tasks-execution.component';
-import {TaskStatusComponent} from '../tasks/status/task-status.component';
 import {SystemNodesComponent} from './system/nodes/system-nodes.component';
 import {TasksLogComponent} from '../tasks/log/tasks-log.component';
 import {TaskStatusPageComponent} from '../tasks/status/task-status-page.component';
+import {STORAGE_ROUTES} from '../storage/routes';
+import {StorageModule} from '../storage/module';
 
 
 export const ADMIN_ROUTES: Routes = [
@@ -142,48 +137,7 @@ export const ADMIN_ROUTES: Routes = [
         data: {label: 'Entity type structure', skip: true},
         canActivate: [AuthGuardService]
       },
-      {
-        path: 'storage/types',
-        component: StorageTypesComponent,
-        data: {label: 'Types', group: 'admin'},
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'storage/:machineName/structure',
-        component: StorageStructComponent,
-        data: {label: 'Entity type structure', skip: true},
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'storage/:machineName/create',
-        component: StorageModifyComponent,
-        data: {label: 'Create entity', skip: true},
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'storage/:machineName/view/:id',
-        component: StorageViewComponent,
-        data: {label: 'View entity', skip: true},
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'storage/:machineName/edit/:id',
-        component: StorageModifyComponent,
-        data: {label: 'Edit entity', skip: true},
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'storage/:machineName/delete/:id',
-        component: StorageDeleteComponent,
-        data: {label: 'Delete entity', skip: true},
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'storage/:machineName/query',
-        component: StorageQueryComponent,
-        data: {label: 'List entities', skip: true},
-        canActivate: [AuthGuardService]
-      },
+      ...StorageModule.getRoutes(),
       {
         path: 'storage/backends',
         component: StorageBackendsComponent,

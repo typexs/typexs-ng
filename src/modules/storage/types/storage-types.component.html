@@ -32,6 +32,8 @@
         <td>
           <a class="btn btn-primary"
              [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'query']">Query</a>
+          <a class="btn btn-primary"
+             [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'aggregate']">Aggregate</a>
           <a class="btn btn-success"
              [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'create']">New</a>
           <a class="btn btn-warning"

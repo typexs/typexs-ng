@@ -5,6 +5,7 @@
   <div class="card-body">
 
     <txs-free-query-input
+      mode="aggregate"
       (queryState)="onQueryAction($event)"
     >
     </txs-free-query-input>
@@ -13,7 +14,7 @@
       #datatable
       [columns]="columns"
       [options]="options"
-      (doQuery)="doQuery($event)"
+      (doQuery)="doAggregate($event)"
     ></txs-datatable>
 
   </div>

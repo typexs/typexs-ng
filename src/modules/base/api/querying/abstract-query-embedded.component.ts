@@ -18,14 +18,9 @@ import {DatatableComponent} from '../../datatable/datatable.component';
 import {IQueringService} from './IQueringService';
 import {QueryAction} from './QueryAction';
 import {IQueryParams} from '../../datatable/IQueryParams';
+import {DEFAULT_DT_GRID_OPTIONS} from './Constants';
 
 
-export const DEFAULT_DT_GRID_OPTIONS: IDTGridOptions = {
-  pagerId: 'page',
-  enablePager: true,
-  limit: 25,
-  freeQueryBuilder: true
-};
 
 /**
  * Storage query embedded component
@@ -36,6 +31,7 @@ export const DEFAULT_DT_GRID_OPTIONS: IDTGridOptions = {
  * - extend/add specialized columns
  */
 export class AbstractQueryEmbeddedComponent implements OnInit {
+
 
   @Input()
   machineName: string;
@@ -113,13 +109,10 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
       this.findEntityDef();
       this.initialiseColumns();
 
-
-
       // api maybe not loaded
       setTimeout(() => {
         this.doQuery(this.datatable.api());
       });
-
     });
   }
 
@@ -177,7 +170,6 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
             }
           }
         }
-
         this.columns.push(column);
       });
 
@@ -258,6 +250,9 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
       );
 
   }
+
+
+
 
   reset() {
     this.params.offset = 0;

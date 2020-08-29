@@ -9,16 +9,15 @@ import {
   API_CTRL_STORAGE_GET_ENTITY,
   API_CTRL_STORAGE_METADATA_ALL_ENTITIES,
   API_CTRL_STORAGE_METADATA_ALL_STORES,
-  API_CTRL_STORAGE_PREFIX,
   API_CTRL_STORAGE_SAVE_ENTITY,
   API_CTRL_STORAGE_UPDATE_ENTITY,
   IStorageRefMetadata
 } from '@typexs/server/browser';
 import {REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base/browser';
 import {IBuildOptions, IEntityRef} from 'commons-schema-api/browser';
-import {Subject} from 'rxjs/Subject';
 import {IQueringService} from '../base/api/querying/IQueringService';
 import {AbstractQueryService} from '../base/api/querying/abstract-query.service';
+import {STORAGE_REQUEST_MODE} from '../base/api/querying/Constants';
 
 
 @Injectable()
@@ -79,19 +78,12 @@ export class StorageService extends AbstractQueryService implements IQueringServ
     return entityDef.build(entity, opts);
   }
 
-  //
-  // static url(url: string, replace: any = null) {
-  //   url = 'api' + API_CTRL_STORAGE_PREFIX + url;
-  //   if (replace) {
-  //     _.keys(replace).forEach(k => {
-  //       url = url.replace(':' + k, replace[k]);
-  //     });
-  //   }
-  //   return url;
-  // }
 
+  buildEntity(method: STORAGE_REQUEST_MODE, entityDef: IEntityRef, rawEntities: any | any[], options?: IBuildOptions) {
+    if (method === 'aggregate') {
+      return rawEntities;
+    }
 
-  buildEntity(method: 'get', entityDef: IEntityRef, rawEntities: any | any[], options?: IBuildOptions) {
     let result = null;
     if (_.isArray(rawEntities)) {
       result = rawEntities.map(r => StorageService._buildEntitySingle(entityDef, r, options));
@@ -102,7 +94,7 @@ export class StorageService extends AbstractQueryService implements IQueringServ
   }
 
 
-  buildOptions(method: 'get', options: any, buildOptions: any) {
+  buildOptions(method: STORAGE_REQUEST_MODE, options: any, buildOptions: any) {
     if (_.get(options, 'raw', false)) {
       _.set(buildOptions, 'raw', options.raw);
     }
@@ -111,20 +103,7 @@ export class StorageService extends AbstractQueryService implements IQueringServ
 
   getStorages(): Observable<IStorageRefMetadata[]> {
     return this.http.callApi(API_CTRL_STORAGE_METADATA_ALL_STORES);
-    // const obs = new Subject<IStorageRefMetadata[]>();
-    // this.http.get(StorageService.apiUrl(API_CTRL_STORAGE_METADATA_ALL_STORES),
-    //   (err: Error, entities: IStorageRefMetadata[]) => {
-    //     if (err) {
-    //       obs.error(err);
-    //       obs.complete();
-    //     } else if (_.isArray(entities)) {
-    //       obs.next(entities);
-    //       obs.complete();
-    //     }
-    //   });
-    // return obs.asObservable();
   }
-
 
 
 }

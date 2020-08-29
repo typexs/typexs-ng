@@ -77,7 +77,7 @@ export * from './modules/tasks/status/task-status-page.component';
 
 
 // storage module
-export * from './modules/storage/storage.module';
+export * from './modules/storage/module';
 export * from './modules/storage/storage.service';
 
 

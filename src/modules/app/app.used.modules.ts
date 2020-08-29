@@ -13,7 +13,7 @@ import {ViewsModule} from '../views/views.module';
 import {BaseModule} from '../base/module';
 import {BaseAdminThemeModule} from '../base_admin_theme/base_admin_theme.module';
 import {AgGridModule} from 'ag-grid-angular';
-import {StorageModule} from '../storage/storage.module';
+import {StorageModule} from '../storage/module';
 
 
 export const APP_MODULES: Array<Type<any> | ModuleWithProviders | any[]> = [

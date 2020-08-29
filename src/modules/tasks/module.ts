@@ -9,7 +9,7 @@ import {TasksMetadataComponent} from './metadata/tasks-metadata.component';
 import {TasksExecutionComponent} from './execution/tasks-execution.component';
 import {TaskStatusComponent} from './status/task-status.component';
 import {TaskStatusRowComponent} from './status/task-status-row.component';
-import {StorageModule} from '../storage/storage.module';
+import {StorageModule} from '../storage/module';
 import {DatePipe} from '@angular/common';
 import {TasksLogComponent} from './log/tasks-log.component';
 import {TaskStatusPageComponent} from './status/task-status-page.component';

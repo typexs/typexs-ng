@@ -18,7 +18,7 @@ import {NavigatorService} from '../navigator/navigator.service';
 import {BaseAdminThemeModule} from '../base_admin_theme/base_admin_theme.module';
 import {EntityService} from '../entity/entity.service';
 import {StorageService} from '../storage/storage.service';
-import {StorageModule} from '../storage/storage.module';
+import {StorageModule} from '../storage/module';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {TasksModule} from '../tasks/module';
 import {BackendTasksService} from '../tasks/backend-tasks.service';

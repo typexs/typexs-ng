@@ -59,6 +59,11 @@ export abstract class AbstractGridComponent implements IGridApi {
     this.rows = rows;
   }
 
+
+  setColumns(columns: IGridColumn[]) {
+    this.columns = columns;
+  }
+
   setMaxRows(maxRows: number) {
     this.maxRows = maxRows;
   }
