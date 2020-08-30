@@ -10,41 +10,61 @@ import {Expressions} from 'commons-expressions/browser';
 import {IApiCallOptions} from '../../lib/http/IApiCallOptions';
 import {of, Subscription} from 'rxjs';
 import {STORAGE_REQUEST_MODE} from './Constants';
+import {IUpdateOptions} from '@typexs/base/libs/storage/framework/IUpdateOptions';
+import {IAggregateOptions} from '@typexs/base/libs/storage/framework/IAggregateOptions';
 
 /**
  * Options for query service
  */
 export interface IQueryServiceOptions {
 
-  /**
-   * Route name for metadata loading
-   */
-  urlRegistryMetadata: string;
+  routes: { [k in STORAGE_REQUEST_MODE]: string };
 
-  /**
-   * use :name and :id as placeholder
-   */
-  urlGetEntity: string;
+  // /**
+  //  * Route name for metadata loading
+  //  */
+  // urlRegistryMetadata: string;
+  //
+  // /**
+  //  * use :name and :id as placeholder
+  //  */
+  // urlGetEntity: string;
+  //
+  // /**
+  //  * use :name and :id as placeholder
+  //  */
+  // urlQueryEntity: string;
+  //
+  // /**
+  //  * use :name as placeholder
+  //  */
+  // urlAggregateEntity: string;
+  //
+  // /**
+  //  * use :name and :id as placeholder
+  //  */
+  // urlSaveEntity: string;
+  //
+  // /**
+  //  * use :name and :id as placeholder
+  //  */
+  // urlDeleteEntity: string;
+  //
+  // /**
+  //  * use :name
+  //  */
+  // urlDeleteByCondition: string;
+  //
+  // /**
+  //  * use :name and :id as placeholder
+  //  */
+  // urlUpdateEntity: string;
+  //
+  // /**
+  //  * use :name
+  //  */
+  // urlUpdateByCondition: string;
 
-  /**
-   * use :name and :id as placeholder
-   */
-  urlSaveEntity: string;
-
-  /**
-   * use :name and :id as placeholder
-   */
-  urlDeleteEntity: string;
-
-  /**
-   * use :name and :id as placeholder
-   */
-  urlUpdateEntity: string;
-
-  /**
-   * use :name and :id as placeholder
-   */
-  urlQueryEntity: string;
 
   /**
    * define default route in ng
@@ -85,6 +105,14 @@ export abstract class AbstractQueryService implements IQueringService {
 
   }
 
+  isSupported(type: STORAGE_REQUEST_MODE) {
+    return !!this.options.routes[type];
+  }
+
+
+  getRoute(type: STORAGE_REQUEST_MODE) {
+    return this.options.routes[type];
+  }
 
   private initialize() {
     if (this._authService.isEnabled()) {
@@ -149,9 +177,13 @@ export abstract class AbstractQueryService implements IQueringService {
 
 
   loadEntityMetadata() {
-    if (!this.$isReady.getValue()) {
+    if (!this.isSupported('metadata')) {
+      console.warn('loading metadata for ' + this.options.ngRoutePrefix + ' is not supported');
+      return;
+    }
 
-      const observable = this._http.callApi(this.options.urlRegistryMetadata, {});
+    if (!this.$isReady.getValue()) {
+      const observable = this._http.callApi(this.getRoute('metadata'), {});
       observable.subscribe(
         value => {
           if (_.isArray(value)) {
@@ -203,6 +235,9 @@ export abstract class AbstractQueryService implements IQueringService {
    * @param options
    */
   get(entityName: string, entityId: any, options: IFindOptions = {}) {
+    if (!this.options.routes.get) {
+      throw new Error('Url for getting a single entity is missing.');
+    }
     const entityDef = this.getEntityRefForName(entityName);
     // const obs = new BehaviorSubject<any>(null);
     const apiParams = {name: entityName, id: entityId};
@@ -215,7 +250,7 @@ export abstract class AbstractQueryService implements IQueringService {
     const buildOptions: IBuildOptions = {};
     this.buildOptions('get', options, buildOptions);
 
-    return this.callApi(this.options.urlGetEntity, {params: apiParams, query: additinalQuery}, x => {
+    return this.callApi(this.getRoute('get'), {params: apiParams, query: additinalQuery}, x => {
       return this.buildEntity('get', entityDef, x, buildOptions);
     });
   }
@@ -229,6 +264,9 @@ export abstract class AbstractQueryService implements IQueringService {
    * @param options
    */
   query(entityName: string, query: any = null, options: IFindOptions = {}) {
+    if (!this.isSupported('query')) {
+      throw new Error('Url for querying entities is missing.');
+    }
     return this._query(entityName, query, null, options);
   }
 
@@ -240,13 +278,17 @@ export abstract class AbstractQueryService implements IQueringService {
    * @param aggr
    * @param options
    */
-  aggregate(entityName: string, aggr: any = [], options: IFindOptions = {}) {
+  aggregate(entityName: string, aggr: any = [], options: IAggregateOptions = {}) {
+    if (!this.isSupported('aggregate')) {
+      throw new Error('Url for aggregating entities is missing.');
+    }
     return this._query(entityName, null, aggr, options);
   }
 
 
   /**
-   * TODO
+   * Generic method for execution of query or aggregation request
+   *
    * @param entityName
    * @param query
    * @param options
@@ -287,18 +329,16 @@ export abstract class AbstractQueryService implements IQueringService {
     this.buildOptions(mode, options, buildOptions);
 
     const apiOptions = {params: apiParams, query: additinalQuery};
-    console.log(apiOptions);
-    return this.callApi(this.options.urlQueryEntity, apiOptions, x => {
-      // aggregation ?
-      console.log(x);
-
-
+    return this.callApi(this.getRoute(aggrMode ? 'aggregate' : 'query'), apiOptions, x => {
       x.entities = this.buildEntity(mode, entityDef, x.entities, buildOptions);
       return x;
     });
   }
 
   save(entityName: string, entity: any, options: ISaveOptions = {}): Observable<any> {
+    if (!this.isSupported('save')) {
+      throw new Error('Url for saving entities is missing.');
+    }
     const entityDef = this.getEntityRefForName(entityName);
     const apiParams = {name: entityName};
     const additinalQuery: any = {};
@@ -308,7 +348,7 @@ export abstract class AbstractQueryService implements IQueringService {
     const buildOptions: IBuildOptions = {};
     this.buildOptions('save', options, buildOptions);
 
-    return this.callApi(this.options.urlSaveEntity, {params: apiParams, query: additinalQuery, content: entity}, x => {
+    return this.callApi(this.getRoute('save'), {params: apiParams, query: additinalQuery, content: entity}, x => {
       return this.buildEntity('save', entityDef, x, buildOptions);
     });
   }
@@ -323,7 +363,10 @@ export abstract class AbstractQueryService implements IQueringService {
    * @param entity
    * @param options
    */
-  update(entityName: string, entityId: any, entity: any, options: ISaveOptions = {}) {
+  update(entityName: string, entityId: any, entity: any, options: IUpdateOptions = {}) {
+    if (!this.isSupported('update')) {
+      throw new Error('Url for update entities is missing.');
+    }
     // TODO if empty entity ???
     const entityDef = this.getEntityRefForName(entityName);
     const id = Expressions.buildLookupConditions(entityDef, entity);
@@ -339,7 +382,47 @@ export abstract class AbstractQueryService implements IQueringService {
     const buildOptions: IBuildOptions = {};
     this.buildOptions('update', options, buildOptions);
 
-    return this.callApi(this.options.urlSaveEntity, {params: apiParams, query: additinalQuery, content: entity}, x => {
+    return this.callApi(this.getRoute('update'), {params: apiParams, query: additinalQuery, content: entity}, x => {
+      return this.buildEntity('update', entityDef, x, buildOptions);
+    });
+  }
+
+  /**
+   * Two usage variants
+   * 1. update only one entity
+   * 2. TODO ! update a mass of entities defined by entityId or query conditions with given values
+   *
+   * @param entityName
+   * @param entityId
+   * @param entity
+   * @param options
+   */
+  updateByCondition(entityName: string, condition: any, update: any, options: ISaveOptions = {}) {
+    if (!this.isSupported('update_by_condition')) {
+      throw new Error('Url for update by conditions is missing.');
+    }
+    // TODO if empty entity ???
+    const entityDef = this.getEntityRefForName(entityName);
+
+    if (!update) {
+      throw new Error('Something is wrong.');
+    }
+
+    if (!condition) {
+      throw new Error('Something is wrong.');
+    }
+
+    const apiParams = {name: entityName};
+    const additinalQuery: any = {
+      query: condition
+    };
+    if (!_.isEmpty(options)) {
+      additinalQuery.opts = options;
+    }
+    const buildOptions: IBuildOptions = {};
+    this.buildOptions('update', options, buildOptions);
+
+    return this.callApi(this.getRoute('update_by_condition'), {params: apiParams, query: additinalQuery, content: update}, x => {
       return this.buildEntity('update', entityDef, x, buildOptions);
     });
   }
@@ -352,6 +435,9 @@ export abstract class AbstractQueryService implements IQueringService {
    * @param options
    */
   delete(entityName: string, entityId: any, options: any = {}) {
+    if (!this.isSupported('delete')) {
+      throw new Error('Url for delete entities is missing.');
+    }
     const entityDef = this.getEntityRefForName(entityName);
     const apiParams = {name: entityName, id: entityId};
     const additinalQuery: any = {};
@@ -361,7 +447,39 @@ export abstract class AbstractQueryService implements IQueringService {
     const buildOptions: IBuildOptions = {};
     this.buildOptions('delete', options, buildOptions);
 
-    return this.callApi(this.options.urlDeleteEntity, {params: apiParams, query: additinalQuery}, x => {
+    return this.callApi(this.getRoute('delete'), {params: apiParams, query: additinalQuery}, x => {
+      return this.buildEntity('delete', entityDef, x, buildOptions);
+    });
+  }
+
+  /**
+   * TODO
+   * - mass delete
+   * @param entityName
+   * @param entityId
+   * @param options
+   */
+  deleteByCondition(entityName: string, condition: any, options: any = {}) {
+    if (!this.isSupported('delete_by_condition')) {
+      throw new Error('Url for delete by condition is missing.');
+    }
+    if (!condition) {
+      throw new Error('Condition not found');
+    }
+
+
+    const entityDef = this.getEntityRefForName(entityName);
+    const apiParams = {name: entityName};
+    const additinalQuery: any = {
+      query: condition
+    };
+    if (!_.isEmpty(options)) {
+      additinalQuery.opts = options;
+    }
+    const buildOptions: IBuildOptions = {};
+    this.buildOptions('delete', options, buildOptions);
+
+    return this.callApi(this.getRoute('update_by_condition'), {params: apiParams, query: additinalQuery}, x => {
       return this.buildEntity('delete', entityDef, x, buildOptions);
     });
   }

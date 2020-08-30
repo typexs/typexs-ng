@@ -4,12 +4,15 @@ import {Observable} from 'rxjs/Observable';
 import {AuthService} from '../base/api/auth/auth.service';
 import {BackendClientService} from '../base/backend-client.service';
 import {
+  API_CTRL_STORAGE_AGGREGATE_ENTITY,
+  API_CTRL_STORAGE_DELETE_ENTITIES_BY_CONDITION,
   API_CTRL_STORAGE_DELETE_ENTITY,
   API_CTRL_STORAGE_FIND_ENTITY,
   API_CTRL_STORAGE_GET_ENTITY,
   API_CTRL_STORAGE_METADATA_ALL_ENTITIES,
   API_CTRL_STORAGE_METADATA_ALL_STORES,
   API_CTRL_STORAGE_SAVE_ENTITY,
+  API_CTRL_STORAGE_UPDATE_ENTITIES_BY_CONDITION,
   API_CTRL_STORAGE_UPDATE_ENTITY,
   IStorageRefMetadata
 } from '@typexs/server/browser';
@@ -17,7 +20,7 @@ import {REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base/browser';
 import {IBuildOptions, IEntityRef} from 'commons-schema-api/browser';
 import {IQueringService} from '../base/api/querying/IQueringService';
 import {AbstractQueryService} from '../base/api/querying/abstract-query.service';
-import {STORAGE_REQUEST_MODE} from '../base/api/querying/Constants';
+import {C_RAW, C_SKIP_BUILDS, STORAGE_REQUEST_MODE} from '../base/api/querying/Constants';
 
 
 @Injectable()
@@ -26,12 +29,17 @@ export class StorageService extends AbstractQueryService implements IQueringServ
   constructor(private http: BackendClientService,
               private authService: AuthService) {
     super(http, authService, TypeOrmEntityRegistry.$(), {
-      urlRegistryMetadata: API_CTRL_STORAGE_METADATA_ALL_ENTITIES,
-      urlGetEntity: API_CTRL_STORAGE_GET_ENTITY,
-      urlQueryEntity: API_CTRL_STORAGE_FIND_ENTITY,
-      urlDeleteEntity: API_CTRL_STORAGE_DELETE_ENTITY,
-      urlSaveEntity: API_CTRL_STORAGE_SAVE_ENTITY,
-      urlUpdateEntity: API_CTRL_STORAGE_UPDATE_ENTITY,
+      routes: {
+        metadata: API_CTRL_STORAGE_METADATA_ALL_ENTITIES,
+        get: API_CTRL_STORAGE_GET_ENTITY,
+        query: API_CTRL_STORAGE_FIND_ENTITY,
+        aggregate: API_CTRL_STORAGE_AGGREGATE_ENTITY,
+        delete: API_CTRL_STORAGE_DELETE_ENTITY,
+        delete_by_condition: API_CTRL_STORAGE_DELETE_ENTITIES_BY_CONDITION,
+        save: API_CTRL_STORAGE_SAVE_ENTITY,
+        update: API_CTRL_STORAGE_UPDATE_ENTITY,
+        update_by_condition: API_CTRL_STORAGE_UPDATE_ENTITIES_BY_CONDITION,
+      },
       ngRoutePrefix: '/storage',
       registryName: REGISTRY_TYPEORM
     });
@@ -64,7 +72,7 @@ export class StorageService extends AbstractQueryService implements IQueringServ
    * @private
    */
   private static _buildEntitySingle(entityDef: IEntityRef, entity: any, options?: IBuildOptions) {
-    if (_.get(options, 'skipBuilds', false)) {
+    if (_.get(options, C_SKIP_BUILDS, false)) {
       const x = entityDef.create();
       _.assign(x, entity);
       return x;
@@ -72,7 +80,7 @@ export class StorageService extends AbstractQueryService implements IQueringServ
     const opts = _.defaults(options, {
       beforeBuild: StorageService._beforeBuild
     });
-    if (_.get(options, 'raw', false)) {
+    if (_.get(options, C_RAW, false)) {
       opts.beforeBuild = StorageService._beforeBuildRaw;
     }
     return entityDef.build(entity, opts);
@@ -95,8 +103,8 @@ export class StorageService extends AbstractQueryService implements IQueringServ
 
 
   buildOptions(method: STORAGE_REQUEST_MODE, options: any, buildOptions: any) {
-    if (_.get(options, 'raw', false)) {
-      _.set(buildOptions, 'raw', options.raw);
+    if (_.get(options, C_RAW, false)) {
+      _.set(buildOptions, C_RAW, options.raw);
     }
   }
 

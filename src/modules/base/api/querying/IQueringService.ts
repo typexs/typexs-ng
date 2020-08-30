@@ -17,18 +17,19 @@ export interface IQueringService {
 
   get(entityName: string, entityId: any, options?: any): Observable<any>;
 
-
   query(entityName: string, query?: any, options?: any): Observable<any>;
 
   aggregate(entityName: string, aggregate?: any, options?: any): Observable<any>;
 
   save(entityName: string, entity: any, options?: any): Observable<any>;
 
-
   update(entityName: string, entityId: any, entity: any, options?: any): Observable<any>;
 
+  updateByCondition(entityName: string, condition: any, update: any, options?: any): Observable<any>;
 
   delete(entityName: string, entityId: any, options?: any): Observable<any>;
+
+  deleteByCondition(entityName: string, condition: any, options?: any): Observable<any>;
 
 
   getNgUrlPrefix(): string;
