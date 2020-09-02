@@ -1,6 +1,7 @@
 
 
 tasks:
+  logdir: ./tmp/tasklog
   access:
     - task: '*'
       access: deny
