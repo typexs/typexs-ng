@@ -7,10 +7,10 @@ export interface IQueringService {
    *
    * @param callback
    */
-  isReady(callback: Function): void;
+  isReady(callback: (status: boolean, error: Error) => void): void;
 
   /**
-   * isReady checks if metadata is loaded and publishes state on Obervable
+   * isReady checks if metadata is loaded and publishes state on Observable
    *
    */
   isReady(): Observable<boolean>;

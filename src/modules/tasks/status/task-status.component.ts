@@ -96,6 +96,7 @@ export class TaskStatusComponent implements OnInit {
       this.ngOnDestroy();
     });
     this.tasksService.taskLog(this.runnerId, this.nodeId).subscribe(x => {
+
       if (x) {
         this.log = this.buildLog(x).join('\n');
       }

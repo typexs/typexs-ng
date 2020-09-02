@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 
 import {
-  API_CTRL_TASK_EXEC,
+  API_CTRL_TASK_EXEC, API_CTRL_TASK_GET_METADATA,
   API_CTRL_TASK_GET_METADATA_VALUE,
-  API_CTRL_TASK_LOG,
-  API_CTRL_TASK_STATUS,
-  API_CTRL_TASKS_METADATA
+  API_CTRL_TASK_LOG, API_CTRL_TASK_RUNNING,
+  API_CTRL_TASK_STATUS, API_CTRL_TASKS_LIST,
+  API_CTRL_TASKS_METADATA, API_CTRL_TASKS_RUNNERS_INFO, API_CTRL_TASKS_RUNNING, API_CTRL_TASKS_RUNNING_ON_NODE
 } from '@typexs/server/browser';
 import {Tasks} from '@typexs/base/browser';
 import {IEntityRefMetadata} from 'commons-schema-api';
@@ -21,6 +21,18 @@ import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
 import {ExprDesc} from 'commons-expressions/browser';
 import {IMessageOptions} from '@typexs/base/libs/messaging/IMessageOptions';
 import {ITaskExectorOptions} from '@typexs/base/libs/tasks/ITaskExectorOptions';
+import {IApiCallOptions} from '../base/lib/http/IApiCallOptions';
+
+/**
+ * API_CTRL_TASK_*
+ */
+// API_CTRL_TASK_GET_METADATA
+// API_CTRL_TASK_RUNNING
+// API_CTRL_TASKS_RUNNERS_INFO
+// API_CTRL_TASKS_RUNNING_ON_NODE
+// API_CTRL_TASKS_LIST
+// API_CTRL_TASKS_RUNNING
+
 
 
 @Injectable()
@@ -66,35 +78,26 @@ export class BackendTasksService {
   }
 
   taskStatus(runnerId: string, options?: IMessageOptions): Observable<TaskLog> {
-    return this.http.callApi(API_CTRL_TASK_STATUS, {params: {runnerId: runnerId}, query: {options: options}});
+    const apiOptions: IApiCallOptions = {
+      params: {runnerId: runnerId},
+    };
+    if (options) {
+      apiOptions.query = {options: options};
+    }
+    return this.http.callApi(API_CTRL_TASK_STATUS, apiOptions);
   }
 
-  taskLog(runnerId: string, nodeId: string, from: number = null, offset: number = null, tail: number = 50): Observable<any[]> {
-    // const x = new Subject<any[]>();
 
-    // let apiUrl = this.api + API_CTRL_TASK_LOG.replace(':nodeId', nodeId).replace(':runnerId', runnerId);
+  taskLog(runnerId: string, nodeId: string, from: number = null, offset: number = null, tail: number = 50): Observable<any[]> {
     const opts: any = {};
     if (_.isNumber(from) && _.isNumber(offset) && from >= 0 && offset >= 0) {
-      // apiUrl += `?from=${from}&offset=${offset}`;
       opts.from = from;
       opts.offset = offset;
     } else if (_.isNumber(from) && from >= 0) {
-      // apiUrl += `?from=${from}`;
       opts.from = from;
     } else {
-      // apiUrl += `?tail=${tail}`;
       opts.tail = tail;
     }
-    //
-    // this.http.get({apiUrl: apiUrl, logging: false}, (err: HttpResponseError, data: any[]) => {
-    //   if (err) {
-    //     x.error(err);
-    //   } else {
-    //     x.next(data);
-    //   }
-    //   x.complete();
-    // });
-    // return x.asObservable();
     return this.http.callApi(API_CTRL_TASK_LOG, {params: {nodeId: nodeId, runnerId: runnerId}, query: opts});
   }
 
@@ -142,39 +145,18 @@ export class BackendTasksService {
    * @param nodeId
    */
   taskIncomingValues(taskName: string, incomingName: string, hint: ExprDesc = null, instance: any = null): Observable<any> {
-    // const x = new Subject<any>();
-    //
-    // let _url = this.api + API_CTRL_TASK_GET_METADATA_VALUE
-    //   .replace(':taskName', taskName)
-    //   .replace(':incomingName', incomingName);
-
     const opts: any = {};
     if (hint) {
       opts.hint = hint.toJson();
-      // queries.push('hint=' + JSON.stringify(hint.toJson()));
     }
     if (instance) {
       opts.instance = instance;
-      // queries.push('instance=' + JSON.stringify(instance));
-
     }
-    //
-    // if (queries.length > 0) {
-    //   _url += '?' + queries.join('&');
-    // }
-    //
-    // this.http.get(_url, (err, data: any) => {
-    //   if (err) {
-    //     x.error(err);
-    //   } else {
-    //     x.next(data);
-    //   }
-    //   x.complete();
-    // });
-    //
-    // return x.asObservable();
-    return this.http.callApi(API_CTRL_TASK_GET_METADATA_VALUE, {params: {taskName: taskName, incomingName: incomingName}, query: opts});
 
+    return this.http.callApi(API_CTRL_TASK_GET_METADATA_VALUE, {
+        params: {taskName: taskName, incomingName: incomingName}, query: opts
+      }
+    );
   }
 
 }

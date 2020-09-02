@@ -53,7 +53,7 @@ export class TasksLogComponent implements OnInit {
 
 
   ngOnInit() {
-    this.storageService.isReady(this.onInit.bind(this));
+    this.storageService.isReady((x: boolean) => x ? this.onInit() : null);
   }
 
 
