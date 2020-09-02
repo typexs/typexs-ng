@@ -60,16 +60,16 @@
     "@types/string-template": "^1.0.2",
     "@types/superagent": "^4.1.8",
     "@types/supertest": "^2.0.10",
-    "@typexs/schema": "^1.0.6",
-    "@typexs/server": "^1.0.4",
+    "@typexs/schema": "^1.0.8",
+    "@typexs/server": "^1.0.7",
     "ag-grid-angular": "^21.2.2",
     "ag-grid-community": "^21.2.2",
     "animate.css": "^4.1.0",
     "bootstrap": "^4.5.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "codecov": "^3.7.0",
-    "codelyzer": "^5.2.2",
+    "codecov": "^3.7.2",
+    "codelyzer": "^6.0.0",
     "core-js": "^3.6.5",
     "del": "^5.1.0",
     "express": "^4.17.1",
@@ -123,7 +123,7 @@
     "@angular/platform-browser": "^8.2.14",
     "@angular/platform-browser-dynamic": "^8.2.14",
     "@angular/router": "^8.2.14",
-    "@typexs/base": "^1.2.24",
+    "@typexs/base": "^1.2.25",
     "ajv": "^6.12.4",
     "rxjs": "^6.6.2",
     "rxjs-compat": "^6.6.2",
@@ -131,8 +131,8 @@
     "zone.js": "~0.11.1"
   },
   "peerDependencies": {
-    "@typexs/schema": "^1.0.6",
-    "@typexs/server": "^1.0.4"
+    "@typexs/schema": "^1.0.8",
+    "@typexs/server": "^1.0.7"
   },
   "private": true,
   "nyc": {
