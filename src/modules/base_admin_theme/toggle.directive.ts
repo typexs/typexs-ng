@@ -1,7 +1,9 @@
 import * as _ from 'lodash';
 import {Directive, ElementRef, HostListener, Input, Renderer2} from '@angular/core';
 
-export type ToggleSelector = { [selector: string]: string | string[] };
+export interface ToggleSelector {
+  [selector: string]: string | string[];
+}
 
 @Directive({
   exportAs: 'txs-toggle',
@@ -25,9 +27,9 @@ export class ToggleDirective {
     if (_.isString(this.toggle)) {
       this._toggleSelf(this.toggle);
     } else if (_.isArray(this.toggle)) {
-      let hostToggleClassesArray: string[][] = <string[][]>_.filter(this.toggle, e => _.isArray(e));
+      const hostToggleClassesArray: string[][] = <string[][]>_.filter(this.toggle, e => _.isArray(e));
       let hostToggleClasses: string[] = <string[]>_.filter(this.toggle, e => _.isString(e));
-      let hostToggleRfes: ToggleSelector = _.merge({}, ...<ToggleSelector[]>_.filter(this.toggle, e => _.isPlainObject(e)));
+      const hostToggleRfes: ToggleSelector = _.merge({}, ...<ToggleSelector[]>_.filter(this.toggle, e => _.isPlainObject(e)));
 
       if (!_.isEmpty(hostToggleClassesArray)) {
         hostToggleClasses = _.concat(hostToggleClasses, ...hostToggleClassesArray);
@@ -38,8 +40,8 @@ export class ToggleDirective {
       }
 
       if (!_.isEmpty(hostToggleRfes)) {
-        let keys = _.keys(hostToggleRfes);
-        for (let k of keys) {
+        const keys = _.keys(hostToggleRfes);
+        for (const k of keys) {
           this._toggleRef(k, hostToggleRfes[k]);
         }
       }
@@ -47,7 +49,7 @@ export class ToggleDirective {
 
     }
 
-    //this._toggleClass($event, this.toggle);
+    // this._toggleClass($event, this.toggle);
   }
 
   private _toggleRef(ref: string, clazz: string | string[]) {
@@ -57,8 +59,8 @@ export class ToggleDirective {
     } else {
       arr = clazz;
     }
-    for (let c of arr) {
-      let elem = document.querySelector(ref);
+    for (const c of arr) {
+      const elem = document.querySelector(ref);
       const hasClass = elem.classList.contains(c);
       if (hasClass) {
         this.renderer.removeClass(elem, c);
@@ -76,7 +78,7 @@ export class ToggleDirective {
     } else {
       arr = clazz;
     }
-    for (let c of arr) {
+    for (const c of arr) {
       const hasClass = this.ref.nativeElement.classList.contains(c);
       if (hasClass) {
         this.renderer.removeClass(this.ref.nativeElement, c);

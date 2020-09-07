@@ -115,7 +115,7 @@ export class PagerComponent implements OnInit, OnDestroy {
   //       this.router.navigateByUrl(urlTree);
   //     });
   //   } else {
-  //     throw new Error('pager is out of range ' + nr + ' of max ' + this.totalPages);
+  //     throw new Error('pager is out of range ' + nr + ' of maxlines ' + this.totalPages);
   //   }
   // }
 

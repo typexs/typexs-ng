@@ -17,14 +17,8 @@ export class LogMessage implements IMessage {
 
   data: any[] = null;
 
-
-
-  isErrorMessage() {
-    return !_.isNull(this.error);
-  }
-
   static error(error: Error, source: any = null, method: string = null, ...data: any[]) {
-    let l = new LogMessage();
+    const l = new LogMessage();
     l.error = error;
     l.source = source;
     l.method = method;
@@ -34,4 +28,10 @@ export class LogMessage implements IMessage {
     l.data = data;
     return l;
   }
+
+
+  isErrorMessage() {
+    return !_.isNull(this.error);
+  }
+
 }

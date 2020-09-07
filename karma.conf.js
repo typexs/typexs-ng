@@ -38,9 +38,9 @@ module.exports = function (config) {
     autoWatch: true,
     browsers: ['ChromeHeadless'],
     singleRun: false,
-    //preprocessors: {
+    // preprocessors: {
     //  './src/app/test.ts': ['@angular-devkit/build-angular']
-    //},
+    // },
     reporters: ['mocha'],
     mime: {
       'text/x-typescript': ['ts', 'tsx']

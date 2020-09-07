@@ -116,7 +116,7 @@ export class Pager extends EventEmitter {
         this.updateUrl();
       });
     } else {
-      throw new Error('pager is out of range ' + nr + ' of max ' + this.totalPages);
+      throw new Error('pager is out of range ' + nr + ' of maxlines ' + this.totalPages);
     }
   }
 

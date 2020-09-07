@@ -43,7 +43,7 @@ export class SimpleHtmlTableComponent extends AbstractGridComponent implements O
     }
 
     if (!this.maxRows && this.rows) {
-      // if maxRows is empty and rows already given then derive max
+      // if maxRows is empty and rows already given then derive maxlines
       this.maxRows = this.rows.length;
       if (this.options.enablePager) {
         this.calcPager();

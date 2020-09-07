@@ -73,7 +73,8 @@
             "tsConfig": "src/app/../../tsconfig.spec.json",
             "scripts": [],
             "styles": [
-              "src/app/styles.scss"
+              "src/app/styles/styles.scss",
+              "src/app/styles/app.loading.scss"
             ],
             "assets": [
               "src/app/assets",

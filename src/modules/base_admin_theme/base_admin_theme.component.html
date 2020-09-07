@@ -67,8 +67,35 @@
 
       <ul class="navbar-nav ml-auto">
         <ng-content select="header-right-list-entries"></ng-content>
-        <li>
-          <span class="badge badge-pill badge-{{backendService.getState() | async}}" >{{backendService.getState() | async}}</span>
+        <li *ngIf="!(appStateService.isAdmin | async)">
+          <p class="btn btn-sm btn-{{backendService.getState() | async}}">
+            {{backendService.getState() | async}}
+            <span class="badge badge-primary">{{systemService.nodesCount}}</span>
+          </p>
+        </li>
+        <li *ngIf="(appStateService.isAdmin | async)">
+          <div class="dropdown drp-user">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <p class="btn btn-sm btn-{{backendService.getState() | async}}">
+                {{backendService.getState() | async}}
+                <span class="badge badge-primary">{{systemService.nodesCount}}</span>
+              </p>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right  profile-notification">
+              <div class="pro-head">
+                <span>Nodes</span>
+              </div>
+              <div class="pro-body">
+                <div class="container">
+                  <div class="row" *ngFor="let n of systemService.allNodes">
+                    <div class="col-md-4">{{n.hostname}}</div>
+                    <div class="col-md-3">{{n.nodeId}}</div>
+                    <div class="col-md-5">{{n.started | date:'dd.MM.yyyy HH:mm'}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </li>
         <li *ngIf="appStateService.isAuthenticated() && viewContext != 'admin'">
           <a *ngIf="(appStateService.isAdmin | async)" routerLink="/admin">

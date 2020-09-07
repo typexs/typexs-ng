@@ -30,16 +30,17 @@ export class TasksMetadataComponent implements OnInit {
     return this.tasksService.getWorkerNodes();
   }
 
-
   ngOnInit() {
+    console.log('meta init')
     this.tasksService.taskList(true).subscribe(x => {
+      console.log(x);
       this._tasks = x;
       this.tasks = [];
       x.names(true).forEach(y => {
         const ref = x.get(y);
         this.tasks.push(ref);
       });
-    });
+    }, error => console.error(error));
   }
 
 }

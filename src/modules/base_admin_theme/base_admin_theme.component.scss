@@ -34,3 +34,16 @@
   @extend .badge-warning;
 }
 
+.btn-online {
+  @extend .badge-success;
+}
+
+.btn-offline {
+  @extend .badge-secondary;
+}
+
+.btn-initial {
+  @extend .badge-warning;
+}
+
+

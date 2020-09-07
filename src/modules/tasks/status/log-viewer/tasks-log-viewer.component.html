@@ -1,0 +1,13 @@
+<div class="log-viewer">
+  <button class="btn btn-primary" (click)="loadLog()">Full Log</button>
+
+  <div class="row">
+    <div class="col-md-6 text-right">Status</div>
+    <div class="col-md-6">
+      {{position}} of {{maxlines}}
+    </div>
+  </div>
+  <div class="log" *ngIf="log">
+    <pre class="language-shell">{{log}}</pre>
+  </div>
+</div>

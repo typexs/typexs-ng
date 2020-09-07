@@ -6,7 +6,7 @@ export const C_URL_PREFIX = 'urlPrefix';
 export const C_URL_HANDLER = 'urlHandler';
 export const C_URL_TITLE = 'urlTitle';
 
-
+export const C_ADMIN = 'admin';
 
 /**
  * Topic

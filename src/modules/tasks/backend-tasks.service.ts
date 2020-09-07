@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 
 import {
-  API_CTRL_TASK_EXEC, API_CTRL_TASK_GET_METADATA,
+  API_CTRL_TASK_EXEC,
   API_CTRL_TASK_GET_METADATA_VALUE,
-  API_CTRL_TASK_LOG, API_CTRL_TASK_RUNNING,
-  API_CTRL_TASK_STATUS, API_CTRL_TASKS_LIST,
-  API_CTRL_TASKS_METADATA, API_CTRL_TASKS_RUNNERS_INFO, API_CTRL_TASKS_RUNNING, API_CTRL_TASKS_RUNNING_ON_NODE
+  API_CTRL_TASK_LOG,
+  API_CTRL_TASK_STATUS,
+  API_CTRL_TASKS_METADATA
 } from '@typexs/server/browser';
 import {Tasks} from '@typexs/base/browser';
 import {IEntityRefMetadata} from 'commons-schema-api';
@@ -32,7 +32,6 @@ import {IApiCallOptions} from '../base/lib/http/IApiCallOptions';
 // API_CTRL_TASKS_RUNNING_ON_NODE
 // API_CTRL_TASKS_LIST
 // API_CTRL_TASKS_RUNNING
-
 
 
 @Injectable()
@@ -88,48 +87,59 @@ export class BackendTasksService {
   }
 
 
-  taskLog(runnerId: string, nodeId: string, from: number = null, offset: number = null, tail: number = 50): Observable<any[]> {
+  taskLog(runnerId: string,
+          nodeId: string,
+          from: number = null,
+          offset: number = null,
+          tail: number = 50): Observable<any[]> {
     const opts: any = {};
-    if (_.isNumber(from) && _.isNumber(offset) && from >= 0 && offset >= 0) {
-      opts.from = from;
-      opts.offset = offset;
+    if (_.isNumber(from) &&
+      _.isNumber(offset) && from >= 0 && offset >= 0
+    ) {
+      opts.offset = from;
+      opts.limit = offset;
     } else if (_.isNumber(from) && from >= 0) {
-      opts.from = from;
+      opts.offset = from;
     } else {
       opts.tail = tail;
     }
-    return this.http.callApi(API_CTRL_TASK_LOG, {params: {nodeId: nodeId, runnerId: runnerId}, query: opts});
+    return this.http.callApi(API_CTRL_TASK_LOG,
+      {params: {nodeId: nodeId, runnerId: runnerId}, query: opts});
   }
 
 
   taskList(refresh: boolean = false): Observable<Tasks> {
     const x = new Subject<Tasks>();
     if (refresh || !this.tasks) {
-      this.infoService.refresh().subscribe(noop => {
-        // filter worker with task_queue_worker
-        const nodes = _.concat([], [this.infoService.node], this.infoService.nodes);
-        this.workerNodes = _.filter(nodes, c => {
-          // tslint:disable-next-line:no-shadowed-variable
-          const x = _.find(c.contexts, cc => cc.context === C_WORKERS);
-          if (x) {
-            return !!_.find(x.workers, w => w.name === 'task_queue_worker');
+      this.infoService.refresh()
+        .subscribe(refreshed => {
+          if (!refreshed) {
+            return;
           }
-          return false;
-        });
 
-        this.http.callApi(API_CTRL_TASKS_METADATA, {
-          handle:
-            (err, data: IEntityRefMetadata[]) => {
-              this.tasks = new Tasks(null);
-              data.forEach((d: any) => {
-                d.nodeIds = _.intersection(d.nodeIds, this.workerNodes.map(w => w.nodeId));
-                this.tasks.fromJson(d);
-              });
-              x.next(this.tasks);
-              x.complete();
+          // filter worker with task_queue_worker
+          const nodes: SystemNodeInfo[] = this.infoService.allNodes;
+          this.workerNodes = _.filter(nodes, c => {
+            const x = _.find(c.contexts, cc => cc.context === C_WORKERS);
+            if (x) {
+              return !!_.find(x.workers, w => w.name === 'task_queue_worker');
             }
-        });
-      });
+            return false;
+          });
+
+          this.http.callApi(API_CTRL_TASKS_METADATA, {
+            handle:
+              (err, data: IEntityRefMetadata[]) => {
+                this.tasks = new Tasks(null);
+                data.forEach((d: any) => {
+                  d.nodeIds = _.intersection(d.nodeIds, this.workerNodes.map(w => w.nodeId));
+                  this.tasks.fromJson(d);
+                });
+                x.next(this.tasks);
+                x.complete();
+              }
+          });
+        }, error => console.error(error));
 
     } else {
       x.next(this.tasks);

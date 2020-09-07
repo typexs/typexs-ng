@@ -26,3 +26,8 @@ server:
       - type: static_files
         routePrefix: public
         path: public
+
+
+filesystem:
+  paths:
+    - ./tmp

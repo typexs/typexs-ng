@@ -1,5 +1,3 @@
-
-
 <div class="container-fluid">
 
   <div class="row detail-tables">
@@ -102,25 +100,22 @@
   </ul>
 
   <div [ngSwitch]="contentContainer" class="tab-content">
-
     <div *ngSwitchCase="'log'">
-      <button (click)="loadLog()">Full Log</button>
-
-      <div class="log" *ngIf="log">
-        <pre class="language-shell">{{log}}</pre>
-      </div>
+      <txs-task-log-viewer [taskLog]="taskLog"></txs-task-log-viewer>
     </div>
 
+    <!--
     <div *ngSwitchCase="'error'">
       <div class="alert alert-danger rounded" *ngIf="logError">
         <pre class="language-shell">{{logError}}</pre>
       </div>
     </div>
-
+-->
     <div *ngSwitchCase="'json'">
       <pre class="language-json">{{taskLog | json}}</pre>
-
     </div>
+
+
 
   </div>
 </div>

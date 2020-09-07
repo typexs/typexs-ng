@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {SystemInfoService} from '../../base/system-info.service';
 import {IWorkerInfo} from '@typexs/base/libs/worker/IWorkerInfo';
 import {interval, Observable, Subscription, timer} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import {mergeMap, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'dashboard',
@@ -13,7 +13,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription = new Subscription();
 
-  pushTimer: Observable<number> = null;
+  pushTimer: Observable<boolean> = null;
 
   interval = 5000;
 
@@ -39,8 +39,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
 
 
-    this.pushTimer = timer(0, this.interval);
-    this.subscriptions.add(this.pushTimer.subscribe(x =>  this.infoService.refresh()));
+    this.pushTimer = timer(0, this.interval).pipe(mergeMap(x => this.infoService.refresh()));
+    this.subscriptions.add(this.pushTimer.subscribe(x =>  {}));
   }
 
 

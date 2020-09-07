@@ -14,6 +14,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {BackendClientService} from '../base/backend-client.service';
 import {of} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
+import {SystemInfoService} from '../base/system-info.service';
 
 @Component({
   selector: 'bat-admin-layout',
@@ -59,6 +60,7 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
               public renderer: Renderer2,
               public backendService: BackendClientService,
               public appStateService: AppService,
+              public systemService: SystemInfoService,
               private navigatorService: NavigatorService,
               private notifyService: NotificationsService) {
 
@@ -70,7 +72,6 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
 
 
   onLogMessage(log: LogMessage) {
-    // if()
     if (!log) {
       return;
     }
@@ -78,59 +79,49 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
     if (log.isErrorMessage()) {
       console.error(log.error);
     }
-
     this.notifyService.addMessage(log);
-
   }
+
 
   getUser() {
     return this.authService.getUser();
-    // if (this.authService.isLoggedIn()) {
-    //   return await this.authService.getUser();
-    // } else {
-    //   return null;
-    // }
-    //
   }
 
 
   async ngOnInit() {
-    this.authService.isInitialized().pipe(switchMap(x => {
-      if (x) {
-        return this.authService.isLoggedIn();
-      } else {
-        return of(x);
-      }
-    })).pipe(switchMap(x => {
-      if (x) {
-        return this.getUser();
-      } else {
-        return of(false);
-      }
-    })).subscribe(x => {
-      if (x && !_.isBoolean(x)) {
-        this.user = x;
-      }
-    });
-    // Helper.after(this.authService.isInitialized(), s => {
-    //   if (s) {
-    //     // this.userChannelSubscription = this.authService.getChannel().subscribe(async msg => {
-    //     //   if (msg instanceof AuthMessage) {
-    //     //   }
-    //     // });
-    //   }
-    // });
+    this.systemService.refresh();
+    this.authService.isInitialized()
+      .pipe(switchMap(x => {
+        if (x) {
+          return this.authService.isLoggedIn();
+        } else {
+          return of(x);
+        }
+      }))
+      .pipe(switchMap(x => {
+        if (x) {
+          return this.getUser();
+        } else {
+          return of(false);
+        }
+      }))
+      .subscribe(x => {
+        if (x && !_.isBoolean(x)) {
+          this.user = x;
+        }
+      }, error => console.error(error));
 
     let entry = this.navigatorService.getEntryByContext(CTXT_ROUTE_USER_PROFILE);
     if (entry) {
       this.userRouterLinks.profile = '/' + entry.getFullPath();
     }
-    entry = this.navigatorService.getEntryByContext(CTXT_ROUTE_USER_LOGOUT);
+      entry = this.navigatorService.getEntryByContext(CTXT_ROUTE_USER_LOGOUT);
     if (entry) {
       this.userRouterLinks.logout = '/' + entry.getFullPath();
     }
     await this.enableMenuScrollBar();
   }
+
 
   ngOnDestroy(): void {
     if (this.userChannelSubscription) {
@@ -139,12 +130,10 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
     if (this.initSubscription) {
       this.initSubscription.unsubscribe();
     }
-
   }
 
 
   async enableMenuScrollBar() {
-
     const _$ = document.querySelector;
     const classList = document.querySelector('.txs-navbar').classList;
     if (!classList.contains('theme-horizontal')) {

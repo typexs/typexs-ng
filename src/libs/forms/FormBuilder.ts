@@ -164,8 +164,8 @@ export class FormBuilder {
 
     const options = property.getOptions();
     if (options) {
-      Object.keys(options).forEach(opt => {
-        if (/^(source|target|property)/.test(opt)) {
+      _.keys(options).forEach(opt => {
+        if (/^(source|target|property|name)/.test(opt)) {
           return;
         }
         const value = options[opt];

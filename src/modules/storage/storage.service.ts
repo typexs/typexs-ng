@@ -28,7 +28,7 @@ export class StorageService extends AbstractQueryService implements IQueringServ
 
   constructor(private http: BackendClientService,
               private authService: AuthService) {
-    super(http, authService, TypeOrmEntityRegistry.$(), {
+    super(http, authService,  {
       routes: {
         metadata: API_CTRL_STORAGE_METADATA_ALL_ENTITIES,
         get: API_CTRL_STORAGE_GET_ENTITY,
@@ -40,6 +40,7 @@ export class StorageService extends AbstractQueryService implements IQueringServ
         update: API_CTRL_STORAGE_UPDATE_ENTITY,
         update_by_condition: API_CTRL_STORAGE_UPDATE_ENTITIES_BY_CONDITION,
       },
+      registry: TypeOrmEntityRegistry.$(),
       ngRoutePrefix: '/storage',
       registryName: REGISTRY_TYPEORM
     });

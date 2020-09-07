@@ -5,51 +5,51 @@
     <div class="card">
       <div class="card-header">Node</div>
       <div class="card-block">
-        <div class="row" *ngIf="infos().node">
+        <div class="row" *ngIf="infos().getNodeValue()">
           <div class="col-xl-12">
             <h6 class="align-items-center float-left">NodeId:</h6>
-            <h6 class="align-items-center float-right">{{infos().node.nodeId}}</h6>
+            <h6 class="align-items-center float-right">{{infos().getNodeValue().nodeId}}</h6>
           </div>
           <div class="col-xl-12">
             <h6 class="align-items-center float-left">MachineId:</h6>
-            <h6 class="align-items-center float-right">{{infos().node.machineId}}</h6>
+            <h6 class="align-items-center float-right">{{infos().getNodeValue().machineId}}</h6>
           </div>
           <div class="col-xl-12">
             <h6 class="align-items-center float-left">Hostname:</h6>
-            <h6 class="align-items-center float-right">{{infos().node.hostname}}</h6>
+            <h6 class="align-items-center float-right">{{infos().getNodeValue().hostname}}</h6>
           </div>
           <div class="col-xl-12">
             <h6 class="align-items-center float-left">Started:</h6>
-            <h6 class="align-items-center float-right">{{infos().node.started | date}}</h6>
+            <h6 class="align-items-center float-right">{{infos().getNodeValue().started | date}}</h6>
           </div>
 
 
         </div>
-        <div class="row" *ngIf="infos().info">
+        <div class="row" *ngIf="infos().getRuntimeInfoValue()">
           <div class="col-xl-12">
             <h6 class="align-items-center float-left">Arch:</h6>
-            <h6 class="align-items-center float-right">{{infos().info.arch}}</h6>
+            <h6 class="align-items-center float-right">{{infos().getRuntimeInfoValue().arch}}</h6>
           </div>
 
           <div class="col-xl-12">
             <h6 class="align-items-center float-left">Release:</h6>
-            <h6 class="align-items-center float-right">{{infos().info.release}}</h6>
+            <h6 class="align-items-center float-right">{{infos().getRuntimeInfoValue().release}}</h6>
           </div>
 
           <div class="col-xl-12">
             <h6 class="align-items-center float-left">Load:</h6>
-            <h6 class="align-items-center float-right">{{infos().info.loadavg.join('; ')}}</h6>
+            <h6 class="align-items-center float-right">{{infos().getRuntimeInfoValue().loadavg.join('; ')}}</h6>
           </div>
 
           <div class="col-xl-12">
             <h6 class="align-items-center float-left">Memory</h6>
             <h6
-              class="align-items-center float-right">{{infos().memoryScale(infos().info.memory.total - infos().info.memory.free)}}
-              / {{infos().memoryScale(infos().info.memory.total)}}</h6>
+              class="align-items-center float-right">{{infos().memoryScale(infos().getRuntimeInfoValue().memory.total - infos().getRuntimeInfoValue().memory.free)}}
+              / {{infos().memoryScale(infos().getRuntimeInfoValue().memory.total)}}</h6>
             <div class="progress m-t-30 m-b-20" style="height: 6px;">
               <div class="progress-bar progress-c-theme"
-                   role="progressbar" [style.width]="infos().usedMemoryPercent(infos().info) + '%'"
-                   [attr.aria-valuenow]="infos().usedMemoryPercent(infos().info)" aria-valuemin="0" aria-valuemax="100"
+                   role="progressbar" [style.width]="infos().usedMemoryPercent(infos().getRuntimeInfoValue()) + '%'"
+                   [attr.aria-valuenow]="infos().usedMemoryPercent(infos().getRuntimeInfoValue())" aria-valuemin="0" aria-valuemax="100"
               ></div>
             </div>
           </div>
@@ -86,11 +86,7 @@
           <div class="col-md-6"><strong>Node-ID</strong></div>
           <div class="col-md-6"><strong>Hostname</strong></div>
         </div>
-        <div class="row" *ngIf="infos().node">
-          <div class="col-md-6">{{infos().node.nodeId}}</div>
-          <div class="col-md-6">{{infos().node.hostname}}</div>
-        </div>
-        <div class="row" *ngFor="let n of infos().nodes">
+        <div class="row" *ngFor="let n of infos().allNodes">
           <div class="col-md-6">{{n.nodeId}}</div>
           <div class="col-md-6">{{n.hostname}}</div>
         </div>

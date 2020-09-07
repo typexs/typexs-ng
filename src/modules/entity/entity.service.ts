@@ -25,7 +25,7 @@ export class EntityService extends AbstractQueryService implements IQueringServi
 
 
   constructor(private http: BackendClientService, private authService: AuthService) {
-    super(http, authService, EntityRegistry.$(), {
+    super(http, authService, {
       ngRoutePrefix: API_ENTITY_PREFIX,
       routes: {
         metadata: API_CTRL_ENTITY_METADATA_ALL_ENTITIES,
@@ -38,6 +38,7 @@ export class EntityService extends AbstractQueryService implements IQueringServi
         get: API_CTRL_ENTITY_GET_ENTITY,
         aggregate: null,
       },
+      registry: EntityRegistry.$(),
       registryName: REGISTRY_TXS_SCHEMA
     });
   }

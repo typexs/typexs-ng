@@ -101,13 +101,10 @@ export abstract class FormObject extends TreeObject {
   }
 
   handle(key: string, value: any) {
-
     if (value instanceof ResolveDataValue) {
       const form = this.getForm(); //
       form['resolver'].push(value);
     }
-
-
     this.usedKeys.push(key);
     const methodName = 'handle' + _.capitalize(key);
     if (this[methodName]) {

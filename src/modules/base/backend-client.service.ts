@@ -4,10 +4,17 @@ import {MessageService} from './messages/message.service';
 import {MessageChannel} from './messages/MessageChannel';
 import {LogMessage} from './messages/types/LogMessage';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
 import {IApiCallOptions} from './lib/http/IApiCallOptions';
 import {API_CTRL_SERVER_PING, API_CTRL_SERVER_ROUTES, IRoute} from '@typexs/server/browser';
 import {IHttpRequestOptions} from './lib/http/IHttpRequestOptions';
+import {catchError, mergeMap} from 'rxjs/operators';
+
+export interface IRoutePointer {
+  route: string;
+  method?: 'get' | 'post' | 'delete' | 'put' | 'patch';
+}
+
 
 /**
  *
@@ -26,17 +33,6 @@ export type BACKEND_CLIENT_STATE = 'inactive' | 'offline' | 'online' | 'loading'
 @Injectable()
 export class BackendClientService {
 
-  api = '/api';
-
-  private serverTime: Date;
-
-  private state: BehaviorSubject<BACKEND_CLIENT_STATE> = new BehaviorSubject<BACKEND_CLIENT_STATE>('initial');
-
-
-  private routes: IRoute[] = [];
-
-  private logChannel: MessageChannel<LogMessage>;
-
 
   /**
    * Initialize with
@@ -46,8 +42,19 @@ export class BackendClientService {
    */
   constructor(private http: HttpClient, private messageService: MessageService) {
     this.logChannel = messageService.getLogService();
-    this.state.subscribe(x => console.log('backend state changed ' + x));
+    // this.state.subscribe(x => console.log('backend state changed ' + x));
   }
+
+  api = '/api';
+
+  private serverTime: Date;
+
+  private state: BehaviorSubject<BACKEND_CLIENT_STATE> = new BehaviorSubject<BACKEND_CLIENT_STATE>('initial');
+
+  private routes: IRoute[] = [];
+
+  private logChannel: MessageChannel<LogMessage>;
+
 
   static url(url: string, replace: any = null) {
     if (replace) {
@@ -56,6 +63,47 @@ export class BackendClientService {
       });
     }
     return url;
+  }
+
+
+  static detectErrors(data: any) {
+    if (_.isArray(data)) {
+      const errors = [];
+      for (let i = 0; i < data.length; i++) {
+        const entry = data[i];
+        const e = this.detectError(entry);
+        if (e) {
+          _.assign(e, {
+            index: i,
+            nodeId: entry.nodeId,
+            instNr: entry.instNr,
+          });
+          errors.push(e);
+        }
+      }
+      return errors;
+    } else {
+      const e = this.detectError(data);
+      if (e) {
+        _.assign(e, {
+          index: null,
+          nodeId: data.nodeId,
+          instNr: data.instNr,
+        });
+        return [e];
+      } else {
+        return [];
+      }
+    }
+  }
+
+
+  static detectError(entry: any) {
+    if (_.has(entry, 'error') && _.has(entry, 'message')) {
+      return new Error(entry.message);
+    }
+    return null;
+
   }
 
   /**
@@ -138,8 +186,18 @@ export class BackendClientService {
     return this.logChannel;
   }
 
-  apiUrl(context: string) {
-    return this.api + context;
+  apiUrl(context: string | IRoutePointer): string {
+    return this.api + (_.isString(context) ? context : (<IRoutePointer>context).route);
+  }
+
+
+  getRoute(route: string, method: string = 'get') {
+    const routes = this.routes.filter(x => x.route === route);
+    if (routes.length === 1) {
+      return routes.shift();
+    } else {
+      return routes.find(x => x.method === method);
+    }
   }
 
   /**
@@ -147,25 +205,28 @@ export class BackendClientService {
    * @param context
    * @param options
    */
-  callApi<T>(context: string, options?: IApiCallOptions): Observable<T> {
+  callApi<T>(context: string | IRoutePointer, options?: IApiCallOptions): Observable<T> {
     if (this.getState().getValue() === 'offline') {
       const s = new Subject();
       s.error('Backend is offline.');
       s.complete();
       return s.asObservable() as any;
     }
+    options = options || {};
     // @ts-ignore
     const ret = new Subject<T>();
     const state: Observable<BACKEND_CLIENT_STATE> = this.state.asObservable();
     state.subscribe(x => {
       if (x === 'online' && this.routes.length > 0) {
         const apiContext = this.apiUrl(context);
-        const route = this.routes.find(x => x.route === apiContext);
+        const route = this.getRoute(apiContext, _.isString(context) ? 'get' : context.method);
+
         if (!route) {
           ret.error('route ' + apiContext + ' not found.');
           ret.complete();
           return;
         }
+
         const method = route.method;
         const opts: IHttpRequestOptions = {
           url: 'TODO',
@@ -173,9 +234,9 @@ export class BackendClientService {
 
 
         if (options.params) {
-          opts.url = this.apiUrl(BackendClientService.url(context, options.params));
+          opts.url = BackendClientService.url(route.route as string, options.params);
         } else {
-          opts.url = this.apiUrl(context);
+          opts.url = apiContext;
         }
 
         if (options.query) {
@@ -188,7 +249,9 @@ export class BackendClientService {
               queryParts.push(q + '=' + value);
             }
           }
-          opts.url += '?' + queryParts.join('&');
+          if (!_.isEmpty(queryParts)) {
+            opts.url += '?' + queryParts.join('&');
+          }
         }
 
         if (options.content) {
@@ -199,9 +262,13 @@ export class BackendClientService {
           opts.callback = options.handle;
         }
 
-        (this[method](opts) as Observable<T>).subscribe(x => ret.next(x), error => ret.error(error), () => ret.complete());
+        (this[method](opts) as Observable<T>).subscribe(
+          x => ret.next(x),
+          error => ret.error(error),
+          () => ret.complete()
+        );
       }
-    });
+    }, error => console.error(error));
     return ret.asObservable();
 
   }
@@ -242,10 +309,11 @@ export class BackendClientService {
   }
 
   private handleRequest<T>(method: string, reqOptions: IHttpRequestOptions): Observable<T> {
-    const logging = _.has(reqOptions, 'logging') ? reqOptions.logging : false;
+    const logging = _.has(reqOptions, 'logging') ? reqOptions.logging : true;
     const client = this.getHttpClient();
     // const requestMethod = client[method];
 
+    console.log('handle request ' + method, reqOptions);
     let observable: Observable<T> = null;
     if (_.has(reqOptions, 'body')) {
       observable = client[method](reqOptions.url, reqOptions.body, reqOptions);
@@ -253,35 +321,54 @@ export class BackendClientService {
       observable = client[method](reqOptions.url, reqOptions);
     }
 
+    observable = observable.pipe(mergeMap((x: any) => {
+      console.log('=> ' + method + ' ' + reqOptions.url);
+      const filterErrors = BackendClientService.detectErrors(x);
+      if (filterErrors.length > 0) {
+        throw filterErrors[0];
+      }
+      return of(x);
+    }));
+
     if (_.has(reqOptions, 'callback')) {
       observable.subscribe(
         async value => {
+
           try {
             await reqOptions.callback(null, value);
           } catch (err) {
-            console.error(err);
+            if (logging) {
+              this.logChannel.publish(LogMessage.error(err));
+            }
           }
         },
         async error => {
           try {
             await reqOptions.callback(error, null);
           } catch (err) {
-            console.error(err);
+            if (logging) {
+              this.logChannel.publish(LogMessage.error(error));
+            }
           }
         });
+    } else {
+      observable.pipe(
+        catchError((error: Error) => {
+          if (logging) {
+            this.logChannel.publish(LogMessage.error(error));
+          }
+          throw error;
+        })
+      );
+      // observable.subscribe(
+      //   value => {
+      //   },
+      //   error => {
+      //   });
     }
 
-    observable.subscribe(
-      value => {
-      },
-      async error => {
-        if (logging) {
-          this.logChannel.publish(LogMessage.error(error));
-        }
-      });
 
     return observable;
   }
-
 
 }

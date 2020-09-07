@@ -4,7 +4,6 @@ import {AbstractFormComponent} from '../../libs/forms/AbstractFormComponent';
 import {InputHandle} from '../../libs/forms/elements';
 
 
-
 @ViewComponent('input')
 @Component({
   selector: 'txs-input',
@@ -12,11 +11,9 @@ import {InputHandle} from '../../libs/forms/elements';
 })
 export class InputComponent extends AbstractFormComponent<InputHandle>/* implements OnInit, OnChanges */ {
 
-  get type(){
+  get type() {
     return this.elem.variant;
   }
-
-
 
 
 }

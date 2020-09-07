@@ -5,11 +5,13 @@ import {Observable} from 'rxjs/Observable';
 import {AuthService} from './api/auth/auth.service';
 import {MessageService} from './messages/message.service';
 import {AuthMessage} from './messages/types/AuthMessage';
-import {CTXT_VIEW_ADMIN, CTXT_VIEW_DEFAULT, CTXT_VIEW_LOADING, CTXT_VIEW_LOGIN} from './constants';
+import {C_ADMIN, CTXT_VIEW_ADMIN, CTXT_VIEW_DEFAULT, CTXT_VIEW_LOADING, CTXT_VIEW_LOGIN} from './constants';
 import * as _ from 'lodash';
 import {BackendClientService} from './backend-client.service';
 import {switchMap} from 'rxjs/operators';
 import {of} from 'rxjs';
+import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
+import {API_CTRL_SYSTEM_RUNTIME_NODE, API_CTRL_SYSTEM_RUNTIME_NODES} from '@typexs/server/browser';
 
 /**
  * The service is used for app status informations and distribution of this information on the front end.
@@ -43,7 +45,7 @@ export class AppService {
     router.events.subscribe(e => {
 
       if (e instanceof NavigationEnd) {
-        this.adminUrl = e.urlAfterRedirects.startsWith('/admin');
+        this.adminUrl = e.urlAfterRedirects.startsWith('/' + C_ADMIN);
         if (this._isAdmin.value && this.adminUrl) {
           if (!this.isViewContext(CTXT_VIEW_ADMIN)) {
             this.setViewContext(CTXT_VIEW_ADMIN);
@@ -110,7 +112,7 @@ export class AppService {
         .isLoggedIn()
         .pipe(switchMap(logged => {
           if (logged) {
-            return this.authService.hasRole('admin');
+            return this.authService.hasRole(C_ADMIN);
           } else {
             return of(logged);
           }
@@ -149,5 +151,6 @@ export class AppService {
   get isAdmin(): Observable<boolean> {
     return this._isAdmin.asObservable();
   }
+
 
 }

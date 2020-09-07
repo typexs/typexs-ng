@@ -83,7 +83,7 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
       this.context = parent.child(elem.name, idx);
     } else {
       this.context = new Context();
-      if (elem.getBinding().baseType == XS_TYPE_PROPERTY) {
+      if (elem.getBinding().baseType === XS_TYPE_PROPERTY) {
         this.context.name = elem.name;
         this.context.idx = idx;
       }
@@ -109,7 +109,8 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
         const binding = this.elem.getBinding();
         if (binding.isEntityReference()) {
           if (_.isArray(this._value)) {
-            this._value = this._value.map(v => Expressions.buildLookupConditions((<ClassRef>binding.getTargetRef()).getEntityRef(), v) + '');
+            this._value = this._value.map(v =>
+              Expressions.buildLookupConditions((<ClassRef>binding.getTargetRef()).getEntityRef(), v) + '');
           } else {
             const cond = Expressions.buildLookupConditions((<ClassRef>binding.getTargetRef()).getEntityRef(), this._value);
             this._value = [cond];
@@ -150,7 +151,7 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
           this.setValue([v]);
         }
       } else {
-        if (_.isArray(v) && v.length == 1) {
+        if (_.isArray(v) && v.length === 1) {
           this.setValue(v[0]);
         } else {
           this.setValue(v);

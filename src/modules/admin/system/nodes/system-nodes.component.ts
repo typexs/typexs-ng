@@ -5,6 +5,8 @@ import * as _ from 'lodash';
 import {SystemInfoService} from '../../../base/system-info.service';
 import {INodeInfo} from '@typexs/base/libs/system/INodeInfo';
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
+import {interval, Subscription} from 'rxjs';
+import {mergeMap} from 'rxjs/operators';
 
 
 @Component({
@@ -14,7 +16,7 @@ import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
 export class SystemNodesComponent implements OnInit {
 
 
-  pushTimer: any = null;
+  pushTimer: Subscription;
 
   interval = 5000;
 
@@ -31,28 +33,33 @@ export class SystemNodesComponent implements OnInit {
     return x[type];
   }
 
-  infos() {
+
+  getInfoService() {
     return this.infoService;
   }
 
 
   networks() {
-    return _.keys(this.infos().info.networks);
+    return _.keys(this.getInfoService().getRuntimeInfoValue().networks);
   }
+
 
   networkEntries(key: string) {
-    return this.infos().info.networks[key];
+    return this.getInfoService().getRuntimeInfoValue().networks[key];
   }
 
+
   ngOnInit() {
-    this.infoService.refresh();
-    this.pushTimer = setInterval(() => {
-      this.infoService.refresh();
-    }, this.interval);
+    this.pushTimer =
+      interval(this.interval)
+        .pipe(
+          mergeMap(x => this.infoService.refresh())
+        )
+        .subscribe(x => {});
   }
 
 
   ngOnDestroy(): void {
-    clearInterval(this.pushTimer);
+    this.pushTimer.unsubscribe();
   }
 }

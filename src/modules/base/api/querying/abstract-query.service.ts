@@ -3,7 +3,7 @@ import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import * as _ from 'lodash';
 import {IBuildOptions, IEntityRef, ILookupRegistry, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
-import {BackendClientService} from '../../backend-client.service';
+import {BackendClientService, IRoutePointer} from '../../backend-client.service';
 import {AuthService} from '../auth/auth.service';
 import {IFindOptions, ISaveOptions} from '@typexs/base/browser';
 import {Expressions} from 'commons-expressions/browser';
@@ -18,53 +18,7 @@ import {IAggregateOptions} from '@typexs/base/libs/storage/framework/IAggregateO
  */
 export interface IQueryServiceOptions {
 
-  routes: { [k in STORAGE_REQUEST_MODE]: string };
-
-  // /**
-  //  * Route name for metadata loading
-  //  */
-  // urlRegistryMetadata: string;
-  //
-  // /**
-  //  * use :name and :id as placeholder
-  //  */
-  // urlGetEntity: string;
-  //
-  // /**
-  //  * use :name and :id as placeholder
-  //  */
-  // urlQueryEntity: string;
-  //
-  // /**
-  //  * use :name as placeholder
-  //  */
-  // urlAggregateEntity: string;
-  //
-  // /**
-  //  * use :name and :id as placeholder
-  //  */
-  // urlSaveEntity: string;
-  //
-  // /**
-  //  * use :name and :id as placeholder
-  //  */
-  // urlDeleteEntity: string;
-  //
-  // /**
-  //  * use :name
-  //  */
-  // urlDeleteByCondition: string;
-  //
-  // /**
-  //  * use :name and :id as placeholder
-  //  */
-  // urlUpdateEntity: string;
-  //
-  // /**
-  //  * use :name
-  //  */
-  // urlUpdateByCondition: string;
-
+  routes: { [k in STORAGE_REQUEST_MODE]: string | IRoutePointer };
 
   /**
    * define default route in ng
@@ -74,15 +28,18 @@ export interface IQueryServiceOptions {
   /**
    * Name of the registry
    */
-  registryName: string;
+  registryName?: string;
+
+  /**
+   * Registry handler from type ILookupRegistry
+   */
+  registry?: ILookupRegistry;
 }
 
 
 export abstract class AbstractQueryService implements IQueringService {
 
   protected $isReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
-  private _registry: ILookupRegistry;
 
   private _http: BackendClientService;
 
@@ -95,9 +52,8 @@ export abstract class AbstractQueryService implements IQueringService {
 
   constructor(http: BackendClientService,
               authService: AuthService,
-              registry: ILookupRegistry,
               options: IQueryServiceOptions) {
-    this._registry = registry;
+    // this._registry = registry;
     this._http = http;
     this._authService = authService;
     this.options = options;
@@ -110,8 +66,31 @@ export abstract class AbstractQueryService implements IQueringService {
   }
 
 
-  getRoute(type: STORAGE_REQUEST_MODE) {
-    return this.options.routes[type];
+  getRoute(type: STORAGE_REQUEST_MODE): IRoutePointer {
+    const route = this.options.routes[type];
+    if (_.isString(route)) {
+      const _route: IRoutePointer = {
+        route: route,
+        method: 'get'
+      };
+      switch (type) {
+        case 'delete':
+        case 'delete_by_condition':
+          _route.method = 'delete';
+          break;
+        case 'update':
+        case 'save':
+          _route.method = 'post';
+          break;
+        case 'update_by_condition':
+          _route.method = 'put';
+          break;
+      }
+      return _route;
+    } else {
+      return route;
+    }
+
   }
 
   private initialize() {
@@ -141,13 +120,24 @@ export abstract class AbstractQueryService implements IQueringService {
   }
 
   getRegistry() {
-    return this._registry;
+    if (this.options.registry) {
+      return this.options.registry;
+    }
+    throw new Error('registry not supported for this service.');
   }
 
+  /**
+   * return the Entity describing reference or null if not present
+   * @param name
+   */
   getEntityRefForName(name: string): IEntityRef {
-    return LookupRegistry.$(this.options.registryName).find(XS_TYPE_ENTITY, (e: IEntityRef) => {
-      return e.machineName === _.snakeCase(name);
-    });
+    if (!this.options.registryName) {
+      return null;
+    }
+    return LookupRegistry.$(this.options.registryName)
+      .find(XS_TYPE_ENTITY, (e: IEntityRef) => {
+        return e.machineName === _.snakeCase(name);
+      });
   }
 
 
@@ -179,6 +169,7 @@ export abstract class AbstractQueryService implements IQueringService {
   loadEntityMetadata() {
     if (!this.isSupported('metadata')) {
       console.warn('loading metadata for ' + this.options.ngRoutePrefix + ' is not supported');
+      this.$isReady.next(true);
       return;
     }
 
@@ -189,9 +180,9 @@ export abstract class AbstractQueryService implements IQueringService {
           if (_.isArray(value)) {
             this.entityRefs = [];
             value.forEach(entityDefJson => {
-              let entity: any = this._registry.getEntityRefFor(entityDefJson.name);
+              let entity: any = this.getRegistry().getEntityRefFor(entityDefJson.name);
               if (!entity) {
-                entity = this._registry.fromJson(entityDefJson);
+                entity = this.getRegistry().fromJson(entityDefJson);
               }
               this.entityRefs.push(entity);
             });
@@ -382,7 +373,10 @@ export abstract class AbstractQueryService implements IQueringService {
     const buildOptions: IBuildOptions = {};
     this.buildOptions('update', options, buildOptions);
 
-    return this.callApi(this.getRoute('update'), {params: apiParams, query: additinalQuery, content: entity}, x => {
+    return this.callApi(this.getRoute('update'), {
+      params: apiParams,
+      query: additinalQuery, content: entity
+    }, x => {
       return this.buildEntity('update', entityDef, x, buildOptions);
     });
   }
@@ -485,10 +479,9 @@ export abstract class AbstractQueryService implements IQueringService {
   }
 
 
-  callApi(context: string, api: IApiCallOptions, resultHandle?: (x: any) => any) {
+  callApi(context: string | IRoutePointer, api: IApiCallOptions, resultHandle?: (x: any) => any) {
     const obs = new BehaviorSubject<any>(null);
-    const observable = this._http
-      .callApi(context, api);
+    const observable = this._http.callApi(context, api);
     observable.subscribe(
       value => {
         if (resultHandle) {

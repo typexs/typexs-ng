@@ -18,7 +18,7 @@
 
       <tbody>
       <tr *ngFor="let entityDef of getEntityRefs()">
-        <td>{{entityDef.getClassRef().getSchema()}}</td>
+        <td>{{entityDef.getOptions('schema')}}</td>
         <td>{{entityDef.getOptions('storage')}}</td>
         <td>{{entityDef.name}}</td>
         <td>{{entityDef.machineName}}</td>
@@ -30,13 +30,13 @@
 
         </td>
         <td>
-          <a class="btn btn-primary"
+          <a class="btn btn-primary" *ngIf="storageService.isSupported('query')"
              [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'query']">Query</a>
-          <a class="btn btn-primary"
+          <a class="btn btn-primary" *ngIf="storageService.isSupported('aggregate')"
              [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'aggregate']">Aggregate</a>
-          <a class="btn btn-success"
+          <a class="btn btn-success" *ngIf="storageService.isSupported('save')"
              [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'create']">New</a>
-          <a class="btn btn-warning"
+          <a class="btn btn-warning" *ngIf="storageService.isSupported('metadata')"
              [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'structure']">Schema</a>
         </td>
       </tr>
