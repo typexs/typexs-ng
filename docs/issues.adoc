@@ -84,18 +84,24 @@ data or label can be empty
 
 **@ISSUE {counter:issue} 20200721**
 
-* BackendService
-
-** rename existing HttpWrapperClient
-** load accessible/permitted routes from host
+* [.line-through]#BackendService#
+** [.line-through]#rename existing HttpWrapperClient#
+** [.line-through]#load accessible/permitted routes from host#
 
 * single EntityRegistry => txs-base?
 
 * DistributedStorageService
-
 * separate module packages
-
 * task status/running callback
+
+**@ISSUE {counter:issue} 20200907**
+
+* Admin-Settings page for example to enable/disable debugging
+* Dynamic content viewer for entity/storage view,
+currently plain json passed
+* test backend routes with iFrame, better a backend route
+testing page
+
 
 
 
