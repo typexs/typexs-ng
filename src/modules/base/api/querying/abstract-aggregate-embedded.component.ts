@@ -11,6 +11,7 @@ import {QueryAction} from './QueryAction';
 import {IQueryParams} from '../../datatable/IQueryParams';
 import {DEFAULT_DT_GRID_OPTIONS} from './Constants';
 import {IDTGridOptions} from '../../datatable/IDTGridOptions';
+import {Log} from '../../lib/log/Log';
 
 
 /**
@@ -153,7 +154,7 @@ export class AbstractAggregateEmbeddedComponent implements OnInit {
 
     if (!this.freeQuery) {
       // error not
-      console.error('Aggregate query is not present.');
+      Log.error('Aggregate query is not present.');
       return;
     } else if (!_.isArray(this.freeQuery)) {
       executeQuery = [this.freeQuery];

@@ -1,7 +1,9 @@
 import * as _ from 'lodash';
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {BackendTasksService} from '../backend-tasks.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
+import {Subscription} from 'rxjs';
+import {Log} from '../../base/lib/log/Log';
 
 /**
  * Show status of a task (running or finished)
@@ -20,7 +22,7 @@ import {TaskLog} from '@typexs/base/entities/TaskLog';
   templateUrl: './task-status.component.html',
   styleUrls: ['./task-status.component.scss']
 })
-export class TaskStatusComponent implements OnInit {
+export class TaskStatusComponent implements OnInit, OnDestroy {
 
   @Input()
   nodeId: string;
@@ -31,6 +33,12 @@ export class TaskStatusComponent implements OnInit {
   @Input()
   taskLog: TaskLog;
 
+  @Input()
+  autoUpdate: boolean = true;
+
+  running: boolean = false;
+
+  subscription: Subscription;
 
   position = 0;
 
@@ -47,24 +55,40 @@ export class TaskStatusComponent implements OnInit {
       this.runnerId = this.taskLog.tasksId;
       this.nodeId = this.taskLog.respId;
     }
+    this.update();
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 
   update() {
-    this.tasksService.taskStatus(this.runnerId, {targetIds: [this.nodeId]}).subscribe(tasks => {
-      if (tasks) {
-        if (_.isArray(tasks)) {
-          this.taskLog = tasks.shift();
-        } else {
-          this.taskLog = tasks;
-        }
-      }
-    }, error => {
-      console.log(error);
-    });
+    if (!this.running) {
+      this.running = true;
+      this.subscription = this.tasksService.taskStatus(this.runnerId, {targetIds: [this.nodeId]}).subscribe(tasks => {
+          if (_.isArray(tasks)) {
+            this.taskLog = tasks.shift();
+          } else {
+            this.taskLog = tasks;
+          }
 
+          if (!this.taskLog.running) {
+            this.subscription.unsubscribe();
+            this.running = false;
+          }
+        },
+        error => {
+          Log.error(error);
+          this.running = false;
+        },
+        () => {
+          this.running = false;
+        });
+    }
   }
-
 
 
 }

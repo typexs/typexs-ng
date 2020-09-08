@@ -22,6 +22,10 @@ import {ExprDesc} from 'commons-expressions/browser';
 import {IMessageOptions} from '@typexs/base/libs/messaging/IMessageOptions';
 import {ITaskExectorOptions} from '@typexs/base/libs/tasks/ITaskExectorOptions';
 import {IApiCallOptions} from '../base/lib/http/IApiCallOptions';
+import {catchError, mergeMap, takeUntil, takeWhile, tap} from 'rxjs/operators';
+import {interval, of, timer} from 'rxjs';
+import {Log} from '../base/lib/log/Log';
+
 
 /**
  * API_CTRL_TASK_*
@@ -76,7 +80,12 @@ export class BackendTasksService {
     return this.workerNodes;
   }
 
-  taskStatus(runnerId: string, options?: IMessageOptions): Observable<TaskLog> {
+  /**
+   *
+   * @param runnerId
+   * @param options
+   */
+  getTaskStatus(runnerId: string, options?: IMessageOptions): Observable<TaskLog> {
     const apiOptions: IApiCallOptions = {
       params: {runnerId: runnerId},
     };
@@ -87,11 +96,44 @@ export class BackendTasksService {
   }
 
 
-  taskLog(runnerId: string,
-          nodeId: string,
-          from: number = null,
-          offset: number = null,
-          tail: number = 50): Observable<any[]> {
+  /**
+   * Returns task status information (TaskLog) till process not running
+   *
+   * @param runnerId
+   * @param options
+   */
+  taskStatus(runnerId: string, options?: IMessageOptions & { interval?: number }): Observable<TaskLog> {
+    options = options || {};
+    _.defaults(options, {interval: 5000});
+
+    const subject = new Subject();
+    const repeat$:
+      Observable<TaskLog> =
+      timer(0, options.interval)
+        .pipe(takeUntil(subject))
+        .pipe(mergeMap(x => this.getTaskStatus(runnerId, options)))
+        .pipe(tap(x => {
+            if (_.isArray(x)) {
+              let running = true;
+              for (const y of x) {
+                running = running && y.running;
+              }
+              if (!running) {
+                subject.next();
+                subject.complete();
+              }
+            }
+          })
+        );
+    return repeat$;
+  }
+
+
+  getTaskLog(runnerId: string,
+             nodeId: string,
+             from: number = null,
+             offset: number = null,
+             tail: number = 50): Observable<any[]> {
     const opts: any = {};
     if (_.isNumber(from) &&
       _.isNumber(offset) && from >= 0 && offset >= 0
@@ -108,7 +150,7 @@ export class BackendTasksService {
   }
 
 
-  taskList(refresh: boolean = false): Observable<Tasks> {
+  getTaskList(refresh: boolean = false): Observable<Tasks> {
     const x = new Subject<Tasks>();
     if (refresh || !this.tasks) {
       this.infoService.refresh()
@@ -139,7 +181,7 @@ export class BackendTasksService {
                 x.complete();
               }
           });
-        }, error => console.error(error));
+        }, error => Log.error(error));
 
     } else {
       x.next(this.tasks);
@@ -154,7 +196,7 @@ export class BackendTasksService {
    * @param runnerId
    * @param nodeId
    */
-  taskIncomingValues(taskName: string, incomingName: string, hint: ExprDesc = null, instance: any = null): Observable<any> {
+  getTaskIncomingValues(taskName: string, incomingName: string, hint: ExprDesc = null, instance: any = null): Observable<any> {
     const opts: any = {};
     if (hint) {
       opts.hint = hint.toJson();

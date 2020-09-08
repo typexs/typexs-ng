@@ -1,5 +1,12 @@
 <div class="container-fluid">
-
+  <div class="refresh float-right">
+    <button class="btn btn-light btn-sm" (click)="update()">
+      <div>
+      <i class="icon icon-refresh" *ngIf="!running"></i>
+      <i class="icon icon-spinner fa-spin" *ngIf="running"></i>
+      </div>
+    </button>
+  </div>
   <div class="row detail-tables">
 
     <div class="col-md-auto mr-2">
@@ -89,10 +96,11 @@
     <li class="nav-item">
       <a class="nav-link" [ngClass]="{active:contentContainer == 'log'}" (click)="contentContainer = 'log'">Log</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" [ngClass]="{active:contentContainer == 'error'}"
-         (click)="contentContainer = 'error'">Error</a>
-    </li>
+
+<!--    <li class="nav-item">-->
+<!--      <a class="nav-link" [ngClass]="{active:contentContainer == 'error'}"-->
+<!--         (click)="contentContainer = 'error'">Error</a>-->
+<!--    </li>-->
     <li class="nav-item">
       <a class="nav-link" [ngClass]="{active:contentContainer == 'json'}"
          (click)="contentContainer = 'json'">JSON</a>
@@ -101,7 +109,7 @@
 
   <div [ngSwitch]="contentContainer" class="tab-content">
     <div *ngSwitchCase="'log'">
-      <txs-task-log-viewer [taskLog]="taskLog"></txs-task-log-viewer>
+      <txs-task-log-viewer [taskLog]="taskLog" [running]="running"></txs-task-log-viewer>
     </div>
 
     <!--
@@ -114,7 +122,6 @@
     <div *ngSwitchCase="'json'">
       <pre class="language-json">{{taskLog | json}}</pre>
     </div>
-
 
 
   </div>

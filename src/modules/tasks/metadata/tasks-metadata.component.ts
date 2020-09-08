@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TaskRef, Tasks} from '@typexs/base/browser';
 import {BackendTasksService} from '../backend-tasks.service';
 import {SystemInfoService} from '../../base/system-info.service';
+import {Log} from '../../base/lib/log/Log';
 
 
 @Component({
@@ -31,16 +32,14 @@ export class TasksMetadataComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('meta init')
-    this.tasksService.taskList(true).subscribe(x => {
-      console.log(x);
+    this.tasksService.getTaskList(true).subscribe(x => {
       this._tasks = x;
       this.tasks = [];
       x.names(true).forEach(y => {
         const ref = x.get(y);
         this.tasks.push(ref);
       });
-    }, error => console.error(error));
+    }, error => Log.error(error));
   }
 
 }

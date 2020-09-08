@@ -15,6 +15,8 @@ import {BackendClientService} from '../base/backend-client.service';
 import {of} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {SystemInfoService} from '../base/system-info.service';
+import {Log} from '../base/lib/log/Log';
+
 
 @Component({
   selector: 'bat-admin-layout',
@@ -77,7 +79,7 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
     }
 
     if (log.isErrorMessage()) {
-      console.error(log.error);
+      Log.error(log.error);
     }
     this.notifyService.addMessage(log);
   }
@@ -109,7 +111,7 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
         if (x && !_.isBoolean(x)) {
           this.user = x;
         }
-      }, error => console.error(error));
+      }, error => Log.error(error));
 
     let entry = this.navigatorService.getEntryByContext(CTXT_ROUTE_USER_PROFILE);
     if (entry) {

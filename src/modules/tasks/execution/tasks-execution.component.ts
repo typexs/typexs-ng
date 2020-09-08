@@ -39,7 +39,7 @@ export class TasksExecutionComponent implements OnInit {
 
 
   ngOnInit() {
-    this.tasksService.taskList(true).subscribe(tasks => {
+    this.tasksService.getTaskList(true).subscribe(tasks => {
       this.taskName = this.route.snapshot.paramMap.get('taskName');
       this.taskRef = tasks.get(this.taskName);
       this.taskRef.getPropertyRefs().forEach(p => {
@@ -51,7 +51,7 @@ export class TasksExecutionComponent implements OnInit {
             if (valueProvider) {
               const optional = p.isOptional();
               if (_.isString(valueProvider)) {
-                this.tasksService.taskIncomingValues(this.taskName, p.name).subscribe(value => {
+                this.tasksService.getTaskIncomingValues(this.taskName, p.name).subscribe(value => {
                   this.setCachedValues(p.name, value, optional);
                 });
               } else {

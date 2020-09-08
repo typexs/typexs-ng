@@ -18,8 +18,8 @@
 
       <tbody>
       <tr *ngFor="let entityDef of getEntityRefs()">
-        <td>{{entityDef.getOptions('schema')}}</td>
-        <td>{{entityDef.getOptions('storage')}}</td>
+        <td>{{entityDef.metadata.storage}}</td>
+        <td>{{entityDef.object.schema}}</td>
         <td>{{entityDef.name}}</td>
         <td>{{entityDef.machineName}}</td>
         <td>

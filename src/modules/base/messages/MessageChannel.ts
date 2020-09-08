@@ -2,7 +2,7 @@ import {IMessage} from './IMessage';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {ISubscription, Subscription} from 'rxjs/Subscription';
 
-export class MessageChannel<T extends IMessage>{
+export class MessageChannel<T extends IMessage> {
 
   private name: string;
 
@@ -26,7 +26,7 @@ export class MessageChannel<T extends IMessage>{
     return this.subject.subscribe(next, error, complete);
   }
 
-  finish(){
+  finish() {
     this.subject.complete();
   }
 

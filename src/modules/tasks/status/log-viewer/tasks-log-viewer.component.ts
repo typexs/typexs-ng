@@ -1,11 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import * as _ from 'lodash';
 import {JsonUtils} from 'commons-base/libs/utils/JsonUtils';
 import {DatePipe} from '@angular/common';
 import {BackendTasksService} from '../../backend-tasks.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
-import {Observable, Subscriber, Subscription} from 'rxjs';
+import {Observable, Subscriber, Subscription, timer} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
+import {Log} from '../../../base/lib/log/Log';
 
 /**
  * Show tasks list which should be filtered for running tasks, runned task
@@ -16,7 +17,7 @@ import {switchMap} from 'rxjs/operators';
   templateUrl: './tasks-log-viewer.component.html',
   styleUrls: ['./tasks-log-viewer.component.scss']
 })
-export class TasksLogViewerComponent implements OnInit {
+export class TasksLogViewerComponent implements OnInit, OnChanges {
 
   @Input()
   nodeId: string;
@@ -27,11 +28,32 @@ export class TasksLogViewerComponent implements OnInit {
   @Input()
   taskLog: TaskLog;
 
+  @Input()
+  running: boolean;
+
+  _mode: 'tail' | 'less' = 'tail';
+
+  _tail: number = 50;
+
+  get mode(): 'tail' | 'less' {
+    return this._mode;
+  }
+
+  set mode(mode: 'tail' | 'less') {
+    this._mode = mode;
+    this.handle();
+  }
+
+  @ViewChild('logPanel', {static: false})
+  elemRef: ElementRef;
+
   count: number = 0;
 
   position: number = 0;
 
   maxlines: number = 0;
+
+  fetchedLines: number = 0;
 
   fetchSize = 100;
 
@@ -43,7 +65,11 @@ export class TasksLogViewerComponent implements OnInit {
 
   // t: NodeJS.Timeout;
 
-  sub: Subscription = null;
+  subscription: Subscription = null;
+
+  tailSub: Subscription = null;
+
+  offset: number = 5000;
 
 
   constructor(
@@ -53,57 +79,106 @@ export class TasksLogViewerComponent implements OnInit {
 
 
   ngOnInit() {
-    // console.log('init', this.taskLog);
     if (this.taskLog) {
       this.runnerId = this.taskLog.tasksId;
       this.nodeId = this.taskLog.respId;
     }
+    this.handle();
+  }
 
-    this.tasksService.taskLog(this.runnerId, this.nodeId).subscribe(x => {
-      if (x) {
-        this.append(x);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['taskLog']) {
+      if (!this.tailSub && this.mode === 'tail') {
+        this.tailSub = timer(this.offset).subscribe(x => {
+          this.tail();
+        });
       }
-    }, error => {
-      this.logError = 'Log file not found. (' + error.message + ')';
-      this.finishUpdate();
-    });
-    // this.t = setInterval(() => {
-    //   this.update();
-    // }, 1000);
-
+    }
   }
 
 
-  buildLog(log: any[]): string[] {
+  reset() {
+    this.position = 0;
+    this.maxlines = 0;
+    this.fetchedLines = 0;
+    this.log = '';
+    this.logError = '';
+  }
 
+  handle() {
+    this.resetSub();
+    switch (this._mode) {
+      case 'tail':
+        this.tail();
+        break;
+      case 'less':
+        this.less();
+        break;
+    }
+  }
+
+  tail() {
+    if (this.runnerId && this.nodeId) {
+      this.subscription = this.tasksService.getTaskLog(this.runnerId, this.nodeId, null, null, this._tail).subscribe(x => {
+          if (x) {
+            this.reset();
+            const extractLines = this.extractLines(x);
+            this.append(extractLines);
+            this.resetSub();
+          }
+        }, error => {
+          this.logError = 'Log file not found. (' + error.message + ')';
+          this.finishUpdate();
+          this.resetSub();
+        },
+        () => {
+          this.resetSub();
+        });
+    } else {
+      this.resetSub();
+    }
+  }
+
+  resetSub() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
+  }
+
+  extractLines(log: any[]): string[] {
     const firstEntry = _.first(log);
     if (firstEntry) {
-      let logs = firstEntry.split('\n').filter((x: any) => !_.isEmpty(x));
-      logs = logs.map((x: any) => JsonUtils.parse(x));
-      return logs
-        .map((e: any) =>
-          this.datePipe
-            .transform(
-              new Date(parseInt(e.timestamp, 0)), 'yyyy-MM-dd HH:mm:ss.SSS') + ''
-          + ' [' + e.level + '] ' + e.message);
+      return firstEntry.split('\n');
     }
     return [];
   }
 
+  buildLog(log: any[]): string[] {
+    let logs = log.filter((x: any) => !_.isEmpty(x));
+    logs = logs.map((x: any) => JsonUtils.parse(x));
+    return logs
+      .map((e: any) =>
+        this.datePipe
+          .transform(
+            new Date(parseInt(e.timestamp, 0)), 'yyyy-MM-dd HH:mm:ss.SSS') + ''
+        + ' [' + e.level + '] ' + e.message);
+  }
+
 
   getLog(from: number = 1, offset: number = 50) {
-    this.tasksService.taskLog(this.runnerId, this.nodeId, from, offset).subscribe(x => {
+    this.tasksService.getTaskLog(this.runnerId, this.nodeId, from, offset).subscribe(x => {
         if (x) {
           this.append(x);
         }
       },
       error => {
-        console.log(error);
+        Log.debug(error);
       });
   }
 
 
-  append(x: any) {
+  append(x: string[]) {
     if (_.isUndefined(this.position) || !this.position) {
       this.position = 1;
     }
@@ -113,41 +188,44 @@ export class TasksLogViewerComponent implements OnInit {
     const buildLines = this.buildLog(x);
     this.log += buildLines.join('\n') + '\n';
     this.maxlines += buildLines.length;
+    // scroll to the bottom
+    if (this.elemRef) {
+      const logElem = this.elemRef.nativeElement;
+      logElem.scrollTop = logElem.scrollHeight;
+    }
     return buildLines.length;
   }
 
 
-  loadLog() {
-    this.count = 0;
-    this.position = 0;
-    this.maxlines = 0;
-    this.log = '';
-
-    let prevLines = 0;
+  less() {
+    this.reset();
     let _subscriber: Subscriber<any> = null;
-    this.sub = new Observable(subscriber => {
+    this.subscription = new Observable(subscriber => {
       _subscriber = subscriber;
-      subscriber.next(this.count);
+      subscriber.next(1);
     })
       .pipe(
         switchMap((x: number) => {
-          const from = x * this.fetchSize;
-          return this.tasksService.taskLog(this.runnerId, this.nodeId, from, this.fetchSize);
+          const from = this.fetchedLines;
+          return this.tasksService.getTaskLog(this.runnerId, this.nodeId, from, this.fetchSize);
         })
       )
       .subscribe(x => {
-          prevLines = this.maxlines;
-          const appended = this.append(x);
-
-          if (appended > 0) {
-            this.count++;
-            _subscriber.next(this.count);
+          const extractLines = this.extractLines(x);
+          this.fetchedLines += extractLines.length;
+          const appended = this.append(extractLines);
+          if (appended > 0 || this.running) {
+            _subscriber.next(1);
           } else {
             _subscriber.complete();
           }
         },
         error => {
           _subscriber.error(error);
+          this.resetSub();
+        },
+        () => {
+          this.resetSub();
         })
     ;
   }
@@ -159,8 +237,8 @@ export class TasksLogViewerComponent implements OnInit {
 
 
   ngOnDestroy(): void {
-    if (!!this.sub) {
-      this.sub.unsubscribe();
+    if (!!this.subscription) {
+      this.subscription.unsubscribe();
     }
     this.finishUpdate();
   }

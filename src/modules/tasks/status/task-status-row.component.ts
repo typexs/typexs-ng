@@ -3,7 +3,7 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {BackendTasksService} from '../backend-tasks.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {Observable, Subscription, timer} from 'rxjs';
-
+import {Log} from '../../base/lib/log/Log';
 
 @Component({
   selector: 'txs-task-status-row',
@@ -46,15 +46,15 @@ export class TaskStatusRowComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('init');
+    Log.debug('init');
     this.timer = timer(0, 1000);
     this.subscription.add(this.timer.subscribe(x => this.update()));
   }
 
   update() {
-    console.log('update', this.runnerId, this.nodeId);
+    Log.debug('update', this.runnerId, this.nodeId);
     this.tasksService.taskStatus(this.runnerId, {targetIds: [this.nodeId]}).subscribe(tasks => {
-      console.log(tasks);
+      Log.debug(tasks);
       if (tasks) {
         if (_.isArray(tasks)) {
           this.taskLog = tasks.shift();

@@ -12,6 +12,7 @@ export class StorageTypesComponent {
   }
 
   getEntityRefs() {
-    return this.storageService.getEntityRefs();
+    const entityRefs = this.storageService.getEntityRefs();
+    return entityRefs;
   }
 }

@@ -33,6 +33,7 @@ import {SimpleHtmlCellEntityOperationsRendererComponent} from './datatable/simpl
 import {RouterModule} from '@angular/router';
 import {FreeQueryInputComponent} from './api/querying/free-query/free-query-input.component';
 import {SimpleHtmlCellRouterLinkRendererComponent} from './datatable/simple-html-table/simple-html-cell-router-link-renderer.component';
+import {Log} from './lib/log/Log';
 
 
 const PROVIDERS = [
@@ -97,6 +98,7 @@ export class BaseModule {
    * @param appConfig
    */
   constructor(private appConfig: AppService) {
+    Log.initialize();
     appConfig.setComponentClass([C_DEFAULT, CC_GRID], SimpleHtmlTableComponent);
     appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_VALUE], SimpleHtmlCellValueComponent);
     appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_ENTITY_REFERENCE], SimpleHtmlCellEntityReferenceRendererComponent);

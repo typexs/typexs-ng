@@ -6,7 +6,7 @@ import {Observable} from 'rxjs/Observable';
 import {ISelectOptionsService} from '../forms/libs/ISelectOptionsService';
 import {ISelectOption} from '../forms/libs/ISelectOption';
 import {ClassRef, IEntityRef} from 'commons-schema-api/browser';
-
+import {Log} from '../base/lib/log/Log';
 
 @Injectable()
 export class EntityOptionsService implements ISelectOptionsService {
@@ -49,7 +49,7 @@ export class EntityOptionsService implements ISelectOptionsService {
           }
         },
         (e: Error) => {
-          console.error(e);
+          Log.error(e);
         },
         () => {
           bs.complete();

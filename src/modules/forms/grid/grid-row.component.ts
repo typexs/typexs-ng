@@ -6,7 +6,7 @@ import {AbstractFormComponent} from '../../../libs/forms/AbstractFormComponent';
 import {FormObject, isFormObject} from '../../../libs/forms/FormObject';
 import {AbstractComponent} from '../../../libs/views/AbstractComponent';
 import {ContentComponentRegistry} from '../../../libs/views/ContentComponentRegistry';
-
+import {Log} from '../../base/lib/log/Log';
 
 @Component({
   selector: 'txs-gridrow',
@@ -28,7 +28,7 @@ export class GridRowComponent extends AbstractFormComponent<any> {
   }
 
 
-  getGrid(){
+  getGrid() {
     return this.grid;
   }
 
@@ -40,40 +40,40 @@ export class GridRowComponent extends AbstractFormComponent<any> {
     this.grid.removeRow(this.context.idx);
   }
 
-  build(form: FormObject):AbstractComponent<any>[] {
-    let comp:AbstractComponent<any>[] = [];
-    let columns = this.grid.columns;
+  build(form: FormObject): AbstractComponent<any>[] {
+    const comp: AbstractComponent<any>[] = [];
+    const columns = this.grid.columns;
     columns.forEach(column => {
-      let formObject = column.elem;
+      const formObject = column.elem;
       if (isFormObject(formObject)) {
-        let handle = ContentComponentRegistry.$().getOrCreateDef(formObject.type);
+        const handle = ContentComponentRegistry.$().getOrCreateDef(formObject.type);
         if (handle && handle.component) {
 
-          let cGridCellFactory = this.r.resolveComponentFactory(GridCellComponent);
-          let cGridCell = this.vc.createComponent(cGridCellFactory);
+          const cGridCellFactory = this.r.resolveComponentFactory(GridCellComponent);
+          const cGridCell = this.vc.createComponent(cGridCellFactory);
           cGridCell.instance.data = this.data;
           cGridCell.instance.setData(formObject, this.context);
           cGridCell.instance.setGridComponent(this.grid);
 
           if (cGridCell.instance.vc) {
-            let factory = this.r.resolveComponentFactory(<any>handle.component);
-            let ref = cGridCell.instance.vc.createComponent(factory);
-            let instance = <AbstractFormComponent<any>>ref.instance;
+            const factory = this.r.resolveComponentFactory(<any>handle.component);
+            const ref = cGridCell.instance.vc.createComponent(factory);
+            const instance = <AbstractFormComponent<any>>ref.instance;
             instance.data = this.data;
-            if(column.value){
+            if (column.value) {
               instance.setDefaultValue(column.value);
             }
             instance.setData(formObject, this.context);
             instance.build(formObject);
             comp.push(instance);
           } else {
-            console.error('No view content setted');
+            Log.error('No view content setted');
           }
         } else {
           throw new NoFormTypeDefinedError(formObject.type);
         }
       }
-    })
+    });
     /*
     form.getChildren().forEach(formObject => {
       if (isFormObject(formObject)) {
@@ -95,7 +95,7 @@ export class GridRowComponent extends AbstractFormComponent<any> {
             instance.build(formObject);
             comp.push(instance);
           } else {
-            console.error('No view content setted');
+            Log.error('No view content setted');
           }
         } else {
           throw new NoFormTypeDefinedError(formObject.type);

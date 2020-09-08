@@ -9,6 +9,7 @@ import {IApiCallOptions} from './lib/http/IApiCallOptions';
 import {API_CTRL_SERVER_PING, API_CTRL_SERVER_ROUTES, IRoute} from '@typexs/server/browser';
 import {IHttpRequestOptions} from './lib/http/IHttpRequestOptions';
 import {catchError, mergeMap} from 'rxjs/operators';
+import {Log} from './lib/log/Log';
 
 export interface IRoutePointer {
   route: string;
@@ -42,7 +43,7 @@ export class BackendClientService {
    */
   constructor(private http: HttpClient, private messageService: MessageService) {
     this.logChannel = messageService.getLogService();
-    // this.state.subscribe(x => console.log('backend state changed ' + x));
+    // this.state.subscribe(x => Log.debug('backend state changed ' + x));
   }
 
   api = '/api';
@@ -268,7 +269,7 @@ export class BackendClientService {
           () => ret.complete()
         );
       }
-    }, error => console.error(error));
+    }, error => Log.error(error));
     return ret.asObservable();
 
   }
@@ -311,9 +312,8 @@ export class BackendClientService {
   private handleRequest<T>(method: string, reqOptions: IHttpRequestOptions): Observable<T> {
     const logging = _.has(reqOptions, 'logging') ? reqOptions.logging : true;
     const client = this.getHttpClient();
-    // const requestMethod = client[method];
 
-    console.log('handle request ' + method, reqOptions);
+    Log.debug('handle request ' + method + ' ' + reqOptions.url);
     let observable: Observable<T> = null;
     if (_.has(reqOptions, 'body')) {
       observable = client[method](reqOptions.url, reqOptions.body, reqOptions);
@@ -322,7 +322,6 @@ export class BackendClientService {
     }
 
     observable = observable.pipe(mergeMap((x: any) => {
-      console.log('=> ' + method + ' ' + reqOptions.url);
       const filterErrors = BackendClientService.detectErrors(x);
       if (filterErrors.length > 0) {
         throw filterErrors[0];
@@ -360,11 +359,6 @@ export class BackendClientService {
           throw error;
         })
       );
-      // observable.subscribe(
-      //   value => {
-      //   },
-      //   error => {
-      //   });
     }
 
 

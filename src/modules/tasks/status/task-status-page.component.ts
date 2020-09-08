@@ -4,6 +4,7 @@ import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {BackendTasksService} from '../backend-tasks.service';
 import {ActivatedRoute} from '@angular/router';
 import {DatePipe} from '@angular/common';
+import {Log} from '../../base/lib/log/Log';
 
 /**
  * Show status of a task (running or finished)
@@ -40,7 +41,7 @@ export class TaskStatusPageComponent {
     this.runnerId = this.route.snapshot.paramMap.get('runnerId');
     this.nodeId = this.route.snapshot.paramMap.get('nodeId');
 
-    this.tasksService.taskStatus(this.runnerId).subscribe(tasks => {
+    this.tasksService.getTaskStatus(this.runnerId).subscribe(tasks => {
       if (tasks) {
         // can have multiple entries from different nodes
         if (_.isArray(tasks)) {
@@ -51,7 +52,7 @@ export class TaskStatusPageComponent {
 
       }
     }, error => {
-      console.log(error);
+      Log.debug(error);
     });
   }
 

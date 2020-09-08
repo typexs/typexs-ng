@@ -204,4 +204,25 @@ menu-link {
     }
   }
 
+
+  &.icon-refresh {
+    &:before {
+      content: fa-content($fa-var-redo);
+    }
+  }
+
+
+
+  &.icon-spinner {
+    &:before {
+      content: fa-content($fa-var-spinner);
+    }
+  }
+
+  &.icon-spinner {
+    @extend .fa-spin !optional;
+  }
+
+
+
 }
