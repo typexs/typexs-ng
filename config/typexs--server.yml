@@ -4,9 +4,11 @@ tasks:
   logdir: ./tmp/tasklog
   access:
     - task: '*'
-      access: deny
-    - task: simple_task
       access: allow
+#    - task: '*'
+#      access: deny
+#    - task: simple_task
+#      access: allow
 
 workers:
   access:

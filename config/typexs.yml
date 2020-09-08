@@ -10,6 +10,7 @@ storage:
     database: 'tmp/db_${app.name}_server.db'
     logger: simple-console
     logging: all
+    connectOnStartup: true
 
 modules:
   paths:
