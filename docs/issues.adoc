@@ -101,6 +101,10 @@ data or label can be empty
 currently plain json passed
 * test backend routes with iFrame, better a backend route
 testing page
+* Cache or save in backend created or
+executed queries or aggregation, with later
+possiblity to reexecute them or to create an
+view which can be called
 
 
 
