@@ -21,6 +21,7 @@ import {TasksLogComponent} from '../tasks/log/tasks-log.component';
 import {TaskStatusPageComponent} from '../tasks/status/task-status-page.component';
 import {STORAGE_ROUTES} from '../storage/routes';
 import {StorageModule} from '../storage/module';
+import {SettingsComponent} from './components/settings/settings.component';
 
 
 export const ADMIN_ROUTES: Routes = [
@@ -34,6 +35,12 @@ export const ADMIN_ROUTES: Routes = [
         component: DashboardComponent,
         canActivate: [AuthGuardService],
         data: {label: 'Dashboard', group: 'admin'}
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent,
+        canActivate: [AuthGuardService],
+        data: {label: 'Settings', group: 'admin'}
       },
       {
         path: 'system/nodes',

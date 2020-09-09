@@ -25,6 +25,12 @@ menu-link {
     }
   }
 
+  &.icon-admin-settings {
+    &:before {
+      content: fa-content($fa-var-wrench);
+    }
+  }
+
   &.icon-admin-system-nodes {
     &:before {
       content: fa-content($fa-var-network-wired);

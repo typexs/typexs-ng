@@ -18,7 +18,8 @@ export const LOGLEVELS: ILogLevel[] =
 
 export class Log {
 
-  static initialize() {
+
+  static getOptions() {
     let data: ILoggerOptions = null;
     try {
       data = JSON.parse(localStorage.getItem('txs.log'));
@@ -28,13 +29,18 @@ export class Log {
     if (!data) {
       data = {} as any;
     }
+    _.defaults(data, {enable: false, level: 'warn'});
+    return data;
+  }
+
+  static initialize() {
+    const data = this.getOptions();
     this.setOptions(data);
 
 
   }
 
   static setOptions(data: ILoggerOptions) {
-    _.defaults(data, {enable: true, level: 'debug'});
     localStorage.setItem('txs.log', JSON.stringify(data));
     if (data.enable) {
       const _entry = LOGLEVELS.find(x => x.name === data.level);

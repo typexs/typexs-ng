@@ -335,19 +335,6 @@ p.text-muted {
   }
 }
 
-.modal {
-  z-index: 1072;
-
-  .popover,
-  .tooltip {
-    z-index: 1073;
-  }
-}
-
-.modal-backdrop {
-  z-index: 1071;
-}
-
 
 .highlight {
   padding: 1rem;

@@ -32,7 +32,7 @@
         <td>
           <a class="btn btn-primary" *ngIf="storageService.isSupported('query')"
              [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'query']">Query</a>
-          <a class="btn btn-primary" *ngIf="storageService.isSupported('aggregate')"
+          <a class="btn btn-secondary" *ngIf="storageService.isSupported('aggregate')"
              [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'aggregate']">Aggregate</a>
           <a class="btn btn-success" *ngIf="storageService.isSupported('save')"
              [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'create']">New</a>

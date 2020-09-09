@@ -24,7 +24,7 @@ import {TasksModule} from '../tasks/module';
 import {BackendTasksService} from '../tasks/backend-tasks.service';
 import {SystemNodesComponent} from './system/nodes/system-nodes.component';
 import {SystemNodeInfoComponent} from './system/nodes/node-info/system-node-info.component';
-
+import {SettingsComponent} from './components/settings/settings.component';
 
 const PROVIDERS: Provider[] = [];
 
@@ -39,7 +39,8 @@ const PROVIDERS: Provider[] = [];
     SystemNodesComponent,
     NgRoutesComponent,
     DashboardComponent,
-    SystemNodeInfoComponent
+    SystemNodeInfoComponent,
+    SettingsComponent
   ],
   imports: [
     BaseAdminThemeModule,
@@ -52,7 +53,8 @@ const PROVIDERS: Provider[] = [];
     FormsModule.forRoot(),
     EntityModule,
     TasksModule,
-    StorageModule
+    StorageModule,
+    FormsModule
   ],
   exports: [
     AdminComponent

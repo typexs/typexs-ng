@@ -5,8 +5,11 @@ import {TaskExchangeRef, TaskRef} from '@typexs/base/browser';
 import {ActivatedRoute} from '@angular/router';
 import {BackendTasksService} from '../backend-tasks.service';
 import {TaskEvent} from '@typexs/base/libs/tasks/worker/TaskEvent';
+import {Log} from '../../base/lib/log/Log';
 
-
+/**
+ * Executes a selected task
+ */
 @Component({
   selector: 'txs-tasks-execution',
   templateUrl: './tasks-execution.component.html'
@@ -44,7 +47,7 @@ export class TasksExecutionComponent implements OnInit {
       this.taskRef = tasks.get(this.taskName);
       this.taskRef.getPropertyRefs().forEach(p => {
         if (p.descriptor.type === 'incoming') {
-          this.parameters[p.machineName] = null;
+          this.parameters[p.machineName] = p.getOptions('default', null);
           this.properties.push(<TaskExchangeRef>p);
           if (!this._cachedValues[p.name]) {
             const valueProvider = p.getOptions('valueProvider');

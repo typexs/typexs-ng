@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {BackendTasksService} from '../backend-tasks.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
-import {Observable, Subscription, timer} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {Log} from '../../base/lib/log/Log';
 
 @Component({
@@ -19,7 +19,6 @@ export class TaskStatusRowComponent implements OnInit, OnDestroy {
 
   taskLog: TaskLog;
 
-  timer: Observable<number>;
 
   subscription: Subscription = new Subscription();
 
@@ -46,23 +45,22 @@ export class TaskStatusRowComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    Log.debug('init');
-    this.timer = timer(0, 1000);
-    this.subscription.add(this.timer.subscribe(x => this.update()));
+    this.update();
   }
 
   update() {
     Log.debug('update', this.runnerId, this.nodeId);
-    this.tasksService.taskStatus(this.runnerId, {targetIds: [this.nodeId]}).subscribe(tasks => {
-      Log.debug(tasks);
-      if (tasks) {
+    this.subscription = this.tasksService.taskStatus(this.runnerId, {targetIds: [this.nodeId]}).subscribe(tasks => {
+      if (tasks && !_.isEmpty(tasks)) {
         if (_.isArray(tasks)) {
           this.taskLog = tasks.shift();
         } else {
           this.taskLog = tasks;
         }
 
-        if (this.taskLog.state && ['stopped', 'errored', 'request_error'].indexOf(this.taskLog.state) === -1) {
+        if (this.taskLog &&
+          this.taskLog.state &&
+          ['stopped', 'errored', 'request_error'].indexOf(this.taskLog.state) === -1) {
           this.ngOnDestroy();
         }
       }
@@ -71,7 +69,10 @@ export class TaskStatusRowComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
   }
 
 

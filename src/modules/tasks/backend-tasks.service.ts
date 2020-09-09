@@ -121,6 +121,7 @@ export class BackendTasksService {
               if (!running) {
                 subject.next();
                 subject.complete();
+
               }
             }
           })

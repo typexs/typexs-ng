@@ -76,7 +76,6 @@ export class TaskStatusComponent implements OnInit, OnDestroy {
           }
 
           if (!this.taskLog.running) {
-            this.subscription.unsubscribe();
             this.running = false;
           }
         },

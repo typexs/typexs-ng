@@ -1,8 +1,9 @@
 import * as _ from 'lodash';
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 
 import {Expressions} from 'commons-expressions/browser';
 import {QueryAction} from '../QueryAction';
+import {Log} from '../../../lib/log/Log';
 import Timeout = NodeJS.Timeout;
 
 
@@ -11,7 +12,8 @@ import Timeout = NodeJS.Timeout;
   templateUrl: './free-query-input.component.html',
   styleUrls: ['./free-query-input.component.scss']
 })
-export class FreeQueryInputComponent {
+export class FreeQueryInputComponent implements OnInit, OnDestroy {
+
 
   @Input()
   mode: 'aggregate' | 'query' = 'query';
@@ -19,8 +21,15 @@ export class FreeQueryInputComponent {
   @Input()
   lines: number = 1;
 
+  @Input()
+  enableHistory: boolean = true;
+
   @Output()
   queryState: EventEmitter<QueryAction> = new EventEmitter();
+
+  history: { mode: 'aggregate' | 'query', text: string, query: any }[] = [];
+
+  historyToggle: boolean = false;
 
   freeTextQuery = '';
 
@@ -32,10 +41,59 @@ export class FreeQueryInputComponent {
 
   enabled: boolean = false;
 
+  constructor() {
+
+  }
+
+  ngOnInit() {
+    try {
+      const value = localStorage.getItem('txs.query.history');
+      this.history = JSON.parse(value);
+      if (!this.history || !_.isArray(this.history)) {
+        this.history = [];
+      }
+    } catch (e) {
+
+    }
+  }
+
+  ngOnDestroy() {
+    try {
+      localStorage.setItem('txs.query.history', JSON.stringify(this.history));
+    } catch (e) {
+
+    }
+  }
+
+  toggleHistory() {
+    Log.debug('history toggle ', this.history);
+    this.historyToggle = !this.historyToggle;
+  }
+
   doQuery() {
     if (this.jsonQuery && this.freeTextQueryError.length === 0) {
       this.queryState.emit(new QueryAction(this.jsonQuery, this.mode));
+      const found = this.history.find(x =>
+        x.mode === this.mode &&
+        x.text === this.freeTextQuery
+      );
+      if (!found) {
+        this.history.push({mode: this.mode, text: this.freeTextQuery, query: this.jsonQuery});
+        while (this.history.length >= 100) {
+          this.history.shift();
+        }
+      }
     }
+  }
+
+  stop($event: any) {
+    $event.stopPropagation();
+  }
+
+  selectEntry(entry: { mode: 'aggregate' | 'query', text: string, query: any }) {
+    this.mode = entry.mode;
+    this.freeTextQuery = entry.text;
+    this.build();
   }
 
   doResetQuery() {
@@ -48,7 +106,6 @@ export class FreeQueryInputComponent {
   }
 
   build() {
-
     this.freeTextQueryError = [];
     if (!_.isEmpty(this.freeTextQuery)) {
       try {
@@ -59,17 +116,18 @@ export class FreeQueryInputComponent {
             this.jsonQuery = expr;
             this.freeTextQueryError = errors;
           } else {
-            this.freeTextQueryError.push('no parseable data');
+            this.freeTextQueryError.push('No parsable data.');
           }
         } else {
           this.jsonQuery = JSON.parse(this.freeTextQuery);
           this.freeTextQueryError = errors;
+          if (_.isEmpty(this.jsonQuery)) {
+            this.freeTextQueryError.push('Object or array is empty.');
+          }
         }
       } catch (e) {
         this.freeTextQueryError.push(e.message);
       }
-
     }
-
   }
 }
