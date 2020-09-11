@@ -14,3 +14,7 @@ workers:
   access:
     - name: '*'
       access: allow
+
+filesystem:
+  paths:
+    - ./tmp
