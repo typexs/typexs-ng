@@ -3,7 +3,7 @@ export * from './browser';
 
 
 
-// system module
+// base module
 export * from './modules/base/module';
 export * from './modules/base/constants';
 export * from './modules/base/backend-client.service';
@@ -59,13 +59,15 @@ export * from './modules/admin/module';
 export * from './modules/admin/admin.component';
 
 
+
+// distributed storage module
+export * from './modules/distributed_storage/public_api';
+
 // entity module
-export * from './modules/entity/entity.module';
-export * from './modules/entity/entity.service';
-export * from './modules/entity/entity-options.service';
+export * from './modules/entity/public_api';
 
 
-// system module
+// tasks module
 export * from './modules/tasks/module';
 export * from './modules/tasks/backend-tasks.service';
 export * from './modules/tasks/execution/tasks-execution.component';
@@ -77,8 +79,7 @@ export * from './modules/tasks/status/task-status-page.component';
 
 
 // storage module
-export * from './modules/storage/module';
-export * from './modules/storage/storage.service';
+export * from './modules/storage/public_api';
 
 
 // forms module
@@ -89,12 +90,11 @@ export * from './modules/forms/label.component';
 export * from './modules/forms/input.component';
 export * from './modules/forms/radio.component';
 export * from './modules/forms/select/select.component';
-
 export * from './modules/forms/grid/grid.component';
 export * from './modules/forms/grid/grid-row.component';
 export * from './modules/forms/grid/grid-cell.component';
-
 export * from './modules/forms/form.service';
+
 
 // navigator module
 export * from './modules/navigator/module';

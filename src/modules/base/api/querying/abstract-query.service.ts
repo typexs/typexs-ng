@@ -12,6 +12,7 @@ import {of, Subscription} from 'rxjs';
 import {STORAGE_REQUEST_MODE} from './Constants';
 import {IUpdateOptions} from '@typexs/base/libs/storage/framework/IUpdateOptions';
 import {IAggregateOptions} from '@typexs/base/libs/storage/framework/IAggregateOptions';
+import {Log} from '../../lib/log/Log';
 
 /**
  * Options for query service
@@ -168,7 +169,7 @@ export abstract class AbstractQueryService implements IQueringService {
 
   loadEntityMetadata() {
     if (!this.isSupported('metadata')) {
-      console.warn('loading metadata for ' + this.options.ngRoutePrefix + ' is not supported');
+      Log.warn('loading metadata for ' + this.options.ngRoutePrefix + ' is not supported');
       this.$isReady.next(true);
       return;
     }
@@ -216,6 +217,7 @@ export abstract class AbstractQueryService implements IQueringService {
 
   buildEntity?(method: STORAGE_REQUEST_MODE,
                entityRef: IEntityRef, entity: any | any[], buildOptions: IBuildOptions = {}) {
+    return entity;
   }
 
 

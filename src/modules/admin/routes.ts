@@ -101,50 +101,7 @@ export const ADMIN_ROUTES: Routes = [
         data: {label: 'Status', group: 'admin', skip: true},
         canActivate: [AuthGuardService]
       },
-      {
-        path: 'entity/types',
-        component: EntityTypesComponent,
-        data: {label: 'Types', group: 'admin'},
-        canActivate: [AuthGuardService]
-      },
 
-      {
-        path: 'entity/:machineName/create',
-        component: EntityModifyComponent,
-        data: {label: 'Create entity', skip: true},
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'entity/:machineName/view/:id',
-        component: EntityViewComponent,
-        data: {label: 'View entity', skip: true},
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'entity/:machineName/edit/:id',
-        component: EntityModifyComponent,
-        data: {label: 'Edit entity', skip: true},
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'entity/:machineName/delete/:id',
-        component: EntityDeleteComponent,
-        data: {label: 'Delete entity', skip: true},
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'entity/:machineName/query',
-        component: EntityQueryComponent,
-        data: {label: 'List entities', skip: true},
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'entity/:machineName/structure',
-        component: EntityStructComponent,
-        data: {label: 'Entity type structure', skip: true},
-        canActivate: [AuthGuardService]
-      },
-      ...StorageModule.getRoutes(),
       {
         path: 'storage/backends',
         component: StorageBackendsComponent,

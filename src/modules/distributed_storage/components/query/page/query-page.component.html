@@ -1,0 +1,30 @@
+<div class="card">
+  <div class="card-header">
+    <h3>Distributed storage entity list</h3>
+  </div>
+  <div class="card-body">
+
+    <div class="form-group">
+      <label for="entityName">Entity name</label>
+      <input type="text"
+             class="form-control" id="entityName" placeholder="Entity name"
+             [(ngModel)]="machineName"
+      >
+    </div>
+
+
+    <txs-free-query-input
+
+      (queryState)="onQueryAction($event)"
+    >
+    </txs-free-query-input>
+
+    <txs-datatable
+      #datatable
+      [columns]="columns"
+      [options]="options"
+      (doQuery)="doQuery($event)"
+    ></txs-datatable>
+
+  </div>
+</div>

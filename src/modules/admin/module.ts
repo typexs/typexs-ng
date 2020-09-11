@@ -13,18 +13,19 @@ import {SystemConfigComponent} from './system/config/system-config.component';
 import {NgRoutesComponent} from './ng/routes/ng-routes.component';
 import {FormsModule} from '../forms/module';
 import {BaseModule} from '../base/module';
-import {EntityModule} from '../entity/entity.module';
+// import {EntityModule} from '../entity/entity.module';
 import {NavigatorService} from '../navigator/navigator.service';
 import {BaseAdminThemeModule} from '../base_admin_theme/base_admin_theme.module';
-import {EntityService} from '../entity/entity.service';
-import {StorageService} from '../storage/storage.service';
-import {StorageModule} from '../storage/module';
+// import {EntityService} from '../entity/entity.service';
+// import {StorageService} from '../storage/storage.service';
+// import {StorageModule} from '../storage/module';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {TasksModule} from '../tasks/module';
 import {BackendTasksService} from '../tasks/backend-tasks.service';
 import {SystemNodesComponent} from './system/nodes/system-nodes.component';
 import {SystemNodeInfoComponent} from './system/nodes/node-info/system-node-info.component';
 import {SettingsComponent} from './components/settings/settings.component';
+import {AppService} from '../base/app.service';
 
 const PROVIDERS: Provider[] = [];
 
@@ -51,9 +52,9 @@ const PROVIDERS: Provider[] = [];
     HttpClientModule,
     RouterModule.forChild(ADMIN_ROUTES),
     FormsModule.forRoot(),
-    EntityModule,
+    // EntityModule,
     TasksModule,
-    StorageModule,
+    // StorageModule,
     FormsModule
   ],
   exports: [
@@ -72,18 +73,14 @@ export class AdminModule {
   }
 
   constructor(private navigator: NavigatorService,
-              private entityService: EntityService,
-              private storageService: StorageService,
+              private appService: AppService,
               private taskService: BackendTasksService) {
     // Startup stuff should be done once!
-    entityService.setNgUrlPrefix('/admin/entity');
-    storageService.setNgUrlPrefix('/admin/storage');
+
     taskService.setNgUrlPrefix('/admin/tasks');
     this.navigator.addGroupEntry('admin/system/.*', {label: 'System', group: 'admin'});
     this.navigator.addGroupEntry('admin/ng/.*', {label: 'Angular', group: 'admin'});
     this.navigator.addGroupEntry('admin/tasks/.*', {label: 'Tasks', group: 'admin'});
-    this.navigator.addGroupEntry('admin/entity/.*', {label: 'Entity', group: 'admin'});
-    this.navigator.addGroupEntry('admin/storage/.*', {label: 'Storage', group: 'admin'});
   }
 
 

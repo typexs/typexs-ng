@@ -10,8 +10,6 @@ import * as _ from 'lodash';
 import {BackendClientService} from './backend-client.service';
 import {switchMap} from 'rxjs/operators';
 import {of} from 'rxjs';
-import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
-import {API_CTRL_SYSTEM_RUNTIME_NODE, API_CTRL_SYSTEM_RUNTIME_NODES} from '@typexs/server/browser';
 
 /**
  * The service is used for app status informations and distribution of this information on the front end.
@@ -33,6 +31,18 @@ export class AppService {
 
   components: { [name: string]: Function } = {};
 
+  serviceClasses: { [name: string]: Function } = {};
+
+  registerService(name: string, fn: Function) {
+    this.serviceClasses[name] = fn;
+  }
+
+  getService(name: string) {
+    if (this.serviceClasses[name]) {
+      return this.serviceClasses[name];
+    }
+    return null;
+  }
 
   constructor(
     private backendService: BackendClientService,

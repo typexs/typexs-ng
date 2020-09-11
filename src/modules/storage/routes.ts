@@ -6,18 +6,28 @@ import {StorageViewComponent} from './view/storage-view.component';
 import {StorageDeleteComponent} from './delete/storage-delete.component';
 import {StorageQueryComponent} from './query/page/storage-query.component';
 import {StorageAggregateComponent} from './aggregate/page/storage-aggregate.component';
+import {PERMISSION_ALLOW_ACCESS_ENTITY_METADATA} from '@typexs/schema/browser';
+import {Routes} from '@angular/router';
 
-export const STORAGE_ROUTES = [
+export const STORAGE_ROUTES: Routes = [
   {
     path: 'storage/types',
     component: StorageTypesComponent,
-    data: {label: 'Types', group: 'admin'},
+    data: {
+      label: 'Types',
+      permissions: [
+        PERMISSION_ALLOW_ACCESS_ENTITY_METADATA
+      ]
+    },
     canActivate: [AuthGuardService]
   },
   {
     path: 'storage/:machineName/structure',
     component: StorageStructComponent,
-    data: {label: 'Entity type structure', skip: true},
+    data: {
+      label: 'Entity type structure',
+      skip: true
+    },
     canActivate: [AuthGuardService]
   },
   {

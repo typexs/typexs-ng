@@ -6,20 +6,13 @@ import {And, ExprDesc, Expressions} from 'commons-expressions/browser';
 
 import {IDTGridOptions} from '../../datatable/IDTGridOptions';
 import {IGridColumn} from '../../datatable/IGridColumn';
-import {
-  C_PROPERTY,
-  C_URL_PREFIX,
-  CC_GRID_CELL_ENTITY_REFERENCE,
-  CC_GRID_CELL_OBJECT_REFERENCE,
-  CC_GRID_CELL_VALUE
-} from '../../constants';
+import {C_PROPERTY, C_URL_PREFIX, CC_GRID_CELL_ENTITY_REFERENCE, CC_GRID_CELL_OBJECT_REFERENCE, CC_GRID_CELL_VALUE} from '../../constants';
 import {IGridApi} from '../../datatable/IGridApi';
 import {DatatableComponent} from '../../datatable/datatable.component';
 import {IQueringService} from './IQueringService';
 import {QueryAction} from './QueryAction';
 import {IQueryParams} from '../../datatable/IQueryParams';
 import {DEFAULT_DT_GRID_OPTIONS} from './Constants';
-
 
 
 /**
@@ -31,6 +24,21 @@ import {DEFAULT_DT_GRID_OPTIONS} from './Constants';
  * - extend/add specialized columns
  */
 export class AbstractQueryEmbeddedComponent implements OnInit {
+
+  @Input()
+  get params() {
+    return this._params;
+  }
+
+  set params(v: IQueryParams) {
+    this._params = v;
+    this.paramsChange.emit(this._params);
+  }
+
+
+  constructor(storageService: IQueringService) {
+    this.queringService = storageService;
+  }
 
 
   @Input()
@@ -56,16 +64,6 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
 
   _params: IQueryParams;
 
-  @Input()
-  get params() {
-    return this._params;
-  }
-
-  set params(v: IQueryParams) {
-    this._params = v;
-    this.paramsChange.emit(this._params);
-  }
-
   @Output()
   paramsChange: EventEmitter<IQueryParams> = new EventEmitter();
 
@@ -73,16 +71,24 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
 
   error: any = null;
 
-
   @ViewChild('datatable', {static: true})
   datatable: DatatableComponent;
-
 
   private queringService: IQueringService;
 
 
-  constructor(storageService: IQueringService) {
-    this.queringService = storageService;
+  static rebuildColumns(data: any[]) {
+    const first = _.first(data);
+    const columns = [];
+    for (const k of _.keys(first)) {
+      const column: IGridColumn = {
+        label: k,
+        field: k,
+        sorting: true
+      };
+      columns.push(column);
+    }
+    return columns;
   }
 
 
@@ -118,6 +124,9 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
 
 
   findEntityDef() {
+    if (!this.registryName) {
+      return;
+    }
     this.entityRef = LookupRegistry.$(this.registryName).find(XS_TYPE_ENTITY, (e: IEntityRef) => {
       return e.machineName === _.snakeCase(this.machineName);
     });
@@ -241,6 +250,10 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
         (results: any) => {
           if (results) {
             if (results.entities && _.has(results, '$count') && _.isNumber(results.$count)) {
+              if (!this.entityRef) {
+                const columns = AbstractQueryEmbeddedComponent.rebuildColumns(results.entities);
+                api.setColumns(columns);
+              }
               api.setRows(results.entities);
               api.setMaxRows(results.$count);
               api.rebuild();
@@ -250,8 +263,6 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
       );
 
   }
-
-
 
 
   reset() {

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {AuthService} from '../base/api/auth/auth.service';
-import {BackendClientService} from '../base/backend-client.service';
+import {AuthService} from '../../base/api/auth/auth.service';
+import {BackendClientService} from '../../base/backend-client.service';
 import {
   API_CTRL_DISTRIBUTED_STORAGE,
   API_CTRL_DISTRIBUTED_STORAGE_DELETE_ENTITY,
@@ -9,8 +9,8 @@ import {
   API_CTRL_DISTRIBUTED_STORAGE_SAVE_ENTITY,
   API_CTRL_DISTRIBUTED_STORAGE_UPDATE_ENTITY
 } from '@typexs/server/browser';
-import {IQueringService} from '../base/api/querying/IQueringService';
-import {AbstractQueryService} from '../base/api/querying/abstract-query.service';
+import {IQueringService} from '../../base/api/querying/IQueringService';
+import {AbstractQueryService} from '../../base/api/querying/abstract-query.service';
 
 
 @Injectable()
@@ -35,6 +35,8 @@ export class DistributedStorageService
       ngRoutePrefix: API_CTRL_DISTRIBUTED_STORAGE
     });
   }
+
+
 
 
 }

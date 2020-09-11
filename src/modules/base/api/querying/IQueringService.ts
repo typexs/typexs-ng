@@ -1,4 +1,13 @@
 import {Observable} from 'rxjs/Observable';
+//
+// export interface IQueringServiceOptions {
+//
+//   /**
+//    * Define if api fetch data on initialise
+//    */
+//   fetchOnStartup: boolean;
+//
+// }
 
 export interface IQueringService {
 

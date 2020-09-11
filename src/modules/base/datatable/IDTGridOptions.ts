@@ -29,4 +29,5 @@ export interface IDTGridOptions {
    * @param columns
    */
   columnsPostProcess?: (columns: IGridColumn[]) => void;
+
 }

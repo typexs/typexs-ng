@@ -17,6 +17,9 @@ import {InputDemoComponent} from './components/demos/form-input/input-demo.compo
 import {TablesDemoComponent} from './components/demos/tables/tables-demo.component';
 import {SimpleHtmlTableDemoComponent} from './components/demos/tables/simple-html-table-demo.component';
 import {EmbeddedStorageComponent} from './components/demos/embedded-storage/embedded-storage.component';
+import {StorageModule} from '../storage/module';
+import {EntityModule} from '../entity/entity.module';
+import {DistributedStorageModule} from '../distributed_storage/module';
 
 
 export const APP_ROUTES: Routes = [
@@ -83,6 +86,31 @@ export const APP_ROUTES: Routes = [
       },
     ]
   },
+
+  ...StorageModule.getRoutes().map(x => {
+    x.path = 'admin/' + x.path;
+    if (!x.data.skip) {
+      x.data.group = 'admin';
+    }
+    return x;
+  }),
+
+  ...EntityModule.getRoutes().map(x => {
+    x.path = 'admin/' + x.path;
+    if (!x.data.skip) {
+      x.data.group = 'admin';
+    }
+    return x;
+  }),
+
+  ...DistributedStorageModule.getRoutes().map(x => {
+    x.path = 'admin/' + x.path;
+    if (!x.data.skip) {
+      x.data.group = 'admin';
+    }
+    return x;
+  }),
+
   {
     path: 'menu',
     component: DummyComponent,

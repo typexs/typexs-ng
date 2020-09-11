@@ -31,6 +31,9 @@ import {AgGridWrapperComponent} from './addons/ag-grid/ag-grid-wrapper.component
 import {NavigatorService} from '../navigator/navigator.service';
 import {SimpleHtmlTableDemoComponent} from './components/demos/tables/simple-html-table-demo.component';
 import {EmbeddedStorageComponent} from './components/demos/embedded-storage/embedded-storage.component';
+import {StorageService} from '../storage/storage.service';
+import {EntityService} from '../entity/entity.service';
+import {DistributedStorageService} from '../distributed_storage/services/distributed_storage.service';
 
 
 @NgModule({
@@ -76,7 +79,19 @@ import {EmbeddedStorageComponent} from './components/demos/embedded-storage/embe
 })
 export class AppModule {
 
-  constructor(private authService: AuthService, private navigatorService: NavigatorService) {
+  constructor(private authService: AuthService,
+              private navigatorService: NavigatorService,
+              private storageService: StorageService,
+              private entityService: EntityService,
+              private dStorageService: DistributedStorageService) {
+    entityService.setNgUrlPrefix('/admin/entity');
+    storageService.setNgUrlPrefix('/admin/storage');
+    dStorageService.setNgUrlPrefix('/admin/distributed-storage');
+
+    this.navigatorService.addGroupEntry('admin/entity/.*', {label: 'Entity', group: 'admin'});
+    this.navigatorService.addGroupEntry('admin/storage/.*', {label: 'Storage', group: 'admin'});
+    this.navigatorService.addGroupEntry('admin/distributed-storage/.*', {label: 'Distributed Storage', group: 'admin'});
+
     authService.init();
     // navigatorService.addGroupEntry('tables', {label: 'Tables', group: 'demo'});
   }

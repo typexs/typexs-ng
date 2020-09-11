@@ -13,6 +13,8 @@ import {BaseModule} from '../base/module';
 import {RouterModule} from '@angular/router';
 import {FormsModule as NgFormsModule} from '@angular/forms';
 import {EntityQueryEmbeddedComponent} from './query/embedded/entity-query-embedded.component';
+import {AppService} from '../base/app.service';
+import {ENTITY_ROUTES} from './routes';
 
 export const ENTITY_OPTIONS_SERVICE = 'EntityOptionsService';
 
@@ -59,6 +61,16 @@ export class EntityModule {
       ngModule: EntityModule,
       providers: PROVIDERS
     };
+  }
+
+
+  static getRoutes() {
+    return ENTITY_ROUTES;
+  }
+
+
+  constructor(private appService: AppService) {
+    // this.appService.registerService('EntityService', EntityService);
   }
 
 }

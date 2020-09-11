@@ -17,6 +17,7 @@ import {StorageQueryEmbeddedComponent} from './query/embedded/storage-query-embe
 import {STORAGE_ROUTES} from './routes';
 import {StorageAggregateComponent} from './aggregate/page/storage-aggregate.component';
 import {StorageAggregateEmbeddedComponent} from './aggregate/embedded/storage-aggregate-embedded.component';
+import {AppService} from '../base/app.service';
 
 const PROVIDERS = [
   StorageService,
@@ -57,8 +58,13 @@ export class StorageModule {
     };
   }
 
-  static getRoutes() {
+  static getRoutes(prefix?: string) {
     return STORAGE_ROUTES;
+  }
+
+
+  constructor(private appService: AppService) {
+    // this.appService.registerService('StorageService', StorageService);
   }
 
 }
