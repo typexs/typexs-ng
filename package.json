@@ -97,7 +97,7 @@
     "merge-stream": "^2.0.0",
     "mocha": "^7.2.0",
     "mocha-typescript": "^1.1.17",
-    "ng-packagr": "^9.1.5",
+    "ng-packagr": "^5.7.1",
     "nyc": "^15.1.0",
     "perfect-scrollbar": "^1.5.0",
     "popper.js": "^1.16.1",

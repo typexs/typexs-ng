@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "ngPackage": {
     "lib": {
-      "entryFile": "../../src/public_api.ts"
+      "entryFile": "../src/public_api.ts"
     },
-    "dest": "../build/ngPackage/ng-base"
+    "dest": "../build/ngPackage"
   }
 
 }
