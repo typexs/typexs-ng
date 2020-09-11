@@ -41,6 +41,10 @@ export class StorageModifyComponent implements OnInit {
     });
   }
 
+  getNgUrlPrefix() {
+    return this.storageService.getNgUrlPrefix();
+  }
+
 
   load() {
     this.machineName = this.route.snapshot.paramMap.get('machineName');

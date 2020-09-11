@@ -37,6 +37,10 @@ export class EntityModifyComponent implements OnInit {
   }
 
 
+  getNgUrlPrefix() {
+    return this.entityService.getNgUrlPrefix();
+  }
+
   load() {
     this.machineName = this.route.snapshot.paramMap.get('machineName');
     this.id = this.route.snapshot.paramMap.get('id');

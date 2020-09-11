@@ -1,8 +1,8 @@
 <div class="card">
   <div class="card-header">
     <div class="float-right">
-      <a class="btn btn-sm btn-primary" [routerLink]="[storageService.getNgUrlPrefix(),machineName,'query' ]">Query</a>
-      <a class="btn btn-sm btn-primary" [routerLink]="[storageService.getNgUrlPrefix(),'types' ]">Types</a>
+      <a class="btn btn-sm btn-primary" [routerLink]="[getNgUrlPrefix(),machineName,'query' ]">Query</a>
+      <a class="btn btn-sm btn-primary" [routerLink]="[getNgUrlPrefix(),'types' ]">Types</a>
     </div>
     <h3>{{new ? 'Create' : 'Edit'}} entity "{{machineName}}"</h3>
   </div>
