@@ -84,15 +84,8 @@ data or label can be empty
 
 **@ISSUE {counter:issue} 20200721**
 
-* [.line-through]#BackendService#
-** [.line-through]#rename existing HttpWrapperClient#
-** [.line-through]#load accessible/permitted routes from host#
-
 * single EntityRegistry => txs-base?
-
-* DistributedStorageService
 * separate module packages
-* task status/running callback
 
 **@ISSUE {counter:issue} 20200907**
 
@@ -104,7 +97,17 @@ testing page
 * Cache or save in backend created or
 executed queries or aggregation, with later
 possiblity to reexecute them or to create an
-view which can be called
+view which can be called (like in free-query with history)
+
+
+**@ISSUE {counter:issue} 20200911**
+
+* optimize abstract query so the same implementation can be used
+for aggregation, entity querying and also supports
+multiple services (base/api/querying)
+
+
+
 
 
 
