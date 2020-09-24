@@ -29,7 +29,8 @@
     "angular",
     "framework",
     "commons",
-    "typescript"
+    "typescript",
+    "typexs"
   ],
   "bugs": {
     "url": "https://github.com/typexs/typexs-ng/issues"
