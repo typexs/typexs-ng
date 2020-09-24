@@ -3,7 +3,6 @@ import {Component, Injector, Input, OnInit} from '@angular/core';
 import {INavTreeEntry} from './INavTreeEntry';
 import {IMenuLinkGuard} from './IMenuLinkGuard';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
 
 
 @Component({
@@ -27,22 +26,28 @@ export class MenuLinkComponent implements OnInit {
 
 
   ngOnInit(): void {
-    let activators = this.getActivator();
+    const activators = this.getActivator();
     if (!_.isEmpty(activators)) {
 
-      for (let canAct of activators) {
+      for (const canAct of activators) {
 
         if (canAct.isDisabled) {
-          (<IMenuLinkGuard>canAct).isDisabled(this.entry.entry).subscribe(this.isDisabled) ;
+          (<IMenuLinkGuard>canAct).isDisabled(this.entry.entry)
+            .subscribe(
+              x => this.isDisabled.next(x), err => this.isDisabled.error(err), () => this.isDisabled.complete()
+            );
         }
         if (canAct.isShown) {
-          (<IMenuLinkGuard>canAct).isShown(this.entry.entry).subscribe(this.isShown);
+          (<IMenuLinkGuard>canAct).isShown(this.entry.entry)
+            .subscribe(
+              x => this.isShown.next(x), err => this.isShown.error(err), () => this.isShown.complete()
+            );
         }
       }
     }
   }
 
-  isCaption(){
+  isCaption() {
     return this.entry.isGroup;
   }
 
@@ -52,13 +57,15 @@ export class MenuLinkComponent implements OnInit {
 
 
   private getActivator() {
-    if (this.activators) return this.activators;
+    if (this.activators) {
+      return this.activators;
+    }
     this.activators = [];
-    let canActivate = _.get(this.entry, 'entry.route.canActivate', false);
+    const canActivate = _.get(this.entry, 'entry.route.canActivate', false);
     if (canActivate && _.isArray(canActivate)) {
-      for (let canAct of canActivate) {
-        let guard = this.injector.get(canAct);
-        if (guard.isDisabled || guard.isHidden) {
+      for (const canAct of canActivate) {
+        const guard = this.injector.get(canAct) as IMenuLinkGuard;
+        if (guard.isDisabled || guard.isShown) {
           this.activators.push(guard);
         }
       }
@@ -67,15 +74,15 @@ export class MenuLinkComponent implements OnInit {
   }
 
 
-  icon(){
-    let icon = _.get(this.entry,'entry.data.icon',null);
-    if(icon){
+  icon() {
+    const icon = _.get(this.entry, 'entry.data.icon', null);
+    if (icon) {
       return icon;
     }
-    if(this.entry.isGroup){
-      return 'icon-'+this.entry.entry.groupRegex.replace(/[^\w\d]/g,'-').replace(/-+$/,'');
-    }else{
-      return 'icon-'+this.entry.path.replace(/[^\w\d]/g,'-')
+    if (this.entry.isGroup) {
+      return 'icon-' + this.entry.entry.groupRegex.replace(/[^\w\d]/g, '-').replace(/-+$/, '');
+    } else {
+      return 'icon-' + this.entry.path.replace(/[^\w\d]/g, '-');
     }
 
   }
