@@ -1,7 +1,6 @@
 import * as _ from 'lodash';
 import {Component, Input, OnDestroy, OnInit, Renderer2, TemplateRef, ViewEncapsulation} from '@angular/core';
 import {IUser} from '../../libs/api/auth/IUser';
-import {AuthService} from '../base/api/auth/auth.service';
 import PerfectScrollbar from 'perfect-scrollbar';
 import {IMenuOptions} from '../navigator/IMenuOptions';
 import {AppService} from '../base/app.service';
@@ -11,11 +10,10 @@ import {LogMessage} from '../base/messages/types/LogMessage';
 import {INotifyOptions} from './components/notifications/INotifyOptions';
 import {NotificationsService} from './components/notifications/notifications.service';
 import {Subscription} from 'rxjs/Subscription';
-import {BackendClientService} from '../base/backend-client.service';
 import {of} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
-import {SystemInfoService} from '../base/system-info.service';
 import {Log} from '../base/lib/log/Log';
+import {SystemInfoService} from '../base/system-info.service';
 
 
 @Component({
@@ -58,18 +56,15 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
 
   private userChannelSubscription: Subscription;
 
-  constructor(public authService: AuthService,
-              public renderer: Renderer2,
-              public backendService: BackendClientService,
-              public appStateService: AppService,
-              public systemService: SystemInfoService,
-              private navigatorService: NavigatorService,
-              private notifyService: NotificationsService) {
-
+  constructor(
+    public renderer: Renderer2,
+    public appStateService: AppService,
+    private systemService: SystemInfoService,
+    private navigatorService: NavigatorService,
+    private notifyService: NotificationsService
+  ) {
     appStateService.getViewContext().subscribe(x => this.viewContext = x);
     appStateService.getLogService().subscribe(this.onLogMessage.bind(this));
-
-
   }
 
 
@@ -84,18 +79,28 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
     this.notifyService.addMessage(log);
   }
 
+  getSystemService() {
+    return this.systemService;
+  }
+
+  getAuthService() {
+    return this.appStateService.getAuthService();
+  }
+
+  getBackendService() {
+    return this.appStateService.getBackendClient();
+  }
 
   getUser() {
-    return this.authService.getUser();
+    return this.appStateService.getAuthService().getUser();
   }
 
 
   async ngOnInit() {
-    this.systemService.refresh();
-    this.authService.isInitialized()
+    this.getAuthService().isInitialized()
       .pipe(switchMap(x => {
         if (x) {
-          return this.authService.isLoggedIn();
+          return this.getAuthService().isLoggedIn();
         } else {
           return of(x);
         }
@@ -110,6 +115,7 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
       .subscribe(x => {
         if (x && !_.isBoolean(x)) {
           this.user = x;
+          this.getSystemService().refresh();
         }
       }, error => Log.error(error));
 
@@ -117,7 +123,7 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
     if (entry) {
       this.userRouterLinks.profile = '/' + entry.getFullPath();
     }
-      entry = this.navigatorService.getEntryByContext(CTXT_ROUTE_USER_LOGOUT);
+    entry = this.navigatorService.getEntryByContext(CTXT_ROUTE_USER_LOGOUT);
     if (entry) {
       this.userRouterLinks.logout = '/' + entry.getFullPath();
     }

@@ -69,6 +69,10 @@ export class AppService {
     });
   }
 
+  getAuthService() {
+    return this.authService;
+  }
+
   getBackendClient() {
     return this.backendService;
   }
