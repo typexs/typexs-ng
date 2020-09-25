@@ -63,7 +63,7 @@
     "@types/supertest": "^2.0.10",
     "@typexs/base": "^1.2.28",
     "@typexs/schema": "^1.0.8",
-    "@typexs/server": "^1.0.11",
+    "@typexs/server": "^1.0.12",
     "ag-grid-angular": "^21.2.2",
     "ag-grid-community": "^21.2.2",
     "animate.css": "^4.1.0",
@@ -133,7 +133,7 @@
   "peerDependencies": {
     "@typexs/base": "^1.2.28",
     "@typexs/schema": "^1.0.8",
-    "@typexs/server": "^1.0.11"
+    "@typexs/server": "^1.0.12"
   },
   "private": true,
   "nyc": {
