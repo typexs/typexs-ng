@@ -10,7 +10,6 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 import {MenuComponent} from './menu.component';
 import {MenuLinkComponent} from './menu-link.component';
-import {expect} from 'chai';
 import * as _ from 'lodash';
 import {NavEntry} from './NavEntry';
 import {IMenuLinkGuard} from './IMenuLinkGuard';
@@ -91,34 +90,34 @@ describe('Component: Menu', () => {
     it('create full menu', () => {
       component.ngOnInit();
 
-      expect(component.tree).to.have.length(3);
-      expect(_.map(component.tree, e => e.path)).to.be.deep.eq(['home', 'admin', 'level']);
-      expect(component.tree[1].children).to.have.length(2);
+      expect(component.tree.length).toEqual(3);
+      expect(_.map(component.tree, e => e.path)).toEqual(['home', 'admin', 'level']);
+      expect(component.tree[1].children.length).toEqual(2);
     });
 
 
     it('create menu for level is equal 0', () => {
       component.options = {level: 0};
       component.ngOnInit();
-      expect(component.tree).to.have.length(3);
-      expect(_.map(component.tree, e => e.path)).to.be.deep.eq(['home', 'admin', 'level']);
-      expect(component.tree[1].children).to.have.length(0);
+      expect(component.tree.length).toEqual(3);
+      expect(_.map(component.tree, e => e.path)).toEqual(['home', 'admin', 'level']);
+      expect(component.tree[1].children.length).toEqual(0);
     });
 
 
     it('create submenu for base entry is "admin"', () => {
       component.options = {base: 'admin'};
       component.ngOnInit();
-      expect(component.tree).to.have.length(2);
-      expect(_.map(component.tree, e => e.path)).to.be.deep.eq(['admin/configure', 'admin/storages']);
+      expect(component.tree.length).toEqual(2);
+      expect(_.map(component.tree, e => e.path)).toEqual(['admin/configure', 'admin/storages']);
     });
 
 
     it('create submenu for base entry is "level/one"', () => {
       component.options = {base: 'level/one'};
       component.ngOnInit();
-      expect(component.tree).to.have.length(2);
-      expect(_.map(component.tree, e => e.path)).to.be.deep.eq(['level/one/subone',
+      expect(component.tree.length).toEqual(2);
+      expect(_.map(component.tree, e => e.path)).toEqual(['level/one/subone',
         'level/one/subtwo']);
     });
 
@@ -126,8 +125,8 @@ describe('Component: Menu', () => {
     it('create submenu for group "test"', () => {
       component.options = {group: 'test'};
       component.ngOnInit();
-      expect(component.tree).to.have.length(1);
-      expect(_.map(component.tree, e => e.path)).to.be.deep.eq(['home']);
+      expect(component.tree.length).toEqual(1);
+      expect(_.map(component.tree, e => e.path)).toEqual(['home']);
     });
 
 
@@ -142,8 +141,8 @@ describe('Component: Menu', () => {
         }
       };
       component.ngOnInit();
-      expect(component.tree).to.have.length(1);
-      expect(_.map(component.tree, e => e.path)).to.be.deep.eq(['admin']);
+      expect(component.tree.length).toEqual(1);
+      expect(_.map(component.tree, e => e.path)).toEqual(['admin']);
     });
 
     it('create menu link and test menu guard', async () => {
@@ -153,21 +152,23 @@ describe('Component: Menu', () => {
       componentLink.entry = component.tree[2].children[1];
       componentLink.ngOnInit();
 
-      expect(componentLink.isShown).to.not.be.undefined;
-      expect(componentLink.isDisabled).to.not.be.undefined;
+      expect(componentLink.isShown).not.toBeUndefined();
+      expect(componentLink.isDisabled).not.toBeUndefined();
       expect(await new Promise((resolve, reject) => {
+        // @ts-ignore
         componentLink.isDisabled.subscribe(x => resolve(x));
-      })).to.be.true;
+      })).toBeTrue();
       expect(await new Promise((resolve, reject) => {
+        // @ts-ignore
         componentLink.isShown.subscribe(x => resolve(x));
-      })).to.be.true;
+      })).toBeTrue();
 
 
     });
 
 
-    it.skip('create submenu by with exclude', () => {
-    });
+    // it.skip('create submenu by with exclude', () => {
+    // });
 
   });
 

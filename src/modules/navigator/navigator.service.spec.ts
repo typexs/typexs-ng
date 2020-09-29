@@ -1,5 +1,4 @@
 import * as _ from 'lodash';
-import {expect} from 'chai';
 import {TestBed} from '@angular/core/testing';
 import {NavigatorService} from './navigator.service';
 import {Route, Router, Routes} from '@angular/router';
@@ -62,35 +61,35 @@ describe('Service: NavigatorService', () => {
     it('auto grouping paths', () => {
       service = TestBed.get(NavigatorService);
       const entries = service.getEntries();
-      expect(entries).to.have.length(5);
+      expect(entries.length).toEqual(5);
 
       const routesConfig = service.getRebuildRoutes();
-      expect(routesConfig).to.have.length(1);
-      expect(routesConfig[0].children).to.have.length(2);
-      expect(routesConfig[0].path).to.eq('admin');
-      expect(routesConfig[0].children[0].path).to.eq('configure');
-      expect(routesConfig[0].children[1].path).to.eq('storages');
-      expect(routesConfig[0].children[0].children[0].path).to.eq('module1');
-      expect(routesConfig[0].children[0].children[1].path).to.eq('module2');
+      expect(routesConfig.length).toEqual(1);
+      expect(routesConfig[0].children.length).toEqual(2);
+      expect(routesConfig[0].path).toEqual('admin');
+      expect(routesConfig[0].children[0].path).toEqual('configure');
+      expect(routesConfig[0].children[1].path).toEqual('storages');
+      expect(routesConfig[0].children[0].children[0].path).toEqual('module1');
+      expect(routesConfig[0].children[0].children[1].path).toEqual('module2');
     });
 
 
     it('add group label', () => {
       service = TestBed.get(NavigatorService);
-      expect(service.getEntries()).to.have.length(5);
+      expect(service.getEntries().length).toEqual(5);
 
       const roots = service.getRoots();
-      expect(roots).to.have.length(1);
+      expect(roots.length).toEqual(1);
 
       service.addGroupEntry('admin/.*', {
         label: 'System',
         group: 'admin'
       });
-      expect(service.getEntries()).to.have.length(6);
+      expect(service.getEntries().length).toEqual(6);
 
       const tree = service.getTree();
       clearTree(tree);
-      expect(tree).to.deep.eq([
+      expect(tree).toEqual(<any>[
         {
           'label': 'Admin',
           'isGroup': false,
@@ -135,7 +134,7 @@ describe('Service: NavigatorService', () => {
 
       const treeAdmin = service.getTree('admin');
       clearTree(treeAdmin);
-      expect(treeAdmin).to.deep.eq([
+      expect(treeAdmin).toEqual(<any>[
         {
           'label': 'System',
           'isGroup': true,
@@ -218,37 +217,37 @@ describe('Service: NavigatorService', () => {
     it('auto grouping paths', () => {
       service = TestBed.get(NavigatorService);
       const entries = service.getEntries();
-      expect(entries).to.have.length(8);
+      expect(entries.length).toEqual(8);
 
       const tree = service.getRebuildRoutes();
-      expect(tree).to.have.length(4);
-      expect(tree[0].path).to.eq('admin');
-      expect(tree[0].children).to.have.length(2);
-      expect(tree[0].children[0].path).to.eq('configure');
-      expect(tree[0].children[0].data.label).to.eq('Config');
-      expect(tree[0].children[1].path).to.eq('storages');
-      expect(tree[0].children[0].children[0].path).to.eq('module1');
-      expect(tree[0].children[0].children[1].path).to.eq('module2');
+      expect(tree.length).toEqual(4);
+      expect(tree[0].path).toEqual('admin');
+      expect(tree[0].children.length).toEqual(2);
+      expect(tree[0].children[0].path).toEqual('configure');
+      expect(tree[0].children[0].data.label).toEqual('Config');
+      expect(tree[0].children[1].path).toEqual('storages');
+      expect(tree[0].children[0].children[0].path).toEqual('module1');
+      expect(tree[0].children[0].children[1].path).toEqual('module2');
 
     });
 
 
     it('add group label', () => {
       service = TestBed.get(NavigatorService);
-      expect(service.getEntries()).to.have.length(8);
+      expect(service.getEntries().length).toEqual(8);
 
       const roots = service.getRoots();
-      expect(roots).to.have.length(4);
+      expect(roots.length).toEqual(4);
 
       service.addGroupEntry('admin/.*', {
         label: 'System',
         group: 'admin'
       });
-      expect(service.getEntries()).to.have.length(9);
+      expect(service.getEntries().length).toEqual(9);
 
       const tree = service.getTree();
       clearTree(tree);
-      expect(tree).to.deep.eq([
+      expect(tree).toEqual(<any>[
         {
           'label': 'Admin',
           'isGroup': false,
@@ -311,7 +310,7 @@ describe('Service: NavigatorService', () => {
 
       const treeAdmin = service.getTree('admin');
       clearTree(treeAdmin);
-      expect(treeAdmin).to.deep.eq([
+      expect(treeAdmin).toEqual(<any>[
         {
           'label': 'System',
           'isGroup': true,
@@ -350,20 +349,20 @@ describe('Service: NavigatorService', () => {
 
     it('add group label and rebuild', () => {
       service = TestBed.get(NavigatorService);
-      expect(service.getEntries()).to.have.length(8);
+      expect(service.getEntries().length).toEqual(8);
 
       const roots = service.getRoots();
-      expect(roots).to.have.length(4);
+      expect(roots.length).toEqual(4);
 
       service.addGroupEntry('admin/.*', {
         label: 'System',
         group: 'admin'
       });
-      expect(service.getEntries()).to.have.length(9);
+      expect(service.getEntries().length).toEqual(9);
 
       const routes: Route[] = service.getRebuildRoutes();
-      expect(routes).to.have.length(4);
-      expect(routes[0].children).to.have.length(2);
+      expect(routes.length).toEqual(4);
+      expect(routes[0].children.length).toEqual(2);
 
 
     });
@@ -373,33 +372,33 @@ describe('Service: NavigatorService', () => {
       service = TestBed.get(NavigatorService);
 
       service.read(router.config);
-      expect(service.getEntries()).to.have.length(8);
+      expect(service.getEntries().length).toEqual(8);
       service.addGroupEntry('admin/.*', {
         label: 'System',
         group: 'admin'
       });
       const entries1 = service.getEntries();
-      expect(entries1).to.have.length(9);
+      expect(entries1.length).toEqual(9);
       const treeBefore = service.getTree();
-      expect(treeBefore[0].path).to.eq('admin');
-      expect(treeBefore[0].children).to.have.length(1);
-      expect(treeBefore[0].children[0].label).to.be.eq('System');
-      expect(treeBefore[0].children[0].children).to.have.length(2);
-      expect(treeBefore[0].children[0].children[0].label).to.eq('Config');
-      expect(treeBefore[0].children[0].children[1].label).to.eq('Storages');
+      expect(treeBefore[0].path).toEqual('admin');
+      expect(treeBefore[0].children.length).toEqual(1);
+      expect(treeBefore[0].children[0].label).toEqual('System');
+      expect(treeBefore[0].children[0].children.length).toEqual(2);
+      expect(treeBefore[0].children[0].children[0].label).toEqual('Config');
+      expect(treeBefore[0].children[0].children[1].label).toEqual('Storages');
 
       service.read(router.config);
       const entries2 = service.getEntries();
-      expect(entries2).to.have.length(9);
+      expect(entries2.length).toEqual(9);
       const treeAfter = service.getTree();
-      expect(treeAfter[0].path).to.eq('admin');
-      expect(treeAfter[0].children).to.have.length(1);
-      expect(treeAfter[0].children[0].label).to.be.eq('System');
-      expect(treeAfter[0].children[0].children).to.have.length(2);
-      expect(treeAfter[0].children[0].children[0].label).to.eq('Config');
-      expect(treeAfter[0].children[0].children[1].label).to.eq('Storages');
+      expect(treeAfter[0].path).toEqual('admin');
+      expect(treeAfter[0].children.length).toEqual(1);
+      expect(treeAfter[0].children[0].label).toEqual('System');
+      expect(treeAfter[0].children[0].children.length).toEqual(2);
+      expect(treeAfter[0].children[0].children[0].label).toEqual('Config');
+      expect(treeAfter[0].children[0].children[1].label).toEqual('Storages');
 
-      expect(entries1.map(e => e.id)).to.deep.eq(entries2.map(e => e.id));
+      expect(entries1.map(e => e.id)).toEqual(entries2.map(e => e.id));
     });
 
 
@@ -422,9 +421,9 @@ describe('Service: NavigatorService', () => {
       const demoTree = service.getTree('demo');
 
       // check if paths are correctly set
-      expect(demoTree).to.have.length(2);
-      expect(demoTree[0].path).to.be.eq('demo/user/data');
-      expect(demoTree[1].path).to.be.eq('demo/user/login');
+      expect(demoTree.length).toEqual(2);
+      expect(demoTree[0].path).toEqual('demo/user/data');
+      expect(demoTree[1].path).toEqual('demo/user/login');
     });
 
     /**
@@ -447,9 +446,9 @@ describe('Service: NavigatorService', () => {
       const demoTree = service.getTree('demo');
 
       // check if paths are correctly set
-      expect(demoTree).to.have.length(2);
-      expect(demoTree[0].path).to.be.eq('user/data');
-      expect(demoTree[1].path).to.be.eq('user/login');
+      expect(demoTree.length).toEqual(2);
+      expect(demoTree[0].path).toEqual('user/data');
+      expect(demoTree[1].path).toEqual('user/login');
     });
 
 
@@ -498,42 +497,42 @@ describe('Service: NavigatorService', () => {
     it('auto grouping paths', () => {
       service = TestBed.get(NavigatorService);
       const entries = service.getEntries();
-      expect(entries).to.have.length(9);
+      expect(entries.length).toEqual(9);
 
       const tree = service.getRebuildRoutes();
-      expect(tree).to.have.length(1);
-      expect(tree[0].path).to.eq('');
-      expect(tree[0].children).to.have.length(4);
-      expect(_.map(tree[0].children, p => p.path)).to.deep.eq([
+      expect(tree.length).toEqual(1);
+      expect(tree[0].path).toEqual('');
+      expect(tree[0].children.length).toEqual(4);
+      expect(_.map(tree[0].children, p => p.path)).toEqual([
         'admin',
         'level',
         'group/two',
         'group/one'
       ]);
       /*
-      expect(tree[0].children[0].data.label).to.eq('Config');
-      expect(tree[0].children[1].path).to.eq('storages');
-      expect(tree[0].children[0].children[0].path).to.eq('module1');
-      expect(tree[0].children[0].children[1].path).to.eq('module2');
+      expect(tree[0].children[0].data.label).toEqual('Config');
+      expect(tree[0].children[1].path).toEqual('storages');
+      expect(tree[0].children[0].children[0].path).toEqual('module1');
+      expect(tree[0].children[0].children[1].path).toEqual('module2');
       */
     });
 
     it('add group without base element', () => {
       service = TestBed.get(NavigatorService);
-      expect(service.getEntries()).to.have.length(9);
+      expect(service.getEntries().length).toEqual(9);
 
 
       service.addGroupEntry('group/.*', {
         label: 'Group',
         group: 'group'
       });
-      expect(service.getEntries()).to.have.length(10);
+      expect(service.getEntries().length).toEqual(10);
 
       const tree = service.getTree();
       const t = clearTree(tree);
-      expect(tree).to.have.length(1);
-      expect(tree[0].children).to.have.length(3);
-      expect(_.map(tree[0].children, p => p.label)).to.deep.eq([
+      expect(tree.length).toEqual(1);
+      expect(tree[0].children.length).toEqual(3);
+      expect(_.map(tree[0].children, p => p.label)).toEqual([
         'Admin',
         'Level',
         'Group'
