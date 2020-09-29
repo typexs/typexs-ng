@@ -1,8 +1,9 @@
 import * as _ from 'lodash';
-import {Component, Injector, Input, OnInit} from '@angular/core';
+import {Component, Injector, Input, OnDestroy, OnInit} from '@angular/core';
 import {INavTreeEntry} from './INavTreeEntry';
 import {IMenuLinkGuard} from './IMenuLinkGuard';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Subscription, TeardownLogic} from 'rxjs';
 
 
 @Component({
@@ -10,7 +11,7 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
   templateUrl: './menu-link.component.html',
   styleUrls: ['./menu-link.component.scss']
 })
-export class MenuLinkComponent implements OnInit {
+export class MenuLinkComponent implements OnInit, OnDestroy {
 
   @Input()
   entry: INavTreeEntry;
@@ -19,7 +20,9 @@ export class MenuLinkComponent implements OnInit {
 
   isDisabled: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  isShown: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  isShown: BehaviorSubject<boolean> = new BehaviorSubject(true);
+
+  private subscriptions: Subscription;
 
   constructor(private injector: Injector) {
   }
@@ -32,16 +35,18 @@ export class MenuLinkComponent implements OnInit {
       for (const canAct of activators) {
 
         if (canAct.isDisabled) {
-          (<IMenuLinkGuard>canAct).isDisabled(this.entry.entry)
+          const s = (<IMenuLinkGuard>canAct).isDisabled(this.entry.entry)
             .subscribe(
               x => this.isDisabled.next(x), err => this.isDisabled.error(err), () => this.isDisabled.complete()
             );
+          this.addSub(s);
         }
         if (canAct.isShown) {
-          (<IMenuLinkGuard>canAct).isShown(this.entry.entry)
+          const s = (<IMenuLinkGuard>canAct).isShown(this.entry.entry)
             .subscribe(
               x => this.isShown.next(x), err => this.isShown.error(err), () => this.isShown.complete()
             );
+          this.addSub(s);
         }
       }
     }
@@ -85,5 +90,17 @@ export class MenuLinkComponent implements OnInit {
       return 'icon-' + this.entry.path.replace(/[^\w\d]/g, '-');
     }
 
+  }
+
+  ngOnDestroy() {
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
+    }
+  }
+  private addSub(t: TeardownLogic) {
+    if (!this.subscriptions) {
+      this.subscriptions = new Subscription();
+    }
+    this.subscriptions.add(t);
   }
 }

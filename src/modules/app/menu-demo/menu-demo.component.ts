@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {MenuAccessService} from './MenuAccessService';
 
 
 @Component({
@@ -6,4 +7,10 @@ import {Component} from '@angular/core';
   templateUrl: 'menu-demo.component.html',
 })
 export class MenuDemoComponent {
+
+
+  constructor(public mas: MenuAccessService) {
+  }
+
+
 }

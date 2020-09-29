@@ -18,7 +18,6 @@ const DEFAULT_OPTIONS: IMenuOptions = {
     if (!_.isNull(options.level)) {
       ret = ret && e.getLevel() <= options.level;
     }
-
     return ret;
   }
 };
@@ -41,8 +40,9 @@ export class MenuComponent implements OnInit {
 
   ngOnInit() {
     this.options = _.defaults(this.options, DEFAULT_OPTIONS);
-    this.tree = this.navigator.getTree(this.options.base,
-      this.options.filter.bind(this, this.options));
+    this.tree = this.navigator.getTree(
+      this.options.base, this.options.filter ?
+        this.options.filter.bind(this, this.options) : null);
   }
 
 }

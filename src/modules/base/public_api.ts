@@ -1,4 +1,6 @@
 // base module
+import exp = require('constants');
+
 export * from './module';
 export * from './constants';
 export * from './backend-client.service';
@@ -10,6 +12,12 @@ export * from './api/auth/IAuthServiceProvider';
 export * from './api/auth/auth.service';
 export * from './api/auth/IAuthGuardProvider';
 export * from './api/auth/auth-guard.service';
+
+export * from './lib/log/ILoggerOptions';
+export * from './lib/log/Log';
+export * from './lib/http/IApiCallOptions';
+export * from './lib/http/IGetOptions';
+export * from './lib/http/IHttpRequestOptions';
 
 export * from './messages/message.service';
 export * from './messages/IMessage';
