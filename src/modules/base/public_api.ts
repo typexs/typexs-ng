@@ -1,6 +1,4 @@
 // base module
-import exp = require('constants');
-
 export * from './module';
 export * from './constants';
 export * from './backend-client.service';
