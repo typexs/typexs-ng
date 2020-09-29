@@ -41,7 +41,10 @@ export class BackendClientService {
    * @param http
    * @param messageService
    */
-  constructor(private http: HttpClient, private messageService: MessageService) {
+  constructor(
+    private http: HttpClient,
+    private messageService: MessageService
+  ) {
     this.logChannel = messageService.getLogService();
     // this.state.subscribe(x => Log.debug('backend state changed ' + x));
   }
@@ -137,6 +140,7 @@ export class BackendClientService {
    * Reload route informations from backend, this can happen
    */
   reloadRoutes() {
+    this.routes = [];
     const obs = new Subject();
     if (this.state.getValue() === 'offline' || this.state.getValue() === 'initial') {
       setTimeout(() => {
@@ -150,6 +154,10 @@ export class BackendClientService {
         obs.next(this.routes);
         obs.complete();
         this.state.next('online');
+      }, error => {
+        obs.error(error);
+      }, () => {
+        obs.complete();
       });
     }
     return obs.asObservable();
@@ -217,7 +225,7 @@ export class BackendClientService {
     // @ts-ignore
     const ret = new Subject<T>();
     const state: Observable<BACKEND_CLIENT_STATE> = this.state.asObservable();
-    state.subscribe(x => {
+    const sub = state.subscribe(x => {
       if (x === 'online' && this.routes.length > 0) {
         const apiContext = this.apiUrl(context);
         const route = this.getRoute(apiContext, _.isString(context) ? 'get' : context.method);
@@ -225,6 +233,9 @@ export class BackendClientService {
         if (!route) {
           ret.error('route ' + apiContext + ' not found.');
           ret.complete();
+          setTimeout(() => {
+            sub.unsubscribe();
+          });
           return;
         }
 
@@ -268,8 +279,20 @@ export class BackendClientService {
           error => ret.error(error),
           () => ret.complete()
         );
+
+        setTimeout(() => {
+          sub.unsubscribe();
+        });
+
       }
-    }, error => Log.error(error));
+    }, error => {
+      Log.error(error);
+      ret.error(error);
+      ret.complete();
+      setTimeout(() => {
+        sub.unsubscribe();
+      });
+    });
     return ret.asObservable();
 
   }
