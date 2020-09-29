@@ -1,4 +1,4 @@
-// import {suite, test, timeout} from "mocha-typescript";
+// import {suite, test, timeout} from "@testdeck/mocha";
 // import * as fs from "fs";
 // import * as os from "os";
 // import {join} from "path";

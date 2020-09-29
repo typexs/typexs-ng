@@ -1,4 +1,4 @@
-import {suite, test} from 'mocha-typescript';
+import {suite, test} from '@testdeck/mocha';
 import * as _ from 'lodash';
 import {MaxLength, MinLength} from 'class-validator';
 import {inspect} from 'util';
