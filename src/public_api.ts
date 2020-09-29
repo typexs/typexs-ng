@@ -4,45 +4,7 @@ export * from './browser';
 
 
 // base module
-export * from './modules/base/module';
-export * from './modules/base/constants';
-export * from './modules/base/backend-client.service';
-export * from './modules/base/invoker.service';
-export * from './modules/base/app.service';
-export * from './modules/base/system-info.service';
-
-export * from './modules/base/api/auth/IAuthServiceProvider';
-export * from './modules/base/api/auth/auth.service';
-export * from './modules/base/api/auth/IAuthGuardProvider';
-export * from './modules/base/api/auth/auth-guard.service';
-
-export * from './modules/base/messages/message.service';
-export * from './modules/base/messages/IMessage';
-export * from './modules/base/messages/MessageChannel';
-export * from './modules/base/messages/types/AuthMessage';
-export * from './modules/base/messages/types/LogMessage';
-
-export * from './modules/base/pager/PagerService';
-export * from './modules/base/pager/Pager';
-export * from './modules/base/pager/PagerAction';
-export * from './modules/base/pager/pager.component';
-
-export * from './modules/base/datatable/abstract-grid.component';
-export * from './modules/base/datatable/datatable.component';
-export * from './modules/base/datatable/IGridApi';
-export * from './modules/base/datatable/IQueryParams';
-export * from './modules/base/datatable/IGridColumn';
-export * from './modules/base/datatable/IDTGridOptions';
-
-export * from './modules/base/datatable/simple-html-table/simple-html-table.component';
-export * from './modules/base/datatable/simple-html-table/simple-html-cell.component';
-export * from './modules/base/datatable/simple-html-table/simple-html-cell-value.component';
-
-export * from './modules/base/api/querying/abstract-query-embedded.component';
-export * from './modules/base/api/querying/IQueringService';
-export * from './modules/base/api/querying/QueryAction';
-export * from './modules/base/api/querying/free-query/free-query-input.component';
-
+export * from './modules/base/public_api';
 
 // base_admin_theme module
 export * from './modules/base_admin_theme/base_admin_theme.module';
