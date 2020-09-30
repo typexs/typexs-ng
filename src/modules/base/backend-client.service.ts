@@ -139,10 +139,10 @@ export class BackendClientService {
   /**
    * Reload route informations from backend, this can happen
    */
-  reloadRoutes() {
+  reloadRoutes(force: boolean = false) {
     this.routes = [];
     const obs = new Subject();
-    if (this.state.getValue() === 'offline' || this.state.getValue() === 'initial') {
+    if (!force && (this.state.getValue() === 'offline' || this.state.getValue() === 'initial')) {
       setTimeout(() => {
         obs.next([]);
         obs.complete();
@@ -151,10 +151,10 @@ export class BackendClientService {
       this.state.next('loading');
       this.get(this.apiUrl(API_CTRL_SERVER_ROUTES)).subscribe((routes: IRoute[]) => {
         this.routes = routes;
-        obs.next(this.routes);
-        obs.complete();
         this.state.next('online');
+        obs.next(this.routes);
       }, error => {
+        this.state.next('inactive');
         obs.error(error);
       }, () => {
         obs.complete();
@@ -174,10 +174,11 @@ export class BackendClientService {
       } else if (ping === 'online') {
         this.reloadRoutes().subscribe(value => {
             obs.next(true);
-            obs.complete();
           },
           error => {
             obs.next(false);
+          },
+          () => {
             obs.complete();
           });
       }
