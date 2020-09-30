@@ -67,7 +67,7 @@ export class SystemInfoService {
         x => {
           subject.next(true);
         },
-        error => subject.error(error),
+        error => subject.next(false),
         () => subject.complete()
       );
     return subject.asObservable();
@@ -185,44 +185,35 @@ export class SystemInfoService {
 
   loadRuntimeInfo(callback?: (err: Error, info: NodeRuntimeInfo) => void) {
     return this.backendClientService.callApi(API_CTRL_SYSTEM_RUNTIME_INFO, {handle: callback});
-    //
-    // return this.http.get<NodeRuntimeInfo>(this.api + API_CTRL_SYSTEM_RUNTIME_INFO, callback);
   }
 
   loadRuntimeNode(callback?: (err: Error, node: SystemNodeInfo) => void) {
     return this.backendClientService.callApi(API_CTRL_SYSTEM_RUNTIME_NODE, {handle: callback});
-    // return this.http.get<SystemNodeInfo>(this.api + API_CTRL_SYSTEM_RUNTIME_NODE, callback);
   }
 
   loadRuntimeNodes(callback?: (err: Error, nodes: SystemNodeInfo[]) => void) {
     return this.backendClientService.callApi(API_CTRL_SYSTEM_RUNTIME_NODES, {handle: callback});
-    // return this.http.get<SystemNodeInfo[]>(this.api + API_CTRL_SYSTEM_RUNTIME_NODES, callback);
   }
 
   loadModules(callback?: (err: Error, modules: IModule[]) => void) {
     return this.backendClientService.callApi(API_CTRL_SYSTEM_MODULES, {handle: callback});
-    // return this.http.get<IModule[]>(this.api + API_CTRL_SYSTEM_MODULES, callback);
   }
 
   loadStorages(callback?: (err: Error, storageOptions: IStorageOptions[]) => void) {
     return this.backendClientService.callApi(API_CTRL_SYSTEM_STORAGES, {handle: callback});
-    // return this.http.get<IStorageOptions[]>(this.api + API_CTRL_SYSTEM_STORAGES, callback);
   }
 
   loadConfig(callback?: (err: Error, config: ITypexsOptions[]) => void) {
     return this.backendClientService.callApi(API_CTRL_SERVER_CONFIG, {handle: callback});
-    // return this.http.get<ITypexsOptions[]>(this.api + API_CTRL_SYSTEM_CONFIG, callback);
   }
 
   loadRoutes(callback?: (err: Error, routes: IRoute[]) => void) {
     return this.backendClientService.callApi(API_CTRL_SERVER_ROUTES, {handle: callback});
-    // return this.http.get<IRoute[]>(this.api + API_CTRL_SYSTEM_ROUTES, callback);
   }
 
 
   loadWorkers(callback?: (err: Error, workerInfos: IWorkerInfo[]) => void) {
     return this.backendClientService.callApi(API_CTRL_SYSTEM_WORKERS, {handle: callback});
-    // return this.http.get<IWorkerInfo[]>(this.api + API_CTRL_SYSTEM_WORKERS, callback);
   }
 
 

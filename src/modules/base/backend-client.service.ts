@@ -195,6 +195,7 @@ export class BackendClientService {
     return this.logChannel;
   }
 
+
   apiUrl(context: string | IRoutePointer): string {
     return this.api + (_.isString(context) ? context : (<IRoutePointer>context).route);
   }
@@ -231,7 +232,6 @@ export class BackendClientService {
         const route = this.getRoute(apiContext, _.isString(context) ? 'get' : context.method);
 
         if (!route) {
-          Log.error('Route "' + apiContext + '" not found, skipping.');
           ret.error('Route "' + apiContext + '" not found, skipping.');
           ret.complete();
           setTimeout(() => {
