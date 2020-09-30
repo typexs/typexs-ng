@@ -21,6 +21,7 @@ import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {NodeRuntimeInfo} from '@typexs/base/libs/system/NodeRuntimeInfo';
 import {BehaviorSubject, combineLatest} from 'rxjs';
+import {catchError} from 'rxjs/operators';
 
 
 @Injectable()
@@ -57,7 +58,7 @@ export class SystemInfoService {
 
   refresh(): Observable<boolean> {
     const subject = new Subject<boolean>();
-    combineLatest([
+    const sub = combineLatest([
       this.getNode(),
       this.getNodes(),
       this.getRuntimeInfo(),
@@ -66,9 +67,18 @@ export class SystemInfoService {
       .subscribe(
         x => {
           subject.next(true);
+          subject.complete();
+          setTimeout(() => {
+            sub.unsubscribe();
+          });
         },
-        error => subject.next(false),
-        () => subject.complete()
+        error => {
+          subject.next(false);
+          subject.complete();
+          setTimeout(() => {
+            sub.unsubscribe();
+          });
+        }
       );
     return subject.asObservable();
   }
@@ -124,7 +134,7 @@ export class SystemInfoService {
           this.allNodes = _.orderBy(this.allNodes, ['_active_', 'key'], ['asc', 'asc']);
           this.nodesCount = this.allNodes.length;
         }
-      });
+      }, error => {});
     }
     return this.node$.asObservable();
   }
@@ -144,7 +154,7 @@ export class SystemInfoService {
           this.allNodes = _.orderBy(this.allNodes, ['_active_', 'key'], ['asc', 'asc']);
           this.nodesCount = this.allNodes.length;
         }
-      });
+      }, error => {});
     }
     return this.nodes$.asObservable();
   }
@@ -159,7 +169,7 @@ export class SystemInfoService {
         if (info) {
           this.info$.next(info);
         }
-      });
+      }, error => {});
     }
     return this.info$.asObservable();
   }
@@ -174,7 +184,7 @@ export class SystemInfoService {
         if (info) {
           this.infos$.next(info);
         }
-      });
+      }, error => {});
     }
     return this.infos$.asObservable();
   }
