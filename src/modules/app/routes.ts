@@ -86,30 +86,14 @@ export const APP_ROUTES: Routes = [
       },
     ]
   },
-
-  ...StorageModule.getRoutes().map(x => {
-    x.path = 'admin/' + x.path;
-    if (!x.data.skip) {
-      x.data.group = 'admin';
-    }
-    return x;
-  }),
-
-  ...EntityModule.getRoutes().map(x => {
-    x.path = 'admin/' + x.path;
-    if (!x.data.skip) {
-      x.data.group = 'admin';
-    }
-    return x;
-  }),
-
-  ...DistributedStorageModule.getRoutes().map(x => {
-    x.path = 'admin/' + x.path;
-    if (!x.data.skip) {
-      x.data.group = 'admin';
-    }
-    return x;
-  }),
+  {
+    path: 'admin',
+    children: [
+      ...StorageModule.getRoutes(),
+      ...EntityModule.getRoutes(),
+      ...DistributedStorageModule.getRoutes()
+    ]
+  },
 
   {
     path: 'menu',
@@ -133,9 +117,7 @@ export const APP_ROUTES: Routes = [
         component: DummyComponent,
         canActivate: [MenuAccessService],
         data: {label: 'Menu Item 3', group: 'menu'},
-
       }
-
     ]
   },
   {

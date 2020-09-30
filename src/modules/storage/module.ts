@@ -59,6 +59,11 @@ export class StorageModule {
   }
 
   static getRoutes(prefix?: string) {
+    // if (prefix) {
+    //   return STORAGE_ROUTES.map(x => {
+    //     x.path = prefix + '/' + x.path;
+    //   });
+    // }
     return STORAGE_ROUTES;
   }
 

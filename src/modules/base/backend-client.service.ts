@@ -231,7 +231,8 @@ export class BackendClientService {
         const route = this.getRoute(apiContext, _.isString(context) ? 'get' : context.method);
 
         if (!route) {
-          ret.error('route ' + apiContext + ' not found.');
+          Log.error('Route "' + apiContext + '" not found, skipping.');
+          ret.error('Route "' + apiContext + '" not found, skipping.');
           ret.complete();
           setTimeout(() => {
             sub.unsubscribe();
