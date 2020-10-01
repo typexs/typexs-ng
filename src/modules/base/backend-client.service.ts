@@ -59,6 +59,8 @@ export class BackendClientService {
 
   private logChannel: MessageChannel<LogMessage>;
 
+  private requestCache: { [k: string]: Subject<any> } = {};
+
 
   static url(url: string, replace: any = null) {
     if (replace) {
@@ -225,7 +227,14 @@ export class BackendClientService {
     }
     options = options || {};
     // @ts-ignore
-    const ret = new Subject<T>();
+
+    const cacheKey = CryptUtils.shorthash({c: context, o: options});
+    if(this.requestCache[cacheKey]){
+      return this.requestCache[cacheKey].asObservable();
+    }
+
+    this.requestCache[cacheKey] = new Subject<T>();
+    const ret = this.requestCache[cacheKey];
     const state: Observable<BACKEND_CLIENT_STATE> = this.state.asObservable();
     const sub = state.subscribe(x => {
       if (x === 'online' && this.routes.length > 0) {
@@ -237,6 +246,7 @@ export class BackendClientService {
           ret.complete();
           setTimeout(() => {
             sub.unsubscribe();
+            delete this.requestCache[cacheKey];
           });
           return;
         }
@@ -279,7 +289,10 @@ export class BackendClientService {
         (this[method](opts) as Observable<T>).subscribe(
           x => ret.next(x),
           error => ret.error(error),
-          () => ret.complete()
+          () => {
+            ret.complete();
+            delete this.requestCache[cacheKey];
+          }
         );
 
         setTimeout(() => {
@@ -291,6 +304,7 @@ export class BackendClientService {
       Log.error(error);
       ret.error(error);
       ret.complete();
+      delete this.requestCache[cacheKey];
       setTimeout(() => {
         sub.unsubscribe();
       });
