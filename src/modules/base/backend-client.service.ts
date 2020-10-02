@@ -183,6 +183,13 @@ export class BackendClientService {
   }
 
   /**
+   * Reset routes
+   */
+  resetRoutes() {
+    this.routes = [];
+  }
+
+  /**
    *
    * @param context
    * @param options
@@ -205,7 +212,6 @@ export class BackendClientService {
       setTimeout(() => {
         ret.error('Route "' + apiContext + '" not found, skipping.');
         ret.complete();
-        sub.unsubscribe();
       });
       return ret.asObservable() as any;
     }
