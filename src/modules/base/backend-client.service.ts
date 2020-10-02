@@ -8,8 +8,12 @@ import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
 import {IApiCallOptions} from './lib/http/IApiCallOptions';
 import {API_CTRL_SERVER_PING, API_CTRL_SERVER_ROUTES, IRoute} from '@typexs/server/browser';
 import {IHttpRequestOptions} from './lib/http/IHttpRequestOptions';
-import {catchError, mergeMap} from 'rxjs/operators';
+import {catchError, mergeMap, tap} from 'rxjs/operators';
 import {Log} from './lib/log/Log';
+import {UrlHelper} from './lib/UrlHelper';
+import {ErrorHelper} from './lib/ErrorHelper';
+import {CryptUtils} from 'commons-base/browser';
+
 
 export interface IRoutePointer {
   route: string;
@@ -62,78 +66,31 @@ export class BackendClientService {
   private requestCache: { [k: string]: Subject<any> } = {};
 
 
-  static url(url: string, replace: any = null) {
-    if (replace) {
-      _.keys(replace).forEach(k => {
-        url = url.replace(':' + k, replace[k]);
-      });
-    }
-    return url;
-  }
-
-
-  static detectErrors(data: any) {
-    if (_.isArray(data)) {
-      const errors = [];
-      for (let i = 0; i < data.length; i++) {
-        const entry = data[i];
-        const e = this.detectError(entry);
-        if (e) {
-          _.assign(e, {
-            index: i,
-            nodeId: entry.nodeId,
-            instNr: entry.instNr,
-          });
-          errors.push(e);
-        }
-      }
-      return errors;
-    } else {
-      const e = this.detectError(data);
-      if (e) {
-        _.assign(e, {
-          index: null,
-          nodeId: data.nodeId,
-          instNr: data.instNr,
-        });
-        return [e];
-      } else {
-        return [];
-      }
-    }
-  }
-
-
-  static detectError(entry: any) {
-    if (_.has(entry, 'error') && _.has(entry, 'message')) {
-      return new Error(entry.message);
-    }
-    return null;
-
-  }
-
   /**
    * Test if backend is alive
    */
   ping() {
-    const observable = this.get(this.apiUrl(API_CTRL_SERVER_PING));
-    observable.subscribe(
-      value => {
-        if (value && _.has(value, 'time')) {
-          this.serverTime = new Date(_.get(value, 'time'));
-          this.state.next('online');
-        } else {
-          this.state.next('inactive');
-        }
-      },
-      error => {
-        this.state.next('offline');
-        // handle errors for example unreachable
-      }
-    );
-    return observable;
+    return this.get(this.apiUrl(API_CTRL_SERVER_PING))
+      .pipe(
+        tap(
+          value => {
+            if (value && _.has(value, 'time')) {
+              this.serverTime = new Date(_.get(value, 'time'));
+              this.state.next('online');
+            } else {
+              this.state.next('inactive');
+            }
+          },
+          error => {
+            this.state.next('offline');
+            // handle errors for example unreachable
+          })
+      );
   }
 
+  /**
+   * Return the current state of service like if it is connected (online) or not offline.
+   */
   getState() {
     return this.state;
   }
@@ -214,42 +171,59 @@ export class BackendClientService {
   }
 
   /**
+   * Add accessible route to service
+   *
+   * @param route
+   */
+  addRoute(route: IRoute) {
+    if (!this.routes) {
+      this.routes = [];
+    }
+    this.routes.push(route);
+  }
+
+  /**
    *
    * @param context
    * @param options
    */
   callApi<T>(context: string | IRoutePointer, options?: IApiCallOptions): Observable<T> {
+    const ret = new Subject();
     if (this.getState().getValue() === 'offline') {
-      const s = new Subject();
-      s.error('Backend is offline.');
-      s.complete();
-      return s.asObservable() as any;
+
+      ret.error('Backend is offline.');
+      ret.complete();
+      return ret.asObservable() as any;
     }
     options = options || {};
     // @ts-ignore
 
-    const cacheKey = CryptUtils.shorthash({c: context, o: options});
-    if(this.requestCache[cacheKey]){
-      return this.requestCache[cacheKey].asObservable();
+    const method = _.isString(context) ? 'get' : _.get(context, 'method', 'get');
+    const apiContext = this.apiUrl(context);
+    const route = this.getRoute(apiContext, method);
+    if (!route) {
+      setTimeout(() => {
+        ret.error('Route "' + apiContext + '" not found, skipping.');
+        ret.complete();
+        sub.unsubscribe();
+      });
+      return ret.asObservable() as any;
     }
 
-    this.requestCache[cacheKey] = new Subject<T>();
-    const ret = this.requestCache[cacheKey];
+    const doCaching = method === 'get';
+    let cacheKey: string = null;
+
+    if (doCaching) {
+      cacheKey = CryptUtils.shorthash(JSON.stringify({c: context, o: options}));
+      if (this.requestCache[cacheKey]) {
+        return this.requestCache[cacheKey].asObservable();
+      }
+      this.requestCache[cacheKey] = ret;
+    }
+
     const state: Observable<BACKEND_CLIENT_STATE> = this.state.asObservable();
     const sub = state.subscribe(x => {
       if (x === 'online' && this.routes.length > 0) {
-        const apiContext = this.apiUrl(context);
-        const route = this.getRoute(apiContext, _.isString(context) ? 'get' : context.method);
-
-        if (!route) {
-          ret.error('Route "' + apiContext + '" not found, skipping.');
-          ret.complete();
-          setTimeout(() => {
-            sub.unsubscribe();
-            delete this.requestCache[cacheKey];
-          });
-          return;
-        }
 
         const method = route.method;
         const opts: IHttpRequestOptions = {
@@ -258,7 +232,7 @@ export class BackendClientService {
 
 
         if (options.params) {
-          opts.url = BackendClientService.url(route.route as string, options.params);
+          opts.url = UrlHelper.replace(route.route as string, options.params);
         } else {
           opts.url = apiContext;
         }
@@ -291,7 +265,9 @@ export class BackendClientService {
           error => ret.error(error),
           () => {
             ret.complete();
-            delete this.requestCache[cacheKey];
+            if (cacheKey) {
+              delete this.requestCache[cacheKey];
+            }
           }
         );
 
@@ -304,12 +280,14 @@ export class BackendClientService {
       Log.error(error);
       ret.error(error);
       ret.complete();
-      delete this.requestCache[cacheKey];
       setTimeout(() => {
         sub.unsubscribe();
+        if (cacheKey) {
+          delete this.requestCache[cacheKey];
+        }
       });
     });
-    return ret.asObservable();
+    return ret.asObservable() as any;
 
   }
 
@@ -361,7 +339,7 @@ export class BackendClientService {
     }
 
     observable = observable.pipe(mergeMap((x: any) => {
-      const filterErrors = BackendClientService.detectErrors(x);
+      const filterErrors = ErrorHelper.detectErrors(x);
       if (filterErrors.length > 0) {
         throw filterErrors[0];
       }

@@ -11,11 +11,14 @@ export * from './api/auth/auth.service';
 export * from './api/auth/IAuthGuardProvider';
 export * from './api/auth/auth-guard.service';
 
+export * from './lib/ErrorHelper';
+export * from './lib/UrlHelper';
 export * from './lib/log/ILoggerOptions';
 export * from './lib/log/Log';
 export * from './lib/http/IApiCallOptions';
 export * from './lib/http/IGetOptions';
 export * from './lib/http/IHttpRequestOptions';
+
 
 export * from './messages/message.service';
 export * from './messages/IMessage';
