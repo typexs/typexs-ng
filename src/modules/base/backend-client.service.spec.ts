@@ -2,13 +2,7 @@ import {getTestBed, TestBed} from '@angular/core/testing';
 // import {expect} from 'jasmine';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
-import {
-  _API_CTRL_SYSTEM_RUNTIME_NODE,
-  API_CTRL_SERVER_PING,
-  API_CTRL_SERVER_ROUTES,
-  API_CTRL_SYSTEM_RUNTIME_NODE,
-  IRoute
-} from '@typexs/server/browser';
+import {API_CTRL_SERVER_PING, API_CTRL_SERVER_ROUTES, API_CTRL_SYSTEM_RUNTIME_NODE, IRoute} from '@typexs/server/browser';
 import {BackendClientService} from './backend-client.service';
 import {MessageService} from './messages/message.service';
 import {Log} from './lib/log/Log';
@@ -138,14 +132,19 @@ describe('BackendClientService', () => {
 
   it('fail callApi cause accessible routes are missing', () => {
     service.getState().next('online');
+    service.resetRoutes();
 
     const response: any = {key: 'system'};
-    service.callApi(API_CTRL_SYSTEM_RUNTIME_NODE).subscribe((x: SystemNodeInfo) => {
-      expect(x).toEqual(response);
-    });
+    service.callApi(API_CTRL_SYSTEM_RUNTIME_NODE).subscribe(
+      (x: SystemNodeInfo) => {
+        expect(x).toEqual(response);
+      }, error => {
+        expect(error).toEqual('Route "/api/system/node" not found, skipping.');
+      });
     // successful response
-    const req = httpMock.expectNone('/api' + API_CTRL_SYSTEM_RUNTIME_NODE);
+    httpMock.expectNone('/api' + API_CTRL_SYSTEM_RUNTIME_NODE);
   });
+
 
   it('successfully callApi cause route is allowed', () => {
     service.getState().next('online');
