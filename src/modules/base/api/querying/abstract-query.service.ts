@@ -2,7 +2,7 @@ import {IQueringService} from './IQueringService';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import * as _ from 'lodash';
-import {IBuildOptions, IEntityRef, ILookupRegistry, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
+import {IBuildOptions, IEntityRef, IEntityRefMetadata, ILookupRegistry, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
 import {BackendClientService, IRoutePointer} from '../../backend-client.service';
 import {AuthService} from '../auth/auth.service';
 import {IFindOptions, ISaveOptions} from '@typexs/base/browser';
@@ -175,7 +175,7 @@ export abstract class AbstractQueryService implements IQueringService {
     }
 
     if (!this.$isReady.getValue()) {
-      const observable = this._http.callApi(this.getRoute('metadata'), {});
+      const observable = this._http.callApi<IEntityRefMetadata[]>(this.getRoute('metadata'), {});
       observable.subscribe(
         value => {
           if (_.isArray(value)) {

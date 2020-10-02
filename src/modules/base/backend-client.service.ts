@@ -276,12 +276,11 @@ export class BackendClientService {
             }
           }
         );
-
-        setTimeout(() => {
-          sub.unsubscribe();
-        });
-
       }
+
+      setTimeout(() => {
+        sub.unsubscribe();
+      });
     }, error => {
       Log.error(error);
       ret.error(error);
