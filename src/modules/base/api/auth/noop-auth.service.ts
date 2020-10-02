@@ -13,6 +13,7 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {MESSAGE_TYPE_AUTH_SERVICE, MSG_TOPIC_AUTH_SET_USER} from '../../constants';
 import {AuthMessage} from '../../messages/types/AuthMessage';
 import {of} from 'rxjs';
+import {BackendClientService} from '../../backend-client.service';
 
 @Injectable()
 export class NoopAuthService implements IAuthServiceProvider {
@@ -23,15 +24,18 @@ export class NoopAuthService implements IAuthServiceProvider {
 
   private _loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
-  constructor(private messageService: MessageService) {
+  constructor(private messageService: MessageService, private backendClient: BackendClientService) {
   }
 
   init() {
     const msg = new AuthMessage();
     msg.type = MessageType.SUCCESS;
     msg.topic = MSG_TOPIC_AUTH_SET_USER;
-    this._initialized.next(true);
-    this.getChannel().publish(msg);
+    this.backendClient.reloadRoutes().subscribe(x => {
+      this._initialized.next(true);
+      this.getChannel().publish(msg);
+    });
+
   }
 
   isInitialized(): Observable<boolean> {

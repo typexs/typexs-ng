@@ -173,7 +173,6 @@ export abstract class AbstractQueryService implements IQueringService {
       this.$isReady.next(true);
       return;
     }
-
     if (!this.$isReady.getValue()) {
       const observable = this._http.callApi<IEntityRefMetadata[]>(this.getRoute('metadata'), {});
       observable.subscribe(

@@ -22,8 +22,8 @@ import {ExprDesc} from 'commons-expressions/browser';
 import {IMessageOptions} from '@typexs/base/libs/messaging/IMessageOptions';
 import {ITaskExectorOptions} from '@typexs/base/libs/tasks/ITaskExectorOptions';
 import {IApiCallOptions} from '../base/lib/http/IApiCallOptions';
-import {catchError, mergeMap, takeUntil, takeWhile, tap} from 'rxjs/operators';
-import {interval, of, timer} from 'rxjs';
+import {filter, mergeMap, takeUntil, tap} from 'rxjs/operators';
+import {combineLatest, forkJoin, timer} from 'rxjs';
 import {Log} from '../base/lib/log/Log';
 
 
@@ -154,7 +154,10 @@ export class BackendTasksService {
   getTaskList(refresh: boolean = false): Observable<Tasks> {
     const x = new Subject<Tasks>();
     if (refresh || !this.tasks) {
-      this.infoService.refresh()
+      combineLatest([
+        this.infoService.getNode().pipe(filter(x => !!x)),
+        this.infoService.getNodes().pipe(filter(x => !!x))
+      ])
         .subscribe(refreshed => {
           if (!refreshed) {
             return;
@@ -170,22 +173,27 @@ export class BackendTasksService {
             return false;
           });
 
-          this.http.callApi(API_CTRL_TASKS_METADATA, {
-            handle:
-              (err, data: IEntityRefMetadata[]) => {
-                this.tasks = new Tasks(null);
-                data.forEach((d: any) => {
-                  d.nodeIds = _.intersection(d.nodeIds, this.workerNodes.map(w => w.nodeId));
-                  this.tasks.fromJson(d);
-                });
-                x.next(this.tasks);
-                x.complete();
-              }
-          });
-        }, error => Log.error(error));
+          this.http.callApi(API_CTRL_TASKS_METADATA).subscribe(
+            (data: IEntityRefMetadata[]) => {
+              this.tasks = new Tasks(null);
+              data.forEach((d: any) => {
+                d.nodeIds = _.intersection(d.nodeIds, this.workerNodes.map(w => w.nodeId));
+                this.tasks.fromJson(d);
+              });
+              x.next(this.tasks);
+            },
+            error => {
+              Log.error(error);
+            },
+            () => {
+              x.complete();
+            }
+          );
+        });
 
     } else {
       x.next(this.tasks);
+      x.complete();
     }
     return x.asObservable();
   }

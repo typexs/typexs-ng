@@ -8,7 +8,7 @@ import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
 import {IApiCallOptions} from './lib/http/IApiCallOptions';
 import {API_CTRL_SERVER_PING, API_CTRL_SERVER_ROUTES, IRoute} from '@typexs/server/browser';
 import {IHttpRequestOptions} from './lib/http/IHttpRequestOptions';
-import {catchError, mergeMap, tap} from 'rxjs/operators';
+import {catchError, filter, first, mergeMap, tap} from 'rxjs/operators';
 import {Log} from './lib/log/Log';
 import {UrlHelper} from './lib/UrlHelper';
 import {ErrorHelper} from './lib/ErrorHelper';
@@ -59,11 +59,17 @@ export class BackendClientService {
 
   private state: BehaviorSubject<BACKEND_CLIENT_STATE> = new BehaviorSubject<BACKEND_CLIENT_STATE>('initial');
 
+  // private loading: BehaviorSubject<number> = new BehaviorSubject<boolean>(false)<;
+
+  private routesLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   private routes: IRoute[] = [];
 
   private logChannel: MessageChannel<LogMessage>;
 
   private requestCache: { [k: string]: Subject<any> } = {};
+
+  private activeCount = 0;
 
 
   /**
@@ -95,10 +101,19 @@ export class BackendClientService {
     return this.state;
   }
 
+  getActiveCount() {
+    return this.activeCount;
+  }
+
+  areRoutesLoaded(): Observable<boolean> {
+    return this.routesLoaded.asObservable();
+  }
+
   /**
    * Reload route informations from backend, this can happen
    */
   reloadRoutes(force: boolean = false) {
+    this.routesLoaded.next(false);
     this.routes = [];
     const obs = new Subject();
     if (!force && (this.state.getValue() === 'offline' || this.state.getValue() === 'initial')) {
@@ -111,6 +126,7 @@ export class BackendClientService {
       this.get(this.apiUrl(API_CTRL_SERVER_ROUTES)).subscribe((routes: IRoute[]) => {
         this.routes = routes;
         this.state.next('online');
+        this.routesLoaded.next(true);
         obs.next(this.routes);
       }, error => {
         this.state.next('inactive');
@@ -197,27 +213,15 @@ export class BackendClientService {
   callApi<T>(context: string | IRoutePointer, options?: IApiCallOptions): Observable<T> {
     const ret = new Subject();
     if (this.getState().getValue() === 'offline') {
-
       ret.error('Backend is offline.');
       ret.complete();
       return ret.asObservable() as any;
     }
     options = options || {};
-    // @ts-ignore
-
-    const method = _.isString(context) ? 'get' : _.get(context, 'method', 'get');
-    const apiContext = this.apiUrl(context);
-    const route = this.getRoute(apiContext, method);
-    if (!route) {
-      setTimeout(() => {
-        ret.error('Route "' + apiContext + '" not found, skipping.');
-        ret.complete();
-      });
-      return ret.asObservable() as any;
-    }
-
-    const doCaching = method === 'get';
     let cacheKey: string = null;
+
+    const _method = _.isString(context) ? 'get' : _.get(context, 'method', 'get');
+    const doCaching = _method === 'get';
 
     if (doCaching) {
       cacheKey = CryptUtils.shorthash(JSON.stringify({c: context, o: options}));
@@ -227,15 +231,27 @@ export class BackendClientService {
       this.requestCache[cacheKey] = ret;
     }
 
-    const state: Observable<BACKEND_CLIENT_STATE> = this.state.asObservable();
-    const sub = state.subscribe(x => {
-      if (x === 'online' && this.routes.length > 0) {
+    this.activeCount++;
+
+    // @ts-ignore
+    const sub = this.areRoutesLoaded().pipe(filter(x => x)).pipe(first()).subscribe(__x => {
+        const apiContext = this.apiUrl(context);
+        const route = this.getRoute(apiContext, _method);
+        if (!route) {
+          ret.error('Route "' + apiContext + '" not found, skipping.');
+          ret.complete();
+          this.activeCount--;
+          return null;
+        }
+
+        // const state: Observable<BACKEND_CLIENT_STATE> = this.state.asObservable();
+        // const sub = state.subscribe(x => {
+        //   if (x === 'online' && this.routes.length > 0) {
 
         const method = route.method;
         const opts: IHttpRequestOptions = {
           url: 'TODO',
         };
-
 
         if (options.params) {
           opts.url = UrlHelper.replace(route.route as string, options.params);
@@ -267,31 +283,39 @@ export class BackendClientService {
         }
 
         (this[method](opts) as Observable<T>).subscribe(
-          x => ret.next(x),
-          error => ret.error(error),
+          x => {
+            ret.next(x);
+          },
+          error => ret.error(error)
+          ,
           () => {
             ret.complete();
+            this.activeCount--;
             if (cacheKey) {
               delete this.requestCache[cacheKey];
             }
           }
         );
-      }
+        // }
 
-      setTimeout(() => {
-        sub.unsubscribe();
-      });
-    }, error => {
-      Log.error(error);
-      ret.error(error);
-      ret.complete();
-      setTimeout(() => {
-        sub.unsubscribe();
+        // setTimeout(() => {
+        //   sub.unsubscribe();
+        // });
+      },
+      error => {
+        Log.error(error);
+        ret.error(error);
+        ret.complete();
+        this.activeCount--;
         if (cacheKey) {
           delete this.requestCache[cacheKey];
         }
+        // setTimeout(() => {
+        //   // sub.unsubscribe();
+        // });
       });
-    });
+
+    // });
     return ret.asObservable() as any;
 
   }

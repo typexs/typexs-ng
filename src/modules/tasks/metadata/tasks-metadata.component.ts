@@ -1,20 +1,22 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TaskRef, Tasks} from '@typexs/base/browser';
 import {BackendTasksService} from '../backend-tasks.service';
 import {SystemInfoService} from '../../base/system-info.service';
 import {Log} from '../../base/lib/log/Log';
+import {Subscription} from 'rxjs';
 
 
 @Component({
   selector: 'txs-tasks-metadata',
   templateUrl: './tasks-metadata.component.html'
 })
-export class TasksMetadataComponent implements OnInit {
+export class TasksMetadataComponent implements OnInit, OnDestroy {
 
   private _tasks: Tasks;
 
   tasks: TaskRef[];
 
+  sub: Subscription;
 
   constructor(private tasksService: BackendTasksService, private infoService: SystemInfoService) {
   }
@@ -32,7 +34,7 @@ export class TasksMetadataComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tasksService.getTaskList(true).subscribe(x => {
+    this.sub = this.tasksService.getTaskList(true).subscribe(x => {
       this._tasks = x;
       this.tasks = [];
       x.names(true).forEach(y => {
@@ -40,6 +42,12 @@ export class TasksMetadataComponent implements OnInit {
         this.tasks.push(ref);
       });
     }, error => Log.error(error));
+  }
+
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 
 }

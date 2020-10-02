@@ -4,13 +4,13 @@
 <div bat-wrapper>
 
   <!-- [ Pre-loader ] start -->
-  <!--
-  <div class="loader-bg">
-    <div class="loader-track">
-      <div class="loader-fill"></div>
+
+  <div class="txs-loader-bg" *ngIf="getBackendService().getActiveCount() > 0">
+    <div class="txs-loader-track">
+      <div class="txs-loader-fill"></div>
     </div>
   </div>
-  -->
+
   <!-- [ Pre-loader ] End -->
 
 
@@ -96,6 +96,9 @@
               </div>
             </div>
           </div>
+        </li>
+        <li *ngIf="(appStateService.isAdmin | async)">
+          <span class="badge badge-secondary">{{getBackendService().getActiveCount()}}</span>
         </li>
         <li *ngIf="appStateService.isAuthenticated() && viewContext != 'admin'">
           <a *ngIf="(appStateService.isAdmin | async)" routerLink="/admin">

@@ -20,8 +20,8 @@ import {IWorkerInfo} from '@typexs/base/libs/worker/IWorkerInfo';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {NodeRuntimeInfo} from '@typexs/base/libs/system/NodeRuntimeInfo';
-import {BehaviorSubject, combineLatest} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, forkJoin} from 'rxjs';
+import {combineAll, filter} from 'rxjs/operators';
 
 
 @Injectable()
@@ -59,10 +59,10 @@ export class SystemInfoService {
   refresh(): Observable<boolean> {
     const subject = new Subject<boolean>();
     const sub = combineLatest([
-      this.getNode(),
-      this.getNodes(),
-      this.getRuntimeInfo(),
-      this.getRuntimeInfos()
+      this.getNode().pipe(filter(x => !!x)),
+      this.getNodes().pipe(filter(x => !!x)),
+      this.getRuntimeInfo().pipe(filter(x => !!x)),
+      this.getRuntimeInfos().pipe(filter(x => !!x))
     ])
       .subscribe(
         x => {
@@ -78,6 +78,9 @@ export class SystemInfoService {
           setTimeout(() => {
             sub.unsubscribe();
           });
+        },
+        () => {
+
         }
       );
     return subject.asObservable();
@@ -134,7 +137,8 @@ export class SystemInfoService {
           this.allNodes = _.orderBy(this.allNodes, ['_active_', 'key'], ['asc', 'asc']);
           this.nodesCount = this.allNodes.length;
         }
-      }, error => {});
+      }, error => {
+      });
     }
     return this.node$.asObservable();
   }
@@ -154,7 +158,8 @@ export class SystemInfoService {
           this.allNodes = _.orderBy(this.allNodes, ['_active_', 'key'], ['asc', 'asc']);
           this.nodesCount = this.allNodes.length;
         }
-      }, error => {});
+      }, error => {
+      });
     }
     return this.nodes$.asObservable();
   }
@@ -169,7 +174,8 @@ export class SystemInfoService {
         if (info) {
           this.info$.next(info);
         }
-      }, error => {});
+      }, error => {
+      });
     }
     return this.info$.asObservable();
   }
@@ -184,7 +190,8 @@ export class SystemInfoService {
         if (info) {
           this.infos$.next(info);
         }
-      }, error => {});
+      }, error => {
+      });
     }
     return this.infos$.asObservable();
   }
