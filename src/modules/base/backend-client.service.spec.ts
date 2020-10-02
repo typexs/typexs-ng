@@ -7,6 +7,7 @@ import {BackendClientService} from './backend-client.service';
 import {MessageService} from './messages/message.service';
 import {Log} from './lib/log/Log';
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
+import {forkJoin} from 'rxjs';
 
 
 /**
@@ -165,6 +166,36 @@ describe('BackendClientService', () => {
         console.error(error);
       });
     // successful response
+
+
+    const req = httpMock.expectOne('/api' + API_CTRL_SYSTEM_RUNTIME_NODE);
+    req.flush(response);
+
+  });
+
+
+  it('successfully callApi with cached request', () => {
+    service.getState().next('online');
+    service.addRoute({
+      route: service.apiUrl(API_CTRL_SYSTEM_RUNTIME_NODE),
+      method: 'get',
+      context: 'api',
+      authorized: false
+    });
+    const response: any = {key: 'system'};
+
+    forkJoin([
+      service.callApi(API_CTRL_SYSTEM_RUNTIME_NODE),
+      service.callApi(API_CTRL_SYSTEM_RUNTIME_NODE),
+      service.callApi(API_CTRL_SYSTEM_RUNTIME_NODE),
+      service.callApi(API_CTRL_SYSTEM_RUNTIME_NODE)
+    ])
+      .subscribe((value: any) => {
+        console.log(value);
+        for (const x of value) {
+          expect(x).toEqual(response);
+        }
+      });
 
 
     const req = httpMock.expectOne('/api' + API_CTRL_SYSTEM_RUNTIME_NODE);
