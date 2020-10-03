@@ -196,13 +196,16 @@ export class BackendClientService {
       this.routes = [];
     }
     this.routes.push(route);
+    this.routesLoaded.next(true);
   }
+
 
   /**
    * Reset routes
    */
   resetRoutes() {
     this.routes = [];
+    this.routesLoaded.next(false);
   }
 
   /**
