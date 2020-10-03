@@ -1,6 +1,6 @@
 {
   "name": "@typexs/ng",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Angular for typexs",
   "main": "index.js",
   "browser": "browser.js",
@@ -125,7 +125,8 @@
     "rxjs": "^6.6.2",
     "rxjs-compat": "^6.6.2",
     "string-template": "^1.0.0",
-    "zone.js": "~0.11.1"
+    "zone.js": "~0.11.1",
+    "@typexs/roles-api": "^1.0.14"
   },
   "peerDependencies": {
     "@typexs/base": "^1.2.0",
