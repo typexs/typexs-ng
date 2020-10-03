@@ -33,7 +33,7 @@
             <td>
               <div *ngIf="propertyRef.property.isEntityReference()">
                 <a
-                  [routerLink]="[entityService.getNgUrlPrefix(),propertyRef.property.getTargetRef().machineName,'structure']"
+                  [routerLink]="[entityService.getNgUrlPrefix(),propertyRef.property.getTargetRef().name,'structure']"
                   routerLinkActive="true">
                   {{type(propertyRef.property)}}{{propertyRef.property.isCollection() ? '[]' : ''}}
                 </a>
@@ -80,13 +80,13 @@
               {{ propertyRef.name }}
             </td>
             <td>
-              <a [routerLink]="[entityService.getNgUrlPrefix(),propertyRef.getSourceRef().machineName,'structure']"
+              <a [routerLink]="[entityService.getNgUrlPrefix(),propertyRef.getSourceRef().name,'structure']"
                  routerLinkActive="active">
                 {{propertyRef.object.className}}</a>
             </td>
             <td>
               <div *ngIf="propertyRef.isEntityReference()">
-                <a [routerLink]="[entityService.getNgUrlPrefix(),propertyRef.getTargetRef().machineName,'structure']"
+                <a [routerLink]="[entityService.getNgUrlPrefix(),propertyRef.getTargetRef().name,'structure']"
                    routerLinkActive="active">
                   {{type(propertyRef)}}{{propertyRef.isCollection() ? '[]' : ''}}
                 </a>

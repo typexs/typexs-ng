@@ -30,14 +30,7 @@ export * from './modules/entity/public_api';
 
 
 // tasks module
-export * from './modules/tasks/module';
-export * from './modules/tasks/backend-tasks.service';
-export * from './modules/tasks/execution/tasks-execution.component';
-export * from './modules/tasks/log/tasks-log.component';
-export * from './modules/tasks/metadata/tasks-metadata.component';
-export * from './modules/tasks/status/task-status-row.component';
-export * from './modules/tasks/status/task-status.component';
-export * from './modules/tasks/status/task-status-page.component';
+export * from './modules/tasks/public_api';
 
 
 // storage module

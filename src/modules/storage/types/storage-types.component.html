@@ -10,7 +10,7 @@
         <th>Storage</th>
         <th>Schema</th>
         <th>Name</th>
-        <th>machineName</th>
+        <th>name</th>
         <th>Options</th>
         <th>Ops</th>
       </tr>
@@ -21,7 +21,7 @@
         <td>{{entityDef.metadata.storage}}</td>
         <td>{{entityDef.object.schema}}</td>
         <td>{{entityDef.name}}</td>
-        <td>{{entityDef.machineName}}</td>
+        <td>{{entityDef.name}}</td>
         <td>
           <details>
             <summary>JSON</summary>
@@ -31,13 +31,13 @@
         </td>
         <td>
           <a class="btn btn-primary" *ngIf="storageService.isSupported('query')"
-             [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'query']">Query</a>
+             [routerLink]="[storageService.getNgUrlPrefix(),entityDef.name,'query']">Query</a>
           <a class="btn btn-secondary" *ngIf="storageService.isSupported('aggregate')"
-             [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'aggregate']">Aggregate</a>
+             [routerLink]="[storageService.getNgUrlPrefix(),entityDef.name,'aggregate']">Aggregate</a>
           <a class="btn btn-success" *ngIf="storageService.isSupported('save')"
-             [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'create']">New</a>
+             [routerLink]="[storageService.getNgUrlPrefix(),entityDef.name,'create']">New</a>
           <a class="btn btn-warning" *ngIf="storageService.isSupported('metadata')"
-             [routerLink]="[storageService.getNgUrlPrefix(),entityDef.machineName,'structure']">Schema</a>
+             [routerLink]="[storageService.getNgUrlPrefix(),entityDef.name,'structure']">Schema</a>
         </td>
       </tr>
       </tbody>

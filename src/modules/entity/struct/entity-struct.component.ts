@@ -17,9 +17,9 @@ import {ClassRef, LookupRegistry, XS_TYPE_PROPERTY} from 'commons-schema-api/bro
 })
 export class EntityStructComponent implements OnInit {
 
-  _machineName: Observable<string>;
+  _name: Observable<string>;
 
-  machineName: string;
+  name: string;
 
   entityDef: EntityRef;
 
@@ -35,19 +35,19 @@ export class EntityStructComponent implements OnInit {
   ngOnInit() {
     this.entityService.isReady(() => {
       this.route.params.subscribe((params => {
-        if (params.machineName) {
-          this.load(params.machineName);
+        if (params.name) {
+          this.load(params.name);
         }
       }));
     });
   }
 
-  load(machineName: string) {
+  load(name: string) {
     this.referrerProps = [];
     this.propertyDefs = [];
 
-    this.machineName = machineName;
-    this.entityDef = EntityRegistry.$().getEntityRefByName(this.machineName);
+    this.name = name;
+    this.entityDef = EntityRegistry.$().getEntityRefByName(this.name);
     this.referrerProps = LookupRegistry.$().filter(XS_TYPE_PROPERTY, (referrer: PropertyRef) => {
       return referrer.isReference() && referrer.targetRef == this.entityDef.getClassRef();
     });

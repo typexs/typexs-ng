@@ -4,7 +4,7 @@
       <li *ngFor="let entry of getValue()">
         <a [routerLink]="[
           getUrlPrefix(),
-          getProperty().getEntityRef().machineName,
+          getProperty().getEntityRef().name,
           'view',
           buildLookupConditions( entry) ]">
           {{  labelHandler(entry) }}
@@ -16,7 +16,7 @@
     <a
       [routerLink]="[
         getUrlPrefix(),
-        getProperty().getEntityRef().machineName, 'view',
+        getProperty().getEntityRef().name, 'view',
         buildLookupConditions(getValue())
         ]">
       {{ labelHandler(getValue()) }}

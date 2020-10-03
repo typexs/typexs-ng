@@ -26,7 +26,7 @@ export class AbstractAggregateEmbeddedComponent implements OnInit {
 
 
   @Input()
-  machineName: string;
+  name: string;
 
   @Input()
   columns: IGridColumn[];
@@ -111,11 +111,11 @@ export class AbstractAggregateEmbeddedComponent implements OnInit {
 
   findEntityDef() {
     this.entityRef = LookupRegistry.$(this.registryName).find(XS_TYPE_ENTITY, (e: IEntityRef) => {
-      return e.machineName === _.snakeCase(this.machineName);
+      return e.machineName === _.snakeCase(this.name);
     });
 
     if (!this.entityRef) {
-      this.error = `Can't find entity type for ${this.machineName}.`;
+      this.error = `Can't find entity type for ${this.name}.`;
     }
   }
 
@@ -173,7 +173,7 @@ export class AbstractAggregateEmbeddedComponent implements OnInit {
     }
 
 
-    this.queringService.aggregate(this.machineName, executeQuery, queryOptions)
+    this.queringService.aggregate(this.name, executeQuery, queryOptions)
       .subscribe(
         (results: any) => {
           if (results && results.entities && _.has(results, '$count') && _.isNumber(results.$count)) {

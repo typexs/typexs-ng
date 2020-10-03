@@ -31,7 +31,7 @@ export class EntityOptionsService implements ISelectOptionsService {
 
     if (storeable && propertyDef.targetRef.isEntity) {
       const entityDef = <EntityRef>propertyDef.getTargetRef().getEntityRef();
-      this.entityService.query(entityDef.machineName, null, {limit: limit}).subscribe(
+      this.entityService.query(entityDef.name, null, {limit: limit}).subscribe(
         result => {
           if (result) {
             const _entities: ISelectOption[] = [];

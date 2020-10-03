@@ -13,7 +13,7 @@ export class StorageDeleteComponent implements OnInit {
 
   ready: boolean = false;
 
-  machineName: string;
+  name: string;
 
   id: string;
 
@@ -39,15 +39,17 @@ export class StorageDeleteComponent implements OnInit {
 
 
   load() {
-    this.machineName = this.route.snapshot.paramMap.get('machineName');
+    this.name = this.route.snapshot.paramMap.get('name');
     this.id = this.route.snapshot.paramMap.get('id');
-    this.entityDef = LookupRegistry.$(REGISTRY_TYPEORM).find(XS_TYPE_ENTITY, (e:IEntityRef) => {return e.machineName == _.snakeCase(this.machineName)});
+    this.entityDef = LookupRegistry.$(REGISTRY_TYPEORM).find(XS_TYPE_ENTITY, (e: IEntityRef) => {
+      return e.machineName === _.snakeCase(this.name);
+    });
     if (this.entityDef) {
-      this.entityService.get(this.machineName, this.id).subscribe((entity) => {
+      this.entityService.get(this.name, this.id).subscribe((entity) => {
         this.instance = entity;
       });
     } else {
-      this.error = `Can't find entity type for ${this.machineName}.`;
+      this.error = `Can't find entity type for ${this.name}.`;
     }
     this.ready = true;
   }
@@ -56,22 +58,22 @@ export class StorageDeleteComponent implements OnInit {
   doDelete() {
     if (!this.error) {
       if (this.entityDef && this.instance) {
-        this.entityService.delete(this.machineName, this.id).subscribe(async (entity) => {
+        this.entityService.delete(this.name, this.id).subscribe(async (entity) => {
           // TODO maybe wait
           this.instance = entity;
           this.deleted = true;
-//          await this.router.navigate([storageService.getNgUrlPrefix(), this.machineName, 'query']);
+//          await this.router.navigate([storageService.getNgUrlPrefix(), this.name, 'query']);
         });
       }
     }
   }
 
   doAbort() {
-    return this.router.navigate([this.entityService.getNgUrlPrefix(), this.machineName, 'view', this.id]);
+    return this.router.navigate([this.entityService.getNgUrlPrefix(), this.name, 'view', this.id]);
   }
 
   gotoQuery() {
-    return this.router.navigate([this.entityService.getNgUrlPrefix(), this.machineName, 'query']);
+    return this.router.navigate([this.entityService.getNgUrlPrefix(), this.name, 'query']);
   }
 
 }

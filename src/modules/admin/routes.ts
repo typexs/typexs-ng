@@ -5,23 +5,13 @@ import {SystemRoutesComponent} from './system/routes/system-routes.component';
 import {SystemStoragesComponent} from './system/storages/system-storages.component';
 import {SystemConfigComponent} from './system/config/system-config.component';
 import {NgRoutesComponent} from './ng/routes/ng-routes.component';
-import {EntityTypesComponent} from './../entity/types/entity-types.component';
-import {EntityModifyComponent} from './../entity/modify/entity-modify.component';
-import {EntityQueryComponent} from './../entity/query/page/entity-query.component';
-import {EntityViewComponent} from './../entity/view/entity-view.component';
-import {EntityStructComponent} from './../entity/struct/entity-struct.component';
-import {EntityDeleteComponent} from './../entity/delete/entity-delete.component';
 import {AuthGuardService} from '../base/api/auth/auth-guard.service';
 import {StorageBackendsComponent} from '../storage/backends/storage-backends.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
-import {TasksMetadataComponent} from '../tasks/metadata/tasks-metadata.component';
-import {TasksExecutionComponent} from '../tasks/execution/tasks-execution.component';
 import {SystemNodesComponent} from './system/nodes/system-nodes.component';
-import {TasksLogComponent} from '../tasks/log/tasks-log.component';
-import {TaskStatusPageComponent} from '../tasks/status/task-status-page.component';
-import {STORAGE_ROUTES} from '../storage/routes';
-import {StorageModule} from '../storage/module';
 import {SettingsComponent} from './components/settings/settings.component';
+import {PERMISSION_ACCESS_ADMIN_UI} from '../../libs/Constants';
+import {PERMISSION_ALLOW_STORAGES_VIEW} from '@typexs/server';
 
 
 export const ADMIN_ROUTES: Routes = [
@@ -34,78 +24,66 @@ export const ADMIN_ROUTES: Routes = [
         path: '',
         component: DashboardComponent,
         canActivate: [AuthGuardService],
-        data: {label: 'Dashboard', group: 'admin'}
+        data: {
+          label: 'Dashboard',
+          group: 'admin',
+          permissions: [PERMISSION_ACCESS_ADMIN_UI],
+        }
       },
       {
         path: 'settings',
         component: SettingsComponent,
         canActivate: [AuthGuardService],
-        data: {label: 'Settings', group: 'admin'}
+        data: {
+          label: 'Settings',
+          group: 'admin',
+          permissions: [PERMISSION_ACCESS_ADMIN_UI]
+        }
       },
       {
         path: 'system/nodes',
         component: SystemNodesComponent,
         canActivate: [AuthGuardService],
-        data: {label: 'Nodes', group: 'admin'}
+        data: {
+          label: 'Nodes',
+          group: 'admin',
+          permissions: [PERMISSION_ACCESS_ADMIN_UI]
+        }
       },
       {
         path: 'system/modules',
         component: SystemModulesComponent,
         canActivate: [AuthGuardService],
-        data: {label: 'Modules', group: 'admin'}
+        data: {label: 'Modules', group: 'admin', permissions: [PERMISSION_ACCESS_ADMIN_UI]}
       },
       {
         path: 'system/routes',
         component: SystemRoutesComponent,
-        data: {label: 'Routes', group: 'admin'},
+        data: {label: 'Routes', group: 'admin', permissions: [PERMISSION_ACCESS_ADMIN_UI]},
         canActivate: [AuthGuardService],
       },
       {
         path: 'system/storages',
         component: SystemStoragesComponent,
-        data: {label: 'Storages', group: 'admin'}
+        data: {label: 'Storages', group: 'admin', permissions: [PERMISSION_ACCESS_ADMIN_UI]}
       },
       {
         path: 'system/config',
         component: SystemConfigComponent,
-        data: {label: 'Config', group: 'admin'},
+        data: {label: 'Config', group: 'admin', permissions: [PERMISSION_ACCESS_ADMIN_UI]},
         canActivate: [AuthGuardService]
       },
       {
         path: 'ng/routes',
         component: NgRoutesComponent,
-        data: {label: 'Routes', group: 'admin'},
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'tasks/list',
-        component: TasksMetadataComponent,
-        data: {label: 'List', group: 'admin'},
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'tasks/logs',
-        component: TasksLogComponent,
-        data: {label: 'Logs', group: 'admin'},
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'tasks/run/:taskName',
-        component: TasksExecutionComponent,
-        data: {label: 'Execute', group: 'admin', skip: true},
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'tasks/status/:nodeId/:runnerId',
-        component: TaskStatusPageComponent,
-        data: {label: 'Status', group: 'admin', skip: true},
+        data: {label: 'Routes', group: 'admin', permissions: [PERMISSION_ACCESS_ADMIN_UI]},
         canActivate: [AuthGuardService]
       },
 
       {
         path: 'storage/backends',
         component: StorageBackendsComponent,
-        data: {label: 'Backend', group: 'admin'},
+        data: {label: 'Backend', group: 'admin', permissions: [PERMISSION_ALLOW_STORAGES_VIEW]},
         canActivate: [AuthGuardService]
       },
 

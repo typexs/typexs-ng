@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-header">
-    <h3>Delete entity "{{machineName}}"</h3>
+    <h3>Delete entity "{{name}}"</h3>
 
   </div>
   <div class="card-body">
@@ -22,7 +22,7 @@
     </div>
 
     <div *ngIf="deleted">
-      <a class="btn btn-primary" [routerLink]="[entityService.getNgUrlPrefix(),machineName,'query']">Query</a>
+      <a class="btn btn-primary" [routerLink]="[entityService.getNgUrlPrefix(),name,'query']">Query</a>
     </div>
   </div>
 </div>

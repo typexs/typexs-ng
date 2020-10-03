@@ -16,9 +16,9 @@ import {REGISTRY_TYPEORM} from '@typexs/base/browser';
 })
 export class StorageStructComponent implements OnInit {
 
-  _machineName: Observable<string>;
+  _name: Observable<string>;
 
-  machineName: string;
+  name: string;
 
   entityDef: IEntityRef;
 
@@ -34,22 +34,22 @@ export class StorageStructComponent implements OnInit {
   ngOnInit() {
     this.entityService.isReady(() => {
       this.route.params.subscribe((params => {
-        if (params.machineName) {
-          this.load(params.machineName);
+        if (params.name) {
+          this.load(params.name);
         }
       }));
     });
   }
 
 
-  load(machineName: string) {
+  load(name: string) {
     this.referrerProps = [];
     this.propertyDefs = [];
 
-    this.machineName = machineName;
-    // this.storageService.getRegistry().getEntityRefFor(this.machineName);
+    this.name = name;
+    // this.storageService.getRegistry().getEntityRefFor(this.name);
     this.entityDef = LookupRegistry.$(REGISTRY_TYPEORM).find(XS_TYPE_ENTITY, (e: IEntityRef) => {
-      return e.machineName === machineName;
+      return e.name === name;
     });
 
 

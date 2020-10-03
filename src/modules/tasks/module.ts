@@ -14,6 +14,7 @@ import {DatePipe} from '@angular/common';
 import {TasksLogComponent} from './log/tasks-log.component';
 import {TaskStatusPageComponent} from './status/task-status-page.component';
 import {TasksLogViewerComponent} from './status/log-viewer/tasks-log-viewer.component';
+import {TASK_ROUTES} from './routes';
 
 const PROVIDERS = [
   BackendTasksService,
@@ -55,5 +56,11 @@ export class TasksModule {
       providers: PROVIDERS
     };
   }
+
+
+  static getRoutes() {
+    return TASK_ROUTES;
+  }
+
 
 }

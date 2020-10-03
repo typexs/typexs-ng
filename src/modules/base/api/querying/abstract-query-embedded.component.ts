@@ -42,7 +42,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
 
 
   @Input()
-  machineName: string;
+  name: string;
 
   @Input()
   columns: IGridColumn[];
@@ -128,11 +128,11 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
       return;
     }
     this.entityRef = LookupRegistry.$(this.registryName).find(XS_TYPE_ENTITY, (e: IEntityRef) => {
-      return e.machineName === _.snakeCase(this.machineName);
+      return e.machineName === _.snakeCase(this.name);
     });
 
     if (!this.entityRef) {
-      this.error = `Can't find entity type for ${this.machineName}.`;
+      this.error = `Can't find entity type for ${this.name}.`;
     }
   }
 
@@ -245,7 +245,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
       queryOptions.sort = api.params.sorting;
     }
 
-    this.queringService.query(this.machineName, executeQuery, queryOptions)
+    this.queringService.query(this.name, executeQuery, queryOptions)
       .subscribe(
         (results: any) => {
           if (results) {

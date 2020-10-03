@@ -44,7 +44,7 @@ export class StorageAggregateEmbeddedComponent extends AbstractAggregateEmbedded
   }
 
   findEntityDef() {
-    this.machineName = this.route.snapshot.paramMap.get('machineName');
+    this.name = this.route.snapshot.paramMap.get('name');
     super.findEntityDef();
   }
 

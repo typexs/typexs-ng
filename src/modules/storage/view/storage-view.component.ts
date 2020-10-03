@@ -14,7 +14,7 @@ export class StorageViewComponent implements OnInit {
 
   ready = false;
 
-  machineName: string;
+  name: string;
 
   id: string;
 
@@ -36,16 +36,16 @@ export class StorageViewComponent implements OnInit {
 
 
   load() {
-    this.machineName = this.route.snapshot.paramMap.get('machineName');
+    this.name = this.route.snapshot.paramMap.get('name');
     this.id = this.route.snapshot.paramMap.get('id');
     this.entityDef = LookupRegistry.$(REGISTRY_TYPEORM).find(XS_TYPE_ENTITY,
-      (e: IEntityRef) => e.machineName === _.snakeCase(this.machineName));
+      (e: IEntityRef) => e.machineName === _.snakeCase(this.name));
     if (this.entityDef) {
-      this.entityService.get(this.machineName, this.id).subscribe((entity: any) => {
+      this.entityService.get(this.name, this.id).subscribe((entity: any) => {
         this.instance = entity;
       });
     } else {
-      this.error = `Can't find entity type for ${this.machineName}.`;
+      this.error = `Can't find entity type for ${this.name}.`;
     }
     this.ready = true;
   }

@@ -20,7 +20,7 @@ export class StorageModifyComponent implements OnInit {
 
   id: any;
 
-  machineName: string;
+  name: string;
 
   entityDef: IEntityRef;
 
@@ -48,14 +48,14 @@ export class StorageModifyComponent implements OnInit {
 
 
   load() {
-    this.machineName = this.route.snapshot.paramMap.get('machineName');
+    this.name = this.route.snapshot.paramMap.get('name');
     this.id = this.route.snapshot.paramMap.get('id');
     this.entityDef = LookupRegistry.$(REGISTRY_TYPEORM)
-      .find(XS_TYPE_ENTITY, (e: IEntityRef) => e.machineName === _.snakeCase(this.machineName));
+      .find(XS_TYPE_ENTITY, (e: IEntityRef) => e.name === _.snakeCase(this.name));
     if (this.entityDef) {
       if (this.id) {
         this.new = false;
-        this.storageService.get(this.machineName, this.id).subscribe((entity) => {
+        this.storageService.get(this.name, this.id).subscribe((entity) => {
           if (entity) {
             this.instance = entity;
           }
@@ -65,7 +65,7 @@ export class StorageModifyComponent implements OnInit {
         this.instance = this.entityDef.create();
       }
     } else {
-      this.error = `Can't find entity type for ${this.machineName}.`;
+      this.error = `Can't find entity type for ${this.name}.`;
     }
     this.ready = true;
   }
@@ -75,23 +75,23 @@ export class StorageModifyComponent implements OnInit {
     if ($event.data.isValidated && $event.data.isSuccessValidated) {
       const instance = $event.data.instance;
       if (this.new) {
-        this.storageService.save(this.machineName, instance).subscribe(async (res: any) => {
+        this.storageService.save(this.name, instance).subscribe(async (res: any) => {
           if (res) {
             const idStr = UrlHelper.buildLookupConditions(this.entityDef, res);
             // TODO flash message
             await this.router.navigate(
-              [this.storageService.getNgUrlPrefix(), this.machineName, 'view', idStr]);
+              [this.storageService.getNgUrlPrefix(), this.name, 'view', idStr]);
           } else {
             // TODO error?
           }
         });
       } else {
-        this.storageService.update(this.machineName, this.id, instance).subscribe(async (res: any) => {
+        this.storageService.update(this.name, this.id, instance).subscribe(async (res: any) => {
           if (res) {
             const idStr = UrlHelper.buildLookupConditions(this.entityDef, res);
             // TODO flash message
             await this.router.navigate(
-              [this.storageService.getNgUrlPrefix(), this.machineName, 'view', idStr]);
+              [this.storageService.getNgUrlPrefix(), this.name, 'view', idStr]);
           } else {
             // TODO error?
           }

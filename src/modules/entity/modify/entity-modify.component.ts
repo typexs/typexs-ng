@@ -16,7 +16,7 @@ export class EntityModifyComponent implements OnInit {
 
   id: any;
 
-  machineName: string;
+  name: string;
 
   entityDef: EntityRef;
 
@@ -42,13 +42,13 @@ export class EntityModifyComponent implements OnInit {
   }
 
   load() {
-    this.machineName = this.route.snapshot.paramMap.get('machineName');
+    this.name = this.route.snapshot.paramMap.get('name');
     this.id = this.route.snapshot.paramMap.get('id');
-    this.entityDef = EntityRegistry.$().getEntityRefByName(this.machineName);
+    this.entityDef = EntityRegistry.$().getEntityRefByName(this.name);
     if (this.entityDef) {
       if (this.id) {
         this.new = false;
-        this.entityService.get(this.machineName, this.id).subscribe((entity: any) => {
+        this.entityService.get(this.name, this.id).subscribe((entity: any) => {
           if (entity) {
             this.instance = entity;
           }
@@ -60,7 +60,7 @@ export class EntityModifyComponent implements OnInit {
       }
 
     } else {
-      this.error = `Can't find entity type for ${this.machineName}.`;
+      this.error = `Can't find entity type for ${this.name}.`;
     }
     this.ready = true;
   }
@@ -70,21 +70,21 @@ export class EntityModifyComponent implements OnInit {
     if ($event.data.isValidated && $event.data.isSuccessValidated) {
       const instance = $event.data.instance;
       if (this.new) {
-        this.entityService.save(this.machineName, instance).subscribe(async (res: any) => {
+        this.entityService.save(this.name, instance).subscribe(async (res: any) => {
           if (res) {
             const idStr = this.entityDef.buildLookupConditions(res);
             // TODO flash message
-            await this.router.navigate([this.entityService.getNgUrlPrefix(), this.machineName, 'view', idStr]);
+            await this.router.navigate([this.entityService.getNgUrlPrefix(), this.name, 'view', idStr]);
           } else {
             // TODO error?
           }
         });
       } else {
-        this.entityService.update(this.machineName, this.id, instance).subscribe(async (res: any) => {
+        this.entityService.update(this.name, this.id, instance).subscribe(async (res: any) => {
           if (res) {
             const idStr = this.entityDef.buildLookupConditions(res);
             // TODO flash message
-            await this.router.navigate([this.entityService.getNgUrlPrefix(), this.machineName, 'view', idStr]);
+            await this.router.navigate([this.entityService.getNgUrlPrefix(), this.name, 'view', idStr]);
           } else {
             // TODO error?
           }

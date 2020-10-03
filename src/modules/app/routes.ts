@@ -18,8 +18,9 @@ import {TablesDemoComponent} from './components/demos/tables/tables-demo.compone
 import {SimpleHtmlTableDemoComponent} from './components/demos/tables/simple-html-table-demo.component';
 import {EmbeddedStorageComponent} from './components/demos/embedded-storage/embedded-storage.component';
 import {StorageModule} from '../storage/module';
-import {EntityModule} from '../entity/entity.module';
+import {EntityModule} from '../entity/module';
 import {DistributedStorageModule} from '../distributed_storage/module';
+import {TasksModule} from '../tasks/module';
 
 
 export const APP_ROUTES: Routes = [
@@ -89,6 +90,7 @@ export const APP_ROUTES: Routes = [
   {
     path: 'admin',
     children: [
+      ...TasksModule.getRoutes(),
       ...StorageModule.getRoutes(),
       ...EntityModule.getRoutes(),
       ...DistributedStorageModule.getRoutes()

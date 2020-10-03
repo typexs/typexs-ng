@@ -8,7 +8,7 @@
         <tr>
           <th>Schema</th>
           <th>Name</th>
-          <th>machineName</th>
+          <th>name</th>
           <th>Options</th>
           <th>Ops</th>
         </tr>
@@ -18,7 +18,7 @@
         <tr *ngFor="let entityDef of getEntityRefs()">
           <td>{{entityDef.getClassRef().getSchema()}}</td>
           <td>{{entityDef.name}}</td>
-          <td>{{entityDef.machineName}}</td>
+          <td>{{entityDef.name}}</td>
           <td>
             <details>
               <summary>JSON</summary>
@@ -27,11 +27,11 @@
           </td>
           <td>
             <a class="btn btn-primary"
-               [routerLink]="[entityService.getNgUrlPrefix(),entityDef.machineName,'query']">Query</a>
+               [routerLink]="[entityService.getNgUrlPrefix(),entityDef.name,'query']">Query</a>
             <a class="btn btn-success"
-               [routerLink]="[entityService.getNgUrlPrefix(),entityDef.machineName,'create']">New</a>
+               [routerLink]="[entityService.getNgUrlPrefix(),entityDef.name,'create']">New</a>
             <a class="btn btn-warning"
-               [routerLink]="[entityService.getNgUrlPrefix(),entityDef.machineName,'structure']">Schema</a>
+               [routerLink]="[entityService.getNgUrlPrefix(),entityDef.name,'structure']">Schema</a>
             <!--
             <button class="btn btn-warning">Edit</button>
             <button class="btn btn-danger">Delete</button>

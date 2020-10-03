@@ -27,10 +27,10 @@ export class EntityQueryEmbeddedComponent extends AbstractQueryEmbeddedComponent
   }
 
   findEntityDef() {
-    this.entityRef = EntityRegistry.$().getEntityRefByName(this.machineName);
+    this.entityRef = EntityRegistry.$().getEntityRefByName(this.name);
 
     if (!this.entityRef) {
-      this.error = `Can't find entity type for ${this.machineName}.`;
+      this.error = `Can't find entity type for ${this.name}.`;
     }
   }
 

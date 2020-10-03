@@ -118,7 +118,6 @@ export class BackendTasksService {
               for (const y of x) {
                 running = running && y.running;
               }
-              console.log('running ' + running);
               if (!running) {
                 subject.next();
                 subject.complete();

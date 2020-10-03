@@ -37,7 +37,7 @@ export class EntityQueryComponent extends EntityQueryEmbeddedComponent {
   }
 
   findEntityDef() {
-    this.machineName = this.route.snapshot.paramMap.get('machineName');
+    this.name = this.route.snapshot.paramMap.get('name');
     super.findEntityDef();
   }
 

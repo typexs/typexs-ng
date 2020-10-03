@@ -13,7 +13,7 @@ import {SystemConfigComponent} from './system/config/system-config.component';
 import {NgRoutesComponent} from './ng/routes/ng-routes.component';
 import {FormsModule} from '../forms/module';
 import {BaseModule} from '../base/module';
-// import {EntityModule} from '../entity/entity.module';
+// import {EntityModule} from '../entity/module';
 import {NavigatorService} from '../navigator/navigator.service';
 import {BaseAdminThemeModule} from '../base_admin_theme/base_admin_theme.module';
 // import {EntityService} from '../entity/entity.service';
