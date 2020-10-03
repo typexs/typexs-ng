@@ -1,10 +1,8 @@
-import * as _ from 'lodash';
 import {Component} from '@angular/core';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {BackendTasksService} from '../backend-tasks.service';
 import {ActivatedRoute} from '@angular/router';
 import {DatePipe} from '@angular/common';
-import {Log} from '../../base/lib/log/Log';
 
 /**
  * Show status of a task (running or finished)
@@ -21,7 +19,6 @@ import {Log} from '../../base/lib/log/Log';
 @Component({
   selector: 'txs-task-status-page',
   templateUrl: './task-status-page.component.html',
-  // styleUrls: ['./task-status-page.component.scss']
 })
 export class TaskStatusPageComponent {
 
@@ -31,29 +28,18 @@ export class TaskStatusPageComponent {
 
   taskLog: TaskLog;
 
-  constructor(private tasksService: BackendTasksService,
-              private route: ActivatedRoute,
-              private datePipe: DatePipe) {
+  constructor(private route: ActivatedRoute) {
   }
 
 
   ngOnInit() {
     this.runnerId = this.route.snapshot.paramMap.get('runnerId');
     this.nodeId = this.route.snapshot.paramMap.get('nodeId');
+  }
 
-    this.tasksService.getTaskStatus(this.runnerId).subscribe(tasks => {
-      if (tasks) {
-        // can have multiple entries from different nodes
-        if (_.isArray(tasks)) {
-          this.taskLog = tasks.shift();
-        } else {
-          this.taskLog = tasks;
-        }
 
-      }
-    }, error => {
-      Log.debug(error);
-    });
+  updateTaskLog(taskLog: TaskLog) {
+    this.taskLog = taskLog;
   }
 
 

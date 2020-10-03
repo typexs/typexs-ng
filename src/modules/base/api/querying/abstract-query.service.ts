@@ -13,6 +13,7 @@ import {STORAGE_REQUEST_MODE} from './Constants';
 import {IUpdateOptions} from '@typexs/base/libs/storage/framework/IUpdateOptions';
 import {IAggregateOptions} from '@typexs/base/libs/storage/framework/IAggregateOptions';
 import {Log} from '../../lib/log/Log';
+import {UrlHelper} from '../../lib/UrlHelper';
 
 /**
  * Options for query service
@@ -361,7 +362,7 @@ export abstract class AbstractQueryService implements IQueringService {
     }
     // TODO if empty entity ???
     const entityDef = this.getEntityRefForName(entityName);
-    const id = Expressions.buildLookupConditions(entityDef, entity);
+    const id = UrlHelper.buildLookupConditions(entityDef, entity);
     if (entityId !== id) {
       throw new Error('something is wrong');
     }

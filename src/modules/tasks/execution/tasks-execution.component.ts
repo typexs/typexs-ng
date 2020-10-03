@@ -5,7 +5,6 @@ import {TaskExchangeRef, TaskRef} from '@typexs/base/browser';
 import {ActivatedRoute} from '@angular/router';
 import {BackendTasksService} from '../backend-tasks.service';
 import {TaskEvent} from '@typexs/base/libs/tasks/worker/TaskEvent';
-import {Log} from '../../base/lib/log/Log';
 
 /**
  * Executes a selected task

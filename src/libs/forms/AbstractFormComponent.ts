@@ -9,6 +9,7 @@ import {Context} from '../views/Context';
 import {DataContainer} from '@typexs/base/browser';
 import {ClassRef, XS_TYPE_PROPERTY} from 'commons-schema-api/browser';
 import {Expressions} from 'commons-expressions/browser';
+import {UrlHelper} from '../../modules/base/lib/UrlHelper';
 
 
 export abstract class AbstractFormComponent<T extends FormObject> extends AbstractComponent<T> {
@@ -110,9 +111,9 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
         if (binding.isEntityReference()) {
           if (_.isArray(this._value)) {
             this._value = this._value.map(v =>
-              Expressions.buildLookupConditions((<ClassRef>binding.getTargetRef()).getEntityRef(), v) + '');
+              UrlHelper.buildLookupConditions((<ClassRef>binding.getTargetRef()).getEntityRef(), v) + '');
           } else {
-            const cond = Expressions.buildLookupConditions((<ClassRef>binding.getTargetRef()).getEntityRef(), this._value);
+            const cond = UrlHelper.buildLookupConditions((<ClassRef>binding.getTargetRef()).getEntityRef(), this._value);
             this._value = [cond];
           }
         } else if (binding.isCollection()) {

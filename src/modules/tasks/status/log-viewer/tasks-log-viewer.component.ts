@@ -5,7 +5,7 @@ import {DatePipe} from '@angular/common';
 import {BackendTasksService} from '../../backend-tasks.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {Observable, Subscriber, Subscription, timer} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
+import {mergeMap} from 'rxjs/operators';
 import {Log} from '../../../base/lib/log/Log';
 
 /**
@@ -63,11 +63,7 @@ export class TasksLogViewerComponent implements OnInit, OnChanges {
 
   logError: string;
 
-  // t: NodeJS.Timeout;
-
   subscription: Subscription = null;
-
-  tailSub: Subscription = null;
 
   offset: number = 5000;
 
@@ -88,8 +84,8 @@ export class TasksLogViewerComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['taskLog']) {
-      if (!this.tailSub && this.mode === 'tail') {
-        this.tailSub = timer(this.offset).subscribe(x => {
+      if (!this.subscription && this.mode === 'tail') {
+        this.subscription = timer(this.offset).subscribe(x => {
           this.tail();
         });
       }
@@ -119,25 +115,61 @@ export class TasksLogViewerComponent implements OnInit, OnChanges {
 
   tail() {
     if (this.runnerId && this.nodeId) {
-      this.subscription = this.tasksService.getTaskLog(this.runnerId, this.nodeId, null, null, this._tail).subscribe(x => {
-          if (x) {
-            this.reset();
-            const extractLines = this.extractLines(x);
-            this.append(extractLines);
+      this.subscription = this.tasksService
+        .getTaskLog(this.runnerId, this.nodeId, null, null, this._tail)
+        .subscribe(x => {
+            if (x) {
+              this.reset();
+              const extractLines = this.extractLines(x);
+              this.append(extractLines);
+            }
+          }, error => {
+            this.logError = 'Log file not found. (' + error.message + ')';
+            this.finishUpdate();
             this.resetSub();
+          },
+          () => {
+            this.resetSub();
+          });
+    } else {
+      this.resetSub();
+    }
+  }
+
+
+  less() {
+    this.reset();
+    let _subscriber: Subscriber<any> = null;
+    this.subscription = new Observable(subscriber => {
+      _subscriber = subscriber;
+      subscriber.next(1);
+    })
+      .pipe(
+        mergeMap((x: number) => {
+          const from = this.fetchedLines;
+          return this.tasksService.getTaskLog(this.runnerId, this.nodeId, from, this.fetchSize);
+        })
+      )
+      .subscribe(x => {
+          const extractLines = this.extractLines(x);
+          this.fetchedLines += extractLines.length;
+          const appended = this.append(extractLines);
+          if (appended > 0 || this.running) {
+            _subscriber.next(1);
+          } else {
+            _subscriber.complete();
           }
-        }, error => {
-          this.logError = 'Log file not found. (' + error.message + ')';
-          this.finishUpdate();
+        },
+        error => {
+          Log.error(error);
+          _subscriber.error(error);
           this.resetSub();
         },
         () => {
           this.resetSub();
         });
-    } else {
-      this.resetSub();
-    }
   }
+
 
   resetSub() {
     if (this.subscription) {
@@ -146,6 +178,7 @@ export class TasksLogViewerComponent implements OnInit, OnChanges {
     }
   }
 
+
   extractLines(log: any[]): string[] {
     const firstEntry = _.first(log);
     if (firstEntry) {
@@ -153,6 +186,7 @@ export class TasksLogViewerComponent implements OnInit, OnChanges {
     }
     return [];
   }
+
 
   buildLog(log: any[]): string[] {
     let logs = log.filter((x: any) => !_.isEmpty(x));
@@ -194,40 +228,6 @@ export class TasksLogViewerComponent implements OnInit, OnChanges {
       logElem.scrollTop = logElem.scrollHeight;
     }
     return buildLines.length;
-  }
-
-
-  less() {
-    this.reset();
-    let _subscriber: Subscriber<any> = null;
-    this.subscription = new Observable(subscriber => {
-      _subscriber = subscriber;
-      subscriber.next(1);
-    })
-      .pipe(
-        switchMap((x: number) => {
-          const from = this.fetchedLines;
-          return this.tasksService.getTaskLog(this.runnerId, this.nodeId, from, this.fetchSize);
-        })
-      )
-      .subscribe(x => {
-          const extractLines = this.extractLines(x);
-          this.fetchedLines += extractLines.length;
-          const appended = this.append(extractLines);
-          if (appended > 0 || this.running) {
-            _subscriber.next(1);
-          } else {
-            _subscriber.complete();
-          }
-        },
-        error => {
-          _subscriber.error(error);
-          this.resetSub();
-        },
-        () => {
-          this.resetSub();
-        })
-    ;
   }
 
 

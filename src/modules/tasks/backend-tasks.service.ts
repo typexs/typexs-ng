@@ -22,7 +22,7 @@ import {ExprDesc} from 'commons-expressions/browser';
 import {IMessageOptions} from '@typexs/base/libs/messaging/IMessageOptions';
 import {ITaskExectorOptions} from '@typexs/base/libs/tasks/ITaskExectorOptions';
 import {IApiCallOptions} from '../base/lib/http/IApiCallOptions';
-import {filter, mergeMap, takeUntil, tap} from 'rxjs/operators';
+import {filter, first, mergeMap, takeUntil, tap} from 'rxjs/operators';
 import {combineLatest, forkJoin, timer} from 'rxjs';
 import {Log} from '../base/lib/log/Log';
 
@@ -118,6 +118,7 @@ export class BackendTasksService {
               for (const y of x) {
                 running = running && y.running;
               }
+              console.log('running ' + running);
               if (!running) {
                 subject.next();
                 subject.complete();
@@ -154,9 +155,9 @@ export class BackendTasksService {
   getTaskList(refresh: boolean = false): Observable<Tasks> {
     const x = new Subject<Tasks>();
     if (refresh || !this.tasks) {
-      combineLatest([
-        this.infoService.getNode().pipe(filter(x => !!x)),
-        this.infoService.getNodes().pipe(filter(x => !!x))
+      const sub = combineLatest([
+        this.infoService.getNode().pipe(filter(x => !!x)).pipe(first()),
+        this.infoService.getNodes().pipe(filter(x => !!x)).pipe(first())
       ])
         .subscribe(refreshed => {
           if (!refreshed) {

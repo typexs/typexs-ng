@@ -4,6 +4,7 @@ import {IGridColumn} from '../../datatable/IGridColumn';
 import {IPropertyRef} from 'commons-schema-api/browser';
 import {Expressions} from 'commons-expressions/browser';
 import {C_PROPERTY, C_URL_PREFIX} from '../../constants';
+import {UrlHelper} from '../../lib/UrlHelper';
 
 
 @Component({
@@ -34,7 +35,7 @@ export class SimpleHtmlCellEntityReferenceRendererComponent {
 
   buildLookupConditions(res: any) {
     const e = this.getProperty().getEntityRef();
-    return Expressions.buildLookupConditions(e, res);
+    return UrlHelper.buildLookupConditions(e, res);
   }
 
   getValue() {

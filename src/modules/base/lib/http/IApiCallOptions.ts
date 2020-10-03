@@ -18,4 +18,8 @@ export interface IApiCallOptions {
    * Additional query parameter for the call
    */
   handle?: (err: Error, data: any) => void;
+  /**
+   * Additional options for request
+   */
+  options?: any;
 }

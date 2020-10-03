@@ -252,9 +252,11 @@ export class BackendClientService {
         //   if (x === 'online' && this.routes.length > 0) {
 
         const method = route.method;
-        const opts: IHttpRequestOptions = {
+        const opts: IHttpRequestOptions = _.get(options, 'options', {});
+        _.defaults(opts, {
           url: 'TODO',
-        };
+          retry: 0
+        });
 
         if (options.params) {
           opts.url = UrlHelper.replace(route.route as string, options.params);
@@ -289,8 +291,13 @@ export class BackendClientService {
           x => {
             ret.next(x);
           },
-          error => ret.error(error)
-          ,
+          error => {
+            ret.error(error);
+            this.activeCount--;
+            if (cacheKey) {
+              delete this.requestCache[cacheKey];
+            }
+          },
           () => {
             ret.complete();
             this.activeCount--;
@@ -299,11 +306,6 @@ export class BackendClientService {
             }
           }
         );
-        // }
-
-        // setTimeout(() => {
-        //   sub.unsubscribe();
-        // });
       },
       error => {
         Log.error(error);
@@ -313,15 +315,10 @@ export class BackendClientService {
         if (cacheKey) {
           delete this.requestCache[cacheKey];
         }
-        // setTimeout(() => {
-        //   // sub.unsubscribe();
-        // });
       });
-
-    // });
     return ret.asObservable() as any;
-
   }
+
 
   /**
    * Implementation of get http method, which will also handle request errors
@@ -356,6 +353,15 @@ export class BackendClientService {
       options.callback = response;
     }
     return this.handleRequest('delete', options);
+  }
+
+  put<T>(url: string | IHttpRequestOptions): Observable<T>;
+  put<T>(url: string | IHttpRequestOptions, response?: (err: Error, data: T) => void): Observable<T> {
+    const options: IHttpRequestOptions = _.isString(url) ? {url: url, logging: true} : url;
+    if (response) {
+      options.callback = response;
+    }
+    return this.handleRequest('put', options);
   }
 
   private handleRequest<T>(method: string, reqOptions: IHttpRequestOptions): Observable<T> {

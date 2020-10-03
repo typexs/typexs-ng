@@ -6,6 +6,7 @@ import {IEntityRef, ILookupRegistry, LookupRegistry, XS_TYPE_ENTITY} from 'commo
 import {REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base/browser';
 import * as _ from 'lodash';
 import {Expressions} from 'commons-expressions/browser';
+import {UrlHelper} from '../../base/lib/UrlHelper';
 
 @Component({
   selector: 'storage-modify',
@@ -76,7 +77,7 @@ export class StorageModifyComponent implements OnInit {
       if (this.new) {
         this.storageService.save(this.machineName, instance).subscribe(async (res: any) => {
           if (res) {
-            const idStr = Expressions.buildLookupConditions(this.entityDef, res);
+            const idStr = UrlHelper.buildLookupConditions(this.entityDef, res);
             // TODO flash message
             await this.router.navigate(
               [this.storageService.getNgUrlPrefix(), this.machineName, 'view', idStr]);
@@ -87,7 +88,7 @@ export class StorageModifyComponent implements OnInit {
       } else {
         this.storageService.update(this.machineName, this.id, instance).subscribe(async (res: any) => {
           if (res) {
-            const idStr = Expressions.buildLookupConditions(this.entityDef, res);
+            const idStr = UrlHelper.buildLookupConditions(this.entityDef, res);
             // TODO flash message
             await this.router.navigate(
               [this.storageService.getNgUrlPrefix(), this.machineName, 'view', idStr]);

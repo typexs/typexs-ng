@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {BackendTasksService} from '../backend-tasks.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {Subscription} from 'rxjs';
@@ -32,6 +32,9 @@ export class TaskStatusComponent implements OnInit, OnDestroy {
 
   @Input()
   taskLog: TaskLog;
+
+  @Output()
+  status: EventEmitter<TaskLog> = new EventEmitter<TaskLog>();
 
   @Input()
   autoUpdate: boolean = true;
@@ -68,24 +71,27 @@ export class TaskStatusComponent implements OnInit, OnDestroy {
   update() {
     if (!this.running) {
       this.running = true;
-      this.subscription = this.tasksService.taskStatus(this.runnerId, {targetIds: [this.nodeId]}).subscribe(tasks => {
-          if (_.isArray(tasks)) {
-            this.taskLog = tasks.shift();
-          } else {
-            this.taskLog = tasks;
-          }
+      this.subscription = this.tasksService
+        .taskStatus(this.runnerId, {targetIds: [this.nodeId]})
+        .subscribe(tasks => {
+            if (_.isArray(tasks)) {
+              this.taskLog = tasks.shift();
+            } else {
+              this.taskLog = tasks;
+            }
 
-          if (!this.taskLog.running) {
+            this.status.emit(this.taskLog);
+            if (!this.taskLog.running) {
+              this.running = false;
+            }
+          },
+          error => {
+            Log.error(error);
             this.running = false;
-          }
-        },
-        error => {
-          Log.error(error);
-          this.running = false;
-        },
-        () => {
-          this.running = false;
-        });
+          },
+          () => {
+            this.running = false;
+          });
     }
   }
 
