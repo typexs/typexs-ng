@@ -63,7 +63,7 @@ export class BackendClientService {
 
   private routesLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  private routes: IRoute[] = [];
+  private routes: IRoute[];
 
   private logChannel: MessageChannel<LogMessage>;
 
@@ -113,15 +113,31 @@ export class BackendClientService {
    * Reload route informations from backend, this can happen
    */
   reloadRoutes(force: boolean = false) {
-    this.routesLoaded.next(false);
-    this.routes = [];
     const obs = new Subject();
+
     if (!force && (this.state.getValue() === 'offline' || this.state.getValue() === 'initial')) {
       setTimeout(() => {
         obs.next([]);
         obs.complete();
       }, 5);
     } else {
+      if (this.routesLoaded.getValue() === false && !_.isUndefined(this.routes)) {
+        // load only once, others should wait
+        this.routesLoaded
+          .pipe(filter(x => x))
+          .pipe(first())
+          .subscribe(x => {
+            obs.next(this.routes);
+          }, error => {
+            obs.error(error);
+          }, () => {
+            obs.complete();
+          });
+        return obs;
+      }
+      this.routesLoaded.next(false);
+      this.routes = [];
+
       this.state.next('loading');
       this.get(this.apiUrl(API_CTRL_SERVER_ROUTES)).subscribe((routes: IRoute[]) => {
         this.routes = routes;
@@ -141,23 +157,30 @@ export class BackendClientService {
 
   check() {
     const obs = new Subject();
-    this.ping().subscribe(x => {
-      const ping = this.state.getValue();
-      if (ping === 'offline') {
+    this.ping().subscribe(
+      x => {
+        const ping = this.state.getValue();
+        if (ping === 'offline') {
+          this.resetRoutes(true);
+          obs.next(false);
+          obs.complete();
+        } else if (ping === 'online') {
+          this.reloadRoutes().subscribe(
+            value => {
+              obs.next(true);
+            },
+            error => {
+              obs.next(false);
+            },
+            () => {
+              obs.complete();
+            });
+        }
+      },
+      error => {
         obs.next(false);
         obs.complete();
-      } else if (ping === 'online') {
-        this.reloadRoutes().subscribe(value => {
-            obs.next(true);
-          },
-          error => {
-            obs.next(false);
-          },
-          () => {
-            obs.complete();
-          });
-      }
-    });
+      });
     return obs.asObservable();
   }
 
@@ -201,10 +224,12 @@ export class BackendClientService {
 
 
   /**
-   * Reset routes
+   * Reset routes.
+   *
+   * With the parameter "undef" can be set the reset value for routes variable.
    */
-  resetRoutes() {
-    this.routes = [];
+  resetRoutes(undef: boolean = false) {
+    this.routes = !undef ? [] : undefined;
     this.routesLoaded.next(false);
   }
 

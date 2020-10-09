@@ -190,7 +190,6 @@ describe('BackendClientService', () => {
       service.callApi(API_CTRL_SYSTEM_RUNTIME_NODE)
     ])
       .subscribe((value: any) => {
-        console.log(value);
         for (const x of value) {
           expect(x).toEqual(response);
         }
@@ -199,6 +198,51 @@ describe('BackendClientService', () => {
 
     const req = httpMock.expectOne('/api' + API_CTRL_SYSTEM_RUNTIME_NODE);
     req.flush(response);
+
+  });
+
+
+  it('successfully handle reload route calls', () => {
+    service.getState().next('online');
+    const response = [{
+      route: service.apiUrl(API_CTRL_SYSTEM_RUNTIME_NODE),
+      method: 'get',
+      context: 'api',
+      authorized: false
+    }];
+
+    forkJoin([
+      service.reloadRoutes(),
+      service.reloadRoutes(),
+      service.reloadRoutes(),
+    ])
+      .subscribe((value: any) => {
+        expect(value.length).toEqual(3);
+        for (const v of value) {
+          expect(v).toEqual(response);
+        }
+      });
+
+    const req = httpMock.expectOne('/api' + API_CTRL_SERVER_ROUTES);
+    req.flush(response);
+
+  });
+
+
+  it('successfully handle multiple ping', () => {
+    const r = {time: new Date()};
+    forkJoin([
+      service.ping(),
+      service.ping(),
+      service.ping(),
+    ])
+      .subscribe((value: any) => {
+        expect(value.length).toEqual(3);
+
+      });
+
+    const req = httpMock.match('/api' + API_CTRL_SERVER_PING);
+    req.map(x => x.flush(r));
 
   });
 
