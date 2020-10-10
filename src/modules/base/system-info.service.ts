@@ -129,7 +129,8 @@ export class SystemInfoService {
     if (this.offsetReached('node')) {
       this.callNodeInfo().subscribe((info) => {
         if (info) {
-          info.started = new Date(info.started);
+          info.started_at = new Date(info.started_at);
+          info.updated_at = new Date(info.updated_at);
           this.node$.next(info);
           info['_active_'] = true;
           _.remove(this.allNodes, x => x.key === info.key);
@@ -151,7 +152,10 @@ export class SystemInfoService {
     if (this.offsetReached('nodes')) {
       this.callNodesInfos().subscribe((info) => {
         if (info) {
-          info.map(x => x.started = new Date(x.started));
+          info.map(x => {
+            x.started_at = new Date(x.started_at);
+            x.updated_at = new Date(x.updated_at);
+          });
           this.nodes$.next(info);
           _.remove(this.allNodes, x => !x['_active_']);
           this.allNodes.push(...info);
