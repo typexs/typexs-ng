@@ -54,9 +54,8 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
 
   requestCount: number;
 
-  private initSubscription: Subscription;
+  private subscription: Subscription = new Subscription();
 
-  private userChannelSubscription: Subscription;
 
   constructor(
     public renderer: Renderer2,
@@ -65,9 +64,7 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
     private navigatorService: NavigatorService,
     private notifyService: NotificationsService
   ) {
-    appStateService.getViewContext().subscribe(x => this.viewContext = x);
-    appStateService.getLogService().subscribe(this.onLogMessage.bind(this));
-    appStateService.getBackendClient().getActiveCount().subscribe(x => this.requestCount = x);
+
   }
 
 
@@ -100,7 +97,11 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
 
 
   async ngOnInit() {
-    this.getAuthService().isInitialized()
+    const subs: any = {};
+    subs.context = this.appStateService.getViewContext().subscribe(x => this.viewContext = x);
+    subs.log = this.appStateService.getLogService().subscribe(this.onLogMessage.bind(this));
+    subs.count = this.appStateService.getBackendClient().getActiveCount().subscribe(x => this.requestCount = x);
+    subs.auth = this.getAuthService().isInitialized()
       .pipe(switchMap(x => {
         if (x) {
           return this.getAuthService().isLoggedIn();
@@ -122,6 +123,7 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
         }
       }, error => Log.error(error));
 
+    _.values(subs).map(x => this.subscription.add(x));
     let entry = this.navigatorService.getEntryByContext(CTXT_ROUTE_USER_PROFILE);
     if (entry) {
       this.userRouterLinks.profile = '/' + entry.getFullPath();
@@ -135,11 +137,8 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy(): void {
-    if (this.userChannelSubscription) {
-      this.userChannelSubscription.unsubscribe();
-    }
-    if (this.initSubscription) {
-      this.initSubscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 
