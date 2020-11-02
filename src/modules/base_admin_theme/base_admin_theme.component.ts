@@ -52,6 +52,8 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
 
   viewContext: string;
 
+  requestCount: number;
+
   private initSubscription: Subscription;
 
   private userChannelSubscription: Subscription;
@@ -65,6 +67,7 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
   ) {
     appStateService.getViewContext().subscribe(x => this.viewContext = x);
     appStateService.getLogService().subscribe(this.onLogMessage.bind(this));
+    appStateService.getBackendClient().getActiveCount().subscribe(x => this.requestCount = x);
   }
 
 

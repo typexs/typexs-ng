@@ -63,13 +63,15 @@ export class BackendClientService {
 
   private routesLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
+  private activeCount$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+
   private routes: IRoute[];
 
   private logChannel: MessageChannel<LogMessage>;
 
   private requestCache: { [k: string]: Subject<any> } = {};
 
-  private activeCount = 0;
+  // private activeCount = 0;
 
 
   /**
@@ -101,8 +103,12 @@ export class BackendClientService {
     return this.state;
   }
 
+  getActiveCountValue() {
+    return this.activeCount$.getValue();
+  }
+
   getActiveCount() {
-    return this.activeCount;
+    return this.activeCount$;
   }
 
   areRoutesLoaded(): Observable<boolean> {
@@ -259,7 +265,7 @@ export class BackendClientService {
       this.requestCache[cacheKey] = ret;
     }
 
-    this.activeCount++;
+    this.inc();
 
     // @ts-ignore
     const sub = this.areRoutesLoaded().pipe(filter(x => x)).pipe(first()).subscribe(__x => {
@@ -268,13 +274,9 @@ export class BackendClientService {
         if (!route) {
           ret.error('Route "' + apiContext + '" not found, skipping.');
           ret.complete();
-          this.activeCount--;
+          this.dec();
           return null;
         }
-
-        // const state: Observable<BACKEND_CLIENT_STATE> = this.state.asObservable();
-        // const sub = state.subscribe(x => {
-        //   if (x === 'online' && this.routes.length > 0) {
 
         const method = route.method;
         const opts: IHttpRequestOptions = _.get(options, 'options', {});
@@ -318,14 +320,14 @@ export class BackendClientService {
           },
           error => {
             ret.error(error);
-            this.activeCount--;
+            this.dec();
             if (cacheKey) {
               delete this.requestCache[cacheKey];
             }
           },
           () => {
             ret.complete();
-            this.activeCount--;
+            this.dec();
             if (cacheKey) {
               delete this.requestCache[cacheKey];
             }
@@ -336,7 +338,7 @@ export class BackendClientService {
         Log.error(error);
         ret.error(error);
         ret.complete();
-        this.activeCount--;
+        this.dec();
         if (cacheKey) {
           delete this.requestCache[cacheKey];
         }
@@ -359,6 +361,7 @@ export class BackendClientService {
     return this.handleRequest('get', options);
   }
 
+
   post<T>(url: string | IHttpRequestOptions, body: any | null): Observable<T>;
   post<T>(url: string | IHttpRequestOptions, body: any | null, response?: (err: Error, data: T) => void): Observable<T> {
     const options: IHttpRequestOptions = _.isString(url) ? {url: url, logging: true, body: body} : url;
@@ -371,6 +374,7 @@ export class BackendClientService {
     return this.handleRequest('post', options);
   }
 
+
   delete<T>(url: string | IHttpRequestOptions): Observable<T>;
   delete<T>(url: string | IHttpRequestOptions, response?: (err: Error, data: T) => void): Observable<T> {
     const options: IHttpRequestOptions = _.isString(url) ? {url: url, logging: true} : url;
@@ -380,6 +384,7 @@ export class BackendClientService {
     return this.handleRequest('delete', options);
   }
 
+
   put<T>(url: string | IHttpRequestOptions): Observable<T>;
   put<T>(url: string | IHttpRequestOptions, response?: (err: Error, data: T) => void): Observable<T> {
     const options: IHttpRequestOptions = _.isString(url) ? {url: url, logging: true} : url;
@@ -388,6 +393,7 @@ export class BackendClientService {
     }
     return this.handleRequest('put', options);
   }
+
 
   private handleRequest<T>(method: string, reqOptions: IHttpRequestOptions): Observable<T> {
     const logging = _.has(reqOptions, 'logging') ? reqOptions.logging : true;
@@ -443,6 +449,16 @@ export class BackendClientService {
 
 
     return observable;
+  }
+
+  inc() {
+    let value = this.activeCount$.getValue();
+    this.activeCount$.next(++value);
+  }
+
+  dec() {
+    let value = this.activeCount$.getValue();
+    this.activeCount$.next(--value);
   }
 
 }

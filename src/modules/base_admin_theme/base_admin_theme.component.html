@@ -5,7 +5,7 @@
 
   <!-- [ Pre-loader ] start -->
 
-  <div class="txs-loader-bg" *ngIf="getBackendService().getActiveCount() > 0">
+  <div class="txs-loader-bg" *ngIf="requestCount > 0">
     <div class="txs-loader-track">
       <div class="txs-loader-fill"></div>
     </div>
@@ -98,7 +98,7 @@
           </div>
         </li>
         <li *ngIf="(appStateService.isAdmin | async)">
-          <span class="badge badge-secondary">{{getBackendService().getActiveCount()}}</span>
+          <span class="badge badge-secondary">{{requestCount}}</span>
         </li>
         <li *ngIf="appStateService.isAuthenticated() && viewContext != 'admin'">
           <a *ngIf="(appStateService.isAdmin | async)" routerLink="/admin">
