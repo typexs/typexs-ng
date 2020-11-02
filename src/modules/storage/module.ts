@@ -44,7 +44,8 @@ const COMPONENTS = [
     BrowserModule,
     RouterModule,
     NgFormsModule,
-    FormsModule
+    FormsModule,
+    // StorageRoutingModule
   ],
   exports: COMPONENTS,
   providers: PROVIDERS
