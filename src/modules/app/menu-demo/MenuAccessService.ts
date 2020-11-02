@@ -1,13 +1,16 @@
 import {Injectable} from '@angular/core';
+import * as _ from 'lodash';
 import {IMenuLinkGuard} from '../../navigator/IMenuLinkGuard';
 import {NavEntry} from '../../navigator/NavEntry';
 import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 
 @Injectable()
 export class MenuAccessService implements IMenuLinkGuard {
 
   entry: { [k: string]: BehaviorSubject<boolean> } = {};
+
+  change: Subject<boolean> = new Subject();
 
   switch(id: string, type: string = 'disabled') {
     if (this.entry[id + '.' + type]) {
@@ -16,15 +19,27 @@ export class MenuAccessService implements IMenuLinkGuard {
 
   }
 
+  has(k: string) {
+    return _.has(this.entry, k);
+  }
+
 
   isDisabled(entry: NavEntry): Observable<boolean> {
-    this.entry[entry.getPath() + '.disabled'] = new BehaviorSubject(true);
-    return this.entry[entry.getPath() + '.disabled'];
+    const key = entry.getPath() + '.disabled';
+    if (!this.entry[key]) {
+      this.entry[key] = new BehaviorSubject(true);
+      this.change.next(true);
+    }
+    return this.entry[key];
   }
 
   isShown(entry: NavEntry): Observable<boolean> {
-    this.entry[entry.getPath() + '.show'] = new BehaviorSubject(true);
-    return this.entry[entry.getPath() + '.show'];
+    const key = entry.getPath() + '.show';
+    if (!this.entry[key]) {
+      this.entry[key] = new BehaviorSubject(true);
+      this.change.next(true);
+    }
+    return this.entry[key];
   }
 
 }

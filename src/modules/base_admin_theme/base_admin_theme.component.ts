@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {Component, Input, OnDestroy, OnInit, Renderer2, TemplateRef, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit, Renderer2, TemplateRef, ViewEncapsulation} from '@angular/core';
 import {IUser} from '../../libs/api/auth/IUser';
 import PerfectScrollbar from 'perfect-scrollbar';
 import {IMenuOptions} from '../navigator/IMenuOptions';
@@ -52,7 +52,7 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
 
   viewContext: string;
 
-  requestCount: number;
+  requestCount: number = 0;
 
   private subscription: Subscription = new Subscription();
 
@@ -62,7 +62,8 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
     public appStateService: AppService,
     private systemService: SystemInfoService,
     private navigatorService: NavigatorService,
-    private notifyService: NotificationsService
+    private notifyService: NotificationsService,
+    private cdRef: ChangeDetectorRef
   ) {
 
   }
@@ -98,9 +99,15 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     const subs: any = {};
-    subs.context = this.appStateService.getViewContext().subscribe(x => this.viewContext = x);
+    subs.context = this.appStateService.getViewContext().subscribe(x => {
+      this.viewContext = x;
+      this.cdRef.detectChanges();
+    });
     subs.log = this.appStateService.getLogService().subscribe(this.onLogMessage.bind(this));
-    subs.count = this.appStateService.getBackendClient().getActiveCount().subscribe(x => this.requestCount = x);
+    subs.count = this.appStateService.getBackendClient().getActiveCount().subscribe(x => {
+      this.requestCount = x;
+      this.cdRef.detectChanges();
+    });
     subs.auth = this.getAuthService().isInitialized()
       .pipe(switchMap(x => {
         if (x) {

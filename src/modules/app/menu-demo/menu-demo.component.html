@@ -6,12 +6,14 @@
     </pre>
     <p>Show menu starting from path 'menu'.</p>
 
-    <div class="btn-group-sm">
-      <button class="btn btn-primary" (click)="mas.switch('menu-item-2')">Link 2
-        [{{ mas.entry['menu-item-2.disabled'] && mas.entry['menu-item-2.disabled'].getValue()  ? 'disabled' : 'no disabled'  }}]
+    <div class="btn-group-sm" *ngIf="has()">
+      <button class="btn btn-primary" (click)="mas.switch('menu-item-2')">
+        Link 2
+        [{{ mas && mas.entry['menu-item-2.disabled'] && mas.entry['menu-item-2.disabled'].getValue()  ? 'disabled' : 'no disabled'  }}]
       </button>
-      <button class="btn btn-primary" (click)="mas.switch('menu-item-2','show')">Link 2
-        [{{ mas.entry['menu-item-2.show'] && mas.entry['menu-item-2.show'].getValue() ? 'show' : 'no show' }}]
+      <button class="btn btn-primary" (click)="mas.switch('menu-item-2','show')">
+        Link 2
+        [{{ mas && mas.entry['menu-item-2.show'] && mas.entry['menu-item-2.show'].getValue() ? 'show' : 'no show' }}]
       </button>
     </div>
     <menu [options]="{ base: 'menu' }"></menu>
