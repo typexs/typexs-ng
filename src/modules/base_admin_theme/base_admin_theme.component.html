@@ -62,6 +62,9 @@
     <div class="collapse navbar-collapse">
 
       <ul class="navbar-nav mr-auto">
+        <li *ngIf="(appStateService.isAdmin | async) && requestCount > 0">
+          <span class="badge badge-secondary"><i class="icon icon-spinner fa-spin"></i> {{requestCount}}</span>
+        </li>
         <ng-content select="header-left-list-entries"></ng-content>
       </ul>
 
@@ -70,7 +73,7 @@
         <li *ngIf="!(appStateService.isAdmin | async)">
           <p class="btn btn-sm btn-{{getBackendService().getState() | async}}">
             {{getBackendService().getState() | async}}
-            <span class="badge badge-primary">{{getSystemService().nodesCount}}</span>
+            <span class="badge badge-success badge-border-white">{{getSystemService().nodesCount}}</span>
           </p>
         </li>
         <li *ngIf="(appStateService.isAdmin | async)">
@@ -78,7 +81,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <p class="btn btn-sm btn-{{getBackendService().getState() | async}}">
                 {{getBackendService().getState() | async}}
-                <span class="badge badge-primary">{{getSystemService().nodesCount}}</span>
+                <span class="badge badge-success badge-border-white">{{getSystemService().nodesCount}}</span>
               </p>
             </a>
             <div class="dropdown-menu dropdown-menu-right  profile-notification">
@@ -96,9 +99,6 @@
               </div>
             </div>
           </div>
-        </li>
-        <li *ngIf="(appStateService.isAdmin | async)">
-          <span class="badge badge-secondary">{{requestCount}}</span>
         </li>
         <li *ngIf="appStateService.isAuthenticated() && viewContext != 'admin'">
           <a *ngIf="(appStateService.isAdmin | async)" routerLink="/admin">
