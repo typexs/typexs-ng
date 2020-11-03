@@ -128,36 +128,20 @@ export class AppService {
           if (logged) {
             return this.authService.hasRole(C_ADMIN);
           } else {
+            this.setViewContext(CTXT_VIEW_LOGIN);
             return of(logged);
           }
         }))
         .subscribe(isAdmin => {
+          this._isAdmin.next(isAdmin);
           if (isAdmin) {
-            this._isAdmin.next(isAdmin);
             if (this.adminUrl && !this.isViewContext(CTXT_VIEW_ADMIN)) {
               this.setViewContext(CTXT_VIEW_ADMIN);
             } else {
               this.setViewContext(CTXT_VIEW_DEFAULT);
             }
-          } else {
-            this.setViewContext(CTXT_VIEW_LOGIN);
-            this._isAdmin.next(false);
           }
         });
-      //
-      // if (this.authService.isLoggedIn()) {
-      //   this.authService.hasRole('admin').subscribe(isAdmin => {
-      //     this._isAdmin.next(isAdmin);
-      //     if (this.adminUrl && !this.isViewContext(CTXT_VIEW_ADMIN)) {
-      //       this.setViewContext(CTXT_VIEW_ADMIN);
-      //     } else {
-      //       this.setViewContext(CTXT_VIEW_DEFAULT);
-      //     }
-      //   } else {
-      //     this.setViewContext(CTXT_VIEW_LOGIN);
-      //     this._isAdmin.next(false);
-      //   }
-      //   });
     }
   }
 
