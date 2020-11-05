@@ -17,8 +17,6 @@ export class NavEntry {
 
   path: string;
 
-  // realPath: string = null;
-
   route: Route = null;
 
   paths: string[] = [];
@@ -33,18 +31,21 @@ export class NavEntry {
 
   groupRegex?: string = null;
 
-  // level: number = 0;
-
   outlet: string = null;
 
-  // groupPattern: string = null;
+  canActivate?: any = null;
+
 
   constructor() {
     this.id = NavEntry.inc++;
   }
 
+
   parse(route: Route) {
     this.route = route;
+    if (route.canActivate) {
+      this.canActivate = route.canActivate;
+    }
     // save original path
     this.orgPath = this.route.path;
     route['navId'] = this.id;
@@ -90,11 +91,13 @@ export class NavEntry {
       if (_.has(data, 'skip')) {
         this.ignore = data.skip;
       }
-
+      if (_.has(data, 'canActivate')) {
+        this.canActivate = data.canActivate;
+      }
       this.data = data;
-
     }
   }
+
 
   isGroup() {
     return !!this.groupRegex;
@@ -146,16 +149,6 @@ export class NavEntry {
     return null;
   }
 
-  /*
-  setRealPath(s: string) {
-    this.realPath = s;
-  }
-
-  getRealPath() {
-    return this.realPath;
-  }
-  */
-
 
   getFullPath(): string {
     if (this.fixedPath) {
@@ -177,6 +170,18 @@ export class NavEntry {
       return true;
     }
     return false;
+  }
+
+  isLazyLoading() {
+    if (this.route && this.route.loadChildren) {
+      return true;
+    }
+    return false;
+  }
+
+
+  isLazyLoaded() {
+    return this.isLazyLoading() && _.has(this.route, '_loadedConfig.routes');
   }
 
   toIgnore() {

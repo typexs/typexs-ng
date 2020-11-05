@@ -1,10 +1,13 @@
 import {Inject, Injectable} from '@angular/core';
 import {NavEntry} from './NavEntry';
-import {Router, Routes} from '@angular/router';
+import {RouteConfigLoadEnd, Router, Routes, RoutesRecognized} from '@angular/router';
 import {INavTreeEntry} from './INavTreeEntry';
 import * as _ from 'lodash';
 
 
+/**
+ *
+ */
 @Injectable()
 export class NavigatorService {
 
@@ -12,18 +15,58 @@ export class NavigatorService {
 
   private router: Router;
 
+  private reload: any = [];
+
+
   constructor(@Inject(Router) router: Router) {
     this.router = router;
     this.router.events.subscribe(this.onRouterEvent.bind(this));
+    this.rebuild();
+  }
+
+  rebuild() {
     this.read(this.router.config);
     const routes2 = this.getRebuildRoutes();
     this.router.resetConfig(routes2);
     this.read(this.router.config);
   }
 
+  /**
 
+   The events occur in the following sequence:
+
+   NavigationStart: Navigation starts.
+   RouteConfigLoadStart: Before the router lazy loads a route configuration.
+   RouteConfigLoadEnd: After a route has been lazy loaded.
+   RoutesRecognized: When the router parses the URL and the routes are recognized.
+   GuardsCheckStart: When the router begins the guards phase of routing.
+   ChildActivationStart: When the router begins activating a route's children.
+   ActivationStart: When the router begins activating a route.
+   GuardsCheckEnd: When the router finishes the guards phase of routing successfully.
+   ResolveStart: When the router begins the resolve phase of routing.
+   ResolveEnd: When the router finishes the resolve phase of routing successfuly.
+   ChildActivationEnd: When the router finishes activating a route's children.
+   ActivationEnd: When the router finishes activating a route.
+   NavigationEnd: When navigation ends successfully.
+   NavigationCancel: When navigation is canceled.
+   NavigationError: When navigation fails due to an unexpected error.
+   Scroll: When the user scrolls.
+
+   * @param event
+   */
   onRouterEvent(event: any) {
     // TODO
+    if (event instanceof RouteConfigLoadEnd) {
+      const entry = this.router.config.find(x => x.path === event.route['path']);
+      if (entry && !_.has(entry, '_loadedConfig')) {
+        this.reload = true;
+      }
+      // reload configuration
+      // this.rebuild();
+    } else if (event instanceof RoutesRecognized && this.reload) {
+      this.reload = false;
+      this.rebuild();
+    }
   }
 
 
@@ -34,17 +77,20 @@ export class NavigatorService {
       if (!entry) {
         entry = new NavEntry();
         this.entries.push(entry);
-        entry.parse(route);
+      }
 
-        if (parent && parent !== entry) {
-          // is child element
-          entry.setParent(parent);
-          // entry.setRealPath(entry.getFullPath());
-        }
+      entry.parse(route);
+      if (parent && parent !== entry) {
+        entry.setParent(parent);
       }
 
       if (route.children && !_.isEmpty(route.children)) {
         this.readRoutes(route.children, entry);
+      } else if (route.loadChildren && _.has(route, '_loadedConfig.routes')) {
+        const routes = _.get(route, '_loadedConfig.routes', []);
+        if (!_.isEmpty(routes)) {
+          this.readRoutes(routes, entry);
+        }
       }
     }
   }
@@ -68,7 +114,6 @@ export class NavigatorService {
     _.filter(this.entries, entry => entry.route === null && entry.isGroup()).map(groupEntry => {
       this.regroup(groupEntry);
     });
-
   }
 
 
@@ -86,7 +131,7 @@ export class NavigatorService {
       // if route exists
       if (r) {
         r.path = route.path;
-        if (!route.isRedirect()) {
+        if (!route.isRedirect() && !route.isLazyLoading()) {
           r.children = this.rebuildRoutes(route);
         }
         routes.push(r);
@@ -131,7 +176,6 @@ export class NavigatorService {
 
   regroup(groupEntry: NavEntry) {
     const pattern = groupEntry.groupRegex;
-//    let split = pattern.split('/');
     const base = this.findMatch(pattern);
 
     if (base) {
@@ -146,13 +190,11 @@ export class NavigatorService {
     const selected: number[] = [];
     const children = _.filter(entries, e => {
       const id = e.getParentId();
-
       if (id && selected.indexOf(id) !== -1) {
         return false;
       }
       const fullPath = e.getFullPath();
       const res = e.route != null && regex.test(fullPath);
-
       if (res) {
         selected.push(e.id);
       }

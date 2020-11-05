@@ -152,8 +152,8 @@ describe('Component: Menu', () => {
       componentLink.entry = component.tree[2].children[1];
       componentLink.ngOnInit();
 
-      expect(componentLink.isShown).not.toBeUndefined();
-      expect(componentLink.isDisabled).not.toBeUndefined();
+      expect(componentLink.isShown$).not.toBeUndefined();
+      expect(componentLink.isDisabled$).not.toBeUndefined();
       expect(await new Promise((resolve, reject) => {
         // @ts-ignore
         componentLink.isDisabled.subscribe(x => resolve(x));

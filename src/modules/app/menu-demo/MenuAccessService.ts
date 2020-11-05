@@ -13,6 +13,8 @@ export class MenuAccessService implements IMenuLinkGuard {
   change: Subject<boolean> = new Subject();
 
   switch(id: string, type: string = 'disabled') {
+
+    console.log(id + '.' + type);
     if (this.entry[id + '.' + type]) {
       this.entry[id + '.' + type].next(!this.entry[id + '.' + type].getValue());
     }
@@ -25,7 +27,8 @@ export class MenuAccessService implements IMenuLinkGuard {
 
 
   isDisabled(entry: NavEntry): Observable<boolean> {
-    const key = entry.getPath() + '.disabled';
+    const key = (entry.isGroup() ? _.snakeCase(entry.groupRegex) : entry.getPath()) + '.disabled';
+    console.log(key);
     if (!this.entry[key]) {
       this.entry[key] = new BehaviorSubject(true);
       this.change.next(true);
@@ -34,7 +37,8 @@ export class MenuAccessService implements IMenuLinkGuard {
   }
 
   isShown(entry: NavEntry): Observable<boolean> {
-    const key = entry.getPath() + '.show';
+    const key = (entry.isGroup() ? _.snakeCase(entry.groupRegex) : entry.getPath()) + '.show';
+    console.log(key);
     if (!this.entry[key]) {
       this.entry[key] = new BehaviorSubject(true);
       this.change.next(true);

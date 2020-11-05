@@ -3,7 +3,8 @@ import {Component, Injector, Input, OnDestroy, OnInit} from '@angular/core';
 import {INavTreeEntry} from './INavTreeEntry';
 import {IMenuLinkGuard} from './IMenuLinkGuard';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Subscription, TeardownLogic} from 'rxjs';
+import {of, Subscription, TeardownLogic} from 'rxjs';
+import {mergeMap} from 'rxjs/operators';
 
 
 @Component({
@@ -18,11 +19,12 @@ export class MenuLinkComponent implements OnInit, OnDestroy {
 
   activators: IMenuLinkGuard[] = null;
 
-  isDisabled: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  isDisabled$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  isShown: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  isShown$: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
   private subscriptions: Subscription;
+
 
   constructor(private injector: Injector) {
   }
@@ -31,20 +33,18 @@ export class MenuLinkComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const activators = this.getActivator();
     if (!_.isEmpty(activators)) {
-
       for (const canAct of activators) {
-
         if (canAct.isDisabled) {
           const s = (<IMenuLinkGuard>canAct).isDisabled(this.entry.entry)
             .subscribe(
-              x => this.isDisabled.next(x), err => this.isDisabled.error(err), () => this.isDisabled.complete()
+              x => this.isDisabled$.next(x), err => this.isDisabled$.error(err), () => this.isDisabled$.complete()
             );
           this.addSub(s);
         }
         if (canAct.isShown) {
           const s = (<IMenuLinkGuard>canAct).isShown(this.entry.entry)
             .subscribe(
-              x => this.isShown.next(x), err => this.isShown.error(err), () => this.isShown.complete()
+              x => this.isShown$.next(x), err => this.isShown$.error(err), () => this.isShown$.complete()
             );
           this.addSub(s);
         }
@@ -52,9 +52,29 @@ export class MenuLinkComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  isActive() {
+    if (this.isCaption()) {
+      return this.isShown$
+        .pipe(mergeMap(x => !x ? this.isDisabled$ : of(true)));
+    }
+    return this.isShown$;
+  }
+
+
+  isCaptionShown() {
+    if (this.isCaption()) {
+      return this.isShown$;
+    } else {
+      return of(false);
+    }
+  }
+
+
   isCaption() {
     return this.entry.isGroup;
   }
+
 
   hasChildren() {
     return this.entry.children && this.entry.children.length > 0;
@@ -66,7 +86,7 @@ export class MenuLinkComponent implements OnInit, OnDestroy {
       return this.activators;
     }
     this.activators = [];
-    const canActivate = _.get(this.entry, 'entry.route.canActivate', false);
+    const canActivate = _.get(this.entry, 'entry.canActivate', false);
     if (canActivate && _.isArray(canActivate)) {
       for (const canAct of canActivate) {
         const guard = this.injector.get(canAct) as IMenuLinkGuard;
@@ -97,6 +117,7 @@ export class MenuLinkComponent implements OnInit, OnDestroy {
       this.subscriptions.unsubscribe();
     }
   }
+
   private addSub(t: TeardownLogic) {
     if (!this.subscriptions) {
       this.subscriptions = new Subscription();

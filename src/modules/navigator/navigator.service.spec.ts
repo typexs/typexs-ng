@@ -2,11 +2,12 @@ import * as _ from 'lodash';
 import {TestBed} from '@angular/core/testing';
 import {NavigatorService} from './navigator.service';
 import {Route, Router, Routes} from '@angular/router';
-import {APP_BASE_HREF} from '@angular/common';
+import {APP_BASE_HREF, CommonModule} from '@angular/common';
 import {ApplicationInitStatus} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
 import {BrowserTestingModule} from '@angular/platform-browser/testing';
 import {Observable} from 'rxjs/Observable';
+import {DummyComponent} from './test/componets/dummy.component';
 
 function clearTree(tree: any[]) {
   _.map(tree, t => {
@@ -541,5 +542,94 @@ describe('Service: NavigatorService', () => {
 
 
   });
+
+  /**
+   * TODO Handle lazy loading
+   */
+
+  describe('handle lazy loading', () => {
+    let service: NavigatorService;
+    let router: Router;
+
+    const routes = [
+      {path: ''},
+      {path: 'lazy-paths'},
+    ];
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        declarations: [DummyComponent],
+        imports: [
+          CommonModule,
+          BrowserTestingModule,
+          RouterTestingModule.withRoutes([
+            {
+              path: 'dummy', component: DummyComponent
+            },
+            {
+              path: 'lazy', loadChildren: () => import('./test/lazy-module/module').then(x => x.LazyModule)
+            }
+          ])
+        ],
+        providers: [
+          {provide: APP_BASE_HREF, useValue: '/'},
+          ApplicationInitStatus,
+          NavigatorService
+        ]
+      });
+    });
+
+
+    it('dev', async () => {
+      router = TestBed.get(Router);
+      service = TestBed.get(NavigatorService);
+
+      router.events.subscribe(x => console.log(x));
+
+      console.log(router.config);
+      let entries = service.getEntries();
+      console.log(entries.length);
+
+      expect(router.config.length).toEqual(2);
+      expect(router.config[1]['_loadedConfig']).toBeUndefined();
+      expect(entries.length).toEqual(2);
+      const followed = await router.navigateByUrl('lazy');
+
+      console.log(followed);
+
+      console.log(router.config);
+      expect(router.config[1]['_loadedConfig']).not.toBeUndefined();
+      entries = service.getEntries();
+      expect(entries.length).toEqual(9);
+      console.log(entries.length);
+
+      // const entries = service.getEntries();
+      // expect(entries.length).toEqual(9);
+      //
+      // const tree = service.getRebuildRoutes();
+      // expect(tree.length).toEqual(1);
+      // expect(tree[0].path).toEqual('');
+      // expect(tree[0].children.length).toEqual(4);
+      // expect(_.map(tree[0].children, p => p.path)).toEqual([
+      //   'admin',
+      //   'level',
+      //   'group/two',
+      //   'group/one'
+      // ]);
+      /*
+      expect(tree[0].children[0].data.label).toEqual('Config');
+      expect(tree[0].children[1].path).toEqual('storages');
+      expect(tree[0].children[0].children[0].path).toEqual('module1');
+      expect(tree[0].children[0].children[1].path).toEqual('module2');
+      */
+    });
+
+
+  });
+
+
+  /**
+   * TODO Handle hidding group
+   */
 
 });

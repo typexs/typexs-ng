@@ -123,6 +123,31 @@ export const APP_ROUTES: Routes = [
     ]
   },
   {
+    path: 'menu-grouped',
+    component: DummyComponent,
+    data: {label: 'Menu Grouped Base', group: 'menu-grouped'},
+    children: [
+      {
+        path: 'menu-group-item-1',
+        component: DummyComponent,
+        data: {label: 'Menu Grouped Item 1', group: 'menu-grouped'},
+      },
+      {
+        path: 'menu-group-item-2',
+        component: DummyComponent,
+        canActivate: [MenuAccessService],
+        data: {label: 'Menu Grouped Item 2', group: 'menu-grouped'},
+
+      },
+      {
+        path: 'menu-group-item-3',
+        component: DummyComponent,
+        canActivate: [MenuAccessService],
+        data: {label: 'Menu Grouped Item 3', group: 'menu-grouped'},
+      }
+    ]
+  },
+  {
     path: 'user/logout',
     component: LogoutComponent,
     data: {label: 'Logout', skip: true, context: CTXT_ROUTE_USER_LOGOUT},
