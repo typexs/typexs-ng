@@ -98,15 +98,12 @@ export class NavEntry {
 
   asGroup(pattern: any, data: any) {
     this.route = {
-      data: {}
+      data: data ? data : {}
     };
     this.parseData(data);
     this.groupRegex = pattern;
     if (_.has(data, 'canActivate')) {
       this.route.canActivate = data.canActivate;
-    }
-    if (_.has(data, 'permissions')) {
-      this.route.data.permissions = data.permissions;
     }
   }
 
