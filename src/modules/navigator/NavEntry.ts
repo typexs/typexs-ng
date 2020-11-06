@@ -17,7 +17,7 @@ export class NavEntry {
 
   path: string;
 
-  route: Route = null;
+  route: Route;
 
   paths: string[] = [];
 
@@ -91,13 +91,31 @@ export class NavEntry {
       if (_.has(data, 'skip')) {
         this.ignore = data.skip;
       }
-      if (_.has(data, 'canActivate')) {
-        this.canActivate = data.canActivate;
-      }
+
       this.data = data;
     }
   }
 
+  asGroup(pattern: any, data: any) {
+    this.route = {
+      data: {}
+    };
+    this.parseData(data);
+    this.groupRegex = pattern;
+    if (_.has(data, 'canActivate')) {
+      this.route.canActivate = data.canActivate;
+    }
+    if (_.has(data, 'permissions')) {
+      this.route.data.permissions = data.permissions;
+    }
+  }
+
+  getPermissions() {
+    if (_.has(this.route, 'data.permissions')) {
+      return _.get(this.route, 'data.permissions', []);
+    }
+    return null;
+  }
 
   isGroup() {
     return !!this.groupRegex;

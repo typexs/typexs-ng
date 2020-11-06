@@ -72,7 +72,7 @@ export class NavigatorService {
 
   readRoutes(config: Routes, parent: NavEntry = null) {
     for (const route of config) {
-      let entry = _.find(this.entries, e => e.route && e.id === route['navId']);
+      let entry = _.find(this.entries, e => !e.isGroup() && e.id === route['navId']);
 
       if (!entry) {
         entry = new NavEntry();
@@ -111,7 +111,7 @@ export class NavigatorService {
     }
 
     // apply groups
-    _.filter(this.entries, entry => entry.route === null && entry.isGroup()).map(groupEntry => {
+    _.filter(this.entries, entry => entry.isGroup()).map(groupEntry => {
       this.regroup(groupEntry);
     });
   }
@@ -166,8 +166,7 @@ export class NavigatorService {
 
   addGroupEntry(pattern: string, data: any) {
     const navEntry = new NavEntry();
-    navEntry.parseData(data);
-    navEntry.groupRegex = pattern;
+    navEntry.asGroup(pattern, data);
     this.entries.push(navEntry);
     this.regroup(navEntry);
     return navEntry;
@@ -194,7 +193,7 @@ export class NavigatorService {
         return false;
       }
       const fullPath = e.getFullPath();
-      const res = e.route != null && regex.test(fullPath);
+      const res = !e.isGroup() && regex.test(fullPath);
       if (res) {
         selected.push(e.id);
       }
@@ -216,7 +215,7 @@ export class NavigatorService {
         isGroup: false,
         entry: route
       };
-      if (route.route) {
+      if (!route.isGroup()) {
         r.path = route.getFullPath();
       } else {
         r.isGroup = true;
@@ -238,7 +237,7 @@ export class NavigatorService {
       split.pop();
       const lookup = split.join('/');
       base = _.find(this.entries, e =>
-        e.route != null &&
+        !e.isGroup() &&
         e.getFullPath() === lookup &&
         !e.isRedirect() &&
         !e.toIgnore()
