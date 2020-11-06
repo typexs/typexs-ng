@@ -17,8 +17,8 @@ import {STORAGE_ROUTES} from './routes';
 import {StorageAggregateComponent} from './aggregate/page/storage-aggregate.component';
 import {StorageAggregateEmbeddedComponent} from './aggregate/embedded/storage-aggregate-embedded.component';
 import {AppService} from '../base/app.service';
-import {StorageRoutingModule} from './module.routing';
-import {LAZY_STORAGE_ROUTES} from './routes.lazy';
+// import {StorageRoutingModule} from './module.routing';
+// import {LAZY_STORAGE_ROUTES} from './routes.lazy';
 
 const PROVIDERS = [
   StorageService,
@@ -62,9 +62,9 @@ export class StorageModule {
     return STORAGE_ROUTES;
   }
 
-  static getLazyRoutes(prefix?: string) {
-    return LAZY_STORAGE_ROUTES;
-  }
+  // static getLazyRoutes(prefix?: string) {
+  //   return LAZY_STORAGE_ROUTES;
+  // }
 
   constructor(private appService: AppService) {
     // this.appService.registerService('StorageService', StorageService);
