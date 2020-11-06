@@ -86,7 +86,7 @@ export class MenuLinkComponent implements OnInit, OnDestroy {
       return this.activators;
     }
     this.activators = [];
-    const canActivate = _.get(this.entry, 'entry.canActivate', false);
+    const canActivate = this.entry.entry.getCanActivate();
     if (canActivate && _.isArray(canActivate)) {
       for (const canAct of canActivate) {
         const guard = this.injector.get(canAct) as IMenuLinkGuard;

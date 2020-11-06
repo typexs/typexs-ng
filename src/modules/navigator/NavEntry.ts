@@ -33,8 +33,6 @@ export class NavEntry {
 
   outlet: string = null;
 
-  canActivate?: any = null;
-
 
   constructor() {
     this.id = NavEntry.inc++;
@@ -43,9 +41,6 @@ export class NavEntry {
 
   parse(route: Route) {
     this.route = route;
-    if (route.canActivate) {
-      this.canActivate = route.canActivate;
-    }
     // save original path
     this.orgPath = this.route.path;
     route['navId'] = this.id;
@@ -95,6 +90,15 @@ export class NavEntry {
       this.data = data;
     }
   }
+
+
+  getCanActivate() {
+    if (_.has(this.route, 'canActivate')) {
+      return this.route.canActivate;
+    }
+    return false;
+  }
+
 
   asGroup(pattern: any, data: any) {
     this.route = {
