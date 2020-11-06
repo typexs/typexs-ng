@@ -14,10 +14,12 @@ import {AgGridModule} from 'ag-grid-angular';
 import {StorageModule} from '../storage/module';
 import {EntityModule} from '../entity/module';
 import {DistributedStorageModule} from '../distributed_storage/module';
+import {HttpClientModule} from '@angular/common/http';
 
 
 export const APP_MODULES: Array<Type<any> | ModuleWithProviders | any[]> = [
   BrowserModule,
+  HttpClientModule,
   RouterModule.forRoot(APP_ROUTES),
   BaseModule.forRoot(),
   NgFormsModule,

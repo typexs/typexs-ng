@@ -6,7 +6,6 @@ import {AuthService} from './api/auth/auth.service';
 import {AuthGuardService} from './api/auth/auth-guard.service';
 import {MessageService} from './messages/message.service';
 import {AlertComponent} from './messages/alert.component';
-import {BrowserModule} from '@angular/platform-browser';
 import {PagerComponent} from './pager/pager.component';
 import {PagerService} from './pager/PagerService';
 import {AppService} from './app.service';
@@ -34,6 +33,7 @@ import {RouterModule} from '@angular/router';
 import {FreeQueryInputComponent} from './api/querying/free-query/free-query-input.component';
 import {SimpleHtmlCellRouterLinkRendererComponent} from './datatable/simple-html-table/simple-html-cell-router-link-renderer.component';
 import {Log} from './lib/log/Log';
+import {CommonModule} from '@angular/common';
 
 
 const PROVIDERS = [
@@ -76,7 +76,7 @@ const COMPONENTS = [
     SimpleHtmlCellRouterLinkRendererComponent
   ],
   imports: [
-    BrowserModule,
+    CommonModule,
     RouterModule,
     FormsModule
   ],

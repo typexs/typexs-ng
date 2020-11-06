@@ -156,11 +156,11 @@ describe('Component: Menu', () => {
       expect(componentLink.isDisabled$).not.toBeUndefined();
       expect(await new Promise((resolve, reject) => {
         // @ts-ignore
-        componentLink.isDisabled.subscribe(x => resolve(x));
+        componentLink.isDisabled$.subscribe(x => resolve(x));
       })).toBeTrue();
       expect(await new Promise((resolve, reject) => {
         // @ts-ignore
-        componentLink.isShown.subscribe(x => resolve(x));
+        componentLink.isShown$.subscribe(x => resolve(x));
       })).toBeTrue();
 
 

@@ -4,8 +4,6 @@ import {AdminComponent} from './admin.component';
 import {SystemModulesComponent} from './system/modules/system-modules.component';
 import {NavigatorModule} from '../navigator/module';
 import {ADMIN_ROUTES} from './routes';
-import {HttpClientModule} from '@angular/common/http';
-import {BrowserModule} from '@angular/platform-browser';
 import {SystemRoutesComponent} from './system/routes/system-routes.component';
 import {SystemStoragesComponent} from './system/storages/system-storages.component';
 
@@ -26,6 +24,7 @@ import {SystemNodesComponent} from './system/nodes/system-nodes.component';
 import {SystemNodeInfoComponent} from './system/nodes/node-info/system-node-info.component';
 import {SettingsComponent} from './components/settings/settings.component';
 import {AppService} from '../base/app.service';
+import {CommonModule} from '@angular/common';
 
 const PROVIDERS: Provider[] = [];
 
@@ -44,17 +43,14 @@ const PROVIDERS: Provider[] = [];
     SettingsComponent
   ],
   imports: [
+    CommonModule,
     BaseAdminThemeModule,
     BaseModule.forRoot(),
     NavigatorModule.forRoot(),
     RouterModule,
-    BrowserModule,
-    HttpClientModule,
     RouterModule.forChild(ADMIN_ROUTES),
     FormsModule.forRoot(),
-    // EntityModule,
     TasksModule,
-    // StorageModule,
     FormsModule
   ],
   exports: [

@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {FormsModule} from '../forms/module';
-import {BrowserModule} from '@angular/platform-browser';
 import {BaseModule} from '../base/module';
 import {RouterModule} from '@angular/router';
 import {FormsModule as NgFormsModule} from '@angular/forms';
@@ -18,6 +17,8 @@ import {STORAGE_ROUTES} from './routes';
 import {StorageAggregateComponent} from './aggregate/page/storage-aggregate.component';
 import {StorageAggregateEmbeddedComponent} from './aggregate/embedded/storage-aggregate-embedded.component';
 import {AppService} from '../base/app.service';
+import {StorageRoutingModule} from './module.routing';
+import {LAZY_STORAGE_ROUTES} from './routes.lazy';
 
 const PROVIDERS = [
   StorageService,
@@ -41,11 +42,9 @@ const COMPONENTS = [
   imports: [
     CommonModule,
     BaseModule,
-    BrowserModule,
     RouterModule,
     NgFormsModule,
-    FormsModule,
-    // StorageRoutingModule
+    FormsModule
   ],
   exports: COMPONENTS,
   providers: PROVIDERS
@@ -60,14 +59,12 @@ export class StorageModule {
   }
 
   static getRoutes(prefix?: string) {
-    // if (prefix) {
-    //   return STORAGE_ROUTES.map(x => {
-    //     x.path = prefix + '/' + x.path;
-    //   });
-    // }
     return STORAGE_ROUTES;
   }
 
+  static getLazyRoutes(prefix?: string) {
+    return LAZY_STORAGE_ROUTES;
+  }
 
   constructor(private appService: AppService) {
     // this.appService.registerService('StorageService', StorageService);

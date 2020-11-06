@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 
 
 /**
- *
+ * Navigation service interpreted the router data and generate structured navigation informations.
  */
 @Injectable()
 export class NavigatorService {
@@ -26,9 +26,9 @@ export class NavigatorService {
 
   rebuild() {
     this.read(this.router.config);
-    const routes2 = this.getRebuildRoutes();
-    this.router.resetConfig(routes2);
-    this.read(this.router.config);
+    // const routes2 = this.getRebuildRoutes();
+    // this.router.resetConfig(routes2);
+    // this.read(this.router.config);
   }
 
   /**
@@ -117,9 +117,9 @@ export class NavigatorService {
   }
 
 
-  getRebuildRoutes(): Routes {
-    return this.rebuildRoutes();
-  }
+  // getRebuildRoutes(): Routes {
+  //   return this.rebuildRoutes();
+  // }
 
 
   private rebuildRoutes(parent: NavEntry = null): Routes {

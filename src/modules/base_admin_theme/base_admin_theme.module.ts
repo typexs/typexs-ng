@@ -1,7 +1,6 @@
 import {NgModule, Provider} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {NavigatorModule} from '../navigator/module';
-import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '../forms/module';
 import {BaseModule} from '../base/module';
 import {BaseAdminThemeComponent} from './base_admin_theme.component';
@@ -11,6 +10,7 @@ import {WrapperComponent} from './components/wrapper/wrapper.component';
 import {CardComponent} from './components/card/card.component';
 import {NotificationsComponent} from './components/notifications/notifications.component';
 import {NotificationsService} from './components/notifications/notifications.service';
+import {CommonModule} from '@angular/common';
 
 const PROVIDERS: Provider[] = [
   NotificationsService
@@ -27,11 +27,11 @@ const PROVIDERS: Provider[] = [
     NotificationsComponent
   ],
   imports: [
+    CommonModule,
     NavigatorModule.forRoot(),
     BaseModule.forRoot(),
     RouterModule,
-    FormsModule,
-    BrowserModule
+    FormsModule
   ],
   exports: [
     BaseAdminThemeComponent,

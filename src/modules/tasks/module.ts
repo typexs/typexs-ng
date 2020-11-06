@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {FormsModule} from '../forms/module';
-import {BrowserModule} from '@angular/platform-browser';
 import {BaseModule} from '../base/module';
 import {RouterModule} from '@angular/router';
 import {FormsModule as NgFormsModule} from '@angular/forms';
@@ -10,7 +9,7 @@ import {TasksExecutionComponent} from './execution/tasks-execution.component';
 import {TaskStatusComponent} from './status/task-status.component';
 import {TaskStatusRowComponent} from './status/task-status-row.component';
 import {StorageModule} from '../storage/module';
-import {DatePipe} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {TasksLogComponent} from './log/tasks-log.component';
 import {TaskStatusPageComponent} from './status/task-status-page.component';
 import {TasksLogViewerComponent} from './status/log-viewer/tasks-log-viewer.component';
@@ -32,8 +31,8 @@ const PROVIDERS = [
     TasksLogViewerComponent
   ],
   imports: [
+    CommonModule,
     BaseModule,
-    BrowserModule,
     RouterModule,
     NgFormsModule,
     FormsModule,

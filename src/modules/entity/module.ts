@@ -8,13 +8,13 @@ import {EntityStructComponent} from './struct/entity-struct.component';
 import {EntityService} from './entity.service';
 import {EntityOptionsService} from './entity-options.service';
 import {FormsModule} from '../forms/module';
-import {BrowserModule} from '@angular/platform-browser';
 import {BaseModule} from '../base/module';
 import {RouterModule} from '@angular/router';
 import {FormsModule as NgFormsModule} from '@angular/forms';
 import {EntityQueryEmbeddedComponent} from './query/embedded/entity-query-embedded.component';
 import {AppService} from '../base/app.service';
 import {ENTITY_ROUTES} from './routes';
+import {CommonModule} from '@angular/common';
 
 export const ENTITY_OPTIONS_SERVICE = 'EntityOptionsService';
 
@@ -38,8 +38,8 @@ const PROVIDERS = [
     EntityQueryEmbeddedComponent
   ],
   imports: [
+    CommonModule,
     BaseModule,
-    BrowserModule,
     RouterModule,
     NgFormsModule,
     FormsModule

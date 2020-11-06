@@ -586,22 +586,15 @@ describe('Service: NavigatorService', () => {
 
       router.events.subscribe(x => console.log(x));
 
-      console.log(router.config);
       let entries = service.getEntries();
-      console.log(entries.length);
-
       expect(router.config.length).toEqual(2);
       expect(router.config[1]['_loadedConfig']).toBeUndefined();
       expect(entries.length).toEqual(2);
       const followed = await router.navigateByUrl('lazy');
-
-      console.log(followed);
-
-      console.log(router.config);
+      expect(followed).toBeTrue();
       expect(router.config[1]['_loadedConfig']).not.toBeUndefined();
       entries = service.getEntries();
       expect(entries.length).toEqual(9);
-      console.log(entries.length);
 
       // const entries = service.getEntries();
       // expect(entries.length).toEqual(9);

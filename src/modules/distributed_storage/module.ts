@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {FormsModule} from '../forms/module';
-import {BrowserModule} from '@angular/platform-browser';
 import {BaseModule} from '../base/module';
 import {RouterModule} from '@angular/router';
 import {FormsModule as NgFormsModule} from '@angular/forms';
@@ -25,7 +24,6 @@ const COMPONENTS: any[] = [
   imports: [
     CommonModule,
     BaseModule,
-    BrowserModule,
     RouterModule,
     NgFormsModule,
     FormsModule

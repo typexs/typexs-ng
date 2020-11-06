@@ -92,6 +92,10 @@ export const APP_ROUTES: Routes = [
     children: [
       ...TasksModule.getRoutes(),
       ...StorageModule.getRoutes(),
+      // {
+      //   path: 'storage',
+      //   loadChildren: () => import('../storage/module').then(x => x.StorageModule)
+      // },
       ...EntityModule.getRoutes(),
       ...DistributedStorageModule.getRoutes()
     ]

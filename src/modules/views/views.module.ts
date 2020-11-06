@@ -1,12 +1,12 @@
 import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
 import {ViewBuilderComponent} from './view-builder.component';
+import {CommonModule} from '@angular/common';
 
 
 @NgModule({
   declarations: [ViewBuilderComponent],
   imports: [
-    BrowserModule
+    CommonModule
   ],
   entryComponents: [],
   exports: [ViewBuilderComponent],
