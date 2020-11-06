@@ -20,8 +20,8 @@ import {IWorkerInfo} from '@typexs/base/libs/worker/IWorkerInfo';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {NodeRuntimeInfo} from '@typexs/base/libs/system/NodeRuntimeInfo';
-import {BehaviorSubject, combineLatest, forkJoin} from 'rxjs';
-import {combineAll, filter} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest} from 'rxjs';
+import {filter} from 'rxjs/operators';
 
 
 @Injectable()

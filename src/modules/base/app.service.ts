@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {NavigationEnd, Router} from '@angular/router';
+import {NavigationCancel, NavigationEnd, NavigationError, Router} from '@angular/router';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import {AuthService} from './api/auth/auth.service';
@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 import {BackendClientService} from './backend-client.service';
 import {switchMap} from 'rxjs/operators';
 import {of} from 'rxjs';
+import {Log} from './lib/log/Log';
 
 /**
  * The service is used for app status informations and distribution of this information on the front end.
@@ -64,23 +65,30 @@ export class AppService {
         if (this.isViewContext(CTXT_VIEW_ADMIN) && !this.adminUrl) {
           this.setViewContext(CTXT_VIEW_DEFAULT);
         }
-
+      } else if (e instanceof NavigationCancel) {
+        Log.debug('canceled ...');
+      } else if (e instanceof NavigationError) {
+        Log.debug('error ...');
       }
     });
   }
+
 
   getAuthService() {
     return this.authService;
   }
 
+
   getBackendClient() {
     return this.backendService;
   }
+
 
   getComponentClass(...args: string[]) {
     const name = args.join('.');
     return _.get(this.components, name);
   }
+
 
   setComponentClass(name: string | string[], fn: Function) {
     if (_.isArray(name)) {

@@ -1,13 +1,13 @@
 import {IMessage} from './IMessage';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {ISubscription, Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs/Subscription';
 
 export class MessageChannel<T extends IMessage> {
 
   private name: string;
 
-
   private subject: BehaviorSubject<T> = new BehaviorSubject<T>(null);
+
 
   constructor(name: string) {
     this.name = name;
