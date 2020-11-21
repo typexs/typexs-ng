@@ -21,6 +21,7 @@ import {StorageModule} from '../storage/module';
 import {EntityModule} from '../entity/module';
 import {DistributedStorageModule} from '../distributed_storage/module';
 import {TasksModule} from '../tasks/module';
+import {DataViewComponent} from './dataview/dataview.component';
 
 
 export const APP_ROUTES: Routes = [
@@ -84,6 +85,11 @@ export const APP_ROUTES: Routes = [
         path: 'notifications',
         component: NotificationDemoComponent,
         data: {label: 'Notifications', group: 'demo'},
+      },
+      {
+        path: 'data-viewer',
+        component: DataViewComponent,
+        data: {label: 'Data viewer', group: 'demo'},
       },
     ]
   },

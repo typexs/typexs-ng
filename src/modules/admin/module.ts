@@ -68,6 +68,10 @@ export class AdminModule {
     };
   }
 
+  static getRoutes() {
+    return ADMIN_ROUTES;
+  }
+
   constructor(private navigator: NavigatorService,
               private appService: AppService,
               private taskService: BackendTasksService) {

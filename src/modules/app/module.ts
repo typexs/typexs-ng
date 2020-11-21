@@ -34,6 +34,7 @@ import {EmbeddedStorageComponent} from './components/demos/embedded-storage/embe
 import {StorageService} from '../storage/storage.service';
 import {EntityService} from '../entity/entity.service';
 import {DistributedStorageService} from '../distributed_storage/services/distributed_storage.service';
+import {DataViewComponent} from './dataview/dataview.component';
 
 
 @NgModule({
@@ -61,7 +62,8 @@ import {DistributedStorageService} from '../distributed_storage/services/distrib
     NotificationDemoComponent,
     AgGridWrapperComponent,
     SimpleHtmlTableDemoComponent,
-    EmbeddedStorageComponent
+    EmbeddedStorageComponent,
+    DataViewComponent
   ],
   entryComponents: [
     ...FORM_COMPONENTS,
