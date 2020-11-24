@@ -1,9 +1,13 @@
 import {Inject, Injectable} from '@angular/core';
 import {NavEntry} from './NavEntry';
-import {RouteConfigLoadEnd, Router, Routes, RoutesRecognized} from '@angular/router';
+import {Route, RouteConfigLoadEnd, Router, Routes, RoutesRecognized} from '@angular/router';
 import {INavTreeEntry} from './INavTreeEntry';
 import * as _ from 'lodash';
+import {Log} from '../base/lib/log/Log';
 
+function isRedirect(route: Route) {
+  return _.has(route, 'redirectTo');
+}
 
 /**
  * Navigation service interpreted the router data and generate structured navigation informations.
@@ -25,9 +29,12 @@ export class NavigatorService {
   }
 
   rebuild() {
+    Log.debug('rebuild routes');
     this.read(this.router.config);
+    const routes = this.rebuildRoutes();
+
     // const routes2 = this.getRebuildRoutes();
-    // this.router.resetConfig(routes2);
+    this.router.resetConfig(routes);
     // this.read(this.router.config);
   }
 
@@ -55,14 +62,11 @@ export class NavigatorService {
    * @param event
    */
   onRouterEvent(event: any) {
-    // TODO
     if (event instanceof RouteConfigLoadEnd) {
       const entry = this.router.config.find(x => x.path === event.route['path']);
       if (entry && !_.has(entry, '_loadedConfig')) {
         this.reload = true;
       }
-      // reload configuration
-      // this.rebuild();
     } else if (event instanceof RoutesRecognized && this.reload) {
       this.reload = false;
       this.rebuild();
@@ -72,14 +76,27 @@ export class NavigatorService {
 
   readRoutes(config: Routes, parent: NavEntry = null) {
     for (const route of config) {
-      let entry = _.find(this.entries, e => !e.isGroup() && e.id === route['navId']);
 
+      let entry = _.find(this.entries, e => !e.isGroup() && e.id === route['navId']);
       if (!entry) {
-        entry = new NavEntry();
-        this.entries.push(entry);
+        const _isRedirect = isRedirect(route);
+        if (!_isRedirect) {
+          const entryWithPath = _.find(this.entries, e => !e.isGroup() && e.route.path === route.path);
+          if (!entryWithPath) {
+            entry = new NavEntry();
+            this.entries.push(entry);
+            entry.parse(route);
+          } else {
+            entry = entryWithPath;
+            entry.merge(route);
+          }
+        } else {
+          entry = new NavEntry();
+          this.entries.push(entry);
+          entry.parse(route);
+        }
       }
 
-      entry.parse(route);
       if (parent && parent !== entry) {
         entry.setParent(parent);
       }
@@ -117,27 +134,22 @@ export class NavigatorService {
   }
 
 
-  // getRebuildRoutes(): Routes {
-  //   return this.rebuildRoutes();
-  // }
-
-
   private rebuildRoutes(parent: NavEntry = null): Routes {
-    const _routes: NavEntry[] = _.filter(this.entries, e => e.parent === parent);
+    const navEntries: NavEntry[] = _.filter(this.entries, e => e.parent === parent);
     const routes: Routes = [];
-    while (_routes.length > 0) {
-      const route = _routes.shift();
-      const r = route.route;
+    while (navEntries.length > 0) {
+      const navEntry = navEntries.shift();
+      const r = navEntry.route;
       // if route exists
-      if (r) {
-        r.path = route.path;
-        if (!route.isRedirect() && !route.isLazyLoading()) {
-          r.children = this.rebuildRoutes(route);
+      if (r && !navEntry.isGroup()) {
+        r.path = navEntry.path;
+        if (!navEntry.isRedirect() && !navEntry.isLazyLoading()) {
+          r.children = this.rebuildRoutes(navEntry);
         }
         routes.push(r);
       } else {
-        const children = _.filter(this.entries, e => e.parent === route);
-        children.forEach(c => _routes.push(c));
+        const children = _.filter(this.entries, e => e.parent === navEntry);
+        children.forEach(c => navEntries.push(c));
       }
     }
     return routes;
@@ -199,9 +211,7 @@ export class NavigatorService {
       }
       return res;
     });
-
     _.map(children, c => c.setParent(groupEntry));
-
   }
 
 

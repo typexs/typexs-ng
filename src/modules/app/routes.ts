@@ -22,6 +22,7 @@ import {EntityModule} from '../entity/module';
 import {DistributedStorageModule} from '../distributed_storage/module';
 import {TasksModule} from '../tasks/module';
 import {DataViewComponent} from './dataview/dataview.component';
+import {EmbeddedDistributedStorageComponent} from './components/demos/embedded-distributed-storage/embedded-distributed-storage.component';
 
 
 export const APP_ROUTES: Routes = [
@@ -64,6 +65,11 @@ export const APP_ROUTES: Routes = [
         path: 'embedded-storage',
         component: EmbeddedStorageComponent,
         data: {label: 'Embedded Storage', group: 'demo'},
+      },
+      {
+        path: 'embedded-distributed-storage',
+        component: EmbeddedDistributedStorageComponent,
+        data: {label: 'Embedded Distributed Storage', group: 'demo'},
       },
       {
         path: 'content',

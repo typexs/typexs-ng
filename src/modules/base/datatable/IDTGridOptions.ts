@@ -17,6 +17,10 @@ export interface IDTGridOptions {
    */
   limit: number;
 
+  /**
+   * Initial offset
+   */
+  offset?: number;
 
   /**
    * Free Query builder

@@ -92,6 +92,42 @@ export class NavEntry {
   }
 
 
+  merge(route: Route) {
+    console.log(route, this.route);
+    // this.route = route;
+    // // save original path
+    // this.orgPath = this.route.path;
+    // route['navId'] = this.id;
+    // this.path = route.path;
+    // this.paths = this.path.split('/');
+    // const fixedPath = [];
+    //
+    // for (let i = 0; i < this.paths.length; i++) {
+    //   const entry = this.paths[i];
+    //   if (entry.startsWith(':')) {
+    //     // is placeholder
+    //     this.params[entry.replace(/^:/, '')] = i;
+    //   } else {
+    //     fixedPath.push(entry);
+    //   }
+    // }
+    //
+    // if (route.outlet) {
+    //   this.outlet = route.outlet;
+    // }
+    //
+    // this.parseData(route.data);
+    //
+    // if (!this.label) {
+    //   this.label = !_.isEmpty(fixedPath) ? _.capitalize(_.last(fixedPath)) : 'Undefined';
+    // }
+    //
+    //
+    // // TODO has path parent
+    // // TODO has path placeholder
+    // // TODO has level
+  }
+
   getCanActivate() {
     if (_.has(this.route, 'canActivate')) {
       return this.route.canActivate;

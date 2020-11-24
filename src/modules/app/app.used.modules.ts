@@ -20,7 +20,6 @@ import {HttpClientModule} from '@angular/common/http';
 export const APP_MODULES: Array<Type<any> | ModuleWithProviders | any[]> = [
   BrowserModule,
   HttpClientModule,
-  RouterModule.forRoot(APP_ROUTES),
   BaseModule.forRoot(),
   NgFormsModule,
   NavigatorModule,
@@ -29,6 +28,7 @@ export const APP_MODULES: Array<Type<any> | ModuleWithProviders | any[]> = [
   FormsModule.forRoot(),
   BaseAdminThemeModule,
   AgGridModule.withComponents(),
+  RouterModule.forRoot(APP_ROUTES),
   StorageModule,
   EntityModule,
   DistributedStorageModule

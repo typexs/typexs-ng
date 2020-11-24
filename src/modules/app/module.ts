@@ -35,6 +35,7 @@ import {StorageService} from '../storage/storage.service';
 import {EntityService} from '../entity/entity.service';
 import {DistributedStorageService} from '../distributed_storage/services/distributed_storage.service';
 import {DataViewComponent} from './dataview/dataview.component';
+import {EmbeddedDistributedStorageComponent} from './components/demos/embedded-distributed-storage/embedded-distributed-storage.component';
 
 
 @NgModule({
@@ -63,6 +64,7 @@ import {DataViewComponent} from './dataview/dataview.component';
     AgGridWrapperComponent,
     SimpleHtmlTableDemoComponent,
     EmbeddedStorageComponent,
+    EmbeddedDistributedStorageComponent,
     DataViewComponent
   ],
   entryComponents: [

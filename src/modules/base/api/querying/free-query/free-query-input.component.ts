@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 
-import {Expressions} from 'commons-expressions/browser';
+import {ExprDesc, Expressions} from 'commons-expressions/browser';
 import {QueryAction} from '../QueryAction';
 import {Log} from '../../../lib/log/Log';
 import Timeout = NodeJS.Timeout;
@@ -84,6 +84,10 @@ export class FreeQueryInputComponent implements OnInit, OnDestroy {
         }
       }
     }
+  }
+
+  getQuery(){
+    return this.jsonQuery instanceof ExprDesc ? this.jsonQuery.toJson() : this.jsonQuery;
   }
 
   stop($event: any) {

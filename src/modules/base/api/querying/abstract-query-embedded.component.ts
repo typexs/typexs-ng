@@ -1,9 +1,8 @@
 import * as _ from 'lodash';
 import {EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {IEntityRef, JS_DATA_TYPES, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
+import {ClassType, IEntityRef, JS_DATA_TYPES, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
 import {IFindOptions, REGISTRY_TYPEORM} from '@typexs/base/browser';
 import {And, ExprDesc, Expressions} from 'commons-expressions/browser';
-
 import {IDTGridOptions} from '../../datatable/IDTGridOptions';
 import {IGridColumn} from '../../datatable/IGridColumn';
 import {C_PROPERTY, C_URL_PREFIX, CC_GRID_CELL_ENTITY_REFERENCE, CC_GRID_CELL_OBJECT_REFERENCE, CC_GRID_CELL_VALUE} from '../../constants';
@@ -13,6 +12,7 @@ import {IQueringService} from './IQueringService';
 import {QueryAction} from './QueryAction';
 import {IQueryParams} from '../../datatable/IQueryParams';
 import {DEFAULT_DT_GRID_OPTIONS} from './Constants';
+import {AbstractGridComponent} from '../../datatable/abstract-grid.component';
 
 
 /**
@@ -67,6 +67,9 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
   @Output()
   paramsChange: EventEmitter<IQueryParams> = new EventEmitter();
 
+  @Input()
+  componentClass: ClassType<AbstractGridComponent>;
+
   entityRef: IEntityRef;
 
   error: any = null;
@@ -96,22 +99,26 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
     return this.queringService;
   }
 
+  applyInitialOptions() {
+    if (this.options) {
+      // set initial options
+      this.params.offset = _.get(this.options, 'offset', 0);
+      this.params.limit = _.get(this.options, 'limit', 25);
+      if (_.has(this.options, 'sorting')) {
+        this.params.sorting = _.get(this.options, 'sorting');
+      }
+    }
+  }
+
 
   ngOnInit() {
     if (!this.params) {
       this.params = {};
     }
 
-    if (this.options) {
-      this.params.offset = _.get(this.options, 'offset', 0);
-      this.params.limit = _.get(this.options, 'limit', 25);
-    }
+    this.applyInitialOptions();
 
-    this.queringService.isReady((value: boolean, error: Error) => {
-      if (!value) {
-        return;
-      }
-
+    this.queringService.isLoaded().subscribe(x => {
       this.findEntityDef();
       this.initialiseColumns();
 

@@ -6,7 +6,6 @@ import {IBuildOptions, IEntityRef, IEntityRefMetadata, ILookupRegistry, LookupRe
 import {BackendClientService, IRoutePointer} from '../../backend-client.service';
 import {AuthService} from '../auth/auth.service';
 import {IFindOptions, ISaveOptions} from '@typexs/base/browser';
-import {Expressions} from 'commons-expressions/browser';
 import {IApiCallOptions} from '../../lib/http/IApiCallOptions';
 import {of, Subscription} from 'rxjs';
 import {STORAGE_REQUEST_MODE} from './Constants';
@@ -14,6 +13,7 @@ import {IUpdateOptions} from '@typexs/base/libs/storage/framework/IUpdateOptions
 import {IAggregateOptions} from '@typexs/base/libs/storage/framework/IAggregateOptions';
 import {Log} from '../../lib/log/Log';
 import {UrlHelper} from '../../lib/UrlHelper';
+import {filter, first} from 'rxjs/operators';
 
 /**
  * Options for query service
@@ -165,6 +165,13 @@ export abstract class AbstractQueryService implements IQueringService {
         // callback();
       });
     }
+  }
+
+  /**
+   * checks if metadata model is ready to be used
+   */
+  isLoaded(): Observable<boolean> {
+    return this.$isReady.asObservable().pipe(filter(x => x)).pipe(first());
   }
 
 

@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {AbstractQueryEmbeddedComponent} from '../../../../base/api/querying/abstract-query-embedded.component';
 import {DistributedStorageService} from '../../../services/distributed_storage.service';
 import * as _ from 'lodash';
+import {DEFAULT_DS_OPTIONS, IDSOptions} from '../../../lib/IDSOptions';
 
 
 /**
@@ -23,6 +24,10 @@ export class DistributedStorageQueryEmbeddedComponent
   @Input()
   entityName: string;
 
+  @Input()
+  options: IDSOptions = DEFAULT_DS_OPTIONS;
+
+
   constructor(private service: DistributedStorageService) {
     super(service);
   }
@@ -33,24 +38,8 @@ export class DistributedStorageQueryEmbeddedComponent
       this.params = {};
     }
 
-    if (this.options) {
-      this.params.offset = _.get(this.options, 'offset', 0);
-      this.params.limit = _.get(this.options, 'limit', 25);
-    }
-
-    this.service.isReady((value: boolean, error: Error) => {
-      if (!value) {
-        return;
-      }
-
-      this.findEntityDef();
-      // this.initialiseColumns();
-
-      // api maybe not loaded
-      // setTimeout(() => {
-      //   this.doAggregate(this.datatable.api());
-      // });
-    });
+    this.applyInitialOptions();
+    this.service.isLoaded().subscribe(x => this.findEntityDef());
   }
 
 
