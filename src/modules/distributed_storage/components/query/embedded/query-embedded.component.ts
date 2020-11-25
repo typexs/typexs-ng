@@ -1,7 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {AbstractQueryEmbeddedComponent} from '../../../../base/api/querying/abstract-query-embedded.component';
 import {DistributedStorageService} from '../../../services/distributed_storage.service';
-import * as _ from 'lodash';
 import {DEFAULT_DS_OPTIONS, IDSOptions} from '../../../lib/IDSOptions';
 
 
@@ -39,7 +38,12 @@ export class DistributedStorageQueryEmbeddedComponent
     }
 
     this.applyInitialOptions();
-    this.service.isLoaded().subscribe(x => this.findEntityDef());
+    if (this.entityName && !this.options.entityTypeSelection) {
+      setTimeout(() => {
+        this.requery();
+      });
+    }
+    // this.service.isLoaded().subscribe(x => this.findEntityDef());
   }
 
 

@@ -79,14 +79,11 @@ export class DatatableComponent extends AbstractGridComponent implements OnInit,
         (error: any) => (<EventEmitter<any>>this[prop]).error(error),
         () => (<EventEmitter<any>>this[prop]).complete(),
       );
-      // Object.defineProperty(instance, prop, Object.getOwnPropertyDescriptor(this, prop));
     }
 
-    this.rebuild = this.api().rebuild.bind(this.api());
-    this.setMaxRows = this.api().setMaxRows.bind(this.api());
-    this.setRows = this.api().setRows.bind(this.api());
-
-
+    ['rebuild', 'setMaxRows', 'setColumns', 'setRows', 'getMaxRows', 'getColumns', 'getRows'].forEach(x => {
+      this[x] = this.api()[x].bind(this.api());
+    });
   }
 
 

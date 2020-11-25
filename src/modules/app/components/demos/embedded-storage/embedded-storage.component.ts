@@ -8,7 +8,6 @@ import {IEntityRef} from 'commons-schema-api/browser';
 import {StorageService} from '../../../../storage/storage.service';
 
 
-
 export class C {
   sort: string = null;
   sortDir: string = null;
@@ -76,8 +75,8 @@ export class EmbeddedStorageComponent implements OnInit, OnChanges {
     _.set(p, 'filters.text', Like('text', Value('Text 5*')));
     this.simpleItemParams = p;
     this.simpleItemQuery.requery();
-
   }
+
 
   doSubmit() {
     const p = this.simpleItemParams;

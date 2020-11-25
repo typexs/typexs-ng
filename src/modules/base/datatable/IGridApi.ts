@@ -7,9 +7,15 @@ export interface IGridApi {
 
   rebuild(): void;
 
+  getColumns(): IGridColumn[];
+
   setColumns(columns: IGridColumn[]): void;
 
+  getRows(): any[];
+
   setRows(rows: any[]): void;
+
+  getMaxRows(): number;
 
   setMaxRows(maxRows: number): void;
 

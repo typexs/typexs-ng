@@ -1,12 +1,10 @@
 import * as _ from 'lodash';
-import {Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {IDTGridOptions} from '../../../../base/datatable/IDTGridOptions';
+import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {IQueryParams} from '../../../../base/datatable/IQueryParams';
 import {Like, Value} from 'commons-expressions/browser';
-import {StorageQueryEmbeddedComponent} from '../../../../storage/query/embedded/storage-query-embedded.component';
-import {IEntityRef} from 'commons-schema-api/browser';
-import {StorageService} from '../../../../storage/storage.service';
-
+import {IDSOptions} from '../../../../distributed_storage/lib/IDSOptions';
+import {DistributedStorageQueryEmbeddedComponent} from '../../../../distributed_storage/components/query/embedded/query-embedded.component';
+import {DistributedStorageService} from '../../../../distributed_storage/services/distributed_storage.service';
 
 
 export class C {
@@ -26,11 +24,11 @@ export class C {
   selector: 'embedded-distributed-storage',
   templateUrl: 'embedded-distributed-storage.component.html',
 })
-export class EmbeddedDistributedStorageComponent implements OnInit, OnChanges {
+export class EmbeddedDistributedStorageComponent implements OnInit, OnChanges, AfterViewInit {
 
   simpleItemName = 'SimpleItem';
 
-  simpleItemOptions: IDTGridOptions = {
+  simpleItemOptions: IDSOptions = {
     limit: 10,
     enablePager: true,
     freeQueryBuilder: false,
@@ -40,23 +38,28 @@ export class EmbeddedDistributedStorageComponent implements OnInit, OnChanges {
   simpleItemParams: IQueryParams = {};
 
   @ViewChild('simpleItem01', {static: true})
-  simpleItemQuery: StorageQueryEmbeddedComponent;
+  simpleItemQuery: DistributedStorageQueryEmbeddedComponent;
 
   simpleQueryModul = new C();
 
-  entityRef: IEntityRef;
+  _columns: any[] = [];
 
-  constructor(private storageService: StorageService) {
+  constructor(private service: DistributedStorageService) {
 
   }
 
 
   ngOnInit(): void {
-    this.storageService.isReady(() => {
-      this.entityRef = this.storageService.getEntityRefForName('SimpleItem');
+    this.simpleItemQuery.datatable.gridReady.subscribe((x: any) => {
+      this._columns = this.simpleItemQuery.datatable.api().getColumns();
     });
   }
 
+  ngAfterViewInit() {
+    this.service.isLoaded().subscribe(x => {
+      this.simpleItemQuery.requery();
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
 

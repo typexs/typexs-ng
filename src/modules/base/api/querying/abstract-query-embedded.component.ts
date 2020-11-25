@@ -13,6 +13,7 @@ import {QueryAction} from './QueryAction';
 import {IQueryParams} from '../../datatable/IQueryParams';
 import {DEFAULT_DT_GRID_OPTIONS} from './Constants';
 import {AbstractGridComponent} from '../../datatable/abstract-grid.component';
+import {Helper} from './Helper';
 
 
 /**
@@ -78,21 +79,6 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
   datatable: DatatableComponent;
 
   private queringService: IQueringService;
-
-
-  static rebuildColumns(data: any[]) {
-    const first = _.first(data);
-    const columns = [];
-    for (const k of _.keys(first)) {
-      const column: IGridColumn = {
-        label: k,
-        field: k,
-        sorting: true
-      };
-      columns.push(column);
-    }
-    return columns;
-  }
 
 
   getQueryService() {
@@ -256,9 +242,10 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
       .subscribe(
         (results: any) => {
           if (results) {
+            console.log(results);
             if (results.entities && _.has(results, '$count') && _.isNumber(results.$count)) {
               if (!this.entityRef) {
-                const columns = AbstractQueryEmbeddedComponent.rebuildColumns(results.entities);
+                const columns = Helper.rebuildColumns(results.entities);
                 api.setColumns(columns);
               }
               api.setRows(results.entities);

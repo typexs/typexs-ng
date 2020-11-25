@@ -3,10 +3,10 @@ import {EventEmitter, Input, Output} from '@angular/core';
 import {IDTGridOptions} from './IDTGridOptions';
 import {IQueryParams} from './IQueryParams';
 import {IGridApi} from './IGridApi';
+import {Helper} from '../api/querying/Helper';
 
 
 export abstract class AbstractGridComponent implements IGridApi {
-
 
   @Output()
   paramsChange: EventEmitter<IQueryParams> = new EventEmitter<IQueryParams>();
@@ -56,6 +56,9 @@ export abstract class AbstractGridComponent implements IGridApi {
 
 
   setRows(rows: any[]) {
+    if (!this.columns) {
+      this.setColumns(Helper.rebuildColumns(rows));
+    }
     this.rows = rows;
   }
 
@@ -70,6 +73,18 @@ export abstract class AbstractGridComponent implements IGridApi {
 
   reset() {
     this.params.offset = 0;
+  }
+
+  getColumns(): IGridColumn[] {
+    return this.columns;
+  }
+
+  getMaxRows(): number {
+    return this.maxRows;
+  }
+
+  getRows(): any[] {
+    return this.rows;
   }
 
 

@@ -29,10 +29,8 @@ export class NavigatorService {
   }
 
   rebuild() {
-    Log.debug('rebuild routes');
     this.read(this.router.config);
     const routes = this.rebuildRoutes();
-
     // const routes2 = this.getRebuildRoutes();
     this.router.resetConfig(routes);
     // this.read(this.router.config);
