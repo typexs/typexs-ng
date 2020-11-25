@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import {TestBed} from '@angular/core/testing';
 import {NavigatorService} from './navigator.service';
-import {Route, Router, Routes} from '@angular/router';
+import {Router, Routes} from '@angular/router';
 import {APP_BASE_HREF, CommonModule} from '@angular/common';
 import {ApplicationInitStatus} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -625,6 +625,77 @@ describe('Service: NavigatorService', () => {
 
   });
 
+
+  describe('check sub entries with same path', () => {
+
+    let service: NavigatorService;
+
+    class MockRouterStruct {
+      config: Routes = [
+        {path: ''},
+        {
+          path: 'admin',
+          children: [
+            {path: ''},
+            {path: 'configure'},
+            {path: 'admin'}
+          ]
+        },
+        {
+          path: 'else',
+          children: [
+            {path: ''},
+            {path: 'configure'},
+            {path: 'some'}
+          ]
+        }
+      ];
+
+      events: Observable<any> = new Observable<any>(() => {
+      });
+
+      resetConfig(routes: Routes) {
+        this.config = routes;
+      }
+    }
+
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          BrowserTestingModule,
+          RouterTestingModule
+        ],
+        providers: [
+          {provide: APP_BASE_HREF, useValue: '/'},
+          ApplicationInitStatus,
+          {provide: Router, useClass: MockRouterStruct},
+          NavigatorService
+        ]
+      });
+    });
+
+
+    it('check if correctly detected', () => {
+      service = TestBed.get(NavigatorService);
+      const entries = service.getEntries();
+      expect(entries.length).toEqual(7);
+      const paths = entries.map(x => x.getFullPath());
+      expect(paths).toEqual([
+        '',
+        'admin',
+        'admin/configure',
+        'admin/admin',
+        'else',
+        'else/configure',
+        'else/some'
+      ]);
+
+      const tree = service.getTree();
+      expect(tree.length).toEqual(1);
+
+    });
+  });
 
   /**
    * TODO Handle hidding group

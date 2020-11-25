@@ -3,7 +3,6 @@ import {NavEntry} from './NavEntry';
 import {Route, RouteConfigLoadEnd, Router, Routes, RoutesRecognized} from '@angular/router';
 import {INavTreeEntry} from './INavTreeEntry';
 import * as _ from 'lodash';
-import {Log} from '../base/lib/log/Log';
 
 function isRedirect(route: Route) {
   return _.has(route, 'redirectTo');
@@ -79,7 +78,8 @@ export class NavigatorService {
       if (!entry) {
         const _isRedirect = isRedirect(route);
         if (!_isRedirect) {
-          const entryWithPath = _.find(this.entries, e => !e.isGroup() && e.route.path === route.path);
+          const routePath = [parent ? parent.getFullPath() : null, route.path].filter(x => !_.isEmpty(x)).join('/');
+          const entryWithPath = _.find(this.entries, e => !e.isGroup() && e.getFullPath() === routePath);
           if (!entryWithPath) {
             entry = new NavEntry();
             this.entries.push(entry);
