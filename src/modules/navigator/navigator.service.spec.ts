@@ -589,7 +589,7 @@ describe('Service: NavigatorService', () => {
       router = TestBed.get(Router);
       service = TestBed.get(NavigatorService);
 
-      router.events.subscribe(x => console.log(x));
+      // router.events.subscribe(x => console.log(x));
 
       let entries = service.getEntries();
       expect(router.config.length).toEqual(2);

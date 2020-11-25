@@ -1,5 +1,6 @@
 import {Route} from '@angular/router';
 import * as _ from 'lodash';
+import {isLazyLoading} from './lib/Helper';
 
 export class NavEntry {
 
@@ -93,6 +94,10 @@ export class NavEntry {
 
 
   merge(route: Route) {
+    if (isLazyLoading(route)) {
+      this.route = _.assign(this.route, route);
+      route['navId'] = this.id;
+    }
     console.log(route, this.route);
     // this.route = route;
     // // save original path
@@ -227,8 +232,9 @@ export class NavEntry {
     return false;
   }
 
+
   isLazyLoading() {
-    if (this.route && this.route.loadChildren) {
+    if (this.route && (this.route.loadChildren || _.has(this.route, '_loadedConfig'))) {
       return true;
     }
     return false;

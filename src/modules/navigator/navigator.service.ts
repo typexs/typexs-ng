@@ -95,6 +95,8 @@ export class NavigatorService {
           this.entries.push(entry);
           entry.parse(route);
         }
+      } else {
+        entry.merge(route);
       }
 
       if (parent && parent !== entry) {
