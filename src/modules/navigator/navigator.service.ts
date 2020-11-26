@@ -1,12 +1,10 @@
 import {Inject, Injectable} from '@angular/core';
 import {NavEntry} from './NavEntry';
-import {Route, RouteConfigLoadEnd, Router, Routes, RoutesRecognized} from '@angular/router';
+import {RouteConfigLoadEnd, Router, Routes, RoutesRecognized} from '@angular/router';
 import {INavTreeEntry} from './INavTreeEntry';
 import * as _ from 'lodash';
+import {hasComponent, isRedirect} from './lib/Helper';
 
-function isRedirect(route: Route) {
-  return _.has(route, 'redirectTo');
-}
 
 /**
  * Navigation service interpreted the router data and generate structured navigation informations.
@@ -30,9 +28,7 @@ export class NavigatorService {
   rebuild() {
     this.read(this.router.config);
     const routes = this.rebuildRoutes();
-    // const routes2 = this.getRebuildRoutes();
     this.router.resetConfig(routes);
-    // this.read(this.router.config);
   }
 
   /**
@@ -73,13 +69,14 @@ export class NavigatorService {
 
   readRoutes(config: Routes, parent: NavEntry = null) {
     for (const route of config) {
-
-      let entry = _.find(this.entries, e => !e.isGroup() && e.id === route['navId']);
+      let entry = _.find(this.entries, e => e.id === route['navId']);
       if (!entry) {
         const _isRedirect = isRedirect(route);
-        if (!_isRedirect) {
+        const _hasComponent = hasComponent(route);
+        if (!(_isRedirect || _hasComponent)) {
+          // check if path is already present but no component is given
           const routePath = [parent ? parent.getFullPath() : null, route.path].filter(x => !_.isEmpty(x)).join('/');
-          const entryWithPath = _.find(this.entries, e => !e.isGroup() && e.getFullPath() === routePath);
+          const entryWithPath = _.find(this.entries, e => !e.isGroup('pattern') && e.getFullPath() === routePath);
           if (!entryWithPath) {
             entry = new NavEntry();
             this.entries.push(entry);
@@ -92,6 +89,7 @@ export class NavigatorService {
           entry = new NavEntry();
           this.entries.push(entry);
           entry.parse(route);
+
         }
       } else {
         entry.merge(route);
@@ -141,7 +139,7 @@ export class NavigatorService {
       const navEntry = navEntries.shift();
       const r = navEntry.route;
       // if route exists
-      if (r && !navEntry.isGroup()) {
+      if (r && !navEntry.isGroup('pattern')) {
         r.path = navEntry.path;
         if (!navEntry.isRedirect() && !navEntry.isLazyLoading()) {
           r.children = this.rebuildRoutes(navEntry);
@@ -217,8 +215,13 @@ export class NavigatorService {
 
   getTree(from: string | NavEntry = null, filter?: (entry: NavEntry) => boolean): INavTreeEntry[] {
     const fromEntry = !_.isNull(from) ? (from instanceof NavEntry ? from : this.getEntry(from)) : null;
-    const _routes: NavEntry[] = _.filter(this.entries,
-      e => e.parent === fromEntry && (filter ? filter(e) : true) && !e.isRedirect() && !e.toIgnore());
+    const _routes: NavEntry[] =
+      _.filter(this.entries,
+        e =>
+          e.parent === fromEntry &&
+          (filter ? filter(e) : true) &&
+          !e.isRedirect() &&
+          !e.toIgnore());
     const routes = _.map(_routes, route => {
       const r: INavTreeEntry = {
         label: route.label,

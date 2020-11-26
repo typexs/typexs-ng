@@ -249,7 +249,6 @@ export class DataViewComponent implements OnInit, OnChanges, OnDestroy, AfterVie
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
   }
 
 }

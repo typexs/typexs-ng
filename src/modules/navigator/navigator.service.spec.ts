@@ -697,6 +697,57 @@ describe('Service: NavigatorService', () => {
     });
   });
 
+
+  describe('check if routes are rebuild correctly', () => {
+
+    let service: NavigatorService;
+
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          BrowserTestingModule,
+          RouterTestingModule.withRoutes([
+            {
+              path: 'demo', component: DummyComponent
+            },
+            {
+              path: 'embedded',
+              children: [
+                {path: 'entry-first', component: DummyComponent},
+                {path: 'entry-second', component: DummyComponent},
+              ]
+            },
+            {
+              path: '', redirectTo: 'demo', pathMatch: 'full'
+            },
+            {
+              path: '**', redirectTo: 'demo'
+            }
+          ])
+        ],
+        providers: [
+          {provide: APP_BASE_HREF, useValue: '/'},
+          ApplicationInitStatus,
+          Router,
+          NavigatorService
+        ]
+      });
+    });
+
+
+    it('check if inline group is correctly resolved', () => {
+      service = TestBed.get(NavigatorService);
+      const entries = service.getEntries();
+      expect(entries.length).toEqual(7);
+      const paths = entries.map(x => x.getFullPath());
+
+      const tree = service.getTree();
+      expect(tree.length).toEqual(1);
+
+    });
+  });
+
   /**
    * TODO Handle hidding group
    */

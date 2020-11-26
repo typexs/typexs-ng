@@ -23,14 +23,20 @@ import {DistributedStorageModule} from '../distributed_storage/module';
 import {TasksModule} from '../tasks/module';
 import {DataViewComponent} from './dataview/dataview.component';
 import {EmbeddedDistributedStorageComponent} from './components/demos/embedded-distributed-storage/embedded-distributed-storage.component';
+import {AdminModule} from '../admin/module';
 
 
 export const APP_ROUTES: Routes = [
   {
     path: 'demo',
     component: DemosComponent,
-    data: {label: 'Demo'},
+    data: {label: 'Demo', group: 'demo'},
     children: [
+      {
+        path: '',
+        component: DummyComponent,
+        data: {label: 'Placeholder', skip: true, group: 'demo'},
+      },
       {
         path: 'input',
         component: InputDemoComponent,
@@ -62,16 +68,6 @@ export const APP_ROUTES: Routes = [
         data: {label: 'Simple Table', group: 'demo'},
       },
       {
-        path: 'embedded-storage',
-        component: EmbeddedStorageComponent,
-        data: {label: 'Embedded Storage', group: 'demo'},
-      },
-      {
-        path: 'embedded-distributed-storage',
-        component: EmbeddedDistributedStorageComponent,
-        data: {label: 'Embedded Distributed Storage', group: 'demo'},
-      },
-      {
         path: 'content',
         component: ContentDemoComponent,
         data: {label: 'Content Demo', group: 'demo'},
@@ -86,7 +82,6 @@ export const APP_ROUTES: Routes = [
         component: PagerDemoComponent,
         data: {label: 'Pager', group: 'demo'},
       },
-
       {
         path: 'notifications',
         component: NotificationDemoComponent,
@@ -100,19 +95,35 @@ export const APP_ROUTES: Routes = [
     ]
   },
   {
+    path: 'embedded',
+    data: {group: 'demo'},
+    children: [
+      {
+        path: 'storage',
+        component: EmbeddedStorageComponent,
+        data: {label: 'Embedded Storage', group: 'demo'},
+      },
+      {
+        path: 'distributed-storage',
+        component: EmbeddedDistributedStorageComponent,
+        data: {label: 'Embedded Distributed Storage', group: 'demo'},
+      }
+    ]
+  },
+  // {
+  //   path: 'admin',
+  //   loadChildren: () => import('../admin/module').then(x => x.AdminModule)
+  // },
+  ...AdminModule.getRoutes(),
+  {
     path: 'admin',
     children: [
       ...TasksModule.getRoutes(),
       ...StorageModule.getRoutes(),
-      // {
-      //   path: 'storage',
-      //   loadChildren: () => import('../storage/module').then(x => x.StorageModule)
-      // },
       ...EntityModule.getRoutes(),
       ...DistributedStorageModule.getRoutes()
     ]
   },
-
   {
     path: 'menu',
     component: DummyComponent,
@@ -177,7 +188,8 @@ export const APP_ROUTES: Routes = [
   ,
   {
     path: '', redirectTo: 'demo', pathMatch: 'full'
-  },
+  }
+  ,
   {
     path: '**', redirectTo: 'demo'
   }

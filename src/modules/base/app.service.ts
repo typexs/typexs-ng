@@ -9,7 +9,7 @@ import {C_ADMIN, CTXT_VIEW_ADMIN, CTXT_VIEW_DEFAULT, CTXT_VIEW_LOADING, CTXT_VIE
 import * as _ from 'lodash';
 import {BackendClientService} from './backend-client.service';
 import {switchMap} from 'rxjs/operators';
-import {of} from 'rxjs';
+import {of, Subject} from 'rxjs';
 import {Log} from './lib/log/Log';
 
 /**
@@ -28,11 +28,13 @@ export class AppService {
 
   adminUrl = false;
 
-  config: any = {};
+  settings: any = {};
 
   components: { [name: string]: Function } = {};
 
   serviceClasses: { [name: string]: Function } = {};
+
+  // events: Observable<any> = new Subject<any>();
 
   registerService(name: string, fn: Function) {
     this.serviceClasses[name] = fn;
@@ -73,6 +75,13 @@ export class AppService {
     });
   }
 
+  getSettings(path: string, _default?: any) {
+    return _.get(this.settings, path, _default);
+  }
+
+  setSettings(path: string, value: any) {
+    return _.set(this.settings, path, value);
+  }
 
   getAuthService() {
     return this.authService;

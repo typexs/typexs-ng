@@ -1,6 +1,6 @@
 import {Route} from '@angular/router';
 import * as _ from 'lodash';
-import {isLazyLoading} from './lib/Helper';
+import {hasComponent, isLazyLoading, isRedirect} from './lib/Helper';
 
 export class NavEntry {
 
@@ -27,6 +27,8 @@ export class NavEntry {
   parent: NavEntry = null;
 
   params: any = {};
+
+  groupType?: 'pattern' | 'route';
 
   groups?: string[];
 
@@ -67,6 +69,12 @@ export class NavEntry {
 
     if (!this.label) {
       this.label = !_.isEmpty(fixedPath) ? _.capitalize(_.last(fixedPath)) : 'Undefined';
+    }
+
+    if (!hasComponent(route) && !isRedirect(route)) {
+      // is group
+      this.groupType = 'route';
+      this.groupRegex = this.path.replace('/', '\\/');
     }
 
 
@@ -112,6 +120,7 @@ export class NavEntry {
     this.route = {
       data: data ? data : {}
     };
+    this.groupType = 'pattern';
     this.parseData(data);
     this.groupRegex = pattern;
     if (_.has(data, 'canActivate')) {
@@ -126,8 +135,11 @@ export class NavEntry {
     return null;
   }
 
-  isGroup() {
-    return !!this.groupRegex;
+  isGroup(type?: 'route' | 'pattern') {
+    if (type) {
+      return !!this.groupType && type === this.groupType;
+    }
+    return !!this.groupType;
   }
 
   hasRoute() {

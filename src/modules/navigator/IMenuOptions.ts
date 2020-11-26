@@ -1,14 +1,18 @@
 import {NavEntry} from './NavEntry';
-export type MenuFilter = (options:IMenuOptions,e: NavEntry) => boolean;
+
+export type MenuFilter = (options: IMenuOptions, e: NavEntry) => boolean;
+
 export interface IMenuOptions {
 
-  label?:string;
+  label?: string;
 
-  base?:string;
+  base?: string;
 
-  group?:string;
+  group?: string;
 
-  level?:number;
+  level?: number;
+
+  regex?: string | RegExp;
 
   filter?: MenuFilter;
 

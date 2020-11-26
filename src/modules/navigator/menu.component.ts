@@ -10,6 +10,7 @@ const DEFAULT_OPTIONS: IMenuOptions = {
   base: null,
   group: null,
   level: null,
+  regex: null,
   filter: (options: IMenuOptions, e: NavEntry) => {
     let ret = true;
     if (!_.isNull(options.group)) {
@@ -17,6 +18,13 @@ const DEFAULT_OPTIONS: IMenuOptions = {
     }
     if (!_.isNull(options.level)) {
       ret = ret && e.getLevel() <= options.level;
+    }
+    if (!_.isNull(options.regex)) {
+      let regex: RegExp = options.regex as any;
+      if (!(options.regex instanceof RegExp)) {
+        regex = new RegExp(regex);
+      }
+      ret = ret && regex.test(e.getFullPath());
     }
     return ret;
   }

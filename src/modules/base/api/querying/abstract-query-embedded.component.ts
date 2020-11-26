@@ -242,7 +242,6 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
       .subscribe(
         (results: any) => {
           if (results) {
-            console.log(results);
             if (results.entities && _.has(results, '$count') && _.isNumber(results.$count)) {
               if (!this.entityRef) {
                 const columns = Helper.rebuildColumns(results.entities);

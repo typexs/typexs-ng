@@ -36,6 +36,8 @@ import {EntityService} from '../entity/entity.service';
 import {DistributedStorageService} from '../distributed_storage/services/distributed_storage.service';
 import {DataViewComponent} from './dataview/dataview.component';
 import {EmbeddedDistributedStorageComponent} from './components/demos/embedded-distributed-storage/embedded-distributed-storage.component';
+import {AppService} from '../base/app.service';
+import {UI_ADMIN_LAYOUT} from '../admin/lib/Constants';
 
 
 @NgModule({
@@ -83,11 +85,18 @@ import {EmbeddedDistributedStorageComponent} from './components/demos/embedded-d
 })
 export class AppModule {
 
-  constructor(private authService: AuthService,
+  constructor(private appService: AppService,
+              private authService: AuthService,
               private navigatorService: NavigatorService,
               private storageService: StorageService,
               private entityService: EntityService,
               private dStorageService: DistributedStorageService) {
+
+    /**
+     * Enable admin theme layer
+     */
+    appService.setSettings(UI_ADMIN_LAYOUT, true);
+
     entityService.setNgUrlPrefix('/admin/entity');
     storageService.setNgUrlPrefix('/admin/storage');
     dStorageService.setNgUrlPrefix('/admin/distributed-storage');

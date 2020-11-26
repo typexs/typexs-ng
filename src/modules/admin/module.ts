@@ -48,7 +48,7 @@ const PROVIDERS: Provider[] = [];
     BaseModule.forRoot(),
     NavigatorModule.forRoot(),
     RouterModule,
-    RouterModule.forChild(ADMIN_ROUTES),
+    // RouterModule.forChild(ADMIN_ROUTES),
     FormsModule.forRoot(),
     TasksModule,
     FormsModule
