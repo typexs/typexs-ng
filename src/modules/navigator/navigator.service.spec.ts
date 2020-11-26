@@ -705,6 +705,9 @@ describe('Service: NavigatorService', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
+        declarations: [
+          DummyComponent
+        ],
         imports: [
           BrowserTestingModule,
           RouterTestingModule.withRoutes([
@@ -729,7 +732,6 @@ describe('Service: NavigatorService', () => {
         providers: [
           {provide: APP_BASE_HREF, useValue: '/'},
           ApplicationInitStatus,
-          Router,
           NavigatorService
         ]
       });
@@ -739,11 +741,19 @@ describe('Service: NavigatorService', () => {
     it('check if inline group is correctly resolved', () => {
       service = TestBed.get(NavigatorService);
       const entries = service.getEntries();
-      expect(entries.length).toEqual(7);
+      expect(entries.length).toEqual(6);
       const paths = entries.map(x => x.getFullPath());
-
+      expect(paths).toEqual(
+        [
+          'demo',
+          'embedded',
+          'embedded/entry-first',
+          'embedded/entry-second',
+          '',
+          '**'
+        ]);
       const tree = service.getTree();
-      expect(tree.length).toEqual(1);
+      expect(tree.length).toEqual(2);
 
     });
   });
