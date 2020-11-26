@@ -22,19 +22,19 @@ export class NavEntry {
 
   paths: string[] = [];
 
-  label: string;
+  label?: string;
 
   parent: NavEntry = null;
 
-  params: any = {};
+  params?: any = {};
 
   groupType?: 'pattern' | 'route';
 
   groups?: string[];
 
-  groupRegex?: string = null;
+  groupRegex?: string;
 
-  outlet: string = null;
+  outlet?: string;
 
 
   constructor() {

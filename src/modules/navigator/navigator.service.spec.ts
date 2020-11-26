@@ -28,11 +28,11 @@ describe('Service: NavigatorService', () => {
 
     class MockRouter {
       config: Routes = [
-        {path: 'admin'},
-        {path: 'admin/configure'},
-        {path: 'admin/configure/module1'},
-        {path: 'admin/configure/module2'},
-        {path: 'admin/storages'}
+        {path: 'admin', component: DummyComponent},
+        {path: 'admin/configure', component: DummyComponent},
+        {path: 'admin/configure/module1', component: DummyComponent},
+        {path: 'admin/configure/module2', component: DummyComponent},
+        {path: 'admin/storages', component: DummyComponent}
       ];
 
       events: Observable<any> = new Observable<any>(() => {
@@ -45,6 +45,9 @@ describe('Service: NavigatorService', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
+        declarations: [
+          DummyComponent
+        ],
         imports: [
           BrowserTestingModule,
           RouterTestingModule
@@ -183,17 +186,17 @@ describe('Service: NavigatorService', () => {
     class MockRouterStruct {
       config: Routes = [
         {
-          path: 'admin',
+          path: 'admin', component: DummyComponent,
           children: [
-            {path: 'configure', data: {label: 'Config'}},
-            {path: 'configure/module1'},
-            {path: 'configure/module2'},
-            {path: 'storages'}
+            {path: 'configure', data: {label: 'Config'}, component: DummyComponent},
+            {path: 'configure/module1', component: DummyComponent},
+            {path: 'configure/module2', component: DummyComponent},
+            {path: 'storages', component: DummyComponent}
           ]
         },
-        {path: 'demo', data: {label: 'Demo'}},
-        {path: 'user/data', data: {label: 'UserData'}},
-        {path: 'user/login', data: {label: 'UserLogin'}},
+        {path: 'demo', data: {label: 'Demo'}, component: DummyComponent},
+        {path: 'user/data', data: {label: 'UserData'}, component: DummyComponent},
+        {path: 'user/login', data: {label: 'UserLogin'}, component: DummyComponent},
       ];
 
       events: Observable<any> = new Observable<any>(() => {
@@ -206,6 +209,7 @@ describe('Service: NavigatorService', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
+        declarations: [DummyComponent],
         imports: [
           BrowserTestingModule,
           RouterTestingModule],
@@ -466,15 +470,15 @@ describe('Service: NavigatorService', () => {
 
     class MockRouterStruct {
       config: Routes = [
-        {path: '', data: {group: 'test'}},
-        {path: 'admin'},
-        {path: 'admin/configure'},
-        {path: 'admin/storages'},
-        {path: 'level'},
-        {path: 'level/one'},
-        {path: 'level/two'},
-        {path: 'group/two'},
-        {path: 'group/one'},
+        {path: '', data: {group: 'test'}, component: DummyComponent},
+        {path: 'admin', component: DummyComponent},
+        {path: 'admin/configure', component: DummyComponent},
+        {path: 'admin/storages', component: DummyComponent},
+        {path: 'level', component: DummyComponent},
+        {path: 'level/one', component: DummyComponent},
+        {path: 'level/two', component: DummyComponent},
+        {path: 'group/two', component: DummyComponent},
+        {path: 'group/one', component: DummyComponent},
       ];
 
       events: Observable<any> = new Observable<any>(() => {
@@ -487,6 +491,9 @@ describe('Service: NavigatorService', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
+        declarations: [
+          DummyComponent
+        ],
         imports: [
           BrowserTestingModule,
           RouterTestingModule],
@@ -525,14 +532,16 @@ describe('Service: NavigatorService', () => {
 
     it('add group without base element', () => {
       service = TestBed.get(NavigatorService);
-      expect(service.getEntries().length).toEqual(9);
+      let entries = service.getEntries();
+      expect(entries.length).toEqual(9);
 
 
       service.addGroupEntry('group/.*', {
         label: 'Group',
         group: 'group'
       });
-      expect(service.getEntries().length).toEqual(10);
+      entries = service.getEntries();
+      expect(entries.length).toEqual(10);
 
       const tree = service.getTree();
       const t = clearTree(tree);
@@ -632,21 +641,21 @@ describe('Service: NavigatorService', () => {
 
     class MockRouterStruct {
       config: Routes = [
-        {path: ''},
+        {path: '', component: DummyComponent},
         {
           path: 'admin',
           children: [
-            {path: ''},
-            {path: 'configure'},
-            {path: 'admin'}
+            {path: '', component: DummyComponent},
+            {path: 'configure', component: DummyComponent},
+            {path: 'admin', component: DummyComponent}
           ]
         },
         {
           path: 'else',
           children: [
-            {path: ''},
-            {path: 'configure'},
-            {path: 'some'}
+            {path: '', component: DummyComponent},
+            {path: 'configure', component: DummyComponent},
+            {path: 'some', component: DummyComponent}
           ]
         }
       ];
@@ -662,6 +671,9 @@ describe('Service: NavigatorService', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
+        declarations: [
+          DummyComponent
+        ],
         imports: [
           BrowserTestingModule,
           RouterTestingModule
@@ -679,16 +691,31 @@ describe('Service: NavigatorService', () => {
     it('check if correctly detected', () => {
       service = TestBed.get(NavigatorService);
       const entries = service.getEntries();
-      expect(entries.length).toEqual(7);
+      expect(entries.length).toEqual(9);
       const paths = entries.map(x => x.getFullPath());
       expect(paths).toEqual([
         '',
         'admin',
+        'admin',
         'admin/configure',
         'admin/admin',
         'else',
+        'else',
         'else/configure',
         'else/some'
+      ]);
+
+      const groups = entries.map(x => x.isGroup());
+      expect(groups).toEqual([
+        false,
+        true,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
       ]);
 
       const tree = service.getTree();

@@ -115,12 +115,14 @@ export class NavigatorService {
     this.readRoutes(routes);
 
     for (const entry of this.entries) {
+      const partPath = entry.getPath();
       const realPath = entry.getFullPath();
       if (_.isEmpty(realPath) || entry.isRedirect()) {
         continue;
       }
-      const parentEntry = this.findMatch(realPath);
-      if (parentEntry && parentEntry !== entry) {
+
+      const parentEntry = this.findMatch(realPath, !_.isEmpty(partPath));
+      if (parentEntry && parentEntry !== entry && parentEntry !== entry.parent) {
         entry.setParent(parentEntry);
       }
     }
@@ -197,19 +199,18 @@ export class NavigatorService {
     });
 
     const selected: number[] = [];
-    const children = _.filter(entries, e => {
+    _.filter(entries, e => {
       const id = e.getParentId();
       if (id && selected.indexOf(id) !== -1) {
         return false;
       }
       const fullPath = e.getFullPath();
-      const res = !e.isGroup() && regex.test(fullPath);
+      const res = !e.isGroup('pattern') && regex.test(fullPath);
       if (res) {
         selected.push(e.id);
       }
       return res;
-    });
-    _.map(children, c => c.setParent(groupEntry));
+    }).map(c => c.setParent(groupEntry));
   }
 
 
@@ -243,14 +244,17 @@ export class NavigatorService {
   }
 
 
-  findMatch(path: string) {
+  findMatch(path: string, skipFirst: boolean = true) {
     const split = path.split('/');
+    if (!_.isEmpty(path) && !skipFirst) {
+      split.push('');
+    }
     let base = null;
     while (split.length > 0 && !base) {
       split.pop();
       const lookup = split.join('/');
       base = _.find(this.entries, e =>
-        !e.isGroup() &&
+        !e.isGroup('pattern') &&
         e.getFullPath() === lookup &&
         !e.isRedirect() &&
         !e.toIgnore()
