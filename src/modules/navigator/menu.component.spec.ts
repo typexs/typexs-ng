@@ -14,6 +14,7 @@ import * as _ from 'lodash';
 import {NavEntry} from './NavEntry';
 import {IMenuLinkGuard} from './IMenuLinkGuard';
 import {IMenuOptions} from './IMenuOptions';
+import {DummyComponent} from './test/componets/dummy.component';
 
 
 describe('Component: Menu', () => {
@@ -40,15 +41,15 @@ describe('Component: Menu', () => {
 
     class MockRouter {
       config: Routes = [
-        {path: 'home', data: {group: 'test'}},
-        {path: 'admin'},
-        {path: 'admin/configure'},
-        {path: 'admin/storages'},
-        {path: 'level'},
-        {path: 'level/one'},
-        {path: 'level/one/subone'},
-        {path: 'level/one/subtwo'},
-        {path: 'level/two', canActivate: [MockGuard]},
+        {path: 'home', data: {group: 'test'}, component: DummyComponent},
+        {path: 'admin', component: DummyComponent},
+        {path: 'admin/configure', component: DummyComponent},
+        {path: 'admin/storages', component: DummyComponent},
+        {path: 'level', component: DummyComponent},
+        {path: 'level/one', component: DummyComponent},
+        {path: 'level/one/subone', component: DummyComponent},
+        {path: 'level/one/subtwo', component: DummyComponent},
+        {path: 'level/two', canActivate: [MockGuard], component: DummyComponent},
         /*
         {path: 'group/two'},
         {path: 'group/one'},
