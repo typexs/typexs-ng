@@ -131,7 +131,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
 
 
   initialiseColumns() {
-    if (!this.columns) {
+    if (!this.columns && !_.get(this.options, 'columnsOverride', false)) {
       this.columns = [];
 
       this.entityRef.getPropertyRefs().forEach(x => {
@@ -248,10 +248,13 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
           (results: any) => {
             if (results) {
               if (results.entities && _.has(results, '$count') && _.isNumber(results.$count)) {
+                // if (!_.get(this.options, 'columnsOverride', false)) {
                 if (!this.entityRef) {
-                  const columns = Helper.rebuildColumns(results.entities);
-                  api.setColumns(columns);
+                  this.rebuildColumns(results.entities, api);
+                  // const columns = Helper.rebuildColumns(results.entities);
+                  // api.setColumns(columns);
                 }
+                // }
                 api.setRows(results.entities);
                 api.setMaxRows(results.$count);
                 api.rebuild();
@@ -265,8 +268,11 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
           (results: any) => {
             if (results) {
               if (results.entities && _.has(results, '$count') && _.isNumber(results.$count)) {
-                const columns = Helper.rebuildColumns(results.entities);
-                api.setColumns(columns);
+                this.rebuildColumns(results.entities, api);
+                // if (!_.get(this.options, 'columnsOverride', false)) {
+                //   const columns = Helper.rebuildColumns(results.entities);
+                //   api.setColumns(columns);
+                // }
                 api.setRows(results.entities);
                 api.setMaxRows(results.$count);
                 api.rebuild();
@@ -275,8 +281,17 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
           }
         );
     }
+  }
 
 
+  private rebuildColumns(entities: any[], api: IGridApi) {
+    if (!_.get(this.options, 'columnsOverride', false)) {
+      const columns = Helper.rebuildColumns(entities);
+      if (this.options.columnsPostProcess) {
+        this.options.columnsPostProcess(this.columns);
+      }
+      api.setColumns(columns);
+    }
   }
 
 

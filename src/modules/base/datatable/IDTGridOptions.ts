@@ -35,6 +35,18 @@ export interface IDTGridOptions {
   columnsPostProcess?: (columns: IGridColumn[]) => void;
 
   /**
+   * Use prefined columns, do not generate based on results or entity properties
+   *
+   * @param columns
+   */
+  columnsOverride?: boolean;
+
+  /**
+   * Initial query sorting
+   */
+  sorting: any;
+
+  /**
    * Define the type of query (default: query)
    */
   queryType?: 'query' | 'aggregate';
