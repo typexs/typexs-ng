@@ -228,32 +228,54 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
       executeQuery = mangoQuery.toJson();
     }
 
-
-    const queryOptions: IFindOptions = {
+    const queryOptions: IFindOptions = {};
+    if (this.options.queryOptions) {
+      _.assign(queryOptions, this.options.queryOptions);
+    }
+    _.assign(queryOptions, {
       offset: api.params.offset,
       limit: api.params.limit
-    };
+    });
 
     if (!_.isEmpty(api.params.sorting)) {
       queryOptions.sort = api.params.sorting;
     }
 
-    this.queringService.query(this.name, executeQuery, queryOptions)
-      .subscribe(
-        (results: any) => {
-          if (results) {
-            if (results.entities && _.has(results, '$count') && _.isNumber(results.$count)) {
-              if (!this.entityRef) {
-                const columns = Helper.rebuildColumns(results.entities);
-                api.setColumns(columns);
+    const mode = this.options.queryType === 'aggregate' ? 'aggregate' : 'query';
+    if (mode === 'query') {
+      this.queringService.query(this.name, executeQuery, queryOptions)
+        .subscribe(
+          (results: any) => {
+            if (results) {
+              if (results.entities && _.has(results, '$count') && _.isNumber(results.$count)) {
+                if (!this.entityRef) {
+                  const columns = Helper.rebuildColumns(results.entities);
+                  api.setColumns(columns);
+                }
+                api.setRows(results.entities);
+                api.setMaxRows(results.$count);
+                api.rebuild();
               }
-              api.setRows(results.entities);
-              api.setMaxRows(results.$count);
-              api.rebuild();
             }
           }
-        }
-      );
+        );
+    } else {
+      this.queringService.aggregate(this.name, executeQuery, queryOptions)
+        .subscribe(
+          (results: any) => {
+            if (results) {
+              if (results.entities && _.has(results, '$count') && _.isNumber(results.$count)) {
+                const columns = Helper.rebuildColumns(results.entities);
+                api.setColumns(columns);
+                api.setRows(results.entities);
+                api.setMaxRows(results.$count);
+                api.rebuild();
+              }
+            }
+          }
+        );
+    }
+
 
   }
 

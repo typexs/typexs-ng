@@ -33,6 +33,10 @@ export class DistributedStorageQueryEmbeddedComponent
 
   // reset loading entity
   ngOnInit() {
+    // pass entity name to name
+    if (this.entityName && !this.name) {
+      this.name = this.entityName;
+    }
     if (!this.params) {
       this.params = {};
     }

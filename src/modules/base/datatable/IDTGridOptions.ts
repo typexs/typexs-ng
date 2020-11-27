@@ -34,4 +34,14 @@ export interface IDTGridOptions {
    */
   columnsPostProcess?: (columns: IGridColumn[]) => void;
 
+  /**
+   * Define the type of query (default: query)
+   */
+  queryType?: 'query' | 'aggregate';
+
+  /**
+   * Additional query options to pass
+   */
+  queryOptions?: any;
+
 }
