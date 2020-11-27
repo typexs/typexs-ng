@@ -210,11 +210,15 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
       _d['offset'] = api.params.offset;
     } else if (this.params.offset) {
       _d['offset'] = this.params.offset;
+    } else {
+      _d['offset'] = 0;
     }
     if (api.params.limit) {
       _d['limit'] = api.params.limit;
     } else if (this.params.limit) {
       _d['limit'] = this.params.limit;
+    } else {
+      _d['limit'] = 25;
     }
     if (!_.isEmpty(api.params.sorting)) {
       _d['sort'] = api.params.sorting;
