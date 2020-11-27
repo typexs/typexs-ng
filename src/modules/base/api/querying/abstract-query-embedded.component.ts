@@ -199,34 +199,8 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
   doQuery(api: IGridApi): void {
     let executeQuery: any = null;
     let mangoQuery: ExprDesc = null;
-    const filterQuery: ExprDesc[] = [];
+    const mode = this.options.queryType === 'aggregate' ? 'aggregate' : 'query';
 
-    if (api.params && !_.isEmpty(api.params.filters)) {
-      _.keys(api.params.filters).map(k => {
-        if (!_.isEmpty(api.params.filters[k])) {
-          filterQuery.push(api.params.filters[k]);
-        }
-      });
-    }
-
-    if (this.freeQuery) {
-      mangoQuery = Expressions.fromJson(this.freeQuery);
-      if (!_.isEmpty(mangoQuery)) {
-        filterQuery.push(mangoQuery);
-      }
-    }
-
-    if (filterQuery.length > 1) {
-      mangoQuery = And(...filterQuery);
-    } else if (filterQuery.length === 1) {
-      mangoQuery = filterQuery.shift();
-    } else {
-      mangoQuery = null;
-    }
-
-    if (mangoQuery) {
-      executeQuery = mangoQuery.toJson();
-    }
 
     const queryOptions: IFindOptions = {};
     if (this.options.queryOptions) {
@@ -241,8 +215,38 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
       queryOptions.sort = api.params.sorting;
     }
 
-    const mode = this.options.queryType === 'aggregate' ? 'aggregate' : 'query';
+
     if (mode === 'query') {
+      const filterQuery: ExprDesc[] = [];
+
+
+      if (api.params && !_.isEmpty(api.params.filters)) {
+        _.keys(api.params.filters).map(k => {
+          if (!_.isEmpty(api.params.filters[k])) {
+            filterQuery.push(api.params.filters[k]);
+          }
+        });
+      }
+
+      if (this.freeQuery) {
+        mangoQuery = Expressions.fromJson(this.freeQuery);
+        if (!_.isEmpty(mangoQuery)) {
+          filterQuery.push(mangoQuery);
+        }
+      }
+
+      if (filterQuery.length > 1) {
+        mangoQuery = And(...filterQuery);
+      } else if (filterQuery.length === 1) {
+        mangoQuery = filterQuery.shift();
+      } else {
+        mangoQuery = null;
+      }
+
+      if (mangoQuery) {
+        executeQuery = mangoQuery.toJson();
+      }
+
       this.queringService.query(this.name, executeQuery, queryOptions)
         .subscribe(
           (results: any) => {
@@ -263,6 +267,17 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
           }
         );
     } else {
+
+      if (this.freeQuery) {
+        if (_.isArray(this.freeQuery)) {
+          executeQuery = this.freeQuery;
+        } else {
+          throw new Error('aggregation query is not an array');
+        }
+      } else {
+        throw new Error('aggregation query is empty');
+      }
+
       this.queringService.aggregate(this.name, executeQuery, queryOptions)
         .subscribe(
           (results: any) => {
