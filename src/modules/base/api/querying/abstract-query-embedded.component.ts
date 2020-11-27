@@ -200,26 +200,31 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
     let executeQuery: any = null;
     let mangoQuery: ExprDesc = null;
     const mode = this.options.queryType === 'aggregate' ? 'aggregate' : 'query';
-
-
     const queryOptions: IFindOptions = {};
     if (this.options.queryOptions) {
       _.assign(queryOptions, this.options.queryOptions);
     }
-    _.assign(queryOptions, {
-      offset: api.params.offset,
-      limit: api.params.limit
-    });
 
-    if (!_.isEmpty(api.params.sorting)) {
-      queryOptions.sort = api.params.sorting;
+    const _d: any = {};
+    if (api.params.offset) {
+      _d['offset'] = api.params.offset;
+    } else if (this.params.offset) {
+      _d['offset'] = this.params.offset;
     }
-
+    if (api.params.limit) {
+      _d['limit'] = api.params.limit;
+    } else if (this.params.limit) {
+      _d['limit'] = this.params.limit;
+    }
+    if (!_.isEmpty(api.params.sorting)) {
+      _d['sort'] = api.params.sorting;
+    } else if (this.params.sorting) {
+      _d['sort'] = this.params.sorting;
+    }
+    _.assign(queryOptions, _d);
 
     if (mode === 'query') {
       const filterQuery: ExprDesc[] = [];
-
-
       if (api.params && !_.isEmpty(api.params.filters)) {
         _.keys(api.params.filters).map(k => {
           if (!_.isEmpty(api.params.filters[k])) {
