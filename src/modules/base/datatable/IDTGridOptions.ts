@@ -44,7 +44,7 @@ export interface IDTGridOptions {
   /**
    * Initial query sorting
    */
-  sorting: any;
+  sorting?: any;
 
   /**
    * Define the type of query (default: query)
