@@ -227,15 +227,17 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
     }
     _.assign(queryOptions, _d);
 
+    const filterQuery: ExprDesc[] = [];
+    if (api.params && !_.isEmpty(api.params.filters)) {
+      _.keys(api.params.filters).map(k => {
+        if (!_.isEmpty(api.params.filters[k])) {
+          filterQuery.push(api.params.filters[k]);
+        }
+      });
+    }
+
+
     if (mode === 'query') {
-      const filterQuery: ExprDesc[] = [];
-      if (api.params && !_.isEmpty(api.params.filters)) {
-        _.keys(api.params.filters).map(k => {
-          if (!_.isEmpty(api.params.filters[k])) {
-            filterQuery.push(api.params.filters[k]);
-          }
-        });
-      }
 
       if (this.freeQuery) {
         mangoQuery = Expressions.fromJson(this.freeQuery);
@@ -261,13 +263,9 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
           (results: any) => {
             if (results) {
               if (results.entities && _.has(results, '$count') && _.isNumber(results.$count)) {
-                // if (!_.get(this.options, 'columnsOverride', false)) {
                 if (!this.entityRef) {
                   this.rebuildColumns(results.entities, api);
-                  // const columns = Helper.rebuildColumns(results.entities);
-                  // api.setColumns(columns);
                 }
-                // }
                 api.setRows(results.entities);
                 api.setMaxRows(results.$count);
                 api.rebuild();
@@ -287,16 +285,24 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
         throw new Error('aggregation query is empty');
       }
 
+      if (filterQuery.length > 1) {
+        mangoQuery = And(...filterQuery);
+      } else if (filterQuery.length === 1) {
+        mangoQuery = filterQuery.shift();
+      } else {
+        mangoQuery = null;
+      }
+
+      if (mangoQuery) {
+        executeQuery.push({$match: mangoQuery.toJson()});
+      }
+
       this.queringService.aggregate(this.name, executeQuery, queryOptions)
         .subscribe(
           (results: any) => {
             if (results) {
               if (results.entities && _.has(results, '$count') && _.isNumber(results.$count)) {
                 this.rebuildColumns(results.entities, api);
-                // if (!_.get(this.options, 'columnsOverride', false)) {
-                //   const columns = Helper.rebuildColumns(results.entities);
-                //   api.setColumns(columns);
-                // }
                 api.setRows(results.entities);
                 api.setMaxRows(results.$count);
                 api.rebuild();

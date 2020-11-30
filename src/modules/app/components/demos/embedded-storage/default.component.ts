@@ -22,10 +22,10 @@ export class C {
  *
  */
 @Component({
-  selector: 'embedded-storage',
-  templateUrl: 'embedded-storage.component.html',
+  selector: 'embedded-storage-default',
+  templateUrl: 'default.component.html',
 })
-export class EmbeddedStorageComponent implements OnInit, OnChanges {
+export class EmbeddedStorageDefaultComponent implements OnInit, OnChanges {
 
   simpleItemName = 'SimpleItem';
 

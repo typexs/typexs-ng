@@ -8,6 +8,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {BrowserTestingModule} from '@angular/platform-browser/testing';
 import {Observable} from 'rxjs/Observable';
 import {DummyComponent} from './test/componets/dummy.component';
+import {NavEntry} from './NavEntry';
 
 function clearTree(tree: any[]) {
   _.map(tree, t => {
@@ -779,6 +780,120 @@ describe('Service: NavigatorService', () => {
           '',
           '**'
         ]);
+      const tree = service.getTree();
+      expect(tree.length).toEqual(2);
+
+    });
+  });
+
+
+  /**
+   * Handle children of children with route element
+   *
+   * path: 'abc',
+   * children: [
+   *   {path: '', ...}
+   * ]
+   *
+   */
+  describe('check if routes with routes to embedded components are correctly detected', () => {
+
+    let service: NavigatorService;
+
+
+    beforeEach(() => {
+      NavEntry.inc = 0;
+      TestBed.configureTestingModule({
+        declarations: [
+          DummyComponent
+        ],
+        imports: [
+          BrowserTestingModule,
+          RouterTestingModule.withRoutes([
+            {
+              path: 'demo', component: DummyComponent
+            },
+            {
+              path: 'embedded',
+              children: [
+                {
+                  path: 'entry', component: DummyComponent,
+                  children: [
+                    {
+                      path: '', component: DummyComponent
+                    },
+                    {
+                      path: 'second', component: DummyComponent,
+                    }]
+                },
+
+              ]
+            },
+            {
+              path: '', redirectTo: 'demo', pathMatch: 'full'
+            },
+            {
+              path: '**', redirectTo: 'demo'
+            }
+          ])
+        ],
+        providers: [
+          {provide: APP_BASE_HREF, useValue: '/'},
+          ApplicationInitStatus,
+          NavigatorService
+        ]
+      });
+    });
+
+
+    it('check if parent is correctly resolved', () => {
+      service = TestBed.get(NavigatorService);
+      const entries = service.getEntries();
+      expect(entries.length).toEqual(7);
+      const paths = entries.map(x => x.getFullPath());
+      expect(paths).toEqual(
+        [
+          'demo',
+          'embedded',
+          'embedded/entry',
+          'embedded/entry',
+          'embedded/entry/second',
+          '',
+          '**'
+        ]);
+      const parents = entries.map(x => [x.id, x.parent ? x.parent.id : -1]);
+      expect(parents).toEqual(
+        [
+          [
+            0,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            3,
+            2
+          ],
+          [
+            4,
+            2
+          ],
+          [
+            5,
+            -1
+          ],
+          [
+            6,
+            -1
+          ]
+        ]
+      );
       const tree = service.getTree();
       expect(tree.length).toEqual(2);
 

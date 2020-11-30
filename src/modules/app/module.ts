@@ -30,7 +30,6 @@ import {TablesDemoComponent} from './components/demos/tables/tables-demo.compone
 import {AgGridWrapperComponent} from './addons/ag-grid/ag-grid-wrapper.component';
 import {NavigatorService} from '../navigator/navigator.service';
 import {SimpleHtmlTableDemoComponent} from './components/demos/tables/simple-html-table-demo.component';
-import {EmbeddedStorageComponent} from './components/demos/embedded-storage/embedded-storage.component';
 import {StorageService} from '../storage/storage.service';
 import {EntityService} from '../entity/entity.service';
 import {DistributedStorageService} from '../distributed_storage/services/distributed_storage.service';
@@ -38,6 +37,9 @@ import {DataViewComponent} from './dataview/dataview.component';
 import {EmbeddedDistributedStorageComponent} from './components/demos/embedded-distributed-storage/embedded-distributed-storage.component';
 import {AppService} from '../base/app.service';
 import {UI_ADMIN_LAYOUT} from '../admin/lib/Constants';
+import {EmbeddedStorageDefaultComponent} from './components/demos/embedded-storage/default.component';
+import {EmbeddedStorageOverviewComponent} from './components/demos/embedded-storage/overview.component';
+import {EmbeddedStorageAgGridComponent} from './components/demos/embedded-storage/ag-grid.component';
 
 
 @NgModule({
@@ -65,7 +67,9 @@ import {UI_ADMIN_LAYOUT} from '../admin/lib/Constants';
     NotificationDemoComponent,
     AgGridWrapperComponent,
     SimpleHtmlTableDemoComponent,
-    EmbeddedStorageComponent,
+    EmbeddedStorageOverviewComponent,
+    EmbeddedStorageDefaultComponent,
+    EmbeddedStorageAgGridComponent,
     EmbeddedDistributedStorageComponent,
     DataViewComponent
   ],

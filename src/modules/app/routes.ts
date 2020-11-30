@@ -16,7 +16,6 @@ import {NotificationDemoComponent} from './components/demos/notification/notific
 import {InputDemoComponent} from './components/demos/form-input/input-demo.component';
 import {TablesDemoComponent} from './components/demos/tables/tables-demo.component';
 import {SimpleHtmlTableDemoComponent} from './components/demos/tables/simple-html-table-demo.component';
-import {EmbeddedStorageComponent} from './components/demos/embedded-storage/embedded-storage.component';
 import {StorageModule} from '../storage/module';
 import {EntityModule} from '../entity/module';
 import {DistributedStorageModule} from '../distributed_storage/module';
@@ -24,6 +23,9 @@ import {TasksModule} from '../tasks/module';
 import {DataViewComponent} from './dataview/dataview.component';
 import {EmbeddedDistributedStorageComponent} from './components/demos/embedded-distributed-storage/embedded-distributed-storage.component';
 import {AdminModule} from '../admin/module';
+import {EmbeddedStorageOverviewComponent} from './components/demos/embedded-storage/overview.component';
+import {EmbeddedStorageDefaultComponent} from './components/demos/embedded-storage/default.component';
+import {EmbeddedStorageAgGridComponent} from './components/demos/embedded-storage/ag-grid.component';
 
 
 export const APP_ROUTES: Routes = [
@@ -100,8 +102,20 @@ export const APP_ROUTES: Routes = [
     children: [
       {
         path: 'storage',
-        component: EmbeddedStorageComponent,
+        component: EmbeddedStorageOverviewComponent,
         data: {label: 'Embedded Storage', group: 'demo'},
+        children: [
+          {
+            path: '',
+            component: EmbeddedStorageDefaultComponent,
+            data: {label: 'Default', group: 'demo', skip: true},
+          },
+          {
+            path: 'ag-grid',
+            component: EmbeddedStorageAgGridComponent,
+            data: {label: 'AgGrid', group: 'demo', skip: true},
+          }
+        ]
       },
       {
         path: 'distributed-storage',

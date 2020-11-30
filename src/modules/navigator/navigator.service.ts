@@ -128,7 +128,7 @@ export class NavigatorService {
     }
 
     // apply groups
-    _.filter(this.entries, entry => entry.isGroup()).map(groupEntry => {
+    _.filter(this.entries, entry => entry.isGroup('pattern')).map(groupEntry => {
       this.regroup(groupEntry);
     });
   }
