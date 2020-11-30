@@ -1,6 +1,6 @@
 {
   "name": "@typexs/ng",
-  "version": "1.1.14",
+  "version": "1.1.10",
   "description": "Angular for typexs",
   "main": "index.js",
   "browser": "browser.js",
@@ -72,7 +72,7 @@
     "@types/string-template": "^1.0.2",
     "@types/superagent": "^4.1.10",
     "@types/supertest": "^2.0.10",
-    "@typexs/base": "^1.2.32",
+    "@typexs/base": "^1.2.41",
     "@typexs/schema": "^1.0.17",
     "@typexs/server": "^1.0.13",
     "ag-grid-angular": "^21.2.2",
