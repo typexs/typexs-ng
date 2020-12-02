@@ -45,12 +45,9 @@ export class ToggleDirective {
           this._toggleRef(k, hostToggleRfes[k]);
         }
       }
-
-
     }
-
-    // this._toggleClass($event, this.toggle);
   }
+
 
   private _toggleRef(ref: string, clazz: string | string[]) {
     let arr: string[] = [];

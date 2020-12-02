@@ -314,6 +314,10 @@ export class BackendClientService {
           opts.callback = options.handle;
         }
 
+        if (_.isBoolean(options.surpressErrors)) {
+          opts['surpressErrors'] = options.surpressErrors;
+        }
+
         (this[method](opts) as Observable<T>).subscribe(
           x => {
             ret.next(x);
@@ -397,6 +401,7 @@ export class BackendClientService {
 
   private handleRequest<T>(method: string, reqOptions: IHttpRequestOptions): Observable<T> {
     const logging = _.has(reqOptions, 'logging') ? reqOptions.logging : true;
+    const surpressErrors = _.has(reqOptions, 'surpressErrors') ? reqOptions['surpressErrors'] : false;
     const client = this.getHttpClient();
 
     Log.debug('handle request ' + method + ' ' + reqOptions.url);
@@ -409,7 +414,7 @@ export class BackendClientService {
 
     observable = observable.pipe(mergeMap((x: any) => {
       const filterErrors = ErrorHelper.detectErrors(x);
-      if (filterErrors.length > 0) {
+      if (filterErrors.length > 0 && !surpressErrors) {
         throw filterErrors[0];
       }
       return of(x);

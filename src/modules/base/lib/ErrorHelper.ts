@@ -4,9 +4,10 @@ export class ErrorHelper {
 
   static detectErrors(data: any) {
     if (_.isArray(data)) {
+      const erroredData = _.remove(data, x => this.isError(x));
       const errors = [];
-      for (let i = 0; i < data.length; i++) {
-        const entry = data[i];
+      for (let i = 0; i < erroredData.length; i++) {
+        const entry = erroredData[i];
         const e = this.detectError(entry);
         if (e) {
           _.assign(e, {
@@ -34,8 +35,13 @@ export class ErrorHelper {
   }
 
 
+  static isError(entry: any) {
+    return _.has(entry, 'error') && _.has(entry, 'message');
+  }
+
+
   static detectError(entry: any) {
-    if (_.has(entry, 'error') && _.has(entry, 'message')) {
+    if (this.isError(entry)) {
       return new Error(entry.message);
     }
     return null;

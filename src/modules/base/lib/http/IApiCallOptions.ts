@@ -22,4 +22,8 @@ export interface IApiCallOptions {
    * Additional options for request
    */
   options?: any;
+  /**
+   * Surpress errors which will be thrown by handleRequest (default: false)
+   */
+  surpressErrors?: boolean;
 }
