@@ -9,6 +9,9 @@ import {NoopAuthService} from '../base/api/auth/noop-auth.service';
 import {AuthService} from '../base/api/auth/auth.service';
 import {BackendTasksService} from './backend-tasks.service';
 import {SystemInfoService} from '../base/system-info.service';
+import {AppService} from '../base/app.service';
+import {Injector} from '@angular/core';
+import {StorageService} from '../storage/storage.service';
 
 
 /**
@@ -36,7 +39,10 @@ describe('BackendTasksService', () => {
         BackendClientService,
         MessageService,
         SystemInfoService,
-        BackendTasksService
+        BackendTasksService,
+        AppService,
+        Injector,
+        StorageService
       ]
     });
 
