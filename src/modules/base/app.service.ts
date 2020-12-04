@@ -34,8 +34,6 @@ export class AppService {
 
   serviceClasses: { [name: string]: Function } = {};
 
-  // events: Observable<any> = new Subject<any>();
-
   registerService(name: string, fn: Function) {
     this.serviceClasses[name] = fn;
   }

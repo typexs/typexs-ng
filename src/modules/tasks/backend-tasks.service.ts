@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Injector} from '@angular/core';
 
 import {
   API_CTRL_TASK_EXEC,
@@ -23,8 +23,11 @@ import {IMessageOptions} from '@typexs/base/libs/messaging/IMessageOptions';
 import {ITaskExectorOptions} from '@typexs/base/libs/tasks/ITaskExectorOptions';
 import {IApiCallOptions} from '../base/lib/http/IApiCallOptions';
 import {filter, first, mergeMap, takeUntil, tap} from 'rxjs/operators';
-import {combineLatest, forkJoin, timer} from 'rxjs';
+import {combineLatest, timer} from 'rxjs';
 import {Log} from '../base/lib/log/Log';
+import {AbstractQueryService} from '../base/api/querying/abstract-query.service';
+import {AppService} from '../base/app.service';
+import {StorageService} from '../storage/storage.service';
 
 
 /**
@@ -41,6 +44,8 @@ import {Log} from '../base/lib/log/Log';
 @Injectable()
 export class BackendTasksService {
 
+  queryService: AbstractQueryService;
+
   tasks: Tasks;
 
   prefix = '/tasks';
@@ -49,7 +54,19 @@ export class BackendTasksService {
 
 
   constructor(private http: BackendClientService,
-              private infoService: SystemInfoService) {
+              private infoService: SystemInfoService,
+              private appService: AppService,
+              private injector: Injector) {
+    let serviceClass: Function = appService.getService('taskQueryService');
+    if (!serviceClass || !_.isFunction(serviceClass)) {
+      serviceClass = StorageService;
+    }
+    this.queryService = injector.get(serviceClass);
+  }
+
+  // TODO load config from Backend and check which mode is enabled 'local store' or 'distribued'. Cause of the select the correct
+  // query handle
+  loadConfig() {
   }
 
 
@@ -78,6 +95,19 @@ export class BackendTasksService {
 
   getWorkerNodes() {
     return this.workerNodes;
+  }
+
+  getQueryService() {
+    return this.queryService;
+  }
+
+
+  query(query: any, options: any) {
+    return this.queryService.query(TaskLog.name, query, options);
+  }
+
+  aggregate(aggr: any[], options: any) {
+    return this.queryService.aggregate(TaskLog.name, aggr, options);
   }
 
   /**

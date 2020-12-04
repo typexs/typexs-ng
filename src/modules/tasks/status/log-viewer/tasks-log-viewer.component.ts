@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import * as _ from 'lodash';
 import {JsonUtils} from 'commons-base/libs/utils/JsonUtils';
 import {DatePipe} from '@angular/common';
@@ -17,7 +17,7 @@ import {Log} from '../../../base/lib/log/Log';
   templateUrl: './tasks-log-viewer.component.html',
   styleUrls: ['./tasks-log-viewer.component.scss']
 })
-export class TasksLogViewerComponent implements OnInit, OnChanges {
+export class TasksLogViewerComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input()
   nodeId: string;
@@ -25,8 +25,8 @@ export class TasksLogViewerComponent implements OnInit, OnChanges {
   @Input()
   runnerId: string;
 
-  @Input()
-  taskLog: TaskLog;
+  // @Input()
+  // taskLog: TaskLog;
 
   @Input()
   running: boolean;
@@ -75,12 +75,13 @@ export class TasksLogViewerComponent implements OnInit, OnChanges {
 
 
   ngOnInit() {
-    if (this.taskLog) {
-      this.runnerId = this.taskLog.tasksId;
-      this.nodeId = this.taskLog.respId;
-    }
+    // if (this.taskLog) {
+    //   this.runnerId = this.taskLog.tasksId;
+    //   this.nodeId = this.taskLog.respId;
+    // }
     this.handle();
   }
+
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['taskLog']) {
@@ -89,6 +90,18 @@ export class TasksLogViewerComponent implements OnInit, OnChanges {
           this.tail();
         });
       }
+    }
+    let reload = false;
+    if (changes['runnerId']) {
+      reload = true;
+    }
+    if (changes['nodeId']) {
+      reload = true;
+    }
+
+    if (reload) {
+      this.ngOnDestroy();
+      this.handle();
     }
   }
 

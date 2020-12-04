@@ -110,7 +110,7 @@
 
     <div [ngSwitch]="contentContainer" class="tab-content">
       <div *ngSwitchCase="'log'">
-        <txs-task-log-viewer [taskLog]="taskLog" [running]="running"></txs-task-log-viewer>
+        <txs-task-log-viewer [runnerId]="runnerId" [nodeId]="nodeId" [running]="running"></txs-task-log-viewer>
       </div>
 
       <!--

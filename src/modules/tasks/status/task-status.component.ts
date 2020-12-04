@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
 import {BackendTasksService} from '../backend-tasks.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {Subscription} from 'rxjs';
@@ -22,7 +22,7 @@ import {Log} from '../../base/lib/log/Log';
   templateUrl: './task-status.component.html',
   styleUrls: ['./task-status.component.scss']
 })
-export class TaskStatusComponent implements OnInit, OnDestroy {
+export class TaskStatusComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input()
   nodeId: string;
@@ -60,6 +60,21 @@ export class TaskStatusComponent implements OnInit, OnDestroy {
     }
     this.update();
   }
+
+  ngOnChanges(changes: SimpleChanges) {
+    let reload = false;
+    if (changes['runnerId']) {
+      reload = true;
+    }
+    if (changes['nodeId']) {
+      reload = true;
+    }
+    if (reload) {
+      this.ngOnDestroy();
+      this.update();
+    }
+  }
+
 
   ngOnDestroy() {
     if (this.subscription) {

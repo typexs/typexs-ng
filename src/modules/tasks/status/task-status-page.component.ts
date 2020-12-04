@@ -1,8 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
-import {BackendTasksService} from '../backend-tasks.service';
 import {ActivatedRoute} from '@angular/router';
-import {DatePipe} from '@angular/common';
+import {BackendTasksService} from '../backend-tasks.service';
 
 /**
  * Show status of a task (running or finished)
@@ -18,9 +17,13 @@ import {DatePipe} from '@angular/common';
  */
 @Component({
   selector: 'txs-task-status-page',
+  styleUrls: ['task-status-page.component.scss'],
   templateUrl: './task-status-page.component.html',
 })
 export class TaskStatusPageComponent {
+
+  @Input()
+  navigatorEnable: boolean = true;
 
   nodeId: string;
 
@@ -28,7 +31,11 @@ export class TaskStatusPageComponent {
 
   taskLog: TaskLog;
 
-  constructor(private route: ActivatedRoute) {
+  taskLogs: { [k: string]: TaskLog } = {};
+
+
+  constructor(private route: ActivatedRoute,
+              private taskService: BackendTasksService) {
   }
 
 
@@ -37,9 +44,35 @@ export class TaskStatusPageComponent {
     this.nodeId = this.route.snapshot.paramMap.get('nodeId');
   }
 
+  lookupNeighbours() {
+    if (this.taskLog) {
+      this.taskLogs = {};
+      this.taskService.query({$or: [{id: this.taskLog.id + 1}, {id: this.taskLog.id - 1}]}, {targetIds: [this.nodeId]}).subscribe(x => {
+        if (x) {
+          x.entities.map((y: TaskLog) => {
+            if (y.id === this.taskLog.id - 1) {
+              this.taskLogs['prev'] = y;
+            } else if (y.id === this.taskLog.id + 1) {
+              this.taskLogs['next'] = y;
+            }
+          });
+        }
+      });
+    }
+
+
+  }
+
+  changeRunnerId(runnerId: string){
+    this.runnerId = runnerId;
+  }
 
   updateTaskLog(taskLog: TaskLog) {
     this.taskLog = taskLog;
+    if (this.navigatorEnable) {
+      this.lookupNeighbours();
+    }
+
   }
 
 
