@@ -32,7 +32,7 @@ export class EntityService extends AbstractQueryService implements IQueringServi
         update: API_CTRL_ENTITY_UPDATE_ENTITY,
         update_by_condition: null,
         save: API_CTRL_ENTITY_SAVE_ENTITY,
-        delete: API_CTRL_ENTITY_DELETE_ENTITY,
+        delete: {route: API_CTRL_ENTITY_DELETE_ENTITY, method: 'delete'},
         delete_by_condition: null,
         query: API_CTRL_ENTITY_FIND_ENTITY,
         get: API_CTRL_ENTITY_GET_ENTITY,

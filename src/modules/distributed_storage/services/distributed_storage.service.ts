@@ -26,7 +26,7 @@ export class DistributedStorageService
         get: API_CTRL_DISTRIBUTED_STORAGE_GET_ENTITY,
         query: API_CTRL_DISTRIBUTED_STORAGE_FIND_ENTITY,
         aggregate: API_CTRL_DISTRIBUTED_STORAGE_FIND_ENTITY,
-        delete: API_CTRL_DISTRIBUTED_STORAGE_DELETE_ENTITY,
+        delete: {route: API_CTRL_DISTRIBUTED_STORAGE_DELETE_ENTITY, method: 'delete'},
         delete_by_condition: null,
         save: API_CTRL_DISTRIBUTED_STORAGE_SAVE_ENTITY,
         update: API_CTRL_DISTRIBUTED_STORAGE_UPDATE_ENTITY,
@@ -35,8 +35,6 @@ export class DistributedStorageService
       ngRoutePrefix: API_CTRL_DISTRIBUTED_STORAGE
     });
   }
-
-
 
 
 }
