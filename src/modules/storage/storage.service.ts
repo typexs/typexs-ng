@@ -21,6 +21,7 @@ import {IBuildOptions, IEntityRef} from 'commons-schema-api/browser';
 import {IQueringService} from '../base/api/querying/IQueringService';
 import {AbstractQueryService} from '../base/api/querying/abstract-query.service';
 import {C_RAW, C_SKIP_BUILDS, STORAGE_REQUEST_MODE} from '../base/api/querying/Constants';
+import {Log} from '../base/lib/log/Log';
 
 
 @Injectable()
@@ -28,7 +29,7 @@ export class StorageService extends AbstractQueryService implements IQueringServ
 
   constructor(private http: BackendClientService,
               private authService: AuthService) {
-    super(http, authService,  {
+    super(http, authService, {
       routes: {
         metadata: API_CTRL_STORAGE_METADATA_ALL_ENTITIES,
         get: API_CTRL_STORAGE_GET_ENTITY,
@@ -93,13 +94,19 @@ export class StorageService extends AbstractQueryService implements IQueringServ
       return rawEntities;
     }
 
-    let result = null;
-    if (_.isArray(rawEntities)) {
-      result = rawEntities.map(r => StorageService._buildEntitySingle(entityDef, r, options));
+    if (entityDef) {
+      let result = null;
+      if (_.isArray(rawEntities)) {
+        result = rawEntities.map(r => StorageService._buildEntitySingle(entityDef, r, options));
+      } else {
+        result = StorageService._buildEntitySingle(entityDef, rawEntities, options);
+      }
+      return result;
     } else {
-      result = StorageService._buildEntitySingle(entityDef, rawEntities, options);
+      Log.warn('passing entity cause not entity ref given');
+      return rawEntities;
     }
-    return result;
+
   }
 
 

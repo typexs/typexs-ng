@@ -95,8 +95,12 @@ export class TaskStatusComponent implements OnInit, OnDestroy, OnChanges {
               this.taskLog = tasks;
             }
 
-            this.status.emit(this.taskLog);
-            if (!this.taskLog.running) {
+            if (this.taskLog) {
+              this.status.emit(this.taskLog);
+              if (!this.taskLog.running) {
+                this.running = false;
+              }
+            } else {
               this.running = false;
             }
           },

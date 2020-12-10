@@ -3,7 +3,6 @@ import * as _ from 'lodash';
 import {JsonUtils} from 'commons-base/libs/utils/JsonUtils';
 import {DatePipe} from '@angular/common';
 import {BackendTasksService} from '../../backend-tasks.service';
-import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {Observable, Subscriber, Subscription, timer} from 'rxjs';
 import {mergeMap} from 'rxjs/operators';
 import {Log} from '../../../base/lib/log/Log';
@@ -11,6 +10,7 @@ import {Log} from '../../../base/lib/log/Log';
 /**
  * Show tasks list which should be filtered for running tasks, runned task
  *
+ * TODO what should happened if task log entry is missing or log content is not found
  */
 @Component({
   selector: 'txs-task-log-viewer',
