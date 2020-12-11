@@ -463,7 +463,8 @@ export abstract class AbstractQueryService implements IQueringService {
    * @param options
    */
   deleteByCondition(entityName: string, condition: any, options: any = {}) {
-    if (!this.isSupported('delete_by_condition')) {
+    const type = 'delete_by_condition';
+    if (!this.isSupported(type)) {
       throw new Error('Url for delete by condition is missing.');
     }
     if (!condition) {
@@ -482,7 +483,7 @@ export abstract class AbstractQueryService implements IQueringService {
     const buildOptions: IBuildOptions = {};
     this.buildOptions('delete', options, buildOptions);
 
-    return this.callApi(this.getRoute('update_by_condition'), {params: apiParams, query: additinalQuery}, x => {
+    return this.callApi(this.getRoute(type), {params: apiParams, query: additinalQuery}, x => {
       return this.buildEntity('delete', entityDef, x, buildOptions);
     });
   }
