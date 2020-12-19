@@ -76,3 +76,6 @@ src/*.metadata.json
 
 
 docker/*/local
+
+
+dist/
