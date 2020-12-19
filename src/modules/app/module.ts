@@ -4,11 +4,6 @@ import {APP_MODULES} from './app.used.modules';
 
 
 import {GroupDemoComponent} from './group-demo.component';
-import {ContentDemoComponent} from './content-demo.component';
-import {SearchResultComponent} from './search/search-result.component';
-import {SearchEntryComponent} from './search/search-entry.component';
-import {ViewParentComponent} from './search/view-parent.component';
-import {ContentViewChildDemoComponent} from './content-view-child-demo.component';
 import {DemosComponent} from './demos.component';
 import {CheckboxMatrixDemoComponent} from './checkbox-matrix-demo/checkbox-matrix-demo.component';
 import {FORM_COMPONENTS} from '../forms/forms.elements';
@@ -40,6 +35,14 @@ import {UI_ADMIN_LAYOUT} from '../admin/lib/Constants';
 import {EmbeddedStorageDefaultComponent} from './components/demos/embedded-storage/default.component';
 import {EmbeddedStorageOverviewComponent} from './components/demos/embedded-storage/overview.component';
 import {EmbeddedStorageAgGridComponent} from './components/demos/embedded-storage/ag-grid.component';
+import {ContentDemoComponent} from './components/demos/content/content-demo.component';
+import {SearchResultComponent} from './components/demos/content/search/search-result.component';
+import {SearchEntryComponent} from './components/demos/content/search/search-entry.component';
+import {ViewParentComponent} from './components/demos/content/search/view-parent.component';
+import {ContentViewChildDemoComponent} from './components/demos/content/content-view-child-demo.component';
+import {PersonComponent} from './components/entities/person/person.component';
+import {ComponentRegistryService} from '../base/component/component-registry.service';
+import {Person} from './entities/Person';
 
 
 @NgModule({
@@ -71,14 +74,16 @@ import {EmbeddedStorageAgGridComponent} from './components/demos/embedded-storag
     EmbeddedStorageDefaultComponent,
     EmbeddedStorageAgGridComponent,
     EmbeddedDistributedStorageComponent,
-    DataViewComponent
+    DataViewComponent,
+    PersonComponent
   ],
   entryComponents: [
     ...FORM_COMPONENTS,
     SearchResultComponent,
     SearchEntryComponent,
     ViewParentComponent,
-    AgGridWrapperComponent
+    AgGridWrapperComponent,
+    PersonComponent
   ],
   imports: APP_MODULES,
   providers: [
@@ -94,7 +99,8 @@ export class AppModule {
               private navigatorService: NavigatorService,
               private storageService: StorageService,
               private entityService: EntityService,
-              private dStorageService: DistributedStorageService) {
+              private dStorageService: DistributedStorageService,
+              private compService: ComponentRegistryService) {
 
     /**
      * Enable admin theme layer
@@ -108,6 +114,8 @@ export class AppModule {
     this.navigatorService.addGroupEntry('admin/entity/.*', {label: 'Entity', group: 'admin'});
     this.navigatorService.addGroupEntry('admin/storage/.*', {label: 'Storage', group: 'admin'});
     this.navigatorService.addGroupEntry('admin/distributed-storage/.*', {label: 'Distributed Storage', group: 'admin'});
+
+    this.compService.setComponentForClass(PersonComponent, Person);
 
     authService.init();
     // navigatorService.addGroupEntry('tables', {label: 'Tables', group: 'demo'});

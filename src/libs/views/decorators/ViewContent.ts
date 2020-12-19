@@ -1,8 +1,8 @@
-import {ContentComponentRegistry} from '../ContentComponentRegistry';
+import {ComponentRegistry} from '../ComponentRegistry';
 
 
 export function ViewContent(typeName: string) {
   return function (object: Function) {
-    ContentComponentRegistry.addHandler(typeName, object);
+    ComponentRegistry.addHandle(typeName, object);
   };
 }

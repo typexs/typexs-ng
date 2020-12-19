@@ -2,8 +2,6 @@ import {Routes} from '@angular/router';
 
 import {DemosComponent} from './demos.component';
 import {GroupDemoComponent} from './group-demo.component';
-import {ContentDemoComponent} from './content-demo.component';
-import {ContentViewChildDemoComponent} from './content-view-child-demo.component';
 import {CheckboxMatrixDemoComponent} from './checkbox-matrix-demo/checkbox-matrix-demo.component';
 import {MenuDemoComponent} from './menu-demo/menu-demo.component';
 import {DummyComponent} from './dummy/dummy.component';
@@ -26,6 +24,8 @@ import {AdminModule} from '../admin/module';
 import {EmbeddedStorageOverviewComponent} from './components/demos/embedded-storage/overview.component';
 import {EmbeddedStorageDefaultComponent} from './components/demos/embedded-storage/default.component';
 import {EmbeddedStorageAgGridComponent} from './components/demos/embedded-storage/ag-grid.component';
+import {ContentDemoComponent} from './components/demos/content/content-demo.component';
+import {ContentViewChildDemoComponent} from './components/demos/content/content-view-child-demo.component';
 
 
 export const APP_ROUTES: Routes = [

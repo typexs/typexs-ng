@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
 import {Component} from '@angular/core';
 import {ViewComponent} from '../../libs/views/decorators/ViewComponent';
-import {AbstractFormComponent} from '../../libs/forms/AbstractFormComponent';
 import {CheckboxHandle} from '../../libs/forms/elements/CheckboxHandle';
+import {AbstractFormComponent} from './component/AbstractFormComponent';
 
 
 @ViewComponent('checkbox')
@@ -13,7 +13,7 @@ import {CheckboxHandle} from '../../libs/forms/elements/CheckboxHandle';
 export class CheckboxComponent extends AbstractFormComponent<CheckboxHandle> {
 
   get type() {
-    return this.elem.variant;
+    return this.getInstance().variant;
   }
 
 
@@ -21,39 +21,39 @@ export class CheckboxComponent extends AbstractFormComponent<CheckboxHandle> {
   get isChecked() {
     let value = this.getValue();
 
-    if (this.elem.isMultiple()) {
+    if (this.getInstance().isMultiple()) {
       if (!value) {
         value = [];
       }
-      return value.indexOf(this.defaultValue) != -1;
+      return value.indexOf(this.defaultValue) !== -1;
     }
     return value;
   }
 
 
   set isChecked(checked: boolean) {
-    let datatype = this.elem.getBinding().getType();
-    if (this.elem.isMultiple()) {
+    const datatype = this.getInstance().getBinding().getType();
+    if (this.getInstance().isMultiple()) {
       let value = this.getValue();
       if (!value) {
         value = [];
       }
-      if (value.indexOf(this.defaultValue) == -1) {
+      if (value.indexOf(this.defaultValue) === -1) {
         value.push(this.defaultValue);
       } else {
-        _.remove(value, v => this.defaultValue == v);
+        _.remove(value, v => this.defaultValue === v);
       }
       this.setValue(value);
     } else {
 
-      if (datatype == 'boolean') {
-        let v = this.getValue();
-        if(_.isBoolean(v)){
+      if (datatype === 'boolean') {
+        const v = this.getValue();
+        if (_.isBoolean(v)) {
           this.setValue(!v);
-        }else{
+        } else {
           this.setValue(true);
         }
-      } else if (datatype == 'string') {
+      } else if (datatype === 'string') {
         if (checked) {
           this.setValue(this.defaultValue);
         } else {

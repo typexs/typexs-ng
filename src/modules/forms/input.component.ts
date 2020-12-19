@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {ViewComponent} from '../../libs/views/decorators/ViewComponent';
-import {AbstractFormComponent} from '../../libs/forms/AbstractFormComponent';
 import {InputHandle} from '../../libs/forms/elements';
+import {AbstractFormComponent} from './component/AbstractFormComponent';
 
 
 @ViewComponent('input')
@@ -12,7 +12,7 @@ import {InputHandle} from '../../libs/forms/elements';
 export class InputComponent extends AbstractFormComponent<InputHandle>/* implements OnInit, OnChanges */ {
 
   get type() {
-    return this.elem.variant;
+    return this.getInstance().variant;
   }
 
 

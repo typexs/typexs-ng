@@ -30,8 +30,6 @@ export class AppService {
 
   settings: any = {};
 
-  components: { [name: string]: Function } = {};
-
   serviceClasses: { [name: string]: Function } = {};
 
   registerService(name: string, fn: Function) {
@@ -90,19 +88,6 @@ export class AppService {
     return this.backendService;
   }
 
-
-  getComponentClass(...args: string[]) {
-    const name = args.join('.');
-    return _.get(this.components, name);
-  }
-
-
-  setComponentClass(name: string | string[], fn: Function) {
-    if (_.isArray(name)) {
-      name = name.join('.');
-    }
-    return _.set(this.components, name, fn);
-  }
 
 
   getViewContext() {

@@ -3,13 +3,13 @@ import {Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, Inp
 
 import {FormService} from './form.service';
 import {ViewComponent} from '../../libs/views/decorators/ViewComponent';
-import {AbstractFormComponent} from '../../libs/forms/AbstractFormComponent';
 import {Form} from '../../libs/forms/elements';
 import {MessageChannel} from '../base/messages/MessageChannel';
 import {IMessage} from '../base/messages/IMessage';
 import {IFormOptions} from './IFormOptions';
 import {DataContainer} from '@typexs/base/browser';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
+import {AbstractFormComponent} from './component/AbstractFormComponent';
 
 
 @ViewComponent('form')
@@ -62,6 +62,8 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
 
   original: any;
 
+  formObject: any;
+
   constructor(@Inject(FormService)
               private formService: FormService,
               @Inject(Injector)
@@ -86,9 +88,9 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
     // TODO instance must be present
     super.reset();
     this.data = new DataContainer(this.instance, this.registry);
-    this.elem = this.formService.get(this.formName, this.instance, this.registry);
+    this.formObject = this.formService.get(this.formName, this.instance, this.registry);
     // TODO restructure form
-    this.build(this.elem);
+    this.build(this.formObject);
   }
 
 

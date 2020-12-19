@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {SearchEntry} from './search/search-entry.component';
 import {SearchResult} from './search/search-result.component';
 import {ViewParent} from './search/view-parent.component';
-import {ViewBuilderComponent} from '../views/view-builder.component';
+import {ViewBuilderComponent} from '../../../../views/view-builder.component';
 
 
 @Component({
@@ -17,11 +17,11 @@ export class ContentViewChildDemoComponent implements OnInit {
 
   ngOnInit() {
     this.treeContent = new ViewParent();
-    this.treeContent.children.push(new SearchEntry(1));
+    this.treeContent.children.push(new SearchEntry(1, null));
 
     setTimeout(() => {
       this.treeContent = new ViewParent();
-      this.treeContent.children.push(new SearchEntry(1));
+      this.treeContent.children.push(new SearchEntry(1, null));
     }, 5000);
   }
 

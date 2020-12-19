@@ -33,7 +33,7 @@ export interface IQueryServiceOptions {
   registryName?: string;
 
   /**
-   * Registry handler from type ILookupRegistry
+   * Registry handle from type ILookupRegistry
    */
   registry?: ILookupRegistry;
 }

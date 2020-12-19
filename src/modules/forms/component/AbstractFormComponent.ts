@@ -1,15 +1,14 @@
 import * as _ from 'lodash';
 
 
-import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
-import {AbstractComponent} from '../views/AbstractComponent';
-import {FormObject, isFormObject} from './FormObject';
-import {ContentComponentRegistry} from '../views/ContentComponentRegistry';
-import {Context} from '../views/Context';
 import {DataContainer} from '@typexs/base/browser';
 import {ClassRef, XS_TYPE_PROPERTY} from 'commons-schema-api/browser';
 import {Expressions} from 'commons-expressions/browser';
-import {UrlHelper} from '../../modules/base/lib/UrlHelper';
+import {Context} from '../../../libs/views/Context';
+import {UrlHelper} from '../../base/lib/UrlHelper';
+import {FormObject, isFormObject} from '../../../libs/forms/FormObject';
+import {NoFormTypeDefinedError} from '../../../libs/exceptions/NoFormTypeDefinedError';
+import {AbstractComponent} from '../../base/component/AbstractComponent';
 
 
 export abstract class AbstractFormComponent<T extends FormObject> extends AbstractComponent<T> {
@@ -31,17 +30,17 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
   }
 
   get id() {
-    return this.elem.id;
+    return this.getInstance().id;
   }
 
 
   get name() {
-    return this.elem.name;
+    return this.getInstance().name;
   }
 
 
   get label() {
-    return this.elem.label;
+    return this.getInstance().label;
   }
 
 
@@ -51,12 +50,12 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
 
 
   get help() {
-    return this.elem.help;
+    return this.getInstance().help;
   }
 
 
   get isReadOnly() {
-    return this.elem.isReadonly() ? 'readonly' : null;
+    return this.getInstance().isReadonly() ? 'readonly' : null;
   }
 
 
@@ -74,7 +73,7 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
 
 
   protected setFormObject(elem: T) {
-    this.setElem(elem);
+    this.setInstance(elem);
   }
 
 
@@ -107,7 +106,7 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
     } else {
       this._value = this.getValue();
       if (this._value) {
-        const binding = this.elem.getBinding();
+        const binding = this.getInstance().getBinding();
         if (binding.isEntityReference()) {
           if (_.isArray(this._value)) {
             this._value = this._value.map(v =>
@@ -131,7 +130,7 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
 
   set value(v: any) {
     this._value = v;
-    const binding = this.elem.getBinding();
+    const binding = this.getInstance().getBinding();
     if (binding.isEntityReference()) {
       let data = [];
       if (_.isArray(v)) {
@@ -168,7 +167,7 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
     form.getChildren().forEach(formObject => {
       if (isFormObject(formObject)) {
 
-        const handle = ContentComponentRegistry.$().getOrCreateDef(formObject.type);
+        const handle = this.getComponentRegistry().getOrCreateDef(formObject.type);
         if (handle && handle.component) {
           if (this.vc) {
             const factory = this.r.resolveComponentFactory(<any>handle.component);

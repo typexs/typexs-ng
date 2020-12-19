@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {SearchEntryComponent} from './search-entry.component';
-import {TreeObject} from '../../../libs/views/TreeObject';
-import {ViewContent} from '../../../libs/views/decorators/ViewContent';
-import {ViewComponent} from '../../../libs/views/decorators/ViewComponent';
-import {AbstractComponent} from '../../../libs/views/AbstractComponent';
+import {TreeObject} from '../../../../../../libs/views/TreeObject';
+import {ViewContent} from '../../../../../../libs/views/decorators/ViewContent';
+import {ViewComponent} from '../../../../../../libs/views/decorators/ViewComponent';
+import {AbstractComponent} from '../../../../../base/component/AbstractComponent';
 
 
 @ViewContent('view-parent')

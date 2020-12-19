@@ -3,13 +3,13 @@ import {GridRowComponent} from './grid-row.component';
 
 import * as _ from 'lodash';
 import {ViewComponent} from '../../../libs/views/decorators/ViewComponent';
-import {AbstractFormComponent} from '../../../libs/forms/AbstractFormComponent';
 import {GridHandle} from '../../../libs/forms/elements';
-import {AbstractComponent} from '../../../libs/views/AbstractComponent';
 import {FormObject, isFormObject} from '../../../libs/forms/FormObject';
 import {EnumHandle} from './../libs/EnumHandle';
 import {Observable} from 'rxjs/Observable';
 import {GridColumnDef} from './GridColumnDef';
+import {AbstractFormComponent} from '../component/AbstractFormComponent';
+import {AbstractComponent} from '../../base/component/AbstractComponent';
 
 
 @ViewComponent('grid')
@@ -29,11 +29,11 @@ export class GridComponent extends AbstractFormComponent<GridHandle> implements 
   }
 
   showNr() {
-    return this.elem.options.nr;
+    return this.getInstance().options.nr;
   }
 
   isFixed() {
-    return this.elem.options.fixed;
+    return this.getInstance().options.fixed;
   }
 
   analyse() {
@@ -49,14 +49,14 @@ export class GridComponent extends AbstractFormComponent<GridHandle> implements 
             tmpObj = obj.getBinding().getSourceRef().create();
           }
 
-          let enumHandle = new EnumHandle(this.injector, obj);
-          let obs = enumHandle.retrieveEnum(tmpObj);
+          const enumHandle = new EnumHandle(this.injector, obj);
+          const obs = enumHandle.retrieveEnum(tmpObj);
           if (obs instanceof Observable) {
             throw new Error('TODO handle observable');
           } else {
             let idx = 0;
             obs.forEach(o => {
-              let def = new GridColumnDef();
+              const def = new GridColumnDef();
               def.idx = idx++;
               def.label = o.label;
               def.value = o.value;
@@ -65,8 +65,8 @@ export class GridComponent extends AbstractFormComponent<GridHandle> implements 
             });
           }
         } else {
-          let def = new GridColumnDef();
-          //def.label = obj.label;
+          const def = new GridColumnDef();
+          // def.label = obj.label;
           def.elem = obj;
           this.columns.push(def);
         }
@@ -78,20 +78,20 @@ export class GridComponent extends AbstractFormComponent<GridHandle> implements 
 
   build(form: FormObject): AbstractComponent<any>[] {
     this.context.labelDisplay = 'none';
-    let dataEntries = this.elem.getBinding().get(this.data.instance);
+    const dataEntries = this.getInstance().getBinding().get(this.data.instance);
     this.findColumns(form, _.first(dataEntries));
 
-    let ret = [];
+    const ret = [];
     if (!_.isEmpty(dataEntries)) {
       for (let i = 0; i < dataEntries.length; i++) {
-        let c = this.addRow(dataEntries[i], i);
+        const c = this.addRow(dataEntries[i], i);
         ret.push(c);
       }
     }
 
     // TODO append lines
     if (!this.isFixed()) {
-      let c = this.addRow();
+      const c = this.addRow();
       ret.push(c);
 
     }
@@ -99,18 +99,18 @@ export class GridComponent extends AbstractFormComponent<GridHandle> implements 
   }
 
   addRow(row: any = null, index: number = -1) {
-    let factory = this.r.resolveComponentFactory(GridRowComponent);
-    let cGridRow = this.vc.createComponent(factory);
+    const factory = this.r.resolveComponentFactory(GridRowComponent);
+    const cGridRow = this.vc.createComponent(factory);
     cGridRow.instance.data = this.data;
     cGridRow.instance.setGridComponent(this);
-    cGridRow.instance.setData(this.elem, this.context, this.entries.length);
+    cGridRow.instance.setData(this.getInstance(), this.context, this.entries.length);
     this.entries.push(cGridRow);
 
     if (!row) {
-      let object = Reflect.construct(this.elem.getBinding().getTargetRef().getClass(), []);
-      let path = this.context.path();
+      const object = Reflect.construct(this.getInstance().getBinding().getTargetRef().getClass(), []);
+      const path = this.context.path();
 
-      if (this.elem.isMultiple()) {
+      if (this.getInstance().isMultiple()) {
         let arraySetted = _.get(this.data.instance, path, null);
         if (!arraySetted) {
           arraySetted = [];
@@ -123,20 +123,20 @@ export class GridComponent extends AbstractFormComponent<GridHandle> implements 
 
     }
 
-    cGridRow.instance.build(this.elem);
+    cGridRow.instance.build(this.getInstance());
     return cGridRow.instance;
   }
 
 
   removeRow(idx: number) {
     // TODO check if exists
-    let path = this.context.path();
+    const path = this.context.path();
 
-    let components = this.entries.splice(idx, 1);
-    let component = components.shift();
+    const components = this.entries.splice(idx, 1);
+    const component = components.shift();
 
     this.vc.remove(idx);
-    if (this.elem.getBinding().isCollection()) {
+    if (this.getInstance().getBinding().isCollection()) {
       let arraySetted = _.get(this.data.instance, path, null);
       if (!arraySetted) {
         arraySetted = [];

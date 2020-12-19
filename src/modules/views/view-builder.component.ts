@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TreeObject} from '../../libs/views/TreeObject';
-import {AbstractComponent} from '../../libs/views/AbstractComponent';
+import {AbstractComponent} from '../base/component/AbstractComponent';
 
 
 
@@ -16,16 +16,14 @@ export class ViewBuilderComponent<T extends TreeObject> extends AbstractComponen
   private _build = false;
 
 
-  _instance: any;
-
   @Input() set instance(value: any) {
-    this._instance = value;
+    this.setInstance(value);
     this._build = false;
     this.__build();
   }
 
   get instance(): any {
-    return this._instance;
+    return this.getInstance();
   }
 
   ngOnInit() {
@@ -34,8 +32,9 @@ export class ViewBuilderComponent<T extends TreeObject> extends AbstractComponen
 
   private __build() {
     if (!this._build) {
-      this.vc.clear();
-      this.buildSingle(this._instance);
+      this.getViewContainerRef().clear();
+      console.log('build');
+      this.buildSelf(this.instance);
       this._build = true;
     }
   }

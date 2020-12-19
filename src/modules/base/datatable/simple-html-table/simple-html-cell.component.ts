@@ -13,6 +13,7 @@ import {
 import {IGridColumn} from '../IGridColumn';
 import {AppService} from '../../app.service';
 import {CC_GRID_CELL_VALUE, SIMPLE_TABLE} from '../../constants';
+import {ComponentRegistryService} from '../../component/component-registry.service';
 
 
 @Component({
@@ -33,7 +34,7 @@ export class SimpleHtmlCellComponent implements OnInit, OnDestroy {
   ref: ComponentRef<any>;
 
   constructor(@Inject(Injector) public injector: Injector,
-              @Inject(AppService) public config: AppService,
+              @Inject(ComponentRegistryService) public config: ComponentRegistryService,
               @Inject(ComponentFactoryResolver) public r: ComponentFactoryResolver) {
   }
 

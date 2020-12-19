@@ -12,7 +12,6 @@ export * from './libs/observable/Helper';
 export * from './libs/validators/EqualWith';
 export * from './libs/validators/IsUrl';
 
-export * from './libs/forms/AbstractFormComponent';
 export * from './libs/forms/elements/CheckboxHandle';
 export * from './libs/forms/elements/Form';
 export * from './libs/forms/elements/GridHandle';
@@ -44,12 +43,11 @@ export * from './libs/forms/FormObject';
 export * from './libs/forms/IResolver';
 export * from './libs/forms/ResolveDataValue';
 
-export * from './libs/views/AbstractComponent';
-export * from './libs/views/ContentComponentRegistry';
+export * from './libs/views/ComponentRegistry';
 export * from './libs/views/Context';
 export * from './libs/views/decorators/ViewComponent';
 export * from './libs/views/decorators/ViewContent';
-export * from './libs/views/IElementDef';
+export * from './libs/views/IComponentBinding';
 export * from './libs/views/TreeObject';
 
 export * from './libs/Constants';

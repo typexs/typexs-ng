@@ -4,9 +4,9 @@ import {Form} from './elements';
 import {ResolveDataValue} from './ResolveDataValue';
 import * as _ from 'lodash';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
-import {ContentComponentRegistry} from '../views/ContentComponentRegistry';
 import {NotYetImplementedError} from '@typexs/base/browser';
 import {AbstractRef, ClassRef, IEntityRef, IPropertyRef, XS_TYPE_ENTITY, XS_TYPE_PROPERTY} from 'commons-schema-api/browser';
+import {ComponentRegistry} from '../views/ComponentRegistry';
 
 export class FormBuilder {
 
@@ -34,7 +34,7 @@ export class FormBuilder {
 
     if (!this.form) {
       // this.schema = EntityRegistry.getSchema(entity.object.getSchema());
-      this.form = formObject = ContentComponentRegistry.createHandler('form');
+      this.form = formObject = ComponentRegistry.createHandle('form');
       formObject.handle('name', entity.id());
       formObject.handle('binding', entity);
     } else if ((<AbstractRef><any>entity).baseType === XS_TYPE_PROPERTY) {
@@ -112,7 +112,7 @@ export class FormBuilder {
 
 
   private forDefault(formType: string, property: IPropertyRef) {
-    const formObject = ContentComponentRegistry.createHandler(formType);
+    const formObject = ComponentRegistry.createHandle(formType);
     if (formObject) {
       formObject.handle('variant', formType);
       this._applyValues(formObject, property);
@@ -149,7 +149,7 @@ export class FormBuilder {
   }
 
   private _forInput(formType: string, property: IPropertyRef) {
-    const formObject = ContentComponentRegistry.createHandler('input');
+    const formObject = ComponentRegistry.createHandle('input');
     formObject.handle('variant', formType);
     this._applyValues(formObject, property);
     return formObject;
@@ -180,8 +180,8 @@ export class FormBuilder {
 
     let formObject: FormObject = null;
     if (data.type) {
-      // lookup handler
-      formObject = ContentComponentRegistry.createHandler(data.type);
+      // lookup handle
+      formObject = ComponentRegistry.createHandle(data.type);
     } else {
       throw new NoFormTypeDefinedError();
     }

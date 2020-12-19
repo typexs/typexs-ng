@@ -17,6 +17,7 @@ import {
 import {AbstractGridComponent} from './abstract-grid.component';
 import {AppService} from '../app.service';
 import {C_DEFAULT, CC_GRID} from '../constants';
+import {ComponentRegistryService} from '../component/component-registry.service';
 
 
 const inputKeys = ['columns', 'rows', 'maxRows', 'options', 'params'];
@@ -45,7 +46,7 @@ export class DatatableComponent extends AbstractGridComponent implements OnInit,
 
   constructor(@Inject(Injector) public injector: Injector,
               @Inject(ComponentFactoryResolver) public r: ComponentFactoryResolver,
-              @Inject(AppService) public config: AppService) {
+              @Inject(ComponentRegistryService) public config: ComponentRegistryService) {
     super();
   }
 

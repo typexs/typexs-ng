@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
-import {AbstractFormComponent} from '../../libs/forms/AbstractFormComponent';
 import {RadioHandle} from '../../libs/forms/elements/RadioHandle';
 import {ViewComponent} from '../../libs/views/decorators/ViewComponent';
+import {AbstractFormComponent} from './component/AbstractFormComponent';
 
 
 @ViewComponent('radio')
@@ -16,7 +16,7 @@ export class RadioComponent extends AbstractFormComponent<RadioHandle> {
   off: string = 'No';
 
   get type() {
-    return this.elem.variant;
+    return this.getInstance().variant;
   }
 
   get isChecked() {

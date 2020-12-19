@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {TreeObject} from '../../../libs/views/TreeObject';
-import {ViewContent} from '../../../libs/views/decorators/ViewContent';
-import {ViewComponent} from '../../../libs/views/decorators/ViewComponent';
-import {AbstractComponent} from '../../../libs/views/AbstractComponent';
+import {ViewContent} from '../../../../../../libs/views/decorators/ViewContent';
+import {TreeObject} from '../../../../../../libs/views/TreeObject';
+import {ViewComponent} from '../../../../../../libs/views/decorators/ViewComponent';
+import {AbstractComponent} from '../../../../../base/component/AbstractComponent';
 
 
 @ViewContent('search-result')
@@ -19,5 +19,5 @@ export class SearchResult extends TreeObject {
 export class SearchResultComponent extends AbstractComponent<SearchResult> {
 
 
-  title = 'SuperSearch'
+  title = 'SuperSearch';
 }

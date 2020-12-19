@@ -1,7 +1,7 @@
 import {Component, HostBinding} from '@angular/core';
 import {GridComponent} from './grid.component';
-import {AbstractFormComponent} from '../../../libs/forms/AbstractFormComponent';
 import {GridColumnDef} from './GridColumnDef';
+import {AbstractFormComponent} from '../component/AbstractFormComponent';
 
 
 @Component({

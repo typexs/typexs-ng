@@ -1,8 +1,8 @@
 
 import * as _ from 'lodash';
-export type ALIGNMENT = 'vertical' | 'horizontal'
+export type ALIGNMENT = 'vertical' | 'horizontal';
 
-export type LABEL_DISPLAY = 'top' | 'inline' | 'none'
+export type LABEL_DISPLAY = 'top' | 'inline' | 'none';
 
 export class Context {
 
@@ -17,7 +17,7 @@ export class Context {
   // alignment:
 
   child(_name: string = null, idx: number = -1) {
-    let name = new Context();
+    const name = new Context();
     name.parent = this;
     name.name = _name;
     name.idx = idx;

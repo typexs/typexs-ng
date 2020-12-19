@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 
 import * as _ from 'lodash';
-import {AbstractFormComponent} from '../../../libs/forms/AbstractFormComponent';
 import {SelectHandle} from '../../../libs/forms/elements';
 import {ViewComponent} from '../../../libs/views/decorators/ViewComponent';
 import {Option} from '../../../libs/forms/elements/Option';
 import {ISelectOption} from './../libs/ISelectOption';
 import {EnumHandle} from '../libs/EnumHandle';
+import {AbstractFormComponent} from '../component/AbstractFormComponent';
 
 
 @ViewComponent('select')
@@ -17,21 +17,16 @@ import {EnumHandle} from '../libs/EnumHandle';
 export class SelectComponent extends AbstractFormComponent<SelectHandle> implements OnInit {
 
 
+  get supportsMultiple(): boolean {
+    return this.getInstance().isMultiple();
+  }
+
+
 
   cachedOptions: Option[] = [];
 
-
-  get supportsMultiple(): boolean {
-    return this.elem.isMultiple();
-  }
-
-  ngOnInit() {
-    this.cachedOptions = [];
-    this.loadOptions();
-  }
-
   static checkAndCreateOption(e: any) {
-    let o = new Option();
+    const o = new Option();
     if (_.isString(e)) {
       o.label = o.value = e;
     } else if (_.has(e, 'label') || _.has(e, 'value')) {
@@ -43,24 +38,29 @@ export class SelectComponent extends AbstractFormComponent<SelectHandle> impleme
     return o;
   }
 
-  selectFirst(o:Option){
-    if(!this.supportsMultiple && !this._value){
+  ngOnInit() {
+    this.cachedOptions = [];
+    this.loadOptions();
+  }
+
+  selectFirst(o: Option) {
+    if (!this.supportsMultiple && !this._value) {
       // TODO default value?
       this.value = o.value;
     }
   }
 
 
-  addCacheOption(iso:ISelectOption){
-    let o = SelectComponent.checkAndCreateOption(iso)
+  addCacheOption(iso: ISelectOption) {
+    const o = SelectComponent.checkAndCreateOption(iso);
     this.selectFirst(o);
     this.cachedOptions.push(o);
   }
 
   loadOptions() {
 
-    let enumHandle = new EnumHandle(this.injector, this.elem);
-    let enums = enumHandle.retrieveEnum(this.data, this.context.parent);
+    const enumHandle = new EnumHandle(this.injector, this.getInstance());
+    const enums = enumHandle.retrieveEnum(this.data, this.context.parent);
 
     if (enums) {
 

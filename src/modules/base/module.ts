@@ -34,6 +34,7 @@ import {FreeQueryInputComponent} from './api/querying/free-query/free-query-inpu
 import {SimpleHtmlCellRouterLinkRendererComponent} from './datatable/simple-html-table/simple-html-cell-router-link-renderer.component';
 import {Log} from './lib/log/Log';
 import {CommonModule} from '@angular/common';
+import {ComponentRegistryService} from './component/component-registry.service';
 
 
 const PROVIDERS = [
@@ -46,7 +47,8 @@ const PROVIDERS = [
   {provide: AuthGuardService, useClass: DefaultAuthGuardService},
   AppService,
   PagerService,
-  InvokerService
+  InvokerService,
+  ComponentRegistryService
 ];
 
 const COMPONENTS = [
@@ -97,14 +99,15 @@ export class BaseModule {
    *
    * @param appConfig
    */
-  constructor(private appConfig: AppService) {
+  constructor(private appConfig: AppService,
+              private compRegistry: ComponentRegistryService) {
     Log.initialize();
-    appConfig.setComponentClass([C_DEFAULT, CC_GRID], SimpleHtmlTableComponent);
-    appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_VALUE], SimpleHtmlCellValueComponent);
-    appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_ENTITY_REFERENCE], SimpleHtmlCellEntityReferenceRendererComponent);
-    appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_OBJECT_REFERENCE], SimpleHtmlCellObjectReferenceRendererComponent);
-    appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_ENTITY_OPERATIONS], SimpleHtmlCellEntityOperationsRendererComponent);
-    appConfig.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_ROUTER_LINK], SimpleHtmlCellRouterLinkRendererComponent);
+    compRegistry.setComponentClass([C_DEFAULT, CC_GRID], SimpleHtmlTableComponent);
+    compRegistry.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_VALUE], SimpleHtmlCellValueComponent);
+    compRegistry.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_ENTITY_REFERENCE], SimpleHtmlCellEntityReferenceRendererComponent);
+    compRegistry.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_OBJECT_REFERENCE], SimpleHtmlCellObjectReferenceRendererComponent);
+    compRegistry.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_ENTITY_OPERATIONS], SimpleHtmlCellEntityOperationsRendererComponent);
+    compRegistry.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_ROUTER_LINK], SimpleHtmlCellRouterLinkRendererComponent);
 
     this.appConfig.getBackendClient().check();
   }

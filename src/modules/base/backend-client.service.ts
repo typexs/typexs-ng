@@ -31,7 +31,7 @@ export interface IRoutePointer {
 export type BACKEND_CLIENT_STATE = 'inactive' | 'offline' | 'online' | 'loading' | 'initial';
 
 /**
- * The primary communication handler to the backend
+ * The primary communication handle to the backend
  *
  * - handles HTTP Requests to the backend, loads allowed routes
  */
@@ -295,7 +295,9 @@ export class BackendClientService {
           const queryParts: string[] = [];
           for (const q of _.keys(options.query)) {
             const value = options.query[q];
-            if (_.isObjectLike(value) || _.isArrayLike(value)) {
+            if (_.isNumber(value) || _.isString(value) || _.isBoolean(value)) {
+              queryParts.push(q + '=' + value);
+            } else if (_.isObjectLike(value) || _.isArrayLike(value)) {
               queryParts.push(q + '=' + JSON.stringify(value));
             } else {
               queryParts.push(q + '=' + value);

@@ -2,11 +2,10 @@ import {Component, HostBinding} from '@angular/core';
 import {GridComponent} from './grid.component';
 import {GridCellComponent} from './grid-cell.component';
 import {NoFormTypeDefinedError} from '../../../libs/exceptions/NoFormTypeDefinedError';
-import {AbstractFormComponent} from '../../../libs/forms/AbstractFormComponent';
 import {FormObject, isFormObject} from '../../../libs/forms/FormObject';
-import {AbstractComponent} from '../../../libs/views/AbstractComponent';
-import {ContentComponentRegistry} from '../../../libs/views/ContentComponentRegistry';
 import {Log} from '../../base/lib/log/Log';
+import {AbstractFormComponent} from '../component/AbstractFormComponent';
+import {AbstractComponent} from '../../base/component/AbstractComponent';
 
 @Component({
   selector: 'txs-gridrow',
@@ -46,7 +45,7 @@ export class GridRowComponent extends AbstractFormComponent<any> {
     columns.forEach(column => {
       const formObject = column.elem;
       if (isFormObject(formObject)) {
-        const handle = ContentComponentRegistry.$().getOrCreateDef(formObject.type);
+        const handle = this.getComponentRegistry().getOrCreateDef(formObject.type);
         if (handle && handle.component) {
 
           const cGridCellFactory = this.r.resolveComponentFactory(GridCellComponent);
