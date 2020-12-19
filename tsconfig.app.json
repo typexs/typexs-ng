@@ -24,7 +24,9 @@
     "src/app/test.ts",
     "src/modules/**/api/*.ts",
     "src/modules/**/*.spec.ts",
-    "src/app/**/*.spec.ts"
+    "src/app/**/*.spec.ts",
+    "src/modules/*/test/*.ts",
+    "src/modules/*/test/**/*.ts"
   ],
   "angularCompilerOptions": {
     "genDir": "build/app-aot",
