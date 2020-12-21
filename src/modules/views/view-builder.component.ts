@@ -33,7 +33,6 @@ export class ViewBuilderComponent<T extends TreeObject> extends AbstractComponen
   private __build() {
     if (!this._build) {
       this.getViewContainerRef().clear();
-      console.log('build');
       this.buildSelf(this.instance);
       this._build = true;
     }

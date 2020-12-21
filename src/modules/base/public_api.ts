@@ -38,6 +38,10 @@ export * from './datatable/IQueryParams';
 export * from './datatable/IGridColumn';
 export * from './datatable/IDTGridOptions';
 
+export * from './component/AbstractComponent';
+export * from './component/component-registry.service';
+export * from './component/IInstanceableComponent';
+
 export * from './datatable/simple-html-table/simple-html-table.component';
 export * from './datatable/simple-html-table/simple-html-cell.component';
 export * from './datatable/simple-html-table/simple-html-cell-value.component';
