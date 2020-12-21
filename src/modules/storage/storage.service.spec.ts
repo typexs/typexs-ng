@@ -74,4 +74,9 @@ describe('StorageService', () => {
   });
 
 
+  // it('should pass primative query parameters', () => {
+  //
+  //
+  // });
+
 });
