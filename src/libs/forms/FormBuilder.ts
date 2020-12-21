@@ -112,7 +112,7 @@ export class FormBuilder {
 
 
   private forDefault(formType: string, property: IPropertyRef) {
-    const formObject = ComponentRegistry.createHandle(formType);
+    const formObject: FormObject = ComponentRegistry.createHandle(formType);
     if (formObject) {
       formObject.handle('variant', formType);
       this._applyValues(formObject, property);
@@ -149,7 +149,7 @@ export class FormBuilder {
   }
 
   private _forInput(formType: string, property: IPropertyRef) {
-    const formObject = ComponentRegistry.createHandle('input');
+    const formObject: FormObject = ComponentRegistry.createHandle('input');
     formObject.handle('variant', formType);
     this._applyValues(formObject, property);
     return formObject;

@@ -20,29 +20,33 @@ export class ComponentRegistry {
     return this.$self;
   }
 
-  static addHandle(typeName: string, handle: Function) {
-    return this.$().addHandle(typeName, handle);
+  static addHandle(typeName: string, handle: Function): IComponentBinding {
+    const res = this.$().addHandle(typeName, handle);
+    return res;
   }
 
-  static addComponent(typeName: string, comp: Function) {
-    return this.$().addComponent(typeName, comp);
+  static addComponent(typeName: string, comp: Function): IComponentBinding {
+    const res = this.$().addComponent(typeName, comp);
+    return res;
   }
 
-  static createHandle(typeName: string) {
-    return this.$().createHandle(typeName);
+  static createHandle<T>(typeName: string): T {
+    const res = this.$().createHandle<T>(typeName);
+    return res;
   }
 
-  static createComponent(typeName: string) {
-    return this.$().createComponent(typeName);
+  static createComponent<T>(typeName: string): T {
+    const res = this.$().createComponent<T>(typeName);
+    return res;
   }
 
-  addHandle(typeName: string | string[], handle: Function) {
+  addHandle(typeName: string | string[], handle: Function): IComponentBinding {
     const def = this.getOrCreateDef(this.normalizeContext(typeName));
     def.handle = handle;
     return def;
   }
 
-  addComponent(typeName: string | string[], comp: Function) {
+  addComponent(typeName: string | string[], comp: Function): IComponentBinding {
     const def = this.getOrCreateDef(this.normalizeContext(typeName));
     def.component = comp;
     return def;
@@ -57,7 +61,7 @@ export class ComponentRegistry {
     return typeName;
   }
 
-  createHandle(typeName: string) {
+  createHandle<T>(typeName: string): T {
     const handler = this.getOrCreateDef(this.normalizeContext(typeName));
     if (!handler || !handler.handle) {
       throw new NoFormHandlerDefinedForTypeError(typeName);
@@ -67,7 +71,7 @@ export class ComponentRegistry {
     return obj;
   }
 
-  createComponent(typeName: string) {
+  createComponent<T>(typeName: string): T {
     const handler = this.getOrCreateDef(this.normalizeContext(typeName));
     if (!handler || !handler.component) {
       throw new NoFormHandlerDefinedForTypeError(typeName);
@@ -77,7 +81,7 @@ export class ComponentRegistry {
     return obj;
   }
 
-  getComponentClass(context: string | string[]) {
+  getComponentClass(context: string | string[]): any {
     context = this.normalizeContext(context);
     const found = this.handler.find(x => x.type === context);
     if (found) {
@@ -86,7 +90,7 @@ export class ComponentRegistry {
     return null;
   }
 
-  setComponentClass(name: string | string[], fn: Function) {
+  setComponentClass(name: string | string[], fn: Function): Function {
     const binding = this.addComponent(name, fn);
     if (binding) {
       return fn;
@@ -94,7 +98,7 @@ export class ComponentRegistry {
     return null;
   }
 
-  filter(f: (x: IComponentBinding) => boolean) {
+  filter(f: (x: IComponentBinding) => boolean): IComponentBinding[] {
     return this.handler.filter(f);
   }
 
@@ -114,7 +118,7 @@ export class ComponentRegistry {
   }
 
 
-  setComponentForClass(comp: Function, handle: Function, context: string = C_DEFAULT) {
+  setComponentForClass(comp: Function, handle: Function, context: string = C_DEFAULT): IComponentBinding {
     const className = _.snakeCase(ClassUtils.getClassName(handle));
     const lookupKey = [className, context].map(x => _.snakeCase(x)).join('.');
     const binding = this.getOrCreateDef(lookupKey, false);
