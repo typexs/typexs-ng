@@ -1,7 +1,8 @@
 import {Context} from './Context';
+import {ITreeObject} from './ITreeObject';
 
 
-export abstract class TreeObject {
+export abstract class TreeObject implements ITreeObject<TreeObject> {
 
   readonly type: string;
 
@@ -17,6 +18,10 @@ export abstract class TreeObject {
     object.parent = this;
     object.index = this.children.length;
     this.children.push(object);
+  }
+
+  getType() {
+    return this.type;
   }
 
   getParent(): TreeObject {

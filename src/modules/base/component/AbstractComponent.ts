@@ -8,6 +8,7 @@ import {NotYetImplementedError} from '@typexs/base/browser';
 import {ClassType} from 'commons-schema-api/browser';
 import {IInstanceableComponent} from './IInstanceableComponent';
 import {C_DEFAULT} from '../constants';
+import {isTreeObject} from '../../../libs/views/ITreeObject';
 
 const PROP_METADATA = '__prop__metadata__';
 
@@ -29,9 +30,6 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
   construct() {
   }
 
-  // protected setElem(elem: T) {
-  //   this.elem = elem;
-  // }
 
   getInstance(): T {
     return this._instance;
@@ -50,10 +48,9 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
   }
 
 
-  buildSelf(content: T): IInstanceableComponent<T> {
-    console.log('build-self');
-    if (content instanceof TreeObject) {
-      const handle = this.getComponentRegistry().getDef(content.type, true);
+  buildSelf(content: any): IInstanceableComponent<any> {
+    if (isTreeObject(content)) {
+      const handle = this.getComponentRegistry().getDef(content.getType(), true);
       if (handle && handle.component) {
         return this.buildComponent(handle.component as any, content);
       }
@@ -68,8 +65,7 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
   }
 
 
-  buildComponent(component: ClassType<IInstanceableComponent<T>>, content: T) {
-    console.log('build-component');
+  buildComponent(component: ClassType<IInstanceableComponent<T>>, content: any) {
     if (this.getViewContainerRef()) {
       const factory = this.r.resolveComponentFactory(component);
       const compRef = this.getViewContainerRef().createComponent(factory);
@@ -78,7 +74,6 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
       if (instance.constructor.hasOwnProperty(PROP_METADATA)) {
         metadata = instance.constructor[PROP_METADATA];
       }
-console.log(instance);
       instance.setInstance(content);
 
       if (instance instanceof  AbstractComponent && instance.build) {
