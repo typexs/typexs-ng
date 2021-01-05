@@ -3,10 +3,8 @@ import {TreeObject} from '../../libs/views/TreeObject';
 import {AbstractComponent} from '../base/component/AbstractComponent';
 
 
-
-
 @Component({
-  selector: 'txs-view-builder',
+  selector: 'txs-view',
   templateUrl: 'view-builder.component.html',
   // host: {'(submit)': 'onSubmit($event)', '(reset)': 'onReset()'},
   // outputs: ['ngSubmit'],
@@ -16,7 +14,8 @@ export class ViewBuilderComponent<T extends TreeObject> extends AbstractComponen
   private _build = false;
 
 
-  @Input() set instance(value: any) {
+  @Input()
+  set instance(value: any) {
     this.setInstance(value);
     this._build = false;
     this.__build();
@@ -25,6 +24,9 @@ export class ViewBuilderComponent<T extends TreeObject> extends AbstractComponen
   get instance(): any {
     return this.getInstance();
   }
+
+  @Input()
+  mode: string;
 
   ngOnInit() {
     this.__build();

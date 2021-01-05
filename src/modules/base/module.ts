@@ -35,6 +35,7 @@ import {SimpleHtmlCellRouterLinkRendererComponent} from './datatable/simple-html
 import {Log} from './lib/log/Log';
 import {CommonModule} from '@angular/common';
 import {ComponentRegistryService} from './component/component-registry.service';
+import {ObjectToComponentResolver} from './component/ObjectToComponentResolver';
 
 
 const PROVIDERS = [
@@ -48,7 +49,8 @@ const PROVIDERS = [
   AppService,
   PagerService,
   InvokerService,
-  ComponentRegistryService
+  ComponentRegistryService,
+  ObjectToComponentResolver
 ];
 
 const COMPONENTS = [

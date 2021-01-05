@@ -35,11 +35,11 @@ import {UI_ADMIN_LAYOUT} from '../admin/lib/Constants';
 import {EmbeddedStorageDefaultComponent} from './components/demos/embedded-storage/default.component';
 import {EmbeddedStorageOverviewComponent} from './components/demos/embedded-storage/overview.component';
 import {EmbeddedStorageAgGridComponent} from './components/demos/embedded-storage/ag-grid.component';
-import {ContentDemoComponent} from './components/demos/content/content-demo.component';
+import {TreeContentComponent} from './components/demos/content/content-demo.component';
 import {SearchResultComponent} from './components/demos/content/search/search-result.component';
 import {SearchEntryComponent} from './components/demos/content/search/search-entry.component';
 import {ViewParentComponent} from './components/demos/content/search/view-parent.component';
-import {ContentViewChildDemoComponent} from './components/demos/content/content-view-child-demo.component';
+import {TreeContentComponent} from './components/demos/content/content-view-child-demo.component';
 import {PersonComponent} from './components/entities/person/person.component';
 import {ComponentRegistryService} from '../base/component/component-registry.service';
 import {Person} from './entities/Person';
@@ -53,11 +53,11 @@ import {Person} from './entities/Person';
     TablesDemoComponent,
     GroupDemoComponent,
     CheckboxMatrixDemoComponent,
-    ContentDemoComponent,
+    TreeContentComponent,
     SearchResultComponent,
     SearchEntryComponent,
     ViewParentComponent,
-    ContentViewChildDemoComponent,
+    TreeContentComponent,
     MenuDemoComponent,
     DummyComponent,
     PagerDemoComponent,

@@ -1,9 +1,10 @@
-import {Injectable} from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {ComponentRegistry} from '../../../libs/views/ComponentRegistry';
 import {IComponentBinding} from '../../../libs/views/IComponentBinding';
 import {ClassUtils} from 'commons-base/browser';
 import * as _ from 'lodash';
 import {C_DEFAULT} from '../constants';
+import {ObjectToComponentResolver} from './ObjectToComponentResolver';
 
 @Injectable()
 export class ComponentRegistryService {
@@ -12,17 +13,26 @@ export class ComponentRegistryService {
 
   components: { [name: string]: Function } = {};
 
+
+  constructor(@Inject(ObjectToComponentResolver) private resolver: ObjectToComponentResolver) {
+  }
+
   getOrCreateDef(typeName: string | string[], normalize: boolean = false): IComponentBinding {
     return this.registry.getOrCreateDef(typeName, normalize);
   }
 
   getDef(typeName: string | string[], normalize: boolean = false): IComponentBinding {
-    console.log(typeName);
     return this.registry.getDef(typeName, normalize);
   }
 
 
   getComponentForObject(obj: any, context: string = C_DEFAULT) {
+    if (this.resolver) {
+      const found = this.resolver.resolve(obj, context);
+      if (found) {
+        return found;
+      }
+    }
     const className = _.snakeCase(ClassUtils.getClassName(obj));
     const list = this.registry.filter(x =>
       !!x.handle && _.snakeCase(x.handle.name) === className

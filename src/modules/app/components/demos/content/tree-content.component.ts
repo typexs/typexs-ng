@@ -9,11 +9,11 @@ import {Places} from '../../../entities/Places';
 
 @Component({
   selector: 'contentDemo',
-  templateUrl: 'content-demo.component.html',
-  styleUrls: ['content-demo.component.scss'],
+  templateUrl: 'tree-content.component.html',
+  styleUrls: ['tree-content.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ContentDemoComponent implements OnInit {
+export class TreeContentComponent implements OnInit {
   treeContent: any;
 
   ngOnInit() {

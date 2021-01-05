@@ -1,16 +1,15 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {SearchEntry} from './search/search-entry.component';
-import {SearchResult} from './search/search-result.component';
 import {ViewParent} from './search/view-parent.component';
 import {ViewBuilderComponent} from '../../../../views/view-builder.component';
 
 
 @Component({
   selector: 'content-view-child-demo',
-  templateUrl: 'content-view-child-demo.component.html',
+  templateUrl: 'tree-content-dynamic-change.component.html',
 
 })
-export class ContentViewChildDemoComponent implements OnInit {
+export class TreeContentDynamicChangeComponent implements OnInit {
   treeContent: any;
 
   @ViewChild(ViewBuilderComponent, {static: true}) builder: ViewBuilderComponent<any>;

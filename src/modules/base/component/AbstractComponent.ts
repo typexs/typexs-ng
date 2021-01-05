@@ -55,6 +55,7 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
         return this.buildComponent(handle.component as any, content);
       }
     } else {
+
       const context = this['getViewContext'] ? this['getViewContext']() : C_DEFAULT;
       const obj = this.getComponentRegistry().getComponentForObject(content, context);
       if (obj && obj.component) {
