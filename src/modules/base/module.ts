@@ -36,6 +36,7 @@ import {Log} from './lib/log/Log';
 import {CommonModule} from '@angular/common';
 import {ComponentRegistryService} from './component/component-registry.service';
 import {ObjectToComponentResolver} from './component/ObjectToComponentResolver';
+import {ViewComponent} from './component/view/view.component';
 
 
 const PROVIDERS = [
@@ -57,6 +58,7 @@ const COMPONENTS = [
   AlertComponent,
   PagerComponent,
   DatatableComponent,
+  ViewComponent,
   SimpleHtmlTableComponent,
   SimpleHtmlCellComponent,
   SimpleHtmlCellValueComponent,

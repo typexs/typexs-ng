@@ -49,17 +49,19 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
 
 
   buildSelf(content: any): IInstanceableComponent<any> {
-    if (isTreeObject(content)) {
-      const handle = this.getComponentRegistry().getDef(content.getType(), true);
-      if (handle && handle.component) {
-        return this.buildComponent(handle.component as any, content);
-      }
-    } else {
+    if (content) {
+      if (isTreeObject(content)) {
+        const handle = this.getComponentRegistry().getDef(content.getType(), true);
+        if (handle && handle.component) {
+          return this.buildComponent(handle.component as any, content);
+        }
+      } else {
 
-      const context = this['getViewContext'] ? this['getViewContext']() : C_DEFAULT;
-      const obj = this.getComponentRegistry().getComponentForObject(content, context);
-      if (obj && obj.component) {
-        return this.buildComponent(obj.component as any, content);
+        const context = this['getViewContext'] ? this['getViewContext']() : C_DEFAULT;
+        const obj = this.getComponentRegistry().getComponentForObject(content, context);
+        if (obj && obj.component) {
+          return this.buildComponent(obj.component as any, content);
+        }
       }
     }
     return null;
@@ -77,7 +79,7 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
       }
       instance.setInstance(content);
 
-      if (instance instanceof  AbstractComponent && instance.build) {
+      if (instance instanceof AbstractComponent && instance.build) {
         const refs = instance.build(content);
 
         if (metadata) {
