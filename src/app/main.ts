@@ -22,7 +22,7 @@ if (environment.production) {
 /**
  * themes must be defined under src/app/themes
  * - use require for fetching the theme files, so this can be translated in p
- * - define enables themes in config/typexs
+ * - define enables themes in componentRegistryService/typexs
  * -
  */
 

@@ -1,17 +1,29 @@
-import {IClassRef} from 'commons-schema-api/browser';
-import {IEntityRef} from 'commons-schema-api';
+export interface IBindingInfo {
+  context?: string;
+
+  tags?: string[];
+
+  [k: string]: any;
+}
 
 export interface IComponentBinding {
   /**
    * Name of the type
    */
-  type: string;
+  key: string;
+
   /**
-   *
+   * extra
    */
-  handle?: Function;
+  extra?: IBindingInfo;
+
   /**
-   *
+   * class
+   */
+  handle?: Function | string | RegExp;
+
+  /**
+   * component class
    */
   component?: Function;
 }
