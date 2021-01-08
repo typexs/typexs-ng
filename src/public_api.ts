@@ -57,6 +57,3 @@ export * from './modules/navigator/navigator.service';
 export * from './modules/navigator/IMenuLinkGuard';
 export * from './modules/navigator/NavEntry';
 export * from './modules/navigator/INavTreeEntry';
-
-// Views module
-export * from './modules/views/views.module';

@@ -41,13 +41,21 @@ export * from './datatable/IDTGridOptions';
 export * from './component/AbstractComponent';
 export * from './component/component-registry.service';
 export * from './component/IInstanceableComponent';
+export * from './component/ObjectToComponentResolver';
+export * from './component/IObjectToComponentResolver';
+export * from './component/json/json.component';
+export * from './component/view/view.component';
 
 export * from './datatable/simple-html-table/simple-html-table.component';
 export * from './datatable/simple-html-table/simple-html-cell.component';
 export * from './datatable/simple-html-table/simple-html-cell-value.component';
+export * from './datatable/list-view/list-view.component';
 
+export * from './api/querying/abstract-query.service';
 export * from './api/querying/abstract-query-embedded.component';
+export * from './api/querying/abstract-aggregate-embedded.component';
 export * from './api/querying/IQueringService';
+export * from './api/querying/IQueryComponentApi';
 export * from './api/querying/QueryAction';
 export * from './api/querying/free-query/free-query-input.component';
 
