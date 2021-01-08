@@ -36,3 +36,4 @@ export const MESSAGE_TYPE_LOG_SERVICE = 'LogService';
 
 
 export const SIMPLE_TABLE = 'simple-table';
+export const LIST_VIEW = 'list-view';

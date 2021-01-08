@@ -1,4 +1,5 @@
 import {Observable} from 'rxjs/Observable';
+import {ILookupRegistry, LookupRegistry} from 'commons-schema-api/browser';
 //
 // export interface IQueringServiceOptions {
 //
@@ -28,6 +29,8 @@ export interface IQueringService {
    * Fires true if fully loaded, else it wait
    */
   isLoaded(): Observable<boolean>;
+
+  getRegistry(): ILookupRegistry;
 
   get(entityName: string, entityId: any, options?: any): Observable<any>;
 

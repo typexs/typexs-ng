@@ -4,8 +4,10 @@
   <div class="form-group" *ngIf="options.entityTypeSelection">
     <label for="entityName">Entity name</label>
     <input type="text"
-           class="form-control" id="entityName" placeholder="Entity name"
-           [ngModel]="entityName"
+           class="form-control" id="entityName"
+           placeholder="Entity name"
+           (change)="changeEntityName()"
+           [(ngModel)]="entityName"
     >
   </div>
 

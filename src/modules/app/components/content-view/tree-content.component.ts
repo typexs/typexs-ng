@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {SearchEntry} from './search/search-entry.component';
 import {SearchResult} from './search/search-result.component';
-import {Person} from '../../../entities/Person';
-import {BookShop} from '../../../entities/BookShop';
-import {Book} from '../../../entities/Book';
-import {Places} from '../../../entities/Places';
+import {Person} from '../../entities/Person';
+import {BookShop} from '../../entities/BookShop';
+import {Book} from '../../entities/Book';
+import {Places} from '../../entities/Places';
 
 
 @Component({

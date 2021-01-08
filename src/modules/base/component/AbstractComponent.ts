@@ -12,7 +12,10 @@ import {isTreeObject} from '../../../libs/views/ITreeObject';
 
 const PROP_METADATA = '__prop__metadata__';
 
+
 export abstract class AbstractComponent<T/* extends TreeObject*/> implements IInstanceableComponent<T> {
+
+  inputKeys: string[] = [];
 
   context: Context;
 
@@ -21,6 +24,7 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
   @ViewChild('content', {read: ViewContainerRef, static: true})
   vc: ViewContainerRef;
 
+  _created = false;
 
   constructor(@Inject(Injector) public injector: Injector,
               @Inject(ComponentFactoryResolver) public r: ComponentFactoryResolver) {
@@ -47,6 +51,9 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
     return this.injector.get(ComponentRegistryService);
   }
 
+  isCreated() {
+    return this._created;
+  }
 
   buildSelf(content: any): IInstanceableComponent<any> {
     if (content) {
@@ -56,7 +63,6 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
           return this.buildComponent(handle.component as any, content);
         }
       } else {
-
         const context = this['getViewContext'] ? this['getViewContext']() : C_DEFAULT;
         const obj = this.getComponentRegistry().getComponentForObject(content, context);
         if (obj && obj.component) {
@@ -70,6 +76,7 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
 
   buildComponent(component: ClassType<IInstanceableComponent<T>>, content: any) {
     if (this.getViewContainerRef()) {
+      this.reset();
       const factory = this.r.resolveComponentFactory(component);
       const compRef = this.getViewContainerRef().createComponent(factory);
       const instance = <IInstanceableComponent<T>>compRef.instance;
@@ -78,6 +85,33 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
         metadata = instance.constructor[PROP_METADATA];
       }
       instance.setInstance(content);
+      this._created = true;
+
+      // pass changing context
+      if (this['setViewContext'] && instance.setViewContext) {
+        const fn = this['setViewContext'].bind(this);
+        this['setViewContext'] = (context: string) => {
+          fn(context);
+          instance.setViewContext(context);
+        };
+        // pass data
+        if (this['getViewContext']) {
+          instance.setViewContext(this['getViewContext']());
+        }
+      }
+
+      // passing through input parameters
+      for (const prop of this.inputKeys) {
+        // instance[prop] = this[prop];
+        try {
+          const propDesc = Object.getOwnPropertyDescriptor(this, prop);
+          if (propDesc) {
+            // copy only if exists
+            Object.defineProperty(instance, prop, propDesc);
+          }
+        } catch (e) {
+        }
+      }
 
       if (instance instanceof AbstractComponent && instance.build) {
         const refs = instance.build(content);
@@ -112,7 +146,6 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
       Log.error('No view content setted');
       return null;
     }
-
   }
 
 
@@ -128,6 +161,7 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
     }
     return refs;
   }
+
 
   reset() {
     if (this.vc) {

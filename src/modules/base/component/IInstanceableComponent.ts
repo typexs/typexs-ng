@@ -1,8 +1,8 @@
-import {ViewContainerRef} from '@angular/core';
-
 export interface IInstanceableComponent<T> {
 
   getViewContext?(): string;
+
+  setViewContext?(context: string): void;
 
   getInstance(): any;
 

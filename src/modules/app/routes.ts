@@ -24,8 +24,9 @@ import {AdminModule} from '../admin/module';
 import {EmbeddedStorageOverviewComponent} from './components/demos/embedded-storage/overview.component';
 import {EmbeddedStorageDefaultComponent} from './components/demos/embedded-storage/default.component';
 import {EmbeddedStorageAgGridComponent} from './components/demos/embedded-storage/ag-grid.component';
-import {TreeContentDynamicChangeComponent} from './components/demos/content/tree-content-dynamic-change.component';
-import {TreeContentComponent} from './components/demos/content/tree-content.component';
+import {TreeContentDynamicChangeComponent} from './components/content-view/tree-content-dynamic-change.component';
+import {TreeContentComponent} from './components/content-view/tree-content.component';
+import {SimpleViewVariantsComponent} from './components/content-view/simple-view-variants.component';
 
 
 export const APP_ROUTES: Routes = [
@@ -69,16 +70,7 @@ export const APP_ROUTES: Routes = [
         component: SimpleHtmlTableDemoComponent,
         data: {label: 'Simple Table', group: 'demo'},
       },
-      {
-        path: 'content',
-        component: TreeContentComponent,
-        data: {label: 'Content Demo', group: 'demo'},
-      },
-      {
-        path: 'content-view-child',
-        component: TreeContentDynamicChangeComponent,
-        data: {label: 'Content View Child Demo', group: 'demo'},
-      },
+
       {
         path: 'pager',
         component: PagerDemoComponent,
@@ -93,6 +85,27 @@ export const APP_ROUTES: Routes = [
         path: 'data-viewer',
         component: DataViewComponent,
         data: {label: 'Data viewer', group: 'demo'},
+      },
+    ]
+  },
+  {
+    path: 'content',
+    data: {group: 'demo'},
+    children: [
+      {
+        path: 'simple-views',
+        component: SimpleViewVariantsComponent,
+        data: {label: 'Simple views', group: 'demo'},
+      },
+      {
+        path: 'tree-view',
+        component: TreeContentComponent,
+        data: {label: 'Tree view', group: 'demo'},
+      },
+      {
+        path: 'tree-view-dynamic',
+        component: TreeContentDynamicChangeComponent,
+        data: {label: 'Tree view Child', group: 'demo'},
       },
     ]
   },

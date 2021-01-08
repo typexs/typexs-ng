@@ -16,13 +16,13 @@ import {SimpleHtmlTableComponent} from './datatable/simple-html-table/simple-htm
 import {SimpleHtmlCellComponent} from './datatable/simple-html-table/simple-html-cell.component';
 import {SimpleHtmlCellValueComponent} from './datatable/simple-html-table/simple-html-cell-value.component';
 import {
-  C_DEFAULT,
   CC_GRID,
   CC_GRID_CELL_ENTITY_OPERATIONS,
   CC_GRID_CELL_ENTITY_REFERENCE,
   CC_GRID_CELL_OBJECT_REFERENCE,
   CC_GRID_CELL_ROUTER_LINK,
   CC_GRID_CELL_VALUE,
+  LIST_VIEW,
   SIMPLE_TABLE
 } from './constants';
 import {FormsModule} from '@angular/forms';
@@ -37,6 +37,8 @@ import {CommonModule} from '@angular/common';
 import {ComponentRegistryService} from './component/component-registry.service';
 import {ObjectToComponentResolver} from './component/ObjectToComponentResolver';
 import {ViewComponent} from './component/view/view.component';
+import {ListViewComponent} from './datatable/list-view/list-view.component';
+import {JsonComponent} from './component/json/json.component';
 
 
 const PROVIDERS = [
@@ -58,7 +60,9 @@ const COMPONENTS = [
   AlertComponent,
   PagerComponent,
   DatatableComponent,
+  JsonComponent,
   ViewComponent,
+  ListViewComponent,
   SimpleHtmlTableComponent,
   SimpleHtmlCellComponent,
   SimpleHtmlCellValueComponent,
@@ -73,6 +77,8 @@ const COMPONENTS = [
 @NgModule({
   declarations: COMPONENTS,
   entryComponents: [
+    JsonComponent,
+    ListViewComponent,
     SimpleHtmlTableComponent,
     SimpleHtmlCellComponent,
     SimpleHtmlCellValueComponent,
@@ -106,13 +112,28 @@ export class BaseModule {
   constructor(private appConfig: AppService,
               private compRegistry: ComponentRegistryService) {
     Log.initialize();
-    compRegistry.setComponentClass([C_DEFAULT, CC_GRID], SimpleHtmlTableComponent);
+    compRegistry.setComponentClass([SIMPLE_TABLE, CC_GRID], SimpleHtmlTableComponent, {
+      label: 'Simple table',
+      datatable: true,
+      default: true
+    });
+
+    compRegistry.setComponentClass([LIST_VIEW, CC_GRID], ListViewComponent, {
+      label: 'List',
+      datatable: true
+    });
+
     compRegistry.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_VALUE], SimpleHtmlCellValueComponent);
     compRegistry.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_ENTITY_REFERENCE], SimpleHtmlCellEntityReferenceRendererComponent);
     compRegistry.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_OBJECT_REFERENCE], SimpleHtmlCellObjectReferenceRendererComponent);
     compRegistry.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_ENTITY_OPERATIONS], SimpleHtmlCellEntityOperationsRendererComponent);
     compRegistry.setComponentClass([SIMPLE_TABLE, CC_GRID_CELL_ROUTER_LINK], SimpleHtmlCellRouterLinkRendererComponent);
 
+
+    compRegistry.setComponentForClass(JsonComponent, '.*', {
+      context: 'json',
+      label: 'JSON'
+    });
     this.appConfig.getBackendClient().check();
   }
 

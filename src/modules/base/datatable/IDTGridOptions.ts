@@ -1,11 +1,12 @@
 import {IGridColumn} from './IGridColumn';
+import {IQueryComponentApi} from '../api/querying/IQueryComponentApi';
 
 export interface IDTGridOptions {
 
   /**
    * enable or disable pager
    */
-  enablePager: boolean;
+  enablePager?: boolean;
 
   /**
    * Pager id for uniq identification
@@ -15,7 +16,7 @@ export interface IDTGridOptions {
   /**
    * Rows to show per page
    */
-  limit: number;
+  limit?: number;
 
   /**
    * Initial offset
@@ -32,7 +33,7 @@ export interface IDTGridOptions {
    *
    * @param columns
    */
-  columnsPostProcess?: (columns: IGridColumn[]) => void;
+  columnsPostProcess?: (columns: IGridColumn[], component: IQueryComponentApi) => void;
 
   /**
    * Use prefined columns, do not generate based on results or entity properties

@@ -93,7 +93,6 @@ export class StorageService extends AbstractQueryService implements IQueringServ
     if (method === 'aggregate') {
       return rawEntities;
     }
-
     if (entityDef) {
       let result = null;
       if (_.isArray(rawEntities)) {

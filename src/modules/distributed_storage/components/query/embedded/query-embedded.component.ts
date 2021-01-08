@@ -47,7 +47,10 @@ export class DistributedStorageQueryEmbeddedComponent
         this.requery();
       });
     }
-    // this.service.isLoaded().subscribe(x => this.findEntityDef());
+  }
+
+  changeEntityName() {
+    this.name = this.entityName;
   }
 
 

@@ -1,23 +1,24 @@
+<script src="storage-query.component.ts"></script>
 <div class="card">
   <div class="card-header">
     <h3>Storage entity list</h3>
   </div>
   <div class="card-body">
 
-    <txs-free-query-input
-      *ngIf="options.freeQueryBuilder"
-      (queryState)="onQueryAction($event)"
-    >
-    </txs-free-query-input>
+    <div class="grid-choice">
+      <div class="grid-selection d-sm-inline-block" *ngFor="let viewType of viewTypes">
+        <a class="btn btn-light btn-sm" (click)="switchLayout(viewType)">
+          <i class="fa fa-list"></i>{{viewType.extra.label}}
+        </a>
+      </div>
+    </div>
 
-    <txs-datatable
-      #datatable
-      [component]="componentClass"
-      [columns]="columns"
+    <txs-storage-query-embedded
+      [name]="name"
       [options]="options"
-      [(params)]="params"
-      (doQuery)="doQuery($event)"
-    ></txs-datatable>
+      [componentClass]="gridComponentClass"
+    >
+    </txs-storage-query-embedded>
 
   </div>
 </div>

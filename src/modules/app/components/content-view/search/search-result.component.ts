@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {ViewContent} from '../../../../../../libs/views/decorators/ViewContent';
-import {TreeObject} from '../../../../../../libs/views/TreeObject';
-import {ViewComponent} from '../../../../../../libs/views/decorators/ViewComponent';
-import {AbstractComponent} from '../../../../../base/component/AbstractComponent';
+import {ViewContent} from '../../../../../libs/views/decorators/ViewContent';
+import {TreeObject} from '../../../../../libs/views/TreeObject';
+import {ViewComponent} from '../../../../../libs/views/decorators/ViewComponent';
+import {AbstractComponent} from '../../../../base/component/AbstractComponent';
 
 
 @ViewContent('search-result')

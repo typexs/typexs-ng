@@ -15,9 +15,8 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import {AbstractGridComponent} from './abstract-grid.component';
-import {AppService} from '../app.service';
-import {C_DEFAULT, CC_GRID} from '../constants';
 import {ComponentRegistryService} from '../component/component-registry.service';
+import {Log} from '../lib/log/Log';
 
 
 const inputKeys = ['columns', 'rows', 'maxRows', 'options', 'params'];
@@ -46,16 +45,58 @@ export class DatatableComponent extends AbstractGridComponent implements OnInit,
 
   constructor(@Inject(Injector) public injector: Injector,
               @Inject(ComponentFactoryResolver) public r: ComponentFactoryResolver,
-              @Inject(ComponentRegistryService) public config: ComponentRegistryService) {
+              @Inject(ComponentRegistryService) public componentRegistryService: ComponentRegistryService) {
     super();
   }
 
 
   ngOnInit(): void {
     if (!this.component) {
-      this.component = this.config.getComponentClass(C_DEFAULT, CC_GRID);
+      const binding = this.componentRegistryService.registry.find(x =>
+        x.component &&
+        _.get(x, 'extra.datatable', false) &&
+        _.get(x, 'extra.default', false));
+      if (!binding) {
+        throw new Error('can\'t find default grid component');
+      }
+      Log.debug('Select default grid component ' + binding.key);
+      this.component = binding.component;
     }
+    this.applyLayout(this.component);
+  }
+
+
+  api() {
+    return this.componentRef.instance;
+  }
+
+  /**
+   * Pass changes
+   *
+   * @param changes
+   */
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['component']) {
+      if (changes['component'].currentValue) {
+        this.applyLayout(changes['component'].currentValue);
+        this.rebuild();
+      }
+    } else {
+      if (this.componentRef && this.componentRef.instance) {
+        for (const key of _.keys(changes)) {
+          this.componentRef.instance[key] = changes[key].currentValue;
+          if (this.componentRef.instance[key + 'Change']) {
+            this.componentRef.instance[key + 'Change'].emit(changes[key].currentValue);
+          }
+        }
+        this.rebuild();
+      }
+    }
+  }
+
+  applyLayout(component: any) {
     this.vc.clear();
+    this.component = component;
     const factory = this.r.resolveComponentFactory(<any>this.component);
     this.componentRef = this.vc.createComponent(factory);
 
@@ -85,28 +126,6 @@ export class DatatableComponent extends AbstractGridComponent implements OnInit,
     ['rebuild', 'setMaxRows', 'setColumns', 'setRows', 'getMaxRows', 'getColumns', 'getRows'].forEach(x => {
       this[x] = this.api()[x].bind(this.api());
     });
-  }
-
-
-  api() {
-    return this.componentRef.instance;
-  }
-
-  /**
-   * Pass changes
-   *
-   * @param changes
-   */
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.componentRef && this.componentRef.instance) {
-      for (const key of _.keys(changes)) {
-        this.componentRef.instance[key] = changes[key].currentValue;
-        if (this.componentRef.instance[key + 'Change']) {
-          this.componentRef.instance[key + 'Change'].emit(changes[key].currentValue);
-        }
-      }
-      this.rebuild();
-    }
   }
 
   ngOnDestroy(): void {

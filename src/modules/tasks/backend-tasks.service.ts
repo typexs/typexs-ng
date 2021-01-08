@@ -64,7 +64,7 @@ export class BackendTasksService {
     this.queryService = injector.get(serviceClass);
   }
 
-  // TODO load config from Backend and check which mode is enabled 'local store' or 'distribued'. Cause of the select the correct
+  // TODO load componentRegistryService from Backend and check which mode is enabled 'local store' or 'distribued'. Cause of the select the correct
   // query handle
   loadConfig() {
   }

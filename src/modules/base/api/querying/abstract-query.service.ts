@@ -2,7 +2,7 @@ import {IQueringService} from './IQueringService';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import * as _ from 'lodash';
-import {IBuildOptions, IEntityRef, IEntityRefMetadata, ILookupRegistry, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
+import {IBuildOptions, IEntityRef, IEntityRefMetadata, ILookupRegistry} from 'commons-schema-api/browser';
 import {BackendClientService, IRoutePointer} from '../../backend-client.service';
 import {AuthService} from '../auth/auth.service';
 import {IFindOptions, ISaveOptions} from '@typexs/base/browser';
@@ -136,10 +136,11 @@ export abstract class AbstractQueryService implements IQueringService {
     if (!this.options.registryName) {
       return null;
     }
-    return LookupRegistry.$(this.options.registryName)
-      .find(XS_TYPE_ENTITY, (e: IEntityRef) => {
-        return e.machineName === _.snakeCase(name);
-      });
+    return this.getRegistry().getEntityRefFor(name);
+    // LookupRegistry.$(this.options.registryName)
+    //   .find(XS_TYPE_ENTITY, (e: IEntityRef) => {
+    //     return e.machineName === _.snakeCase(name);
+    //   });
   }
 
 
@@ -327,7 +328,6 @@ export abstract class AbstractQueryService implements IQueringService {
     const mode = aggrMode ? 'aggregate' : 'query';
     const buildOptions: IBuildOptions = {};
     this.buildOptions(mode, options, buildOptions);
-
     const apiOptions = {params: apiParams, query: additinalQuery};
     return this.callApi(this.getRoute(aggrMode ? 'aggregate' : 'query'), apiOptions, x => {
       x.entities = this.buildEntity(mode, entityDef, x.entities, buildOptions);

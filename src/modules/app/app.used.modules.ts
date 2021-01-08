@@ -7,7 +7,6 @@ import {FormsModule as NgFormsModule} from '@angular/forms';
 import {AdminModule} from '../admin/module';
 import {NavigatorModule} from '../navigator/module';
 import {FormsModule} from '../forms/module';
-import {ViewsModule} from '../views/views.module';
 import {BaseModule} from '../base/module';
 import {BaseAdminThemeModule} from '../base_admin_theme/base_admin_theme.module';
 import {AgGridModule} from 'ag-grid-angular';
@@ -23,7 +22,6 @@ export const APP_MODULES: Array<Type<any> | ModuleWithProviders | any[]> = [
   BaseModule.forRoot(),
   NgFormsModule,
   NavigatorModule,
-  ViewsModule,
   AdminModule,
   FormsModule.forRoot(),
   BaseAdminThemeModule,

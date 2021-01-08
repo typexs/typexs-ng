@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
-import {EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {ClassType, IEntityRef, JS_DATA_TYPES, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
+import {EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {ClassType, IEntityRef, JS_DATA_TYPES} from 'commons-schema-api/browser';
 import {IFindOptions, REGISTRY_TYPEORM} from '@typexs/base/browser';
 import {And, ExprDesc, Expressions} from 'commons-expressions/browser';
 import {IDTGridOptions} from '../../datatable/IDTGridOptions';
@@ -14,6 +14,8 @@ import {IQueryParams} from '../../datatable/IQueryParams';
 import {DEFAULT_DT_GRID_OPTIONS} from './Constants';
 import {AbstractGridComponent} from '../../datatable/abstract-grid.component';
 import {Helper} from './Helper';
+import {IQueryComponentApi} from './IQueryComponentApi';
+import {first} from 'rxjs/operators';
 
 
 /**
@@ -24,7 +26,7 @@ import {Helper} from './Helper';
  * - filters
  * - extend/add specialized columns
  */
-export class AbstractQueryEmbeddedComponent implements OnInit {
+export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQueryComponentApi {
 
   @Input()
   get params() {
@@ -55,7 +57,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
   limit = 25;
 
   @Input()
-  options: IDTGridOptions = DEFAULT_DT_GRID_OPTIONS;
+  options: IDTGridOptions = {}; // = DEFAULT_DT_GRID_OPTIONS;
 
   @Input()
   freeQuery: any;
@@ -75,17 +77,24 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
 
   error: any = null;
 
+  _isLoaded: boolean = false;
+
   @ViewChild('datatable', {static: true})
   datatable: DatatableComponent;
 
   private queringService: IQueringService;
 
 
+  getEntityRef() {
+    return this.entityRef;
+  }
+
   getQueryService() {
     return this.queringService;
   }
 
   applyInitialOptions() {
+    _.defaults(this.options, DEFAULT_DT_GRID_OPTIONS);
     if (this.options) {
       // set initial options
       this.params.offset = _.get(this.options, 'offset', 0);
@@ -107,7 +116,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
     this.queringService.isLoaded().subscribe(x => {
       this.findEntityDef();
       this.initialiseColumns();
-
+      this._isLoaded = true;
       // api maybe not loaded
       setTimeout(() => {
         this.doQuery(this.datatable.api());
@@ -115,14 +124,23 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (this._isLoaded) {
+      if (changes['componentClass']) {
+        this.datatable.gridReady.pipe(first()).subscribe(x => {
+          this.requery();
+        });
+      }
+    }
+  }
+
 
   findEntityDef() {
     if (!this.registryName) {
       return;
     }
-    this.entityRef = LookupRegistry.$(this.registryName).find(XS_TYPE_ENTITY, (e: IEntityRef) => {
-      return e.machineName === _.snakeCase(this.name);
-    });
+
+    this.entityRef = this.getQueryService().getRegistry().getEntityRefFor(this.name);
 
     if (!this.entityRef) {
       this.error = `Can't find entity type for ${this.name}.`;
@@ -176,7 +194,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
       });
 
       if (this.options.columnsPostProcess) {
-        this.options.columnsPostProcess(this.columns);
+        this.options.columnsPostProcess(this.columns, this);
       }
     }
   }
@@ -318,7 +336,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit {
     if (!_.get(this.options, 'columnsOverride', false)) {
       const columns = Helper.rebuildColumns(entities);
       if (this.options.columnsPostProcess) {
-        this.options.columnsPostProcess(this.columns);
+        this.options.columnsPostProcess(this.columns, this);
       }
       api.setColumns(columns);
     }

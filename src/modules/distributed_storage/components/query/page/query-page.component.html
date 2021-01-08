@@ -4,28 +4,20 @@
   </div>
   <div class="card-body">
 
-    <div class="form-group" *ngIf="options.entityTypeSelection">
-      <label for="entityName">Entity name</label>
-      <input type="text"
-             class="form-control" id="entityName" placeholder="Entity name"
-             [(ngModel)]="name"
-      >
+    <div class="grid-choice">
+      <div class="grid-selection d-sm-inline-block" *ngFor="let viewType of viewTypes">
+        <a class="btn btn-light btn-sm" (click)="switchLayout(viewType)">
+          <i class="fa fa-list"></i>{{viewType.extra.label}}
+        </a>
+      </div>
     </div>
 
-
-    <txs-free-query-input *ngIf="options.freeQueryBuilder"
-      (queryState)="onQueryAction($event)"
-    >
-    </txs-free-query-input>
-
-    <txs-datatable
-      #datatable
-      [component]="componentClass"
-      [columns]="columns"
+    <txs-distributed-storage-query-embedded
+      [name]="name"
       [options]="options"
-      [(params)]="params"
-      (doQuery)="doQuery($event)"
-    ></txs-datatable>
+      [componentClass]="gridComponentClass"
+    >
+    </txs-distributed-storage-query-embedded>
 
   </div>
 </div>

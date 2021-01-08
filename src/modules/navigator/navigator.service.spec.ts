@@ -426,7 +426,7 @@ describe('Service: NavigatorService', () => {
       });
       // const routes = service.getRebuildRoutes();
       // router.resetConfig(routes);
-      // service.read(router.config);
+      // service.read(router.componentRegistryService);
 
       const demoTree = service.getTree('demo');
 
@@ -452,7 +452,7 @@ describe('Service: NavigatorService', () => {
 
       // const routes = service.getRebuildRoutes();
       // router.resetConfig(routes);
-      // service.read(router.config);
+      // service.read(router.componentRegistryService);
 
       const demoTree = service.getTree('demo');
 

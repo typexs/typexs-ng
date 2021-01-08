@@ -68,7 +68,7 @@ export const ADMIN_ROUTES: Routes = [
         data: {label: 'Storages', group: 'admin', permissions: [PERMISSION_ACCESS_ADMIN_UI]}
       },
       {
-        path: 'system/config',
+        path: 'system/componentRegistryService',
         component: SystemConfigComponent,
         data: {label: 'Config', group: 'admin', permissions: [PERMISSION_ACCESS_ADMIN_UI]},
         canActivate: [AuthGuardService]

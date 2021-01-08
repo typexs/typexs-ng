@@ -8,9 +8,13 @@
       Waiting ...
     </div>
 
-    <pre>
-      {{ instance | json }}
-    </pre>
+    <div *ngIf="ready">
+      <txs-view [instance]="instance" allowViewModeSwitch="true" mode="full">
+        <div txsViewFallback>
+          <txs-simple-json [instance]="instance"></txs-simple-json>
+        </div>
+      </txs-view>
+    </div>
 
     <div>
       <a class="btn btn-primary" [routerLink]="[entityService.getNgUrlPrefix(),name,'query' ]">Query</a>

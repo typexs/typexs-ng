@@ -35,14 +35,17 @@ import {UI_ADMIN_LAYOUT} from '../admin/lib/Constants';
 import {EmbeddedStorageDefaultComponent} from './components/demos/embedded-storage/default.component';
 import {EmbeddedStorageOverviewComponent} from './components/demos/embedded-storage/overview.component';
 import {EmbeddedStorageAgGridComponent} from './components/demos/embedded-storage/ag-grid.component';
-import {TreeContentComponent} from './components/demos/content/content-demo.component';
-import {SearchResultComponent} from './components/demos/content/search/search-result.component';
-import {SearchEntryComponent} from './components/demos/content/search/search-entry.component';
-import {ViewParentComponent} from './components/demos/content/search/view-parent.component';
-import {TreeContentComponent} from './components/demos/content/content-view-child-demo.component';
+import {SearchResultComponent} from './components/content-view/search/search-result.component';
+import {SearchEntryComponent} from './components/content-view/search/search-entry.component';
+import {ViewParentComponent} from './components/content-view/search/view-parent.component';
 import {PersonComponent} from './components/entities/person/person.component';
 import {ComponentRegistryService} from '../base/component/component-registry.service';
 import {Person} from './entities/Person';
+import {TreeContentComponent} from './components/content-view/tree-content.component';
+import {TreeContentDynamicChangeComponent} from './components/content-view/tree-content-dynamic-change.component';
+import {SimpleViewVariantsComponent} from './components/content-view/simple-view-variants.component';
+import {BookComponent} from './components/entities/book/book.component';
+import {Book} from './entities/Book';
 
 
 @NgModule({
@@ -57,7 +60,7 @@ import {Person} from './entities/Person';
     SearchResultComponent,
     SearchEntryComponent,
     ViewParentComponent,
-    TreeContentComponent,
+    TreeContentDynamicChangeComponent,
     MenuDemoComponent,
     DummyComponent,
     PagerDemoComponent,
@@ -75,7 +78,9 @@ import {Person} from './entities/Person';
     EmbeddedStorageAgGridComponent,
     EmbeddedDistributedStorageComponent,
     DataViewComponent,
-    PersonComponent
+    PersonComponent,
+    BookComponent,
+    SimpleViewVariantsComponent
   ],
   entryComponents: [
     ...FORM_COMPONENTS,
@@ -83,7 +88,8 @@ import {Person} from './entities/Person';
     SearchEntryComponent,
     ViewParentComponent,
     AgGridWrapperComponent,
-    PersonComponent
+    PersonComponent,
+    BookComponent
   ],
   imports: APP_MODULES,
   providers: [
@@ -115,7 +121,8 @@ export class AppModule {
     this.navigatorService.addGroupEntry('admin/storage/.*', {label: 'Storage', group: 'admin'});
     this.navigatorService.addGroupEntry('admin/distributed-storage/.*', {label: 'Distributed Storage', group: 'admin'});
 
-    this.compService.setComponentForClass(PersonComponent, Person);
+    this.compService.setComponentForClass(PersonComponent, Person, { context: 'default', label: 'Default' });
+    this.compService.setComponentForClass(BookComponent, Book, { context: 'default', label: 'Default' });
 
     authService.init();
     // navigatorService.addGroupEntry('tables', {label: 'Tables', group: 'demo'});

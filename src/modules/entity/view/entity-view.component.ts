@@ -3,9 +3,10 @@ import {EntityService} from './../entity.service';
 import {ActivatedRoute} from '@angular/router';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
 import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
+import {IEntityRef} from 'commons-schema-api/browser';
 
 @Component({
-  selector: 'entity-view',
+  selector: 'txs-entity-view',
   templateUrl: './entity-view.component.html'
 })
 export class EntityViewComponent implements OnInit {
@@ -16,7 +17,7 @@ export class EntityViewComponent implements OnInit {
 
   id: string;
 
-  entityDef: EntityRef;
+  entityDef: IEntityRef;
 
   instance: any;
 
@@ -27,7 +28,7 @@ export class EntityViewComponent implements OnInit {
 
 
   ngOnInit() {
-    this.entityService.isReady(() => {
+    this.entityService.isLoaded().subscribe(x => {
       this.load();
     });
   }
@@ -36,15 +37,15 @@ export class EntityViewComponent implements OnInit {
   load() {
     this.name = this.route.snapshot.paramMap.get('name');
     this.id = this.route.snapshot.paramMap.get('id');
-    this.entityDef = EntityRegistry.$().getEntityRefByName(this.name);
+    this.entityDef = this.entityService.getEntityRefForName(this.name);
     if (this.entityDef) {
       this.entityService.get(this.name, this.id).subscribe((entity: any) => {
         this.instance = entity;
+        this.ready = true;
       });
     } else {
       this.error = `Can't find entity type for ${this.name}.`;
     }
-    this.ready = true;
   }
 
 

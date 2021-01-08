@@ -4,20 +4,22 @@
   </div>
   <div class="card-body">
 
-    <txs-free-query-input *ngIf="options.freeQueryBuilder"
-                          (queryState)="onQueryAction($event)"
-    >
-    </txs-free-query-input>
+
+    <div class="grid-choice">
+      <div class="grid-selection d-sm-inline-block" *ngFor="let viewType of viewTypes">
+        <a class="btn btn-light btn-sm" (click)="switchLayout(viewType)">
+          <i class="fa fa-list"></i>{{viewType.extra.label}}
+        </a>
+      </div>
+    </div>
 
 
-    <txs-datatable
-      #datatable
-      [component]="componentClass"
-      [columns]="columns"
+    <txs-entity-query-embedded
+      [name]="name"
       [options]="options"
-      [(params)]="params"
-      (doQuery)="doQuery($event)"
-    ></txs-datatable>
+      [componentClass]="gridComponentClass"
+    >
+    </txs-entity-query-embedded>
 
 
   </div>
