@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {IDTGridOptions} from '../../../../base/datatable/IDTGridOptions';
 import {ClassType} from 'commons-schema-api/browser';
 import {AbstractGridComponent} from '../../../../base/datatable/abstract-grid.component';
 import {IComponentBinding} from '../../../../../libs/views/IComponentBinding';
