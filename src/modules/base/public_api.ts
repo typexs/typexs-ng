@@ -44,7 +44,7 @@ export * from './component/IInstanceableComponent';
 export * from './component/ObjectToComponentResolver';
 export * from './component/IObjectToComponentResolver';
 export * from './component/json/json.component';
-export * from './component/view/view.component';
+export * from './component/view/view-data.component';
 
 export * from './datatable/simple-html-table/simple-html-table.component';
 export * from './datatable/simple-html-table/simple-html-cell.component';

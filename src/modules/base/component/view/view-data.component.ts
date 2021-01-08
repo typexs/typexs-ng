@@ -10,12 +10,12 @@ import {ClassUtils} from 'commons-base/browser';
 
 @Component({
   selector: 'txs-view',
-  templateUrl: 'view.component.html',
-  styleUrls: ['./view.component.scss']
+  templateUrl: 'view-data.component.html',
+  styleUrls: ['./view-data.component.scss']
   // host: {'(submit)': 'onSubmit($event)', '(reset)': 'onReset()'},
   // outputs: ['ngSubmit'],
 })
-export class ViewComponent<T extends TreeObject> extends AbstractComponent<T> implements OnInit {
+export class ViewDataComponent<T extends TreeObject> extends AbstractComponent<T> implements OnInit {
 
   private _build = false;
 
@@ -23,7 +23,7 @@ export class ViewComponent<T extends TreeObject> extends AbstractComponent<T> im
 
   private _mode: string = C_DEFAULT;
 
-  private viewModes: IComponentBinding[] = null;
+  viewModes: IComponentBinding[] = null;
 
   @Input()
   allowViewModeSwitch: boolean = false;

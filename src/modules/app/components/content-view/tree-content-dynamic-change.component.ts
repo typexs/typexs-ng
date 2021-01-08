@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {SearchEntry} from './search/search-entry.component';
 import {ViewParent} from './search/view-parent.component';
-import {ViewComponent} from '../../../base/component/view/view.component';
+import {ViewDataComponent} from '../../../base/component/view/view-data.component';
 
 
 @Component({
@@ -12,8 +12,8 @@ import {ViewComponent} from '../../../base/component/view/view.component';
 export class TreeContentDynamicChangeComponent implements OnInit {
   treeContent: any;
 
-  @ViewChild(ViewComponent, {static: true})
-  builder: ViewComponent<any>;
+  @ViewChild(ViewDataComponent, {static: true})
+  builder: ViewDataComponent<any>;
 
   ngOnInit() {
     this.treeContent = new ViewParent();

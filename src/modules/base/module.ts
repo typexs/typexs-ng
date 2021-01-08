@@ -36,7 +36,7 @@ import {Log} from './lib/log/Log';
 import {CommonModule} from '@angular/common';
 import {ComponentRegistryService} from './component/component-registry.service';
 import {ObjectToComponentResolver} from './component/ObjectToComponentResolver';
-import {ViewComponent} from './component/view/view.component';
+import {ViewDataComponent} from './component/view/view-data.component';
 import {ListViewComponent} from './datatable/list-view/list-view.component';
 import {JsonComponent} from './component/json/json.component';
 
@@ -61,7 +61,7 @@ const COMPONENTS = [
   PagerComponent,
   DatatableComponent,
   JsonComponent,
-  ViewComponent,
+  ViewDataComponent,
   ListViewComponent,
   SimpleHtmlTableComponent,
   SimpleHtmlCellComponent,
