@@ -16,12 +16,11 @@ import {
   API_CTRL_STORAGE_UPDATE_ENTITY,
   IStorageRefMetadata
 } from '@typexs/server/browser';
-import {REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base/browser';
+import {__CLASS__, __REGISTRY__, REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base/browser';
 import {IBuildOptions, IEntityRef} from 'commons-schema-api/browser';
 import {IQueringService} from '../base/api/querying/IQueringService';
 import {AbstractQueryService} from '../base/api/querying/abstract-query.service';
 import {C_RAW, C_SKIP_BUILDS, STORAGE_REQUEST_MODE} from '../base/api/querying/Constants';
-import {Log} from '../base/lib/log/Log';
 
 
 @Injectable()
@@ -73,19 +72,30 @@ export class StorageService extends AbstractQueryService implements IQueringServ
    * @param options
    * @private
    */
-  private static _buildEntitySingle(entityDef: IEntityRef, entity: any, options?: IBuildOptions) {
-    if (_.get(options, C_SKIP_BUILDS, false)) {
-      const x = entityDef.create();
-      _.assign(x, entity);
-      return x;
+  private _buildEntitySingle(entityDef: IEntityRef, entity: any, options?: IBuildOptions) {
+    let def = entityDef;
+    if (!entityDef) {
+      if (entity[__CLASS__] && entity[__REGISTRY__]) {
+        def = this.getRegistry().getEntityRefFor(entity[__CLASS__]);
+      }
     }
-    const opts = _.defaults(options, {
-      beforeBuild: StorageService._beforeBuild
-    });
-    if (_.get(options, C_RAW, false)) {
-      opts.beforeBuild = StorageService._beforeBuildRaw;
+
+    if (def) {
+      if (_.get(options, C_SKIP_BUILDS, false)) {
+        const x = def.create();
+        _.assign(x, entity);
+        return x;
+      }
+      const opts = _.defaults(options, {
+        beforeBuild: StorageService._beforeBuild
+      });
+      if (_.get(options, C_RAW, false)) {
+        opts.beforeBuild = StorageService._beforeBuildRaw;
+      }
+      return def.build(entity, opts);
+    } else {
+      return entity;
     }
-    return entityDef.build(entity, opts);
   }
 
 
@@ -93,18 +103,14 @@ export class StorageService extends AbstractQueryService implements IQueringServ
     if (method === 'aggregate') {
       return rawEntities;
     }
-    if (entityDef) {
-      let result = null;
-      if (_.isArray(rawEntities)) {
-        result = rawEntities.map(r => StorageService._buildEntitySingle(entityDef, r, options));
-      } else {
-        result = StorageService._buildEntitySingle(entityDef, rawEntities, options);
-      }
-      return result;
+
+    let result = null;
+    if (_.isArray(rawEntities)) {
+      result = rawEntities.map(r => this._buildEntitySingle(entityDef, r, options));
     } else {
-      Log.warn('passing entity cause not entity ref given');
-      return rawEntities;
+      result = this._buildEntitySingle(entityDef, rawEntities, options);
     }
+    return result;
 
   }
 

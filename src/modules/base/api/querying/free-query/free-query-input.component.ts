@@ -86,7 +86,7 @@ export class FreeQueryInputComponent implements OnInit, OnDestroy {
     }
   }
 
-  getQuery(){
+  getQuery() {
     return this.jsonQuery instanceof ExprDesc ? this.jsonQuery.toJson() : this.jsonQuery;
   }
 
