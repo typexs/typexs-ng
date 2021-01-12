@@ -132,7 +132,8 @@ export class BaseModule {
 
     compRegistry.setComponentForClass(JsonComponent, '.*', {
       context: 'json',
-      label: 'JSON'
+      label: 'JSON',
+      weight: 1000
     });
     this.appConfig.getBackendClient().check();
   }

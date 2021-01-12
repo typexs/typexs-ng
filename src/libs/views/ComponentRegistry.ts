@@ -107,6 +107,7 @@ export class ComponentRegistry {
       if (extra) {
         binding.extra = _.merge(binding.extra, extra);
       }
+      this.sort();
       return binding;
     }
     return null;
@@ -152,12 +153,17 @@ export class ComponentRegistry {
       exists = {
         key: _typeName,
         extra: {
-          tags: tags
+          tags: tags,
+          weight: 0
         }
       };
       this.handler.push(exists);
     }
     return exists;
+  }
+
+  sort() {
+    this.handler = _.orderBy(this.handler, x => _.get(x, 'extra.weight', 0));
   }
 
 
@@ -184,8 +190,13 @@ export class ComponentRegistry {
     if (extra) {
       binding.extra = _.merge(binding.extra, extra);
     }
+    this.sort();
     return binding;
+  }
 
+  remove(filter: (x: IComponentBinding) => boolean) {
+    _.remove(this.handler, filter);
+    this.sort();
   }
 
 }

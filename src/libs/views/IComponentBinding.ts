@@ -3,6 +3,8 @@ export interface IBindingInfo {
 
   tags?: string[];
 
+  weight?: number;
+
   [k: string]: any;
 }
 

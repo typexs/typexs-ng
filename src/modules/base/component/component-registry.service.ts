@@ -1,7 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import {ComponentRegistry} from '../../../libs/views/ComponentRegistry';
 import {IBindingInfo, IComponentBinding} from '../../../libs/views/IComponentBinding';
-import {ClassUtils} from 'commons-base/browser';
 import * as _ from 'lodash';
 import {C_DEFAULT} from '../constants';
 import {ObjectToComponentResolver} from './ObjectToComponentResolver';
@@ -62,6 +61,10 @@ export class ComponentRegistryService {
 
   setComponentForClass(comp: Function, handle: Function | string | RegExp, extra: IBindingInfo = null) {
     return this.registry.setComponentForClass(comp, handle, extra);
+  }
+
+  remove(filter: (x: IComponentBinding) => boolean) {
+    this.registry.remove(filter);
   }
 
 }
