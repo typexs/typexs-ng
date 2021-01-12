@@ -32,21 +32,18 @@ export class ComponentRegistryService {
         return found;
       }
     }
-    const _className = ComponentRegistry.getClassName(obj);
-    const className = _.snakeCase(_className);
-    const list = this.registry.forHandle(_className);
+    const className = ComponentRegistry.getClassName(obj);
+    const list = this.registry.forHandle(className);
     if (list.length === 0) {
       return null;
     }
     // return look for special mode context
-    const lookupKey = [className, context].map(x => _.snakeCase(x)).join('.');
-    const found = list.find(x => x.key === lookupKey);
+    const found = list.find(x => x.extra.context === context);
     if (found) {
       return found;
     }
     // return default
-    const lookupDefaultKey = [className, C_DEFAULT].map(x => _.snakeCase(x)).join('.');
-    return list.find(x => x.key === lookupDefaultKey);
+    return list.find(x => x.extra.context === C_DEFAULT);
   }
 
 

@@ -181,7 +181,14 @@ export class ComponentRegistry {
    * @param extra
    */
   setComponentForClass(comp: Function, handle: Function | RegExp | string, extra: IBindingInfo = null): IComponentBinding {
-    const className = _.isFunction(handle) ? _.snakeCase(ComponentRegistry.getClassName(handle)) : 'pattern';
+    let className = null;
+    if (_.isFunction(handle)) {
+      className = _.snakeCase(ComponentRegistry.getClassName(handle));
+    } else if (_.isRegExp(handle)) {
+      className = handle.source;
+    } else {
+      className = '' + handle;
+    }
     const context = extra && extra.context ? extra.context : C_DEFAULT;
     const lookupKey = [className, context].map(x => _.snakeCase(x)).join('.');
     const binding = this.getOrCreateDef(lookupKey, false);
