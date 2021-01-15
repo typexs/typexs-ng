@@ -4,7 +4,9 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {ExprDesc, Expressions} from 'commons-expressions/browser';
 import {QueryAction} from '../QueryAction';
 import {Log} from '../../../lib/log/Log';
-import Timeout = NodeJS.Timeout;
+import {Subject} from 'rxjs';
+import {Subscription} from 'rxjs/Subscription';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 
 @Component({
@@ -31,13 +33,19 @@ export class FreeQueryInputComponent implements OnInit, OnDestroy {
 
   historyToggle: boolean = false;
 
+  /**
+   * Query changed observable
+   */
+  queryChanged: Subject<string> = new Subject<string>();
+
+
+  subscription: Subscription;
+
   freeTextQuery = '';
 
   freeTextQueryError: string[] = [];
 
   jsonQuery: any = null;
-
-  timeout: Timeout;
 
   enabled: boolean = false;
 
@@ -46,6 +54,11 @@ export class FreeQueryInputComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.subscription = this.queryChanged
+      .pipe(debounceTime(500))
+      .pipe(distinctUntilChanged())
+      .subscribe(this.onQueryChange.bind(this));
+
     try {
       const value = localStorage.getItem('txs.query.history');
       this.history = JSON.parse(value);
@@ -53,11 +66,22 @@ export class FreeQueryInputComponent implements OnInit, OnDestroy {
         this.history = [];
       }
     } catch (e) {
-
     }
   }
 
+  onQueryChange(model: string) {
+    this.freeTextQuery = model;
+    this.build();
+  }
+
+  onQueryInput($event: any) {
+    this.queryChanged.next($event);
+  }
+
   ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
     try {
       localStorage.setItem('txs.query.history', JSON.stringify(this.history));
     } catch (e) {
@@ -104,10 +128,6 @@ export class FreeQueryInputComponent implements OnInit, OnDestroy {
     this.queryState.emit(new QueryAction(null, this.mode));
   }
 
-  onQueryInput($event: any) {
-    clearTimeout(this.timeout);
-    this.timeout = setTimeout(this.build.bind(this), 300);
-  }
 
   build() {
     this.freeTextQueryError = [];
