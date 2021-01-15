@@ -6,17 +6,12 @@ import {NavigatorModule} from '../navigator/module';
 import {ADMIN_ROUTES} from './routes';
 import {SystemRoutesComponent} from './system/routes/system-routes.component';
 import {SystemStoragesComponent} from './system/storages/system-storages.component';
-
 import {SystemConfigComponent} from './system/config/system-config.component';
 import {NgRoutesComponent} from './ng/routes/ng-routes.component';
 import {FormsModule} from '../forms/module';
 import {BaseModule} from '../base/module';
-// import {EntityModule} from '../entity/module';
 import {NavigatorService} from '../navigator/navigator.service';
 import {BaseAdminThemeModule} from '../base_admin_theme/base_admin_theme.module';
-// import {EntityService} from '../entity/entity.service';
-// import {StorageService} from '../storage/storage.service';
-// import {StorageModule} from '../storage/module';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {TasksModule} from '../tasks/module';
 import {BackendTasksService} from '../tasks/backend-tasks.service';
@@ -48,7 +43,6 @@ const PROVIDERS: Provider[] = [];
     BaseModule.forRoot(),
     NavigatorModule.forRoot(),
     RouterModule,
-    // RouterModule.forChild(ADMIN_ROUTES),
     FormsModule.forRoot(),
     TasksModule,
     FormsModule
