@@ -3,8 +3,7 @@ import {Injectable} from '@angular/core';
 import {ClassUtils} from 'commons-base/browser';
 import {IEntityRef, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
 import {IQueringService} from './api/querying/IQueringService';
-import {forkJoin, merge} from 'rxjs';
-import {first, last, mergeAll} from 'rxjs/operators';
+import {forkJoin} from 'rxjs';
 
 @Injectable()
 export class EntityResolverService {

@@ -47,6 +47,8 @@ export * from './component/IObjectToComponentResolver';
 export * from './component/entities/json/json.component';
 export * from './component/entities/abstract-entity-view.component';
 export * from './component/view/view-data.component';
+export * from './component/entities/page/page.component';
+
 
 export * from './datatable/simple-html-table/simple-html-table.component';
 export * from './datatable/simple-html-table/simple-html-cell.component';
