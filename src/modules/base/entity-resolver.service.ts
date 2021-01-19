@@ -114,7 +114,8 @@ export class EntityResolverService {
     if (values.length === 0) {
       return 'Unknown';
     }
-    return values.join(' - ');
+    const label = values.join(' - ').trim();
+    return _.isEmpty(label) ? 'Unknown' : label;
   }
 
 }

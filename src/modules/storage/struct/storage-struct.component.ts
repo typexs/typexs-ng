@@ -27,8 +27,8 @@ export class StorageStructComponent implements OnInit {
   propertyDefs: { property: IPropertyRef, level: number }[] = [];
 
 
-  constructor(public entityService: StorageService, private route: ActivatedRoute) {
-
+  constructor(public entityService: StorageService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -73,10 +73,12 @@ export class StorageStructComponent implements OnInit {
     if (level > 8) {
       return;
     }
-    for (const props of source.getPropertyRefs()) {
-      this.propertyDefs.push({property: props, level: level});
-      if (props.isReference()) {
-        this.scan(props.getTargetRef(), level + 1);
+    if (source) {
+      for (const props of source.getPropertyRefs()) {
+        this.propertyDefs.push({property: props, level: level});
+        if (props.isReference()) {
+          this.scan(props.getTargetRef(), level + 1);
+        }
       }
     }
   }
