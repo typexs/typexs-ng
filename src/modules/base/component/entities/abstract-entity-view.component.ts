@@ -14,6 +14,8 @@ export abstract class AbstractEntityViewComponent<T> implements IInstanceableCom
   @Input()
   options: IEntityViewOptions = {};
 
+  viewContext: string;
+
   loading: boolean = false;
 
   constructor(@Inject(EntityResolverService) private resolverService: EntityResolverService) {
@@ -26,6 +28,15 @@ export abstract class AbstractEntityViewComponent<T> implements IInstanceableCom
   setInstance(instance: T) {
     this.instance = instance;
   }
+
+  getViewContext(): string {
+    return this.viewContext;
+  }
+
+  setViewContext(context: string) {
+    this.viewContext = context;
+  }
+
 
   hasOption(path: string) {
     return _.has(this.options, path);
