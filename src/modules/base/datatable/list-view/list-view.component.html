@@ -15,7 +15,7 @@
                   [allowViewModeSwitch]="allowViewModeSwitch"
                   [mode]="viewMode">
           <div txsViewFallback>
-            <pre class="language-js">{{row | json}}</pre>
+            <txs-simple-json [instance]="row"></txs-simple-json>
           </div>
         </txs-view>
       </div>

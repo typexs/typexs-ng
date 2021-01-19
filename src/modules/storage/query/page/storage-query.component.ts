@@ -52,6 +52,14 @@ export class StorageQueryComponent
 
   }
 
+  switchQueryOption(name: string) {
+    if (name === 'raw') {
+      const raw = _.get(this.options, 'queryOptions.raw', false);
+      _.set(this.options, 'queryOptions.raw', !raw);
+      this.options = _.clone(this.options);
+    }
+  }
+
   columnsPostProcess(columns: IGridColumn[], api: IQueryComponentApi) {
     if (_.isArray(columns) && api) {
       columns.unshift(<IGridColumn & { urlPrefix: string }>{

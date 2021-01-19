@@ -27,6 +27,7 @@ import {EmbeddedStorageAgGridComponent} from './components/demos/embedded-storag
 import {TreeContentDynamicChangeComponent} from './components/content-view/tree-content-dynamic-change.component';
 import {TreeContentComponent} from './components/content-view/tree-content.component';
 import {SimpleViewVariantsComponent} from './components/content-view/simple-view-variants.component';
+import {EntityViewPageComponent} from '../base/component/entities/page/page.component';
 
 
 export const APP_ROUTES: Routes = [
@@ -87,6 +88,11 @@ export const APP_ROUTES: Routes = [
         data: {label: 'Data viewer', group: 'demo'},
       },
     ]
+  },
+  {
+    path: 'entity/:name/:id',
+    component: EntityViewPageComponent,
+    data: {label: 'Entity view', group: 'demo', skip: true},
   },
   {
     path: 'content',

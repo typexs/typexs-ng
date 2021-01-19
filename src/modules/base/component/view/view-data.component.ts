@@ -19,7 +19,7 @@ export class ViewDataComponent<T extends TreeObject> extends AbstractComponent<T
 
   private _build = false;
 
-  // inputKeys = ['mode'];
+  inputKeys = ['options'];
 
   private _mode: string = C_DEFAULT;
 
@@ -29,6 +29,9 @@ export class ViewDataComponent<T extends TreeObject> extends AbstractComponent<T
   allowViewModeSwitch: boolean = false;
 
   @Input()
+  options: any;
+
+  @Input()
   set mode(mode: string) {
     this.setViewContext(mode);
   }
@@ -36,6 +39,7 @@ export class ViewDataComponent<T extends TreeObject> extends AbstractComponent<T
   get mode() {
     return this.getViewContext();
   }
+
 
   @Input()
   set instance(value: any) {

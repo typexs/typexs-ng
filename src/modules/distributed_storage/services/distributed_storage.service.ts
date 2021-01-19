@@ -11,6 +11,7 @@ import {
 } from '@typexs/server/browser';
 import {IQueringService} from '../../base/api/querying/IQueringService';
 import {AbstractQueryService} from '../../base/api/querying/abstract-query.service';
+import {EntityResolverService} from '../../base/entity-resolver.service';
 
 
 @Injectable()
@@ -19,8 +20,9 @@ export class DistributedStorageService
   implements IQueringService {
 
   constructor(private http: BackendClientService,
-              private authService: AuthService) {
-    super(http, authService, {
+              private authService: AuthService,
+              private resolverService: EntityResolverService) {
+    super(http, authService, resolverService, {
       routes: {
         metadata: null,
         get: API_CTRL_DISTRIBUTED_STORAGE_GET_ENTITY,

@@ -1,5 +1,5 @@
 <div class="view-builder">
-  <div class="view-mode-choice float-right" *ngIf="allowViewModeSwitch">
+  <div class="view-mode-choice" *ngIf="allowViewModeSwitch">
       <div class="view-mode-selection d-sm-inline-block" *ngFor="let viewType of viewModes">
         <a class="btn btn-light btn-sm" (click)="switchLayout(viewType)"><i class="fa fa-list"></i>{{viewType.extra.label}}</a>
       </div>

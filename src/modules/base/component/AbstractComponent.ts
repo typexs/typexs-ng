@@ -87,6 +87,19 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
       instance.setInstance(content);
       this._created = true;
 
+      // // pass changing options
+      // if (this['setOptions'] && instance.getOptions) {
+      //   const fn = this['setOptions'].bind(this);
+      //   this['setOptions'] = (opts: any) => {
+      //     fn(opts);
+      //     instance.setOptions(opts);
+      //   };
+      //   // pass data
+      //   if (this['getOptions']) {
+      //     instance.setOptions(this['getOptions']());
+      //   }
+      // }
+
       // pass changing context
       if (this['setViewContext'] && instance.setViewContext) {
         const fn = this['setViewContext'].bind(this);
@@ -101,6 +114,7 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
       }
 
       // passing through input parameters
+
       for (const prop of this.inputKeys) {
         // instance[prop] = this[prop];
         try {

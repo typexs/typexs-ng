@@ -1,4 +1,5 @@
 import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import {Label} from '../../../src/libs/forms/decorators/Label';
 
 
 @Entity()
@@ -7,6 +8,7 @@ export class SimpleItem {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Label()
   @Column()
   name: string;
 
@@ -21,5 +23,6 @@ export class SimpleItem {
 
   @CreateDateColumn()
   created: Date = new Date();
+
 
 }

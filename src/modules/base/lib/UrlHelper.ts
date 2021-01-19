@@ -39,6 +39,10 @@ export class UrlHelper {
     }
   }
 
+  static buildId(data: { [k: string]: any }) {
+    return _.values(data).join(',');
+  }
+
 
   private static _buildLookupconditions(idProps: IPropertyRef[], data: any) {
     const idPk: string[] = [];

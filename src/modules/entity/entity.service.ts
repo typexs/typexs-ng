@@ -18,14 +18,15 @@ import {
 } from '@typexs/schema/browser';
 import {IBuildOptions, IEntityRef} from 'commons-schema-api/browser';
 import {STORAGE_REQUEST_MODE} from '../base/api/querying/Constants';
+import {EntityResolverService} from '../base/entity-resolver.service';
 
 
 @Injectable()
 export class EntityService extends AbstractQueryService implements IQueringService {
 
 
-  constructor(private http: BackendClientService, private authService: AuthService) {
-    super(http, authService, {
+  constructor(private http: BackendClientService, private authService: AuthService, private resolverService: EntityResolverService) {
+    super(http, authService, resolverService, {
       ngRoutePrefix: API_ENTITY_PREFIX,
       routes: {
         metadata: API_CTRL_ENTITY_METADATA_ALL_ENTITIES,

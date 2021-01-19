@@ -2,6 +2,7 @@
 export * from './module';
 export * from './constants';
 export * from './backend-client.service';
+export * from './entity-resolver.service';
 export * from './invoker.service';
 export * from './app.service';
 export * from './system-info.service';
@@ -43,7 +44,8 @@ export * from './component/component-registry.service';
 export * from './component/IInstanceableComponent';
 export * from './component/ObjectToComponentResolver';
 export * from './component/IObjectToComponentResolver';
-export * from './component/json/json.component';
+export * from './component/entities/json/json.component';
+export * from './component/entities/abstract-entity-view.component';
 export * from './component/view/view-data.component';
 
 export * from './datatable/simple-html-table/simple-html-table.component';

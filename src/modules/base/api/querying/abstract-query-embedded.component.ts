@@ -130,6 +130,8 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
         this.datatable.gridReady.pipe(first()).subscribe(x => {
           this.requery();
         });
+      } else if (changes['options']) {
+        this.requery();
       }
     }
   }

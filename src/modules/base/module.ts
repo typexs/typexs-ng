@@ -38,7 +38,9 @@ import {ComponentRegistryService} from './component/component-registry.service';
 import {ObjectToComponentResolver} from './component/ObjectToComponentResolver';
 import {ViewDataComponent} from './component/view/view-data.component';
 import {ListViewComponent} from './datatable/list-view/list-view.component';
-import {JsonComponent} from './component/json/json.component';
+import {EntityResolverService} from './entity-resolver.service';
+import {JsonComponent} from './component/entities/json/json.component';
+import {EntityViewPageComponent} from './component/entities/page/page.component';
 
 
 const PROVIDERS = [
@@ -53,7 +55,8 @@ const PROVIDERS = [
   PagerService,
   InvokerService,
   ComponentRegistryService,
-  ObjectToComponentResolver
+  ObjectToComponentResolver,
+  EntityResolverService
 ];
 
 const COMPONENTS = [
@@ -61,6 +64,7 @@ const COMPONENTS = [
   PagerComponent,
   DatatableComponent,
   JsonComponent,
+  EntityViewPageComponent,
   ViewDataComponent,
   ListViewComponent,
   SimpleHtmlTableComponent,

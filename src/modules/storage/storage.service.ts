@@ -21,14 +21,16 @@ import {IBuildOptions, IEntityRef} from 'commons-schema-api/browser';
 import {IQueringService} from '../base/api/querying/IQueringService';
 import {AbstractQueryService} from '../base/api/querying/abstract-query.service';
 import {C_RAW, C_SKIP_BUILDS, STORAGE_REQUEST_MODE} from '../base/api/querying/Constants';
+import {EntityResolverService} from '../base/entity-resolver.service';
 
 
 @Injectable()
 export class StorageService extends AbstractQueryService implements IQueringService {
 
   constructor(private http: BackendClientService,
-              private authService: AuthService) {
-    super(http, authService, {
+              private authService: AuthService,
+              private resolverService: EntityResolverService) {
+    super(http, authService, resolverService, {
       routes: {
         metadata: API_CTRL_STORAGE_METADATA_ALL_ENTITIES,
         get: API_CTRL_STORAGE_GET_ENTITY,

@@ -14,6 +14,7 @@ import {IAggregateOptions} from '@typexs/base/libs/storage/framework/IAggregateO
 import {Log} from '../../lib/log/Log';
 import {UrlHelper} from '../../lib/UrlHelper';
 import {filter, first} from 'rxjs/operators';
+import {EntityResolverService} from '../../entity-resolver.service';
 
 /**
  * Options for query service
@@ -45,6 +46,8 @@ export abstract class AbstractQueryService implements IQueringService {
 
   private _http: BackendClientService;
 
+  private _entityResolverService: EntityResolverService;
+
   private _authService: AuthService;
 
   private entityRefs: IEntityRef[] = [];
@@ -54,10 +57,13 @@ export abstract class AbstractQueryService implements IQueringService {
 
   constructor(http: BackendClientService,
               authService: AuthService,
+              entityResolverService: EntityResolverService,
               options: IQueryServiceOptions) {
     // this._registry = registry;
     this._http = http;
     this._authService = authService;
+    this._entityResolverService = entityResolverService;
+    this._entityResolverService.registerService(this);
     this.options = options;
     this.initialize();
 
@@ -189,7 +195,7 @@ export abstract class AbstractQueryService implements IQueringService {
           if (_.isArray(value)) {
             this.entityRefs = [];
             value.forEach(entityDefJson => {
-              let entity: any = this.getRegistry().getEntityRefFor(entityDefJson.name);
+              let entity: any = this.entityRefs.find(x => x.name === entityDefJson.name);
               if (!entity) {
                 entity = this.getRegistry().fromJson(entityDefJson);
               }
@@ -241,7 +247,17 @@ export abstract class AbstractQueryService implements IQueringService {
     }
     const entityDef = this.getEntityRefForName(entityName);
     // const obs = new BehaviorSubject<any>(null);
-    const apiParams = {name: entityName, id: entityId};
+    let buildEntityId = null;
+    if (_.isString(entityId) || _.isNumber(entityId)) {
+      buildEntityId = entityId;
+    } else if (_.isPlainObject(entityId) && !_.isEmpty(_.values(entityId))) {
+      buildEntityId = UrlHelper.buildId(entityId);
+    }
+
+    if (!buildEntityId) {
+      throw new Error('id for entity name is wrong ' + entityName + ' = ' + JSON.stringify(entityId));
+    }
+    const apiParams = {name: entityName, id: buildEntityId};
     const additinalQuery: any = {};
     // let apiUrl = this.apiUrl(this.options.urlGetEntity, );
     if (!_.isEmpty(options)) {
