@@ -10,6 +10,7 @@ import {BackendClientService} from '../base/backend-client.service';
 import {NoopAuthService} from '../base/api/auth/noop-auth.service';
 import {AuthService} from '../base/api/auth/auth.service';
 import {IEntityRefMetadata} from 'commons-schema-api/browser';
+import {EntityResolverService} from '../base/entity-resolver.service';
 
 
 /**
@@ -36,6 +37,7 @@ describe('StorageService', () => {
         {provide: AuthService, useClass: NoopAuthService},
         BackendClientService,
         MessageService,
+        EntityResolverService,
         StorageService
       ]
     });

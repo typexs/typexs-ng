@@ -13,6 +13,7 @@ import {MessageService} from './messages/message.service';
 import {Log} from './lib/log/Log';
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
 import {forkJoin} from 'rxjs';
+import {EntityResolverService} from './entity-resolver.service';
 
 
 /**
@@ -37,6 +38,7 @@ describe('BackendClientService', () => {
       ],
       providers: [
         MessageService,
+        EntityResolverService,
         BackendClientService
       ]
     });

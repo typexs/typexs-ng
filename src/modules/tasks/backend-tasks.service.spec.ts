@@ -12,6 +12,7 @@ import {SystemInfoService} from '../base/system-info.service';
 import {AppService} from '../base/app.service';
 import {Injector} from '@angular/core';
 import {StorageService} from '../storage/storage.service';
+import {EntityResolverService} from '../base/entity-resolver.service';
 
 
 /**
@@ -42,6 +43,8 @@ describe('BackendTasksService', () => {
         BackendTasksService,
         AppService,
         Injector,
+        EntityResolverService,
+        BackendClientService,
         StorageService
       ]
     });
