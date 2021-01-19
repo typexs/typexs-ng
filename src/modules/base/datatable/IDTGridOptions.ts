@@ -57,4 +57,9 @@ export interface IDTGridOptions {
    */
   queryOptions?: any;
 
+  /**
+   * Additional query options to pass
+   */
+  predefinedFilter?: any;
+
 }

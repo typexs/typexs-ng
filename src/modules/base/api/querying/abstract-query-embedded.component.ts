@@ -16,6 +16,7 @@ import {AbstractGridComponent} from '../../datatable/abstract-grid.component';
 import {Helper} from './Helper';
 import {IQueryComponentApi} from './IQueryComponentApi';
 import {first} from 'rxjs/operators';
+import {Log} from '../../lib/log/Log';
 
 
 /**
@@ -217,12 +218,24 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
 
 
   doQuery(api: IGridApi): void {
+    const filterQuery: ExprDesc[] = [];
     let executeQuery: any = null;
     let mangoQuery: ExprDesc = null;
     const mode = this.options.queryType === 'aggregate' ? 'aggregate' : 'query';
     const queryOptions: IFindOptions = {};
     if (this.options.queryOptions) {
       _.assign(queryOptions, this.options.queryOptions);
+    }
+    if (this.options.predefinedFilter) {
+      if (this.options.predefinedFilter instanceof ExprDesc) {
+        filterQuery.push(this.options.predefinedFilter);
+      }
+      try {
+        mangoQuery = Expressions.fromJson(this.options.predefinedFilter);
+        filterQuery.push(mangoQuery);
+      } catch (e) {
+        Log.error(e);
+      }
     }
 
     const _d: any = {};
@@ -247,7 +260,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
     }
     _.assign(queryOptions, _d);
 
-    const filterQuery: ExprDesc[] = [];
+
     if (api.params && !_.isEmpty(api.params.filters)) {
       _.keys(api.params.filters).map(k => {
         if (!_.isEmpty(api.params.filters[k])) {
