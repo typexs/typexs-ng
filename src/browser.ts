@@ -32,6 +32,7 @@ export * from './libs/forms/decorators/Grid';
 export * from './libs/forms/decorators/Checkbox';
 export * from './libs/forms/decorators/Select';
 export * from './libs/forms/decorators/Label';
+export * from './libs/forms/decorators/DynamicProperties';
 export * from './libs/forms/decorators/Radio';
 export * from './libs/forms/decorators/Readonly';
 export * from './libs/forms/decorators/Hidden';
