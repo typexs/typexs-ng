@@ -83,7 +83,8 @@ export class StorageService extends AbstractQueryService implements IQueringServ
     }
 
     if (def) {
-      if (_.get(options, C_SKIP_BUILDS, false)) {
+      const dynamic = def.getOptions('dynamic');
+      if (_.get(options, C_SKIP_BUILDS, false) || dynamic === true) {
         const x = def.create();
         _.assign(x, entity);
         return x;

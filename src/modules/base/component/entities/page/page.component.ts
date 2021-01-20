@@ -51,6 +51,7 @@ export class EntityViewPageComponent implements OnInit {
     }
 
     this.entityRef = this.resolver.getEntityRef(this.name);
+
     const service = this.resolver.getServiceForEntity(this.entityRef);
     service.get(this.name, this.id, opts).subscribe(x => {
       this.instance = x;
