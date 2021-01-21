@@ -45,12 +45,17 @@ export class EntityViewPageComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
 
     let opts = {};
+    this.entityRef = this.resolver.getEntityRef(this.name);
+    const dynamic = this.entityRef.getOptions('dynamic');
+    if (dynamic === true) {
+      opts['raw'] = true;
+    }
+
+
     try {
       opts = JSON.parse(this.route.snapshot.queryParamMap.get('opts'));
     } catch (e) {
     }
-
-    this.entityRef = this.resolver.getEntityRef(this.name);
 
     const service = this.resolver.getServiceForEntity(this.entityRef);
     service.get(this.name, this.id, opts).subscribe(x => {
