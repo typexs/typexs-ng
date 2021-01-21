@@ -51,7 +51,6 @@ export class EntityViewPageComponent implements OnInit {
       opts['raw'] = true;
     }
 
-
     try {
       opts = JSON.parse(this.route.snapshot.queryParamMap.get('opts'));
     } catch (e) {
