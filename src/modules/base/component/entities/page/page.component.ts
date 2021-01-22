@@ -44,7 +44,7 @@ export class EntityViewPageComponent implements OnInit {
     this.name = this.route.snapshot.paramMap.get('name');
     this.id = this.route.snapshot.paramMap.get('id');
 
-    let opts = {};
+    const opts = {};
     this.entityRef = this.resolver.getEntityRef(this.name);
     const dynamic = this.entityRef.getOptions('dynamic');
     if (dynamic === true) {
@@ -52,7 +52,8 @@ export class EntityViewPageComponent implements OnInit {
     }
 
     try {
-      opts = JSON.parse(this.route.snapshot.queryParamMap.get('opts'));
+      const _opts = JSON.parse(this.route.snapshot.queryParamMap.get('opts'));
+      _.assign(opts, _opts);
     } catch (e) {
     }
 
