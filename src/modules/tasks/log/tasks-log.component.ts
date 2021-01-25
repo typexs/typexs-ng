@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
 import {TaskRef} from '@typexs/base/browser';
 import {BackendTasksService} from '../backend-tasks.service';
-import {SystemInfoService} from '../../base/system-info.service';
+import {SystemInfoService} from '../../base/services/system-info.service';
 import {StorageService} from '../../storage/storage.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {IDTGridOptions} from '../../base/datatable/IDTGridOptions';

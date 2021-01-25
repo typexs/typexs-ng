@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 
 import * as _ from 'lodash';
 import {ITypexsOptions} from '@typexs/base/libs/ITypexsOptions';
-import {SystemInfoService} from '../../../base/system-info.service';
+import {SystemInfoService} from '../../../base/services/system-info.service';
 
 
 @Component({

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 
 
 import * as _ from 'lodash';
-import {SystemInfoService} from '../../../base/system-info.service';
+import {SystemInfoService} from '../../../base/services/system-info.service';
 import {INodeInfo} from '@typexs/base/libs/system/INodeInfo';
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
 import {interval, Subscription} from 'rxjs';

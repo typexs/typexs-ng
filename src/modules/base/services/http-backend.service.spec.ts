@@ -8,7 +8,7 @@ import {
   API_CTRL_SYSTEM_RUNTIME_NODE,
   IRoute
 } from '@typexs/server/browser';
-import {BackendClientService} from './backend-client.service';
+import {HttpBackendService} from './http-backend.service';
 import {MessageService} from './messages/message.service';
 import {Log} from './lib/log/Log';
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
@@ -17,7 +17,7 @@ import {EntityResolverService} from './entity-resolver.service';
 
 
 /**
- * BackendClientService
+ * HttpBackendService
  * ---------------
  *
  * - check ping
@@ -25,7 +25,7 @@ import {EntityResolverService} from './entity-resolver.service';
  *
  */
 describe('BackendClientService', () => {
-  let service: BackendClientService;
+  let service: HttpBackendService;
   let injector: TestBed;
   let httpMock: HttpTestingController;
 
@@ -39,12 +39,12 @@ describe('BackendClientService', () => {
       providers: [
         MessageService,
         EntityResolverService,
-        BackendClientService
+        HttpBackendService
       ]
     });
 
     injector = getTestBed();
-    service = injector.get(BackendClientService);
+    service = injector.get(HttpBackendService);
     httpMock = injector.get(HttpTestingController);
     Log.debug = console.log.bind(console);
   });

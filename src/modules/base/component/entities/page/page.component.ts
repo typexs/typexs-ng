@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {IEntityRef} from 'commons-schema-api/browser';
-import {EntityResolverService} from '../../../entity-resolver.service';
+import {EntityResolverService} from '../../../services/entity-resolver.service';
 
 @Component({
   selector: 'txs-entity-view-page',

@@ -3,7 +3,7 @@ import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit, Renderer2, Templ
 import {IUser} from '../../libs/api/auth/IUser';
 import PerfectScrollbar from 'perfect-scrollbar';
 import {IMenuOptions} from '../navigator/IMenuOptions';
-import {AppService} from '../base/app.service';
+import {AppService} from '../base/services/app.service';
 import {NavigatorService} from '../navigator/navigator.service';
 import {CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE} from '../base/constants';
 import {LogMessage} from '../base/messages/types/LogMessage';
@@ -13,7 +13,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {of} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {Log} from '../base/lib/log/Log';
-import {SystemInfoService} from '../base/system-info.service';
+import {SystemInfoService} from '../base/services/system-info.service';
 
 
 @Component({
@@ -104,10 +104,12 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
       this.cdRef.detectChanges();
     });
     subs.log = this.appStateService.getLogService().subscribe(this.onLogMessage.bind(this));
-    subs.count = this.appStateService.getBackendClient().getActiveCount().subscribe(x => {
-      this.requestCount = x;
-      this.cdRef.detectChanges();
-    });
+    if (this.appStateService.getBackendClient()['getActiveCount']) {
+      subs.count = this.appStateService.getBackendClient()['getActiveCount']().subscribe((x: number) => {
+        this.requestCount = x;
+        this.cdRef.detectChanges();
+      });
+    }
     subs.auth = this.getAuthService().isInitialized()
       .pipe(switchMap(x => {
         if (x) {

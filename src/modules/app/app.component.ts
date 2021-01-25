@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {AppService} from '../base/app.service';
+import {AppService} from '../base/services/app.service';
 
 
 @Component({

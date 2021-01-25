@@ -8,7 +8,7 @@ import {DISTRIBUTED_STORAGE_ROUTES} from './routes';
 import {DistributedStorageService} from './services/distributed_storage.service';
 import {DistributedStorageQueryEmbeddedComponent} from './components/query/embedded/query-embedded.component';
 import {DistributedStorageQueryPageComponent} from './components/query/page/query-page.component';
-import {AppService} from '../base/app.service';
+import {AppService} from '../base/services/app.service';
 
 const PROVIDERS = [
   DistributedStorageService,

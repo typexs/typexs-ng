@@ -1,34 +1,22 @@
 import * as _ from 'lodash';
 import {Injectable} from '@angular/core';
-import {MessageService} from './messages/message.service';
-import {MessageChannel} from './messages/MessageChannel';
-import {LogMessage} from './messages/types/LogMessage';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
-import {IApiCallOptions} from './lib/http/IApiCallOptions';
-import {API_CTRL_SERVER_PING, API_CTRL_SERVER_ROUTES, IRoute} from '@typexs/server/browser';
-import {IHttpRequestOptions} from './lib/http/IHttpRequestOptions';
+import {API_CTRL_SERVER_PING, API_CTRL_SERVER_ROUTES} from '@typexs/server/browser';
 import {catchError, filter, first, mergeMap, tap} from 'rxjs/operators';
-import {Log} from './lib/log/Log';
-import {UrlHelper} from './lib/UrlHelper';
-import {ErrorHelper} from './lib/ErrorHelper';
+import {IBackendClientService} from '../api/backend/IBackendClientService';
+import {MessageService} from '../messages/message.service';
+import {BACKEND_CLIENT_STATE} from '../api/backend/Constants';
+import {IRoutePointer} from '../api/backend/IRoutePointer';
+import {IApiCallOptions} from '../lib/http/IApiCallOptions';
+import {IHttpRequestOptions} from '../lib/http/IHttpRequestOptions';
+import {UrlHelper} from '../lib/UrlHelper';
+import {Log} from '../lib/log/Log';
+import {LogMessage} from '../messages/types/LogMessage';
+import {ErrorHelper} from '../lib/ErrorHelper';
+import {MessageChannel} from '../messages/MessageChannel';
 import {CryptUtils} from 'commons-base/browser';
-
-
-export interface IRoutePointer {
-  route: string;
-  method?: 'get' | 'post' | 'delete' | 'put' | 'patch';
-}
-
-
-/**
- *
- * Lifecycle
- *
- *  initial -> online -> idle -> offline
- *          -> offline -> online
- */
-export type BACKEND_CLIENT_STATE = 'inactive' | 'offline' | 'online' | 'loading' | 'initial';
+import {IRoute} from '../api/backend/IRoute';
 
 /**
  * The primary communication handle to the backend
@@ -36,7 +24,7 @@ export type BACKEND_CLIENT_STATE = 'inactive' | 'offline' | 'online' | 'loading'
  * - handles HTTP Requests to the backend, loads allowed routes
  */
 @Injectable()
-export class BackendClientService {
+export class HttpBackendService implements IBackendClientService {
 
 
   /**
@@ -119,7 +107,7 @@ export class BackendClientService {
    * Reload route informations from backend, this can happen
    */
   reloadRoutes(force: boolean = false) {
-    const obs = new Subject();
+    const obs = new Subject<IRoute[]>();
 
     if (!force && (this.state.getValue() === 'offline' || this.state.getValue() === 'initial')) {
       setTimeout(() => {
@@ -162,7 +150,7 @@ export class BackendClientService {
 
 
   check() {
-    const obs = new Subject();
+    const obs = new Subject<boolean>();
     this.ping().subscribe(
       x => {
         const ping = this.state.getValue();

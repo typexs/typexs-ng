@@ -1,5 +1,5 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
-import {SystemInfoService} from './system-info.service';
+import {SystemInfoService} from './services/system-info.service';
 import {DefaultAuthGuardService} from './api/auth/default-auth-guard.service';
 import {NoopAuthService} from './api/auth/noop-auth.service';
 import {AuthService} from './api/auth/auth.service';
@@ -8,9 +8,9 @@ import {MessageService} from './messages/message.service';
 import {AlertComponent} from './messages/alert.component';
 import {PagerComponent} from './pager/pager.component';
 import {PagerService} from './pager/PagerService';
-import {AppService} from './app.service';
-import {InvokerService} from './invoker.service';
-import {BackendClientService} from './backend-client.service';
+import {AppService} from './services/app.service';
+import {InvokerService} from './services/invoker.service';
+import {HttpBackendService} from './services/http-backend.service';
 import {DatatableComponent} from './datatable/datatable.component';
 import {SimpleHtmlTableComponent} from './datatable/simple-html-table/simple-html-table.component';
 import {SimpleHtmlCellComponent} from './datatable/simple-html-table/simple-html-cell.component';
@@ -38,19 +38,22 @@ import {ComponentRegistryService} from './component/component-registry.service';
 import {ObjectToComponentResolver} from './component/ObjectToComponentResolver';
 import {ViewDataComponent} from './component/view/view-data.component';
 import {ListViewComponent} from './datatable/list-view/list-view.component';
-import {EntityResolverService} from './entity-resolver.service';
+import {EntityResolverService} from './services/entity-resolver.service';
 import {JsonComponent} from './component/entities/json/json.component';
 import {EntityViewPageComponent} from './component/entities/page/page.component';
+import {BackendService} from './api/backend/backend.service';
 
 
 const PROVIDERS = [
   MessageService,
-  BackendClientService,
+  BackendService,
+  HttpBackendService,
   SystemInfoService,
   AuthService,
   AuthGuardService,
   {provide: AuthService, useClass: NoopAuthService},
   {provide: AuthGuardService, useClass: DefaultAuthGuardService},
+  {provide: BackendService, useClass: HttpBackendService},
   AppService,
   PagerService,
   InvokerService,

@@ -2,15 +2,15 @@ import {Injectable} from '@angular/core';
 import {NavigationCancel, NavigationEnd, NavigationError, Router} from '@angular/router';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
-import {AuthService} from './api/auth/auth.service';
-import {MessageService} from './messages/message.service';
-import {AuthMessage} from './messages/types/AuthMessage';
-import {C_ADMIN, CTXT_VIEW_ADMIN, CTXT_VIEW_DEFAULT, CTXT_VIEW_LOADING, CTXT_VIEW_LOGIN} from './constants';
+import {AuthService} from './../api/auth/auth.service';
+import {MessageService} from './../messages/message.service';
+import {AuthMessage} from './../messages/types/AuthMessage';
+import {C_ADMIN, CTXT_VIEW_ADMIN, CTXT_VIEW_DEFAULT, CTXT_VIEW_LOADING, CTXT_VIEW_LOGIN} from './../constants';
 import * as _ from 'lodash';
-import {BackendClientService} from './backend-client.service';
 import {switchMap} from 'rxjs/operators';
-import {of, Subject} from 'rxjs';
-import {Log} from './lib/log/Log';
+import {of} from 'rxjs';
+import {Log} from './../lib/log/Log';
+import {BackendService} from '../api/backend/backend.service';
 
 /**
  * The service is used for app status informations and distribution of this information on the front end.
@@ -44,7 +44,7 @@ export class AppService {
   }
 
   constructor(
-    private backendService: BackendClientService,
+    private backendService: BackendService,
     private authService: AuthService,
     private router: Router,
     private messageService: MessageService
@@ -87,7 +87,6 @@ export class AppService {
   getBackendClient() {
     return this.backendService;
   }
-
 
 
   getViewContext() {

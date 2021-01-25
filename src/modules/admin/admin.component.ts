@@ -1,5 +1,5 @@
 import {Component, Input, ViewEncapsulation} from '@angular/core';
-import {AppService} from '../base/app.service';
+import {AppService} from '../base/services/app.service';
 import {UI_ADMIN_LAYOUT} from './lib/Constants';
 
 @Component({

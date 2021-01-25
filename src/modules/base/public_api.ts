@@ -1,16 +1,22 @@
 // base module
 export * from './module';
 export * from './constants';
-export * from './backend-client.service';
-export * from './entity-resolver.service';
-export * from './invoker.service';
-export * from './app.service';
-export * from './system-info.service';
+export * from './services/http-backend.service';
+export * from './services/entity-resolver.service';
+export * from './services/invoker.service';
+export * from './services/app.service';
+export * from './services/system-info.service';
 
-export * from './api/auth/IAuthServiceProvider';
 export * from './api/auth/auth.service';
-export * from './api/auth/IAuthGuardProvider';
 export * from './api/auth/auth-guard.service';
+export * from './api/auth/default-auth-guard.service';
+export * from './api/auth/IAuthGuardProvider';
+export * from './api/auth/IAuthServiceProvider';
+export * from './api/auth/noop-auth.service';
+
+export * from './api/backend/IRoutePointer';
+export * from './api/backend/IBackendClientService';
+export * from './api/backend/backend.service';
 
 export * from './lib/ErrorHelper';
 export * from './lib/UrlHelper';

@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import * as _ from 'lodash';
 import {Observable} from 'rxjs/Observable';
 import {AuthService} from '../base/api/auth/auth.service';
-import {BackendClientService} from '../base/backend-client.service';
 import {
   API_CTRL_STORAGE_AGGREGATE_ENTITY,
   API_CTRL_STORAGE_DELETE_ENTITIES_BY_CONDITION,
@@ -21,31 +20,35 @@ import {IBuildOptions, IEntityRef} from 'commons-schema-api/browser';
 import {IQueringService} from '../base/api/querying/IQueringService';
 import {AbstractQueryService} from '../base/api/querying/abstract-query.service';
 import {C_RAW, C_SKIP_BUILDS, STORAGE_REQUEST_MODE} from '../base/api/querying/Constants';
-import {EntityResolverService} from '../base/entity-resolver.service';
+import {EntityResolverService} from '../base/services/entity-resolver.service';
+import {BackendService} from '../base/api/backend/backend.service';
 
 
 @Injectable()
 export class StorageService extends AbstractQueryService implements IQueringService {
 
-  constructor(private http: BackendClientService,
+  constructor(private backend: BackendService,
               private authService: AuthService,
               private resolverService: EntityResolverService) {
-    super(http, authService, resolverService, {
-      routes: {
-        metadata: API_CTRL_STORAGE_METADATA_ALL_ENTITIES,
-        get: API_CTRL_STORAGE_GET_ENTITY,
-        query: API_CTRL_STORAGE_FIND_ENTITY,
-        aggregate: API_CTRL_STORAGE_AGGREGATE_ENTITY,
-        delete: {route: API_CTRL_STORAGE_DELETE_ENTITY, method: 'delete'},
-        delete_by_condition: {route: API_CTRL_STORAGE_DELETE_ENTITIES_BY_CONDITION, method: 'delete'},
-        save: API_CTRL_STORAGE_SAVE_ENTITY,
-        update: API_CTRL_STORAGE_UPDATE_ENTITY,
-        update_by_condition: API_CTRL_STORAGE_UPDATE_ENTITIES_BY_CONDITION,
-      },
-      registry: TypeOrmEntityRegistry.$(),
-      ngRoutePrefix: '/storage',
-      registryName: REGISTRY_TYPEORM
-    });
+    super(
+      backend,
+      authService,
+      resolverService, {
+        routes: {
+          metadata: API_CTRL_STORAGE_METADATA_ALL_ENTITIES,
+          get: API_CTRL_STORAGE_GET_ENTITY,
+          query: API_CTRL_STORAGE_FIND_ENTITY,
+          aggregate: API_CTRL_STORAGE_AGGREGATE_ENTITY,
+          delete: {route: API_CTRL_STORAGE_DELETE_ENTITY, method: 'delete'},
+          delete_by_condition: {route: API_CTRL_STORAGE_DELETE_ENTITIES_BY_CONDITION, method: 'delete'},
+          save: API_CTRL_STORAGE_SAVE_ENTITY,
+          update: API_CTRL_STORAGE_UPDATE_ENTITY,
+          update_by_condition: API_CTRL_STORAGE_UPDATE_ENTITIES_BY_CONDITION,
+        },
+        registry: TypeOrmEntityRegistry.$(),
+        ngRoutePrefix: '/storage',
+        registryName: REGISTRY_TYPEORM
+      });
   }
 
 
@@ -126,7 +129,7 @@ export class StorageService extends AbstractQueryService implements IQueringServ
 
 
   getStorages(): Observable<IStorageRefMetadata[]> {
-    return this.http.callApi(API_CTRL_STORAGE_METADATA_ALL_STORES);
+    return this.backend.callApi(API_CTRL_STORAGE_METADATA_ALL_STORES);
   }
 
 

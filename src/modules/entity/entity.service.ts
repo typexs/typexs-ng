@@ -3,7 +3,6 @@ import * as _ from 'lodash';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
 import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
 import {AuthService} from '../base/api/auth/auth.service';
-import {BackendClientService} from '../base/backend-client.service';
 import {IQueringService} from '../base/api/querying/IQueringService';
 import {AbstractQueryService} from '../base/api/querying/abstract-query.service';
 import {
@@ -18,15 +17,16 @@ import {
 } from '@typexs/schema/browser';
 import {IBuildOptions, IEntityRef} from 'commons-schema-api/browser';
 import {STORAGE_REQUEST_MODE} from '../base/api/querying/Constants';
-import {EntityResolverService} from '../base/entity-resolver.service';
+import {EntityResolverService} from '../base/services/entity-resolver.service';
+import {BackendService} from '../base/api/backend/backend.service';
 
 
 @Injectable()
 export class EntityService extends AbstractQueryService implements IQueringService {
 
 
-  constructor(private http: BackendClientService, private authService: AuthService, private resolverService: EntityResolverService) {
-    super(http, authService, resolverService, {
+  constructor(private backend: BackendService, private authService: AuthService, private resolverService: EntityResolverService) {
+    super(backend, authService, resolverService, {
       ngRoutePrefix: API_ENTITY_PREFIX,
       routes: {
         metadata: API_CTRL_ENTITY_METADATA_ALL_ENTITIES,

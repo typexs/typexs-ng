@@ -4,7 +4,7 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import {RouterTestingModule} from '@angular/router/testing';
 import {Log} from '../base/lib/log/Log';
 import {MessageService} from '../base/messages/message.service';
-import {BackendClientService} from '../base/backend-client.service';
+import {HttpBackendService} from '../base/http-backend.service';
 import {NoopAuthService} from '../base/api/auth/noop-auth.service';
 import {AuthService} from '../base/api/auth/auth.service';
 import {BackendTasksService} from './backend-tasks.service';
@@ -16,7 +16,7 @@ import {EntityResolverService} from '../base/entity-resolver.service';
 
 
 /**
- * BackendClientService
+ * HttpBackendService
  * ---------------
  *
  * - check ping
@@ -37,14 +37,14 @@ describe('BackendTasksService', () => {
       ],
       providers: [
         {provide: AuthService, useClass: NoopAuthService},
-        BackendClientService,
+        HttpBackendService,
         MessageService,
         SystemInfoService,
         BackendTasksService,
         AppService,
         Injector,
         EntityResolverService,
-        BackendClientService,
+        HttpBackendService,
         StorageService
       ]
     });

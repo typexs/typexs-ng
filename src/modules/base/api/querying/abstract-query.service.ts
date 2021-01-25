@@ -3,7 +3,7 @@ import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import * as _ from 'lodash';
 import {IBuildOptions, IEntityRef, IEntityRefMetadata, ILookupRegistry} from 'commons-schema-api/browser';
-import {BackendClientService, IRoutePointer} from '../../backend-client.service';
+// import {HttpBackendService} from '../../services/http-backend.service';
 import {AuthService} from '../auth/auth.service';
 import {IFindOptions, ISaveOptions} from '@typexs/base/browser';
 import {IApiCallOptions} from '../../lib/http/IApiCallOptions';
@@ -14,37 +14,17 @@ import {IAggregateOptions} from '@typexs/base/libs/storage/framework/IAggregateO
 import {Log} from '../../lib/log/Log';
 import {UrlHelper} from '../../lib/UrlHelper';
 import {filter, first} from 'rxjs/operators';
-import {EntityResolverService} from '../../entity-resolver.service';
-
-/**
- * Options for query service
- */
-export interface IQueryServiceOptions {
-
-  routes: { [k in STORAGE_REQUEST_MODE]: string | IRoutePointer };
-
-  /**
-   * define default route in ng
-   */
-  ngRoutePrefix: string;
-
-  /**
-   * Name of the registry
-   */
-  registryName?: string;
-
-  /**
-   * Registry handle from type ILookupRegistry
-   */
-  registry?: ILookupRegistry;
-}
+import {EntityResolverService} from '../../services/entity-resolver.service';
+import {IRoutePointer} from '../backend/IRoutePointer';
+import {IQueryServiceOptions} from './IQueryServiceOptions';
+import {BackendService} from '../backend/backend.service';
 
 
 export abstract class AbstractQueryService implements IQueringService {
 
   protected $isReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  private _http: BackendClientService;
+  private _backend: BackendService;
 
   private _entityResolverService: EntityResolverService;
 
@@ -55,12 +35,12 @@ export abstract class AbstractQueryService implements IQueringService {
   private options: IQueryServiceOptions;
 
 
-  constructor(http: BackendClientService,
+  constructor(backend: BackendService,
               authService: AuthService,
               entityResolverService: EntityResolverService,
               options: IQueryServiceOptions) {
     // this._registry = registry;
-    this._http = http;
+    this._backend = backend;
     this._authService = authService;
     this._entityResolverService = entityResolverService;
     this._entityResolverService.registerService(this);
@@ -189,7 +169,7 @@ export abstract class AbstractQueryService implements IQueringService {
       return;
     }
     if (!this.$isReady.getValue()) {
-      const observable = this._http.callApi<IEntityRefMetadata[]>(this.getRoute('metadata'), {});
+      const observable = this._backend.callApi<IEntityRefMetadata[]>(this.getRoute('metadata'), {});
       observable.subscribe(
         value => {
           if (_.isArray(value)) {
@@ -507,7 +487,7 @@ export abstract class AbstractQueryService implements IQueringService {
 
   callApi(context: string | IRoutePointer, api: IApiCallOptions, resultHandle?: (x: any) => any) {
     const obs = new BehaviorSubject<any>(null);
-    const observable = this._http.callApi(context, api);
+    const observable = this._backend.callApi(context, api);
     observable.subscribe(
       value => {
         if (resultHandle) {

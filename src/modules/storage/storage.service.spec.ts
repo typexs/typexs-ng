@@ -6,7 +6,7 @@ import {API_CTRL_STORAGE_METADATA_ALL_ENTITIES} from '@typexs/server/browser';
 import {StorageService} from './storage.service';
 import {Log} from '../base/lib/log/Log';
 import {MessageService} from '../base/messages/message.service';
-import {BackendClientService} from '../base/backend-client.service';
+import {HttpBackendService} from '../base/http-backend.service';
 import {NoopAuthService} from '../base/api/auth/noop-auth.service';
 import {AuthService} from '../base/api/auth/auth.service';
 import {IEntityRefMetadata} from 'commons-schema-api/browser';
@@ -14,7 +14,7 @@ import {EntityResolverService} from '../base/entity-resolver.service';
 
 
 /**
- * BackendClientService
+ * HttpBackendService
  * ---------------
  *
  * - check ping
@@ -35,7 +35,7 @@ describe('StorageService', () => {
       ],
       providers: [
         {provide: AuthService, useClass: NoopAuthService},
-        BackendClientService,
+        HttpBackendService,
         MessageService,
         EntityResolverService,
         StorageService
@@ -57,7 +57,7 @@ describe('StorageService', () => {
 
   it('should have a service instance and load metadata', () => {
     const entitiesMetadata: IEntityRefMetadata[] = [];
-    const backendClientService: BackendClientService = injector.get(BackendClientService);
+    const backendClientService: HttpBackendService = injector.get(HttpBackendService);
     backendClientService.getState().next('online');
     backendClientService.addRoute({
       route: backendClientService.apiUrl(API_CTRL_STORAGE_METADATA_ALL_ENTITIES),

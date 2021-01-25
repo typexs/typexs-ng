@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import {Inject, Input} from '@angular/core';
 import {IInstanceableComponent} from '../IInstanceableComponent';
-import {EntityResolverService} from '../../entity-resolver.service';
+import {EntityResolverService} from '../../services/entity-resolver.service';
 import {IQueringService} from '../../api/querying/IQueringService';
 import {IEntityViewOptions} from './IEntityViewOptions';
 

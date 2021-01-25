@@ -13,8 +13,7 @@ import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import * as _ from 'lodash';
 import {C_WORKERS} from '@typexs/base/libs/worker/Constants';
-import {BackendClientService} from '../base/backend-client.service';
-import {SystemInfoService} from '../base/system-info.service';
+import {SystemInfoService} from '../base/services/system-info.service';
 import {TaskEvent} from '@typexs/base/libs/tasks/worker/TaskEvent';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
@@ -26,8 +25,9 @@ import {filter, first, mergeMap, takeUntil, tap} from 'rxjs/operators';
 import {combineLatest, timer} from 'rxjs';
 import {Log} from '../base/lib/log/Log';
 import {AbstractQueryService} from '../base/api/querying/abstract-query.service';
-import {AppService} from '../base/app.service';
+import {AppService} from '../base/services/app.service';
 import {StorageService} from '../storage/storage.service';
+import {BackendService} from '../base/api/backend/backend.service';
 
 
 /**
@@ -53,7 +53,7 @@ export class BackendTasksService {
   workerNodes: SystemNodeInfo[] = [];
 
 
-  constructor(private http: BackendClientService,
+  constructor(private backend: BackendService,
               private infoService: SystemInfoService,
               private appService: AppService,
               private injector: Injector) {
@@ -64,14 +64,16 @@ export class BackendTasksService {
     this.queryService = injector.get(serviceClass);
   }
 
-  // TODO load componentRegistryService from Backend and check which mode is enabled 'local store' or 'distribued'. Cause of the select the correct
+  // TODO
+  // load componentRegistryService from Backend and check which mode is enabled
+  // 'local store' or 'distribued'. Cause of the select the correct
   // query handle
   loadConfig() {
   }
 
 
   execute(name: string, parameters: any = {}, targetIds: string[] = [], options: ITaskExectorOptions = {}): Observable<TaskEvent[]> {
-    return this.http.callApi(API_CTRL_TASK_EXEC,
+    return this.backend.callApi(API_CTRL_TASK_EXEC,
       {
         params: {
           taskName: name
@@ -122,7 +124,7 @@ export class BackendTasksService {
     if (options) {
       apiOptions.query = {options: options};
     }
-    return this.http.callApi(API_CTRL_TASK_STATUS, apiOptions);
+    return this.backend.callApi(API_CTRL_TASK_STATUS, apiOptions);
   }
 
 
@@ -176,7 +178,7 @@ export class BackendTasksService {
     } else {
       opts.tail = tail;
     }
-    return this.http.callApi(API_CTRL_TASK_LOG,
+    return this.backend.callApi(API_CTRL_TASK_LOG,
       {params: {nodeId: nodeId, runnerId: runnerId}, query: opts});
   }
 
@@ -203,7 +205,7 @@ export class BackendTasksService {
             return false;
           });
 
-          this.http.callApi(API_CTRL_TASKS_METADATA).subscribe(
+          this.backend.callApi(API_CTRL_TASKS_METADATA).subscribe(
             (data: IEntityRefMetadata[]) => {
               this.tasks = new Tasks(null);
               data.forEach((d: any) => {
@@ -244,7 +246,7 @@ export class BackendTasksService {
       opts.instance = instance;
     }
 
-    return this.http.callApi(API_CTRL_TASK_GET_METADATA_VALUE, {
+    return this.backend.callApi(API_CTRL_TASK_GET_METADATA_VALUE, {
         params: {taskName: taskName, incomingName: incomingName}, query: opts
       }
     );

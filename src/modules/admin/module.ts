@@ -18,7 +18,7 @@ import {BackendTasksService} from '../tasks/backend-tasks.service';
 import {SystemNodesComponent} from './system/nodes/system-nodes.component';
 import {SystemNodeInfoComponent} from './system/nodes/node-info/system-node-info.component';
 import {SettingsComponent} from './components/settings/settings.component';
-import {AppService} from '../base/app.service';
+import {AppService} from '../base/services/app.service';
 import {CommonModule} from '@angular/common';
 
 const PROVIDERS: Provider[] = [];

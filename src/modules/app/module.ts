@@ -30,7 +30,7 @@ import {EntityService} from '../entity/entity.service';
 import {DistributedStorageService} from '../distributed_storage/services/distributed_storage.service';
 import {DataViewComponent} from './dataview/dataview.component';
 import {EmbeddedDistributedStorageComponent} from './components/demos/embedded-distributed-storage/embedded-distributed-storage.component';
-import {AppService} from '../base/app.service';
+import {AppService} from '../base/services/app.service';
 import {UI_ADMIN_LAYOUT} from '../admin/lib/Constants';
 import {EmbeddedStorageDefaultComponent} from './components/demos/embedded-storage/default.component';
 import {EmbeddedStorageOverviewComponent} from './components/demos/embedded-storage/overview.component';

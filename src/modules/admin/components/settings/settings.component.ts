@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AppService} from '../../../base/app.service';
+import {AppService} from '../../../base/services/app.service';
 import {ILoggerOptions} from '../../../base/lib/log/ILoggerOptions';
 import {Log, LOGLEVELS} from '../../../base/lib/log/Log';
 

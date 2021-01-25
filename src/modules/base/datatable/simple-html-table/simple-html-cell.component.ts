@@ -11,7 +11,6 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import {IGridColumn} from '../IGridColumn';
-import {AppService} from '../../app.service';
 import {CC_GRID_CELL_VALUE, SIMPLE_TABLE} from '../../constants';
 import {ComponentRegistryService} from '../../component/component-registry.service';
 

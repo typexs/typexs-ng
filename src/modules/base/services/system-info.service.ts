@@ -15,7 +15,7 @@ import {
 } from '@typexs/server/browser';
 import {IModule, IStorageOptions, ITypexsOptions} from '@typexs/base/browser';
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
-import {BackendClientService} from './backend-client.service';
+import {HttpBackendService} from './http-backend.service';
 import {IWorkerInfo} from '@typexs/base/libs/worker/IWorkerInfo';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
@@ -42,7 +42,7 @@ export class SystemInfoService {
   timetable: { [k: string]: number } = {};
 
 
-  constructor(private backendClientService: BackendClientService) {
+  constructor(private backendClientService: HttpBackendService) {
   }
 
 

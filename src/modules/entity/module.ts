@@ -12,7 +12,7 @@ import {BaseModule} from '../base/module';
 import {RouterModule} from '@angular/router';
 import {FormsModule as NgFormsModule} from '@angular/forms';
 import {EntityQueryEmbeddedComponent} from './query/embedded/entity-query-embedded.component';
-import {AppService} from '../base/app.service';
+import {AppService} from '../base/services/app.service';
 import {ENTITY_ROUTES} from './routes';
 import {CommonModule} from '@angular/common';
 

@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {SystemInfoService} from '../../base/system-info.service';
+import {SystemInfoService} from '../../base/services/system-info.service';
 import {IWorkerInfo} from '@typexs/base/libs/worker/IWorkerInfo';
-import {interval, Observable, Subscription, timer} from 'rxjs';
-import {mergeMap, tap} from 'rxjs/operators';
+import {Observable, Subscription, timer} from 'rxjs';
+import {mergeMap} from 'rxjs/operators';
 
 @Component({
   selector: 'dashboard',
@@ -40,7 +40,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
     this.pushTimer = timer(0, this.interval).pipe(mergeMap(x => this.infoService.refresh()));
-    this.subscriptions.add(this.pushTimer.subscribe(x =>  {}));
+    this.subscriptions.add(this.pushTimer.subscribe(x => {
+    }));
   }
 
 

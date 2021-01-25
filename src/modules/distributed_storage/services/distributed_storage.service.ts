@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {AuthService} from '../../base/api/auth/auth.service';
-import {BackendClientService} from '../../base/backend-client.service';
 import {
   API_CTRL_DISTRIBUTED_STORAGE,
   API_CTRL_DISTRIBUTED_STORAGE_DELETE_ENTITY,
@@ -11,7 +10,8 @@ import {
 } from '@typexs/server/browser';
 import {IQueringService} from '../../base/api/querying/IQueringService';
 import {AbstractQueryService} from '../../base/api/querying/abstract-query.service';
-import {EntityResolverService} from '../../base/entity-resolver.service';
+import {EntityResolverService} from '../../base/services/entity-resolver.service';
+import {BackendService} from '../../base/api/backend/backend.service';
 
 
 @Injectable()
@@ -19,10 +19,10 @@ export class DistributedStorageService
   extends AbstractQueryService
   implements IQueringService {
 
-  constructor(private http: BackendClientService,
+  constructor(private backend: BackendService,
               private authService: AuthService,
               private resolverService: EntityResolverService) {
-    super(http, authService, resolverService, {
+    super(backend, authService, resolverService, {
       routes: {
         metadata: null,
         get: API_CTRL_DISTRIBUTED_STORAGE_GET_ENTITY,

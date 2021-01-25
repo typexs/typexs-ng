@@ -16,7 +16,7 @@ import {StorageQueryEmbeddedComponent} from './query/embedded/storage-query-embe
 import {STORAGE_ROUTES} from './routes';
 import {StorageAggregateComponent} from './aggregate/page/storage-aggregate.component';
 import {StorageAggregateEmbeddedComponent} from './aggregate/embedded/storage-aggregate-embedded.component';
-import {AppService} from '../base/app.service';
+import {AppService} from '../base/services/app.service';
 // import {StorageRoutingModule} from './module.routing';
 // import {LAZY_STORAGE_ROUTES} from './routes.lazy';
 

@@ -1,9 +1,7 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
 import {IRoute} from '@typexs/server/libs/server/IRoute';
-
 import * as _ from 'lodash';
-import {SystemInfoService} from '../../../base/system-info.service';
+import {SystemInfoService} from '../../../base/services/system-info.service';
 
 
 const API_CTRL_URL = '/api/routes';
@@ -25,8 +23,8 @@ export class SystemRoutesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.infoService.loadRoutes((err:Error,x:IRoute[]) => {
-      if(x){
+    this.infoService.loadRoutes((err: Error, x: IRoute[]) => {
+      if (x) {
         this.routes = x;
       }
     });
