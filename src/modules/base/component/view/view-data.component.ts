@@ -78,6 +78,7 @@ export class ViewDataComponent<T extends TreeObject> extends AbstractComponent<T
 
   private __build() {
     if (!this._build && this.instance) {
+      // TODO check permissions for this!
       if (this.allowViewModeSwitch) {
         const className = ClassUtils.getClassName(this.instance);
         this.viewModes = this.componentRegistry.registry
@@ -90,5 +91,44 @@ export class ViewDataComponent<T extends TreeObject> extends AbstractComponent<T
       this._build = true;
     }
   }
+
+  addViewMode(obj: IComponentBinding, viewMode: string) {
+    if (!_.isEmpty(this.viewModes)) {
+      // add view mode dynamically if not present
+      const exists = this.viewModes.find(x => x.extra.context === viewMode);
+      if (!exists) {
+        const append: IComponentBinding = {
+          key: '',
+          component: obj.component,
+          handle: obj.handle,
+          extra: _.clone(_.get(obj, 'extra', {}))
+        };
+        append.extra.context = viewMode;
+        append.extra.label = _.upperFirst(viewMode);
+        this.viewModes.unshift(append);
+      }
+    }
+  }
+
+  buildComponentForObject(content: any) {
+    const context = this['getViewContext'] ? this['getViewContext']() : C_DEFAULT;
+    const obj = this.getComponentRegistry().getComponentForObject(content, context);
+    console.log('viewModes');
+    if (!_.isNull(this.viewModes) && _.isFunction(obj.component['supportedViewModes'])) {
+      const viewModes: string[] = obj.component['supportedViewModes'].call(null);
+      if (!_.isEmpty(viewModes)) {
+        viewModes.forEach(x => {
+          this.addViewMode(obj, x);
+        });
+      }
+    }
+
+    this.addViewMode(obj, context);
+    if (obj && obj.component) {
+      return this.buildComponent(obj.component as any, content);
+    }
+    return null;
+  }
+
 }
 

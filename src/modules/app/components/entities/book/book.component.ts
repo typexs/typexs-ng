@@ -15,6 +15,10 @@ export class BookComponent implements IInstanceableComponent<Book> {
 
   viewMode: string;
 
+  static supportedViewModes() {
+    return ['teaser', 'full'];
+  }
+
   getViewContext(): string {
     return this.viewMode;
   }

@@ -55,6 +55,15 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
     return this._created;
   }
 
+  buildComponentForObject(content: any) {
+    const context = this['getViewContext'] ? this['getViewContext']() : C_DEFAULT;
+    const obj = this.getComponentRegistry().getComponentForObject(content, context);
+    if (obj && obj.component) {
+      return this.buildComponent(obj.component as any, content);
+    }
+    return null;
+  }
+
   buildSelf(content: any): IInstanceableComponent<any> {
     if (content) {
       if (isTreeObject(content)) {
@@ -63,11 +72,7 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
           return this.buildComponent(handle.component as any, content);
         }
       } else {
-        const context = this['getViewContext'] ? this['getViewContext']() : C_DEFAULT;
-        const obj = this.getComponentRegistry().getComponentForObject(content, context);
-        if (obj && obj.component) {
-          return this.buildComponent(obj.component as any, content);
-        }
+        return this.buildComponentForObject(content);
       }
     }
     return null;
