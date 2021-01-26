@@ -16,9 +16,10 @@ import {
   REGISTRY_TXS_SCHEMA
 } from '@typexs/schema/browser';
 import {IBuildOptions, IEntityRef} from 'commons-schema-api/browser';
-import {STORAGE_REQUEST_MODE} from '../base/api/querying/Constants';
+import {C_RAW, C_SKIP_BUILDS, STORAGE_REQUEST_MODE} from '../base/api/querying/Constants';
 import {EntityResolverService} from '../base/services/entity-resolver.service';
 import {BackendService} from '../base/api/backend/backend.service';
+import {__CLASS__, __REGISTRY__} from '@typexs/base/browser';
 
 
 @Injectable()
@@ -51,29 +52,73 @@ export class EntityService extends AbstractQueryService implements IQueringServi
     });
   }
 
-
-  private static _buildEntitySingle(entityDef: IEntityRef, entity: any) {
-    return entityDef.build(entity, {
-      beforeBuild: EntityService._beforeBuild
+  private static _beforeBuildRaw(entityDef: IEntityRef, from: any, to: any) {
+    _.keys(from).filter(k => !k.startsWith('$')).forEach(k => {
+      to[k] = from[k];
     });
   }
 
-  private static _buildEntity(entityDef: IEntityRef, rawEntities: any | any[]) {
 
-    let result = null;
-    if (_.isArray(rawEntities)) {
-      result = rawEntities.map(r => EntityService._buildEntitySingle(entityDef, r));
-    } else {
-      result = EntityService._buildEntitySingle(entityDef, rawEntities);
+  /**
+   * Postprocess retrieved entity by declared build options. By default the build copy "$"
+   * starting members and pass only members by entity schema definition.
+   *
+   * - supports "raw" find option to by pass schema filter
+   * - with "skipBuilds" the build process can be overruled
+   *
+   *
+   * @param entityDef
+   * @param entity
+   * @param options
+   * @private
+   */
+  private _buildEntitySingle(entityDef: IEntityRef, entity: any, options?: IBuildOptions) {
+    let def = entityDef;
+    if (!entityDef) {
+      if (entity[__CLASS__] && entity[__REGISTRY__]) {
+        def = this.getRegistry().getEntityRefFor(entity[__CLASS__]);
+      }
     }
 
-    return result;
+    if (def) {
+      const dynamic = def.getOptions('dynamic');
+      if (_.get(options, C_SKIP_BUILDS, false) || dynamic === true) {
+        const x = def.create();
+        _.assign(x, entity);
+        return x;
+      }
+      const opts = _.defaults(options, {
+        beforeBuild: EntityService._beforeBuild
+      });
+      if (_.get(options, C_RAW, false)) {
+        opts.beforeBuild = EntityService._beforeBuildRaw;
+      }
+      return def.build(entity, opts);
+    } else {
+      return entity;
+    }
   }
 
 
   buildEntity?(method: STORAGE_REQUEST_MODE,
-               entityRef: IEntityRef, entity: any | any[], buildOptions: IBuildOptions = {}) {
-    return EntityService._buildEntity(entityRef, entity);
+               entityRef: IEntityRef, rawEntities: any | any[], buildOptions: IBuildOptions = {}) {
+    if (method === 'aggregate') {
+      return rawEntities;
+    }
+
+    let result = null;
+    if (_.isArray(rawEntities)) {
+      result = rawEntities.map(r => this._buildEntitySingle(entityRef, r, buildOptions));
+    } else {
+      result = this._buildEntitySingle(entityRef, rawEntities, buildOptions);
+    }
+    return result;
+  }
+
+  buildOptions(method: STORAGE_REQUEST_MODE, options: any, buildOptions: any) {
+    if (_.get(options, C_RAW, false)) {
+      _.set(buildOptions, C_RAW, options.raw);
+    }
   }
 
 }
