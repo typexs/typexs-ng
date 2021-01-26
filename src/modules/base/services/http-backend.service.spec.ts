@@ -9,11 +9,11 @@ import {
   IRoute
 } from '@typexs/server/browser';
 import {HttpBackendService} from './http-backend.service';
-import {MessageService} from './messages/message.service';
-import {Log} from './lib/log/Log';
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
 import {forkJoin} from 'rxjs';
 import {EntityResolverService} from './entity-resolver.service';
+import {MessageService} from '../messages/message.service';
+import {Log} from '../lib/log/Log';
 
 
 /**

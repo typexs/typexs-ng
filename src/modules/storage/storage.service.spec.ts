@@ -1,16 +1,16 @@
 import {getTestBed, TestBed} from '@angular/core/testing';
-// import {expect} from 'jasmine';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {API_CTRL_STORAGE_METADATA_ALL_ENTITIES} from '@typexs/server/browser';
 import {StorageService} from './storage.service';
 import {Log} from '../base/lib/log/Log';
 import {MessageService} from '../base/messages/message.service';
-import {HttpBackendService} from '../base/http-backend.service';
 import {NoopAuthService} from '../base/api/auth/noop-auth.service';
 import {AuthService} from '../base/api/auth/auth.service';
 import {IEntityRefMetadata} from 'commons-schema-api/browser';
-import {EntityResolverService} from '../base/entity-resolver.service';
+import {HttpBackendService} from '../base/services/http-backend.service';
+import {EntityResolverService} from '../base/services/entity-resolver.service';
+import {BackendService} from '../base/api/backend/backend.service';
 
 
 /**
@@ -34,8 +34,8 @@ describe('StorageService', () => {
         RouterTestingModule
       ],
       providers: [
+        {provide: BackendService, useClass: HttpBackendService},
         {provide: AuthService, useClass: NoopAuthService},
-        HttpBackendService,
         MessageService,
         EntityResolverService,
         StorageService
@@ -57,7 +57,7 @@ describe('StorageService', () => {
 
   it('should have a service instance and load metadata', () => {
     const entitiesMetadata: IEntityRefMetadata[] = [];
-    const backendClientService: HttpBackendService = injector.get(HttpBackendService);
+    const backendClientService: HttpBackendService = injector.get(BackendService) as HttpBackendService;
     backendClientService.getState().next('online');
     backendClientService.addRoute({
       route: backendClientService.apiUrl(API_CTRL_STORAGE_METADATA_ALL_ENTITIES),
