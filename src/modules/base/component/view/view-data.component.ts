@@ -113,18 +113,17 @@ export class ViewDataComponent<T extends TreeObject> extends AbstractComponent<T
   buildComponentForObject(content: any) {
     const context = this['getViewContext'] ? this['getViewContext']() : C_DEFAULT;
     const obj = this.getComponentRegistry().getComponentForObject(content, context);
-    console.log('viewModes');
-    if (!_.isNull(this.viewModes) && _.isFunction(obj.component['supportedViewModes'])) {
-      const viewModes: string[] = obj.component['supportedViewModes'].call(null);
-      if (!_.isEmpty(viewModes)) {
-        viewModes.forEach(x => {
-          this.addViewMode(obj, x);
-        });
-      }
-    }
-
-    this.addViewMode(obj, context);
     if (obj && obj.component) {
+      if (!_.isNull(this.viewModes) && _.isFunction(obj.component['supportedViewModes'])) {
+        const viewModes: string[] = obj.component['supportedViewModes'].call(null);
+        if (!_.isEmpty(viewModes)) {
+          viewModes.forEach(x => {
+            this.addViewMode(obj, x);
+          });
+        }
+      }
+
+      this.addViewMode(obj, context);
       return this.buildComponent(obj.component as any, content);
     }
     return null;

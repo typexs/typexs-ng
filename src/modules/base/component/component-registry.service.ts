@@ -1,7 +1,7 @@
+import * as _ from 'lodash';
 import {Inject, Injectable} from '@angular/core';
 import {ComponentRegistry} from '../../../libs/views/ComponentRegistry';
 import {IBindingInfo, IComponentBinding} from '../../../libs/views/IComponentBinding';
-import * as _ from 'lodash';
 import {C_DEFAULT} from '../constants';
 import {ObjectToComponentResolver} from './ObjectToComponentResolver';
 
@@ -43,7 +43,11 @@ export class ComponentRegistryService {
       return found;
     }
     // return default
-    return list.find(x => x.extra.context === C_DEFAULT);
+    const defaultFound = list.find(x => x.extra.context === C_DEFAULT);
+    if (defaultFound) {
+      return defaultFound;
+    }
+    return _.first(list);
   }
 
 
