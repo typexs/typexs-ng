@@ -62,4 +62,9 @@ export interface IDTGridOptions {
    */
   predefinedFilter?: any;
 
+  /**
+   * query on init
+   */
+  queryOnInit?: boolean;
+
 }

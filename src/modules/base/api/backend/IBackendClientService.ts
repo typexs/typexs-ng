@@ -14,4 +14,10 @@ export interface IBackendClientService {
 
   callApi<T>(context: string | IRoutePointer, options?: IApiCallOptions): Observable<T>;
 
+  areRoutesLoaded(): Observable<boolean>;
+
+  // TODO add Route
+
+  // TODO getRoute
+
 }

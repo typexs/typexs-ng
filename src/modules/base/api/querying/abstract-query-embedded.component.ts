@@ -119,9 +119,11 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
       this.initialiseColumns();
       this._isLoaded = true;
       // api maybe not loaded
-      setTimeout(() => {
-        this.doQuery(this.datatable.api());
-      });
+      if (_.get(this.options, 'queryOnInit', true)) {
+        setTimeout(() => {
+          this.doQuery(this.datatable.api());
+        });
+      }
     });
   }
 
@@ -264,7 +266,12 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
     if (api.params && !_.isEmpty(api.params.filters)) {
       _.keys(api.params.filters).map(k => {
         if (!_.isEmpty(api.params.filters[k])) {
-          filterQuery.push(api.params.filters[k]);
+          try {
+            const mq = Expressions.fromJson(api.params.filters[k]);
+            filterQuery.push(mq);
+          } catch (e) {
+            Log.error(e);
+          }
         }
       });
     }
@@ -288,7 +295,12 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
       }
 
       if (mangoQuery) {
-        executeQuery = mangoQuery.toJson();
+        if (mangoQuery.toJson) {
+          executeQuery = mangoQuery.toJson();
+        } else {
+          executeQuery = mangoQuery;
+        }
+
       }
 
       this.queringService.query(this.name, executeQuery, queryOptions)
