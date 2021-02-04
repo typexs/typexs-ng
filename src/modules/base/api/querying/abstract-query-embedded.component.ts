@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import {EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {ClassType, IEntityRef, JS_DATA_TYPES} from 'commons-schema-api/browser';
 import {IFindOptions, REGISTRY_TYPEORM} from '@typexs/base/browser';
-import {And, ExprDesc, Expressions} from 'commons-expressions/browser';
+import {ExprDesc, Expressions} from 'commons-expressions/browser';
 import {IDTGridOptions} from '../../datatable/IDTGridOptions';
 import {IGridColumn} from '../../datatable/IGridColumn';
 import {C_PROPERTY, C_URL_PREFIX, CC_GRID_CELL_ENTITY_REFERENCE, CC_GRID_CELL_OBJECT_REFERENCE, CC_GRID_CELL_VALUE} from '../../constants';
@@ -16,7 +16,6 @@ import {AbstractGridComponent} from '../../datatable/abstract-grid.component';
 import {Helper} from './Helper';
 import {IQueryComponentApi} from './IQueryComponentApi';
 import {first} from 'rxjs/operators';
-import {Log} from '../../lib/log/Log';
 
 
 /**
@@ -220,9 +219,9 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
 
 
   doQuery(api: IGridApi): void {
-    const filterQuery: ExprDesc[] = [];
+    const filterQuery: object[] = [];
     let executeQuery: any = null;
-    let mangoQuery: ExprDesc = null;
+    let mangoQuery: object = null;
     const mode = this.options.queryType === 'aggregate' ? 'aggregate' : 'query';
     const queryOptions: IFindOptions = {};
     if (this.options.queryOptions) {
@@ -230,14 +229,16 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
     }
     if (this.options.predefinedFilter) {
       if (this.options.predefinedFilter instanceof ExprDesc) {
+        filterQuery.push(this.options.predefinedFilter.toJson());
+      } else {
         filterQuery.push(this.options.predefinedFilter);
       }
-      try {
-        mangoQuery = Expressions.fromJson(this.options.predefinedFilter);
-        filterQuery.push(mangoQuery);
-      } catch (e) {
-        Log.error(e);
-      }
+      // try {
+      //   mangoQuery = Expressions.fromJson(this.options.predefinedFilter);
+      //   filterQuery.push(mangoQuery);
+      // } catch (e) {
+      //   Log.error(e);
+      // }
     }
 
     const _d: any = {};
@@ -266,12 +267,17 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
     if (api.params && !_.isEmpty(api.params.filters)) {
       _.keys(api.params.filters).map(k => {
         if (!_.isEmpty(api.params.filters[k])) {
-          try {
-            const mq = Expressions.fromJson(api.params.filters[k]);
-            filterQuery.push(mq);
-          } catch (e) {
-            Log.error(e);
+          if (api.params.filters[k] instanceof ExprDesc) {
+            filterQuery.push(api.params.filters[k].toJson());
+          } else {
+            filterQuery.push(api.params.filters[k]);
           }
+          // try {
+          //   const mq = Expressions.fromJson(api.params.filters[k]);
+          //   filterQuery.push(mq);
+          // } catch (e) {
+          //   Log.error(e);
+          // }
         }
       });
     }
@@ -280,14 +286,14 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
     if (mode === 'query') {
 
       if (this.freeQuery) {
-        mangoQuery = Expressions.fromJson(this.freeQuery);
-        if (!_.isEmpty(mangoQuery)) {
-          filterQuery.push(mangoQuery);
+        const mQuery = Expressions.fromJson(this.freeQuery);
+        if (!_.isEmpty(mQuery)) {
+          filterQuery.push(mQuery.toJson());
         }
       }
 
       if (filterQuery.length > 1) {
-        mangoQuery = And(...filterQuery);
+        mangoQuery = {$and: filterQuery};
       } else if (filterQuery.length === 1) {
         mangoQuery = filterQuery.shift();
       } else {
@@ -295,12 +301,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
       }
 
       if (mangoQuery) {
-        if (mangoQuery.toJson) {
-          executeQuery = mangoQuery.toJson();
-        } else {
-          executeQuery = mangoQuery;
-        }
-
+        executeQuery = mangoQuery;
       }
 
       this.queringService.query(this.name, executeQuery, queryOptions)
@@ -319,7 +320,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
           }
         );
     } else {
-
+      executeQuery = [];
       if (this.freeQuery) {
         if (_.isArray(this.freeQuery)) {
           executeQuery = this.freeQuery;
@@ -331,7 +332,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
       }
 
       if (filterQuery.length > 1) {
-        mangoQuery = And(...filterQuery);
+        mangoQuery = {$and: filterQuery};
       } else if (filterQuery.length === 1) {
         mangoQuery = filterQuery.shift();
       } else {
@@ -339,7 +340,7 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
       }
 
       if (mangoQuery) {
-        executeQuery.push({$match: mangoQuery.toJson()});
+        executeQuery.push({$match: mangoQuery});
       }
 
       this.queringService.aggregate(this.name, executeQuery, queryOptions)
