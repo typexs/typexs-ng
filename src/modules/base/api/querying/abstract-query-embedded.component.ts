@@ -267,11 +267,12 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
     if (api.params && !_.isEmpty(api.params.filters)) {
       _.keys(api.params.filters).map(k => {
         if (!_.isEmpty(api.params.filters[k])) {
+          const d = {};
+          d[k] = api.params.filters[k];
           if (api.params.filters[k] instanceof ExprDesc) {
-            filterQuery.push(api.params.filters[k].toJson());
-          } else {
-            filterQuery.push(api.params.filters[k]);
+            d[k] = api.params.filters[k].toJson();
           }
+          filterQuery.push(d);
           // try {
           //   const mq = Expressions.fromJson(api.params.filters[k]);
           //   filterQuery.push(mq);
