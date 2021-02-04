@@ -16,8 +16,8 @@ export interface IBackendClientService {
 
   areRoutesLoaded(): Observable<boolean>;
 
-  // TODO add Route
+  addRoute(r: IRoute): void;
 
-  // TODO getRoute
+  getRoute(name: string, method?: string): IRoute;
 
 }

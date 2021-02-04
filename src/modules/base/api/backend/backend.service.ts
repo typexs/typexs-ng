@@ -25,4 +25,15 @@ export class BackendService implements IBackendClientService {
   reloadRoutes(force: boolean = false): Observable<IRoute[]> {
     return of([]);
   }
+
+  areRoutesLoaded(): Observable<boolean> {
+    return of(true);
+  }
+
+  getRoute(name: string, method: string): IRoute {
+    return null;
+  }
+
+  addRoute(r: IRoute) {
+  }
 }
