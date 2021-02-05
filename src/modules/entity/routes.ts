@@ -16,7 +16,7 @@ import {
   PERMISSION_ALLOW_DELETE_ENTITY_PATTERN,
   PERMISSION_ALLOW_UPDATE_ENTITY,
   PERMISSION_ALLOW_UPDATE_ENTITY_PATTERN
-} from '@typexs/schema';
+} from '@typexs/schema/browser';
 
 export const ENTITY_ROUTES: Routes = [
   {
