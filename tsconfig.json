@@ -7,7 +7,7 @@
       "es6"
     ],
     "outDir": "./build/compiled",
-    "target": "es6",
+    "target": "es2020",
     "module": "CommonJS",
     "moduleResolution": "node",
     "rootDir": ".",
