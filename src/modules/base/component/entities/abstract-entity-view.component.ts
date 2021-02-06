@@ -4,6 +4,7 @@ import {IInstanceableComponent} from '../IInstanceableComponent';
 import {EntityResolverService} from '../../services/entity-resolver.service';
 import {IQueringService} from '../../api/querying/IQueringService';
 import {IEntityViewOptions} from './IEntityViewOptions';
+import {ClassUtils} from '@allgemein/base/browser';
 
 
 export abstract class AbstractEntityViewComponent<T> implements IInstanceableComponent<T> {
@@ -63,7 +64,11 @@ export abstract class AbstractEntityViewComponent<T> implements IInstanceableCom
   }
 
   type() {
-    return this.resolverService.getEntityRef(this.getInstance()).name;
+    const obj = this.resolverService.getEntityRef(this.getInstance());
+    if (obj) {
+      return obj.name;
+    }
+    return ClassUtils.getClassName(<any>this.getInstance());
   }
 
   url() {

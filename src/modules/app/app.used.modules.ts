@@ -16,7 +16,7 @@ import {DistributedStorageModule} from '../distributed_storage/module';
 import {HttpClientModule} from '@angular/common/http';
 
 
-export const APP_MODULES: Array<Type<any> | ModuleWithProviders | any[]> = [
+export const APP_MODULES: Array<Type<any> | ModuleWithProviders<any> | any[]> = [
   BrowserModule,
   HttpClientModule,
   BaseModule.forRoot(),

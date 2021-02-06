@@ -1,10 +1,10 @@
-import * as _ from 'lodash';
+  import * as _ from 'lodash';
 import {Component, EmbeddedViewRef, ViewChild} from '@angular/core';
 import {ViewContent} from '../../../../../libs/views/decorators/ViewContent';
 import {TreeObject} from '../../../../../libs/views/TreeObject';
 import {ViewComponent} from '../../../../../libs/views/decorators/ViewComponent';
 import {AbstractComponent} from '../../../../base/component/AbstractComponent';
-import {ClassUtils} from 'commons-base/browser';
+import {ClassUtils} from '@allgemein/base/browser';
 
 
 @ViewContent('search-entry')

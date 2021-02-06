@@ -81,7 +81,6 @@ export abstract class AbstractComponent<T/* extends TreeObject*/> implements IIn
 
   buildComponent(component: ClassType<IInstanceableComponent<T>>, content: any) {
     if (this.getViewContainerRef()) {
-      this.reset();
       const factory = this.r.resolveComponentFactory(component);
       const compRef = this.getViewContainerRef().createComponent(factory);
       const instance = <IInstanceableComponent<T>>compRef.instance;

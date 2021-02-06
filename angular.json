@@ -16,6 +16,9 @@
             "main": "src/app/main.ts",
             "tsConfig": "src/app/../../tsconfig.app.json",
             "polyfills": "src/app/polyfills.ts",
+            "allowedCommonJsDependencies": [
+              "class-validator"
+            ],
             "assets": [
               "src/app/assets",
               "src/app/favicon.ico"
@@ -28,6 +31,7 @@
           },
           "configurations": {
             "production": {
+
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -35,7 +39,7 @@
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
-              "vendorChunk": false,
+              "vendorChunk": true,
               "buildOptimizer": true,
               "fileReplacements": [
                 {

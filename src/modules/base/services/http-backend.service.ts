@@ -15,7 +15,7 @@ import {Log} from '../lib/log/Log';
 import {LogMessage} from '../messages/types/LogMessage';
 import {ErrorHelper} from '../lib/ErrorHelper';
 import {MessageChannel} from '../messages/MessageChannel';
-import {CryptUtils} from 'commons-base/browser';
+import {CryptUtils} from '@allgemein/base/browser';
 import {IRoute} from '../api/backend/IRoute';
 
 /**

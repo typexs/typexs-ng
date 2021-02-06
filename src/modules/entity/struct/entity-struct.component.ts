@@ -49,7 +49,7 @@ export class EntityStructComponent implements OnInit {
     this.name = name;
     this.entityDef = EntityRegistry.$().getEntityRefByName(this.name);
     this.referrerProps = LookupRegistry.$().filter(XS_TYPE_PROPERTY, (referrer: PropertyRef) => {
-      return referrer.isReference() && referrer.targetRef == this.entityDef.getClassRef();
+      return referrer.isReference() && referrer.targetRef === this.entityDef.getClassRef();
     });
     this.scan(this.entityDef);
   }
@@ -80,7 +80,7 @@ export class EntityStructComponent implements OnInit {
   }
 
   validator(property: PropertyRef) {
-    const validators = getMetadataStorage().getTargetValidationMetadatas(this.entityDef.getClass(), null);
+    const validators = getMetadataStorage().getTargetValidationMetadatas(this.entityDef.getClass(), null, true, false);
     return _.filter(validators, v => v.propertyName === property.name);
   }
 

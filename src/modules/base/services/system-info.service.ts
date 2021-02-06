@@ -22,6 +22,7 @@ import {Subject} from 'rxjs/Subject';
 import {NodeRuntimeInfo} from '@typexs/base/libs/system/NodeRuntimeInfo';
 import {BehaviorSubject, combineLatest} from 'rxjs';
 import {filter} from 'rxjs/operators';
+import {BackendService} from '../api/backend/backend.service';
 
 
 @Injectable()
@@ -42,7 +43,7 @@ export class SystemInfoService {
   timetable: { [k: string]: number } = {};
 
 
-  constructor(private backendClientService: HttpBackendService) {
+  constructor(private backendClientService: BackendService) {
   }
 
 

@@ -104,7 +104,7 @@ const COMPONENTS = [
 })
 export class BaseModule {
 
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<any> {
     return {
       ngModule: BaseModule,
       providers: PROVIDERS

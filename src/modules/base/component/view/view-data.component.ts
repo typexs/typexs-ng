@@ -5,15 +5,13 @@ import {AbstractComponent} from '../AbstractComponent';
 import {C_DEFAULT} from '../../constants';
 import {IComponentBinding} from '../../../../libs/views/IComponentBinding';
 import {ComponentRegistryService} from '../component-registry.service';
-import {ClassUtils} from 'commons-base/browser';
+import {ClassUtils} from '@allgemein/base/browser';
 
 
 @Component({
   selector: 'txs-view',
   templateUrl: 'view-data.component.html',
   styleUrls: ['./view-data.component.scss']
-  // host: {'(submit)': 'onSubmit($event)', '(reset)': 'onReset()'},
-  // outputs: ['ngSubmit'],
 })
 export class ViewDataComponent<T extends TreeObject> extends AbstractComponent<T> implements OnInit {
 
@@ -68,6 +66,7 @@ export class ViewDataComponent<T extends TreeObject> extends AbstractComponent<T
   }
 
   switchLayout(viewMode: IComponentBinding) {
+    this.reset();
     this.mode = viewMode.extra.context;
     return this.buildComponent(viewMode.component as any, this.instance);
   }
@@ -86,7 +85,7 @@ export class ViewDataComponent<T extends TreeObject> extends AbstractComponent<T
           .filter(x => _.get(x, 'extra.context', false)
           );
       }
-      this.getViewContainerRef().clear();
+      this.reset();
       this.buildSelf(this.instance);
       this._build = true;
     }

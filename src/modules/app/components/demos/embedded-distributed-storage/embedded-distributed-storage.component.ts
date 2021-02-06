@@ -1,10 +1,11 @@
 import * as _ from 'lodash';
-import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {IQueryParams} from '../../../../base/datatable/IQueryParams';
 import {Like, Value} from 'commons-expressions/browser';
 import {IDSOptions} from '../../../../distributed_storage/lib/IDSOptions';
 import {DistributedStorageQueryEmbeddedComponent} from '../../../../distributed_storage/components/query/embedded/query-embedded.component';
 import {DistributedStorageService} from '../../../../distributed_storage/services/distributed_storage.service';
+import {StorageService} from '../../../../storage/storage.service';
 
 
 export class C {
@@ -44,7 +45,8 @@ export class EmbeddedDistributedStorageComponent implements OnInit, OnChanges, A
 
   _columns: any[] = [];
 
-  constructor(private service: DistributedStorageService) {
+  constructor(private service: DistributedStorageService,
+              private changeDetector: ChangeDetectorRef) {
 
   }
 
@@ -54,6 +56,12 @@ export class EmbeddedDistributedStorageComponent implements OnInit, OnChanges, A
       this._columns = this.simpleItemQuery.datatable.api().getColumns();
     });
   }
+
+
+  ngAfterContentChecked(): void {
+    this.changeDetector.detectChanges();
+  }
+
 
   ngAfterViewInit() {
     this.service.isLoaded().subscribe(x => {

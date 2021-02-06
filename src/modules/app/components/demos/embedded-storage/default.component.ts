@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {IDTGridOptions} from '../../../../base/datatable/IDTGridOptions';
 import {IQueryParams} from '../../../../base/datatable/IQueryParams';
 import {Like, Value} from 'commons-expressions/browser';
@@ -25,7 +25,7 @@ export class C {
   selector: 'embedded-storage-default',
   templateUrl: 'default.component.html',
 })
-export class EmbeddedStorageDefaultComponent implements OnInit, OnChanges {
+export class EmbeddedStorageDefaultComponent implements OnInit {
 
   simpleItemName = 'SimpleItem';
 
@@ -45,20 +45,20 @@ export class EmbeddedStorageDefaultComponent implements OnInit, OnChanges {
 
   entityRef: IEntityRef;
 
-  constructor(private storageService: StorageService) {
+  constructor(private storageService: StorageService,
+              private changeDetector: ChangeDetectorRef) {
 
+  }
+
+  ngAfterContentChecked(): void {
+    this.changeDetector.detectChanges();
   }
 
 
   ngOnInit(): void {
-    this.storageService.isReady(() => {
+    this.storageService.isLoaded().subscribe(x => {
       this.entityRef = this.storageService.getEntityRefForName('SimpleItem');
     });
-  }
-
-
-  ngOnChanges(changes: SimpleChanges): void {
-
   }
 
 

@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import {Route} from '@angular/router';
 import {Type} from '@angular/core/core';
-import {MetaArgs} from 'commons-base/browser';
+import {MetaArgs} from '@allgemein/base/browser';
 
 export const K_NG_ROUTES = 'ng_routes';
 

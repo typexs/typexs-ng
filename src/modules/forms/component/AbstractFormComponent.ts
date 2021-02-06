@@ -30,17 +30,17 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
   }
 
   get id() {
-    return this.getInstance().id;
+    return this.getInstance()?.id;
   }
 
 
   get name() {
-    return this.getInstance().name;
+    return this.getInstance()?.name;
   }
 
 
   get label() {
-    return this.getInstance().label;
+    return this.getInstance()?.label;
   }
 
 
@@ -50,12 +50,12 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
 
 
   get help() {
-    return this.getInstance().help;
+    return this.getInstance()?.help;
   }
 
 
   get isReadOnly() {
-    return this.getInstance().isReadonly() ? 'readonly' : null;
+    return this.getInstance()?.isReadonly() ? 'readonly' : null;
   }
 
 

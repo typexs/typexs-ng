@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {ILogLevel} from 'commons-base/browser';
+import {ILogLevel} from '@allgemein/base/browser';
 import {ILoggerOptions} from './ILoggerOptions';
 
 

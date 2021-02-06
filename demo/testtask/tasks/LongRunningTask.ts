@@ -19,7 +19,7 @@ export class LongRunningTask implements ITask {
   wait(time: number) {
     return new Promise(resolve => {
       setTimeout(() => {
-        resolve();
+        resolve(null);
       }, time);
     });
   }

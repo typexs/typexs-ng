@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import {Injectable} from '@angular/core';
-import {ClassUtils} from 'commons-base/browser';
+import {ClassUtils} from '@allgemein/base/browser';
 import {IEntityRef, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
 import {IQueringService} from './../api/querying/IQueringService';
 import {forkJoin} from 'rxjs';
@@ -30,19 +30,25 @@ export class EntityResolverService {
 
   getEntityRef(obj: any): IEntityRef {
     const className = ClassUtils.getClassName(obj);
+    if (['Object', 'Array'].includes(className)) {
+      return null;
+    }
     const key = 'class.' + _.snakeCase(className);
     if (this.cache[key]) {
       return this.cache[key];
     }
     const returnRef = LookupRegistry.find(XS_TYPE_ENTITY, (x: IEntityRef) => _.snakeCase(x.name) === _.snakeCase(className)) as IEntityRef;
     if (!returnRef) {
-      throw new Error('no entity ref found for ' + className + ' of ' + JSON.stringify(obj, null, 2));
+      return null;
     }
     this.cache[key] = returnRef;
     return returnRef;
   }
 
   getServiceForEntity(entityRef: any) {
+    if (!entityRef) {
+      return null;
+    }
     return this.queryServices.find(x => !_.isEmpty(x.getRegistry().listEntities(x => x === entityRef)));
   }
 
@@ -56,6 +62,10 @@ export class EntityResolverService {
       return obj['ngRoute']();
     }
     const entityRef = this.getEntityRef(obj);
+    if (!entityRef) {
+      return null;
+    }
+
     const key = 'id.' + _.snakeCase(entityRef.name);
     if (this.cache[key]) {
       return this.cache[key](obj);
@@ -76,6 +86,9 @@ export class EntityResolverService {
 
   getLabelKeysFor(obj: any) {
     const entityRef = this.getEntityRef(obj);
+    if (!entityRef) {
+      return null;
+    }
     const key = 'label.' + _.snakeCase(entityRef.name);
     if (this.cache[key]) {
       return this.cache[key](obj);
@@ -96,6 +109,9 @@ export class EntityResolverService {
 
   getRouteFor(obj: any) {
     const entityRef = this.getEntityRef(obj);
+    if (!entityRef) {
+      return null;
+    }
     const idKEys = this.getIdKeysFor(obj);
     return this.defaultRouteBuilder(entityRef, idKEys);
   }
@@ -110,6 +126,9 @@ export class EntityResolverService {
     }
 
     const keys = this.getLabelKeysFor(obj);
+    if (keys === null) {
+      return 'Unknown';
+    }
     const values = _.values(keys);
     if (values.length === 0) {
       return 'Unknown';

@@ -6,7 +6,7 @@ import {getMetadataStorage} from 'class-validator';
 import * as _ from 'lodash';
 import {IClassRef, IEntityRef, IPropertyRef, LookupRegistry, XS_TYPE_ENTITY, XS_TYPE_PROPERTY} from 'commons-schema-api/browser';
 import {StorageService} from '../storage.service';
-import {REGISTRY_TYPEORM} from '@typexs/base/browser';
+import {REGISTRY_TYPEORM} from '@typexs/base';
 
 
 @Component({
@@ -85,7 +85,7 @@ export class StorageStructComponent implements OnInit {
 
 
   validator(property: IPropertyRef) {
-    const validators = getMetadataStorage().getTargetValidationMetadatas(this.entityDef.getClassRef().getClass(), null);
+    const validators = getMetadataStorage().getTargetValidationMetadatas(this.entityDef.getClassRef().getClass(), null, true, false);
     return _.filter(validators, v => v.propertyName === property.name);
   }
 

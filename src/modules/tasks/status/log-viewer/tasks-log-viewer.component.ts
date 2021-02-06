@@ -1,6 +1,6 @@
 import {Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import * as _ from 'lodash';
-import {JsonUtils} from 'commons-base/libs/utils/JsonUtils';
+import {JsonUtils} from '@allgemein/base/libs/utils/JsonUtils';
 import {DatePipe} from '@angular/common';
 import {BackendTasksService} from '../../backend-tasks.service';
 import {Observable, Subscriber, Subscription, timer} from 'rxjs';

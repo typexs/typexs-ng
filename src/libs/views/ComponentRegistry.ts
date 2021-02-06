@@ -2,7 +2,7 @@ import {NoFormHandlerDefinedForTypeError} from './../../libs/exceptions/NoFormHa
 import {IBindingInfo, IComponentBinding} from './IComponentBinding';
 import * as _ from 'lodash';
 import {C_DEFAULT} from '../../modules/base/constants';
-import {ClassUtils} from 'commons-base/browser';
+import {ClassUtils} from '@allgemein/base/browser';
 import {__CLASS__} from '@typexs/base/browser';
 
 export class ComponentRegistry {

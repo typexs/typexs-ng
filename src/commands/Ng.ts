@@ -1,7 +1,7 @@
 import {existsSync, writeFileSync} from 'fs';
 import {dirname, join} from 'path';
 import {Config, FileUtils, Inject, Log, RuntimeLoader} from '@typexs/base';
-import {ModuleDescriptor} from 'commons-moduls';
+import {ModuleDescriptor} from '@allgemein/moduls';
 import {NgMetaDataCollector} from '../libs/angular/NgMetaDataCollector';
 import * as glob from 'glob';
 import * as _ from 'lodash';
@@ -108,7 +108,7 @@ export class Ng {
    * @returns {Promise<void>}
    */
   private generateStylesheetFile() {
-    const modules = this.loader.registry.modules();
+    const modules = this.loader.registry.getModules();
     const stylesheets = [];
 
     let currentModule: ModuleDescriptor;
@@ -170,7 +170,7 @@ export class Ng {
    * @returns {Promise<void>}
    */
   private generateTemplateFile() {
-    const modules = this.loader.registry.modules();
+    const modules = this.loader.registry.getModules();
     const templeted = [];
 
     let currentModule: ModuleDescriptor;
