@@ -30,19 +30,19 @@ describe('Service: EntityOptionsService', () => {
 
 
     it('do initialization by string', () => {
-      service = TestBed.get('EntityOptionsService');
+      service = TestBed.inject('EntityOptionsService' as any);
       expect(service).to.be.instanceOf(EntityOptionsService);
 
       let error = null;
       try {
-        service = TestBed.get('EntityOptionsServiceDummy');
+        service = TestBed.inject('EntityOptionsServiceDummy' as any);
       } catch (e) {
         error = e;
       }
 
 //      expect(error).to.be.instanceOf(StaticInjectorError);
-      expect(error.message).to.be.eq('StaticInjectorError[EntityOptionsServiceDummy]: \n' +
-        '  NullInjectorError: No provider for EntityOptionsServiceDummy!');
+      expect(error.name).to.be.eq('NullInjectorError');
+      expect(error.message).to.be.include('No provider for EntityOptionsServiceDummy!');
 
 
     });
