@@ -80,3 +80,4 @@ docker/*/local
 
 dist/
 test/build/
+build-test/
