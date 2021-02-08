@@ -2,10 +2,7 @@ import {Component, OnInit} from '@angular/core';
 
 import {ActivatedRoute, Router} from '@angular/router';
 import {StorageService} from '../storage.service';
-import {IEntityRef, ILookupRegistry, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
-import {REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base/browser';
-import * as _ from 'lodash';
-import {Expressions} from 'commons-expressions/browser';
+import {IEntityRef} from 'commons-schema-api/browser';
 import {UrlHelper} from '../../base/lib/UrlHelper';
 
 @Component({
@@ -24,8 +21,6 @@ export class StorageModifyComponent implements OnInit {
 
   entityDef: IEntityRef;
 
-  registry: ILookupRegistry = TypeOrmEntityRegistry.$();
-
   instance: any;
 
   error: any = null;
@@ -37,7 +32,7 @@ export class StorageModifyComponent implements OnInit {
 
 
   ngOnInit() {
-    this.storageService.isReady(() => {
+    this.storageService.isLoaded().subscribe(x => {
       this.load();
     });
   }
@@ -47,11 +42,14 @@ export class StorageModifyComponent implements OnInit {
   }
 
 
+  getRegistry() {
+    return this.storageService.getRegistry();
+  }
+
   load() {
     this.name = this.route.snapshot.paramMap.get('name');
     this.id = this.route.snapshot.paramMap.get('id');
-    this.entityDef = LookupRegistry.$(REGISTRY_TYPEORM)
-      .find(XS_TYPE_ENTITY, (e: IEntityRef) => e.name === _.snakeCase(this.name));
+    this.entityDef = this.storageService.getRegistry().getEntityRefFor(this.name);
     if (this.entityDef) {
       if (this.id) {
         this.new = false;

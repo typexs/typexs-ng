@@ -40,11 +40,8 @@ describe('Service: EntityOptionsService', () => {
         error = e;
       }
 
-//      expect(error).to.be.instanceOf(StaticInjectorError);
       expect(error.name).to.be.eq('NullInjectorError');
       expect(error.message).to.be.include('No provider for EntityOptionsServiceDummy!');
-
-
     });
   });
 

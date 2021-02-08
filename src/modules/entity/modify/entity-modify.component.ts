@@ -31,11 +31,15 @@ export class EntityModifyComponent implements OnInit {
 
 
   ngOnInit() {
-    this.entityService.isReady(() => {
+    this.entityService.isLoaded().subscribe(x => {
       this.load();
     });
   }
 
+
+  getRegistry() {
+    return this.entityService.getRegistry();
+  }
 
   getNgUrlPrefix() {
     return this.entityService.getNgUrlPrefix();

@@ -13,7 +13,7 @@
     <div *ngIf="ready">
       <div *ngIf="error" class="error">{{error}}</div>
       <txs-form *ngIf="instance" formName="entity-create-form'"
-                [registry]="registry"
+                [registry]="getRegistry()"
                 [instance]="instance" (ngSubmit)="onSubmit($event)"></txs-form>
     </div>
   </div>
