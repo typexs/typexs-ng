@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {EntityService} from './entity.service';
-import {EntityRef, PropertyRef} from '@typexs/schema/browser';
+import {EntityRef, PropertyRef} from '@typexs/schema';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {ISelectOptionsService} from '../forms/libs/ISelectOptionsService';
 import {ISelectOption} from '../forms/libs/ISelectOption';

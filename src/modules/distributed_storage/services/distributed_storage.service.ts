@@ -7,7 +7,7 @@ import {
   API_CTRL_DISTRIBUTED_STORAGE_GET_ENTITY,
   API_CTRL_DISTRIBUTED_STORAGE_SAVE_ENTITY,
   API_CTRL_DISTRIBUTED_STORAGE_UPDATE_ENTITY
-} from '@typexs/server/browser';
+} from '@typexs/server';
 import {IQueringService} from '../../base/api/querying/IQueringService';
 import {AbstractQueryService} from '../../base/api/querying/abstract-query.service';
 import {EntityResolverService} from '../../base/services/entity-resolver.service';

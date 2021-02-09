@@ -16,7 +16,7 @@ import {
   PERMISSION_ALLOW_SAVE_STORAGE_ENTITY,
   PERMISSION_ALLOW_SAVE_STORAGE_ENTITY_PATTERN,
   PERMISSION_ALLOW_STORAGE_ENTITY_VIEW
-} from '@typexs/server/browser';
+} from '@typexs/server';
 
 export const STORAGE_ROUTES: Routes = [
   {

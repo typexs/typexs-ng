@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
-import {API_CTRL_SERVER_PING, API_CTRL_SERVER_ROUTES} from '@typexs/server/browser';
+import {API_CTRL_SERVER_PING, API_CTRL_SERVER_ROUTES} from '@typexs/server';
 import {catchError, filter, first, mergeMap, tap} from 'rxjs/operators';
 import {IBackendClientService} from '../api/backend/IBackendClientService';
 import {MessageService} from '../messages/message.service';
@@ -15,7 +15,7 @@ import {Log} from '../lib/log/Log';
 import {LogMessage} from '../messages/types/LogMessage';
 import {ErrorHelper} from '../lib/ErrorHelper';
 import {MessageChannel} from '../messages/MessageChannel';
-import {CryptUtils} from '@allgemein/base/browser';
+import {CryptUtils} from '@allgemein/base';
 import {IRoute} from '../api/backend/IRoute';
 
 /**

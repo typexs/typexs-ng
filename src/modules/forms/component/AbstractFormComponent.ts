@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 
 
-import {DataContainer} from '@typexs/base/browser';
+import {DataContainer} from '@typexs/base';
 import {ClassRef, XS_TYPE_PROPERTY} from 'commons-schema-api/browser';
 import {Expressions} from 'commons-expressions/browser';
 import {Context} from '../../../libs/views/Context';

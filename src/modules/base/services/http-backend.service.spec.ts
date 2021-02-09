@@ -7,7 +7,7 @@ import {
   API_CTRL_STORAGE_FIND_ENTITY,
   API_CTRL_SYSTEM_RUNTIME_NODE,
   IRoute
-} from '@typexs/server/browser';
+} from '@typexs/server';
 import {HttpBackendService} from './http-backend.service';
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
 import {forkJoin} from 'rxjs';

@@ -12,8 +12,8 @@ import {
   API_CTRL_SYSTEM_STORAGES,
   API_CTRL_SYSTEM_WORKERS,
   IRoute
-} from '@typexs/server/browser';
-import {IModule, IStorageOptions, ITypexsOptions} from '@typexs/base/browser';
+} from '@typexs/server';
+import {IModule, IStorageOptions, ITypexsOptions} from '@typexs/base';
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
 import {HttpBackendService} from './http-backend.service';
 import {IWorkerInfo} from '@typexs/base/libs/worker/IWorkerInfo';

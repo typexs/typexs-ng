@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {EntityService} from './../entity.service';
-import {EntityRef} from '@typexs/schema/browser';
+import {EntityRef} from '@typexs/schema';
 
 
 @Component({

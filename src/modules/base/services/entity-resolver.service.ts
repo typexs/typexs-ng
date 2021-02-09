@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import {Injectable} from '@angular/core';
-import {ClassUtils} from '@allgemein/base/browser';
+import {ClassUtils} from '@allgemein/base';
 import {IEntityRef, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
 import {IQueringService} from './../api/querying/IQueringService';
 import {forkJoin} from 'rxjs';

@@ -1,8 +1,7 @@
 import * as _ from 'lodash';
-import {EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {IEntityRef, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
-import {IFindOptions, REGISTRY_TYPEORM} from '@typexs/base/browser';
-
+import {IFindOptions, REGISTRY_TYPEORM} from '@typexs/base';
 import {IGridColumn} from '../../datatable/IGridColumn';
 import {IGridApi} from '../../datatable/IGridApi';
 import {DatatableComponent} from '../../datatable/datatable.component';
@@ -22,6 +21,9 @@ import {Log} from '../../lib/log/Log';
  * - filters
  * - extend/add specialized columns
  */
+@Component({
+  template: ''
+})
 export class AbstractAggregateEmbeddedComponent implements OnInit {
 
 
@@ -73,7 +75,7 @@ export class AbstractAggregateEmbeddedComponent implements OnInit {
   private queringService: IQueringService;
 
 
-  constructor(storageService: IQueringService) {
+  setQueryService(storageService: IQueringService) {
     this.queringService = storageService;
   }
 

@@ -14,12 +14,12 @@ import {
   API_CTRL_ENTITY_UPDATE_ENTITY,
   API_ENTITY_PREFIX,
   REGISTRY_TXS_SCHEMA
-} from '@typexs/schema/browser';
+} from '@typexs/schema';
 import {IBuildOptions, IEntityRef} from 'commons-schema-api/browser';
 import {C_RAW, C_SKIP_BUILDS, STORAGE_REQUEST_MODE} from '../base/api/querying/Constants';
 import {EntityResolverService} from '../base/services/entity-resolver.service';
 import {BackendService} from '../base/api/backend/backend.service';
-import {__CLASS__, __REGISTRY__} from '@typexs/base/browser';
+import {__CLASS__, __REGISTRY__} from '@typexs/base';
 
 
 @Injectable()

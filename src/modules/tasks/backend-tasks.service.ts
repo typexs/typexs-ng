@@ -6,8 +6,8 @@ import {
   API_CTRL_TASK_LOG,
   API_CTRL_TASK_STATUS,
   API_CTRL_TASKS_METADATA
-} from '@typexs/server/browser';
-import {Tasks} from '@typexs/base/browser';
+} from '@typexs/server';
+import {Tasks} from '@typexs/base';
 import {IEntityRefMetadata} from 'commons-schema-api';
 import {Observable, Subject, combineLatest, timer} from 'rxjs';
 import * as _ from 'lodash';

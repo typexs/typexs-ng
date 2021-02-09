@@ -1,7 +1,7 @@
 import {getTestBed, TestBed} from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
-import {API_CTRL_STORAGE_METADATA_ALL_ENTITIES} from '@typexs/server/browser';
+import {API_CTRL_STORAGE_METADATA_ALL_ENTITIES} from '@typexs/server';
 import {StorageService} from './storage.service';
 import {Log} from '../base/lib/log/Log';
 import {MessageService} from '../base/messages/message.service';

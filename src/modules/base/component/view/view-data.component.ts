@@ -5,7 +5,7 @@ import {AbstractComponent} from '../AbstractComponent';
 import {C_DEFAULT} from '../../constants';
 import {IComponentBinding} from '../../../../libs/views/IComponentBinding';
 import {ComponentRegistryService} from '../component-registry.service';
-import {ClassUtils} from '@allgemein/base/browser';
+import {ClassUtils} from '@allgemein/base';
 
 
 @Component({

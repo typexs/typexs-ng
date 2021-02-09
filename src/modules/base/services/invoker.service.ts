@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Invoker} from '@typexs/base/browser';
+import {Invoker} from '@typexs/base';
 import {ClassType} from 'commons-schema-api/browser';
 
 

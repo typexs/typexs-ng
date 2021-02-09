@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {APP_MODULES} from './app.used.modules';
 
@@ -96,7 +96,8 @@ import {Book} from './entities/Book';
     OptionsService,
     MenuAccessService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {
 
@@ -121,8 +122,8 @@ export class AppModule {
     this.navigatorService.addGroupEntry('admin/storage/.*', {label: 'Storage', group: 'admin'});
     this.navigatorService.addGroupEntry('admin/distributed-storage/.*', {label: 'Distributed Storage', group: 'admin'});
 
-    this.compService.setComponentForClass(PersonComponent, Person, { context: 'default', label: 'Default' });
-    this.compService.setComponentForClass(BookComponent, Book, { context: 'default', label: 'Default' });
+    this.compService.setComponentForClass(PersonComponent, Person, {context: 'default', label: 'Default'});
+    this.compService.setComponentForClass(BookComponent, Book, {context: 'default', label: 'Default'});
 
     authService.init();
     // navigatorService.addGroupEntry('tables', {label: 'Tables', group: 'demo'});

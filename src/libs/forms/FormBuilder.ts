@@ -4,7 +4,7 @@ import {Form} from './elements';
 import {ResolveDataValue} from './ResolveDataValue';
 import * as _ from 'lodash';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
-import {NotYetImplementedError} from '@typexs/base/browser';
+import {NotYetImplementedError} from '@typexs/base';
 import {AbstractRef, ClassRef, IEntityRef, IPropertyRef, XS_TYPE_ENTITY, XS_TYPE_PROPERTY} from 'commons-schema-api/browser';
 import {ComponentRegistry} from '../views/ComponentRegistry';
 

@@ -23,7 +23,8 @@ export class StorageAggregateEmbeddedComponent extends AbstractAggregateEmbedded
 
   constructor(private storageService: StorageService,
               private route: ActivatedRoute) {
-    super(storageService);
+    super();
+    this.setQueryService(storageService);
   }
 
   ngOnInit() {

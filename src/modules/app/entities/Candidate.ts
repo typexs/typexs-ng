@@ -1,4 +1,4 @@
-import {Entity, Property} from '@typexs/schema/browser';
+import {Entity, Property} from '@typexs/schema';
 
 
 @Entity({name: 'bew'})

@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import {Component, OnInit} from '@angular/core';
-import {TaskRef} from '@typexs/base/browser';
+import {TaskRef} from '@typexs/base';
 import {BackendTasksService} from '../backend-tasks.service';
 import {SystemInfoService} from '../../base/services/system-info.service';
 import {StorageService} from '../../storage/storage.service';

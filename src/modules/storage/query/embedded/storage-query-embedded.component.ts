@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
+import {Component} from '@angular/core';
 import {AbstractQueryEmbeddedComponent} from '../../../base/api/querying/abstract-query-embedded.component';
 import {StorageService} from '../../storage.service';
 
@@ -18,8 +18,10 @@ import {StorageService} from '../../storage.service';
 })
 export class StorageQueryEmbeddedComponent extends AbstractQueryEmbeddedComponent {
 
+
   constructor(private storageService: StorageService) {
-    super(storageService);
+    super();
+    this.setQueryService(storageService);
   }
 
 

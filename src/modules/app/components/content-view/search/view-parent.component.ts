@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ComponentFactoryResolver, Inject, Injector, OnInit, ViewChild} from '@angular/core';
 import {SearchEntryComponent} from './search-entry.component';
 import {TreeObject} from '../../../../../libs/views/TreeObject';
 import {ViewContent} from '../../../../../libs/views/decorators/ViewContent';
@@ -25,6 +25,12 @@ export class ViewParentComponent extends AbstractComponent<ViewParent> implement
   searchEntry2: SearchEntryComponent;
 
   title = 'ViewParent';
+
+
+  constructor(@Inject(Injector) public injector: Injector,
+              @Inject(ComponentFactoryResolver) public r: ComponentFactoryResolver) {
+    super(injector, r);
+  }
 
   ngOnInit() {
 

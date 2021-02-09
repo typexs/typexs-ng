@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 
 import {StorageService} from '../storage.service';
 import {IEntityRef, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
-import {REGISTRY_TYPEORM} from '@typexs/base/browser';
+import {REGISTRY_TYPEORM} from '@typexs/base';
 import * as _ from 'lodash';
 
 @Component({

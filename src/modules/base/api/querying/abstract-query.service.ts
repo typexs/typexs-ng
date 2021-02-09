@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import {IBuildOptions, IEntityRef, IEntityRefMetadata, ILookupRegistry} from 'commons-schema-api/browser';
 // import {HttpBackendService} from '../../services/http-backend.service';
 import {AuthService} from '../auth/auth.service';
-import {IFindOptions, ISaveOptions} from '@typexs/base/browser';
+import {IFindOptions, ISaveOptions} from '@typexs/base';
 import {IApiCallOptions} from '../../lib/http/IApiCallOptions';
 import {STORAGE_REQUEST_MODE} from './Constants';
 import {IUpdateOptions} from '@typexs/base/libs/storage/framework/IUpdateOptions';

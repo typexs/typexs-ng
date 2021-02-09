@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
-import {EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {ClassType, IEntityRef, JS_DATA_TYPES} from 'commons-schema-api/browser';
-import {IFindOptions, REGISTRY_TYPEORM} from '@typexs/base/browser';
+import {IFindOptions, REGISTRY_TYPEORM} from '@typexs/base';
 import {ExprDesc, Expressions} from 'commons-expressions/browser';
 import {IDTGridOptions} from '../../datatable/IDTGridOptions';
 import {IGridColumn} from '../../datatable/IGridColumn';
@@ -26,7 +26,10 @@ import {first} from 'rxjs/operators';
  * - filters
  * - extend/add specialized columns
  */
-export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQueryComponentApi {
+@Component({
+  template: ''
+})
+export abstract class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQueryComponentApi {
 
   @Input()
   get params() {
@@ -36,11 +39,6 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
   set params(v: IQueryParams) {
     this._params = v;
     this.paramsChange.emit(this._params);
-  }
-
-
-  constructor(storageService: IQueringService) {
-    this.queringService = storageService;
   }
 
 
@@ -83,6 +81,11 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
   datatable: DatatableComponent;
 
   private queringService: IQueringService;
+
+
+  setQueryService(storageService: IQueringService) {
+    this.queringService = storageService;
+  }
 
 
   getEntityRef() {

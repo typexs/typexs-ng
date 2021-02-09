@@ -7,7 +7,7 @@ import {FormObject} from '../../../libs/forms/FormObject';
 import {Context} from '../../../libs/views/Context';
 import {ISelectOption} from './ISelectOption';
 import {ISelectOptionsService} from './ISelectOptionsService';
-import {DataContainer} from '@typexs/base/browser';
+import {DataContainer} from '@typexs/base';
 
 
 export class EnumHandle {

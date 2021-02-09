@@ -7,7 +7,7 @@ import {Form} from '../../libs/forms/elements';
 import {MessageChannel} from '../base/messages/MessageChannel';
 import {IMessage} from '../base/messages/IMessage';
 import {IFormOptions} from './IFormOptions';
-import {DataContainer} from '@typexs/base/browser';
+import {DataContainer} from '@typexs/base';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
 import {AbstractFormComponent} from './component/AbstractFormComponent';
 

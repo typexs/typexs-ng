@@ -1,10 +1,10 @@
   import * as _ from 'lodash';
-import {Component, EmbeddedViewRef, ViewChild} from '@angular/core';
+import {Component, ComponentFactoryResolver, EmbeddedViewRef, Inject, Injector, ViewChild} from '@angular/core';
 import {ViewContent} from '../../../../../libs/views/decorators/ViewContent';
 import {TreeObject} from '../../../../../libs/views/TreeObject';
 import {ViewComponent} from '../../../../../libs/views/decorators/ViewComponent';
 import {AbstractComponent} from '../../../../base/component/AbstractComponent';
-import {ClassUtils} from '@allgemein/base/browser';
+import {ClassUtils} from '@allgemein/base';
 
 
 @ViewContent('search-entry')
@@ -37,6 +37,10 @@ export class SearchEntryComponent extends AbstractComponent<SearchEntry> {
   @ViewChild('content', {static: false})
   child: any;
 
+  constructor(@Inject(Injector) public injector: Injector,
+              @Inject(ComponentFactoryResolver) public r: ComponentFactoryResolver) {
+    super(injector, r);
+  }
 
   get nr() {
     if (this.getInstance()) {

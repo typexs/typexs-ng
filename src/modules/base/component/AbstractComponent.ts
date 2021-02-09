@@ -1,10 +1,10 @@
 import * as _ from 'lodash';
-import {ComponentFactoryResolver, Inject, Injector, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, ComponentFactoryResolver, Inject, Injector, ViewChild, ViewContainerRef} from '@angular/core';
 import {TreeObject} from '../../../libs/views/TreeObject';
 import {Context} from '../../../libs/views/Context';
 import {ComponentRegistryService} from './component-registry.service';
 import {Log} from '../lib/log/Log';
-import {NotYetImplementedError} from '@typexs/base/browser';
+import {NotYetImplementedError} from '@typexs/base';
 import {ClassType} from 'commons-schema-api/browser';
 import {IInstanceableComponent} from './IInstanceableComponent';
 import {C_DEFAULT} from '../constants';
@@ -12,7 +12,9 @@ import {isTreeObject} from '../../../libs/views/ITreeObject';
 
 const PROP_METADATA = '__prop__metadata__';
 
-
+@Component({
+  template: ''
+})
 export abstract class AbstractComponent<T/* extends TreeObject*/> implements IInstanceableComponent<T> {
 
   inputKeys: string[] = [];

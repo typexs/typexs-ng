@@ -14,8 +14,8 @@ import {
   API_CTRL_STORAGE_UPDATE_ENTITIES_BY_CONDITION,
   API_CTRL_STORAGE_UPDATE_ENTITY,
   IStorageRefMetadata
-} from '@typexs/server/browser';
-import {__CLASS__, __REGISTRY__, REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base/browser';
+} from '@typexs/server';
+import {__CLASS__, __REGISTRY__, REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base';
 import {IBuildOptions, IEntityRef} from 'commons-schema-api/browser';
 import {IQueringService} from '../base/api/querying/IQueringService';
 import {AbstractQueryService} from '../base/api/querying/abstract-query.service';

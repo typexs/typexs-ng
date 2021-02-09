@@ -1,12 +1,14 @@
 import * as _ from 'lodash';
-import {Inject, Input} from '@angular/core';
+import {Component, Inject, Input} from '@angular/core';
 import {IInstanceableComponent} from '../IInstanceableComponent';
 import {EntityResolverService} from '../../services/entity-resolver.service';
 import {IQueringService} from '../../api/querying/IQueringService';
 import {IEntityViewOptions} from './IEntityViewOptions';
-import {ClassUtils} from '@allgemein/base/browser';
+import {ClassUtils} from '@allgemein/base';
 
-
+@Component({
+  template: ''
+})
 export abstract class AbstractEntityViewComponent<T> implements IInstanceableComponent<T> {
 
   @Input()
@@ -19,7 +21,7 @@ export abstract class AbstractEntityViewComponent<T> implements IInstanceableCom
 
   loading: boolean = false;
 
-  constructor(@Inject(EntityResolverService) private resolverService: EntityResolverService) {
+  constructor(@Inject(EntityResolverService) public resolverService: EntityResolverService) {
   }
 
   getInstance(): T {

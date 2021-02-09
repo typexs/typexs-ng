@@ -17,6 +17,7 @@ import {
 import {AbstractGridComponent} from './abstract-grid.component';
 import {ComponentRegistryService} from '../component/component-registry.service';
 import {Log} from '../lib/log/Log';
+import {IDTGridOptions} from './IDTGridOptions';
 
 
 const inputKeys = ['columns', 'rows', 'maxRows', 'options', 'params'];
@@ -36,6 +37,10 @@ export class DatatableComponent extends AbstractGridComponent implements OnInit,
 
   @Input()
   component: any;
+
+  @Input()
+  options: IDTGridOptions;
+
 
   @ViewChild('content', {read: ViewContainerRef, static: true})
   vc: ViewContainerRef;

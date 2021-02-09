@@ -1,4 +1,4 @@
-import {ModuleWithProviders, NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, ModuleWithProviders, NgModule} from '@angular/core';
 import {SystemInfoService} from './services/system-info.service';
 import {DefaultAuthGuardService} from './api/auth/default-auth-guard.service';
 import {NoopAuthService} from './api/auth/noop-auth.service';
@@ -100,7 +100,8 @@ const COMPONENTS = [
     FormsModule
   ],
   exports: COMPONENTS,
-  providers: PROVIDERS
+  providers: PROVIDERS,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class BaseModule {
 

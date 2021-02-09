@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {FormsModule} from '../forms/module';
 import {BaseModule} from '../base/module';
 import {RouterModule} from '@angular/router';
@@ -29,7 +29,8 @@ const COMPONENTS: any[] = [
     FormsModule
   ],
   exports: COMPONENTS,
-  providers: PROVIDERS
+  providers: PROVIDERS,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DistributedStorageModule {
 

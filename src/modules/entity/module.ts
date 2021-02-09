@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {EntityTypesComponent} from './types/entity-types.component';
 import {EntityModifyComponent} from './modify/entity-modify.component';
 import {EntityDeleteComponent} from './delete/entity-delete.component';
@@ -52,7 +52,8 @@ const PROVIDERS = [
     EntityViewComponent,
     EntityStructComponent
   ],
-  providers: PROVIDERS
+  providers: PROVIDERS,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class EntityModule {
 

@@ -5,7 +5,7 @@ import {
   PERMISSION_ALLOW_TASK_LOG,
   PERMISSION_ALLOW_TASK_STATUS,
   PERMISSION_ALLOW_TASKS_LIST
-} from '@typexs/server/browser';
+} from '@typexs/server';
 import {AuthGuardService} from '../base/api/auth/auth-guard.service';
 import {TasksLogComponent} from './log/tasks-log.component';
 import {TasksExecutionComponent} from './execution/tasks-execution.component';

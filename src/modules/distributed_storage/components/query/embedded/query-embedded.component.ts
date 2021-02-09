@@ -28,7 +28,8 @@ export class DistributedStorageQueryEmbeddedComponent
 
 
   constructor(private service: DistributedStorageService) {
-    super(service);
+    super();
+    this.setQueryService(service);
   }
 
   // reset loading entity

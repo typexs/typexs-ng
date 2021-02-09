@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {AbstractEntityViewComponent} from '../abstract-entity-view.component';
+import {EntityResolverService} from '../../../services/entity-resolver.service';
 
 
 @Component({
@@ -9,4 +10,8 @@ import {AbstractEntityViewComponent} from '../abstract-entity-view.component';
 })
 export class JsonComponent extends AbstractEntityViewComponent<any> {
 
+
+  constructor(@Inject(EntityResolverService) public resolverService: EntityResolverService) {
+    super(resolverService);
+  }
 }
