@@ -4,6 +4,7 @@ import {FORM_COMPONENTS} from './forms.elements';
 import {FormService} from './form.service';
 import {BaseModule} from '../base/module';
 import {CommonModule} from '@angular/common';
+import {FORM_ELEMENTS} from '../../libs/forms/elements';
 
 
 @NgModule({
@@ -28,5 +29,9 @@ export class FormsModule {
         FormService
       ]
     };
+  }
+
+  constructor() {
+    const load = FORM_ELEMENTS;
   }
 }

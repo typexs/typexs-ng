@@ -14,7 +14,13 @@ export class FormBuilder {
 
   private form: FormObject;
 
+  private registry: ComponentRegistry;
+
   // private schema: SchemaDef;
+
+  constructor(registry: ComponentRegistry) {
+    this.registry = registry;
+  }
 
   buildFromJSON(data: any): Form {
     this.data = data;
@@ -34,7 +40,7 @@ export class FormBuilder {
 
     if (!this.form) {
       // this.schema = EntityRegistry.getSchema(entity.object.getSchema());
-      this.form = formObject = ComponentRegistry.createHandle('form');
+      this.form = formObject = this.registry.createHandle('form');
       formObject.handle('name', entity.id());
       formObject.handle('binding', entity);
     } else if ((<AbstractRef><any>entity).baseType === XS_TYPE_PROPERTY) {
@@ -112,7 +118,7 @@ export class FormBuilder {
 
 
   private forDefault(formType: string, property: IPropertyRef) {
-    const formObject: FormObject = ComponentRegistry.createHandle(formType);
+    const formObject: FormObject = this.registry.createHandle(formType);
     if (formObject) {
       formObject.handle('variant', formType);
       this._applyValues(formObject, property);
@@ -149,7 +155,7 @@ export class FormBuilder {
   }
 
   private _forInput(formType: string, property: IPropertyRef) {
-    const formObject: FormObject = ComponentRegistry.createHandle('input');
+    const formObject: FormObject = this.registry.createHandle('input');
     formObject.handle('variant', formType);
     this._applyValues(formObject, property);
     return formObject;
@@ -181,7 +187,7 @@ export class FormBuilder {
     let formObject: FormObject = null;
     if (data.type) {
       // lookup handle
-      formObject = ComponentRegistry.createHandle(data.type);
+      formObject = this.registry.createHandle(data.type);
     } else {
       throw new NoFormTypeDefinedError();
     }

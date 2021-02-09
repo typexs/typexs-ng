@@ -9,8 +9,11 @@ import {UrlHelper} from '../../base/lib/UrlHelper';
 import {FormObject, isFormObject} from '../../../libs/forms/FormObject';
 import {NoFormTypeDefinedError} from '../../../libs/exceptions/NoFormTypeDefinedError';
 import {AbstractComponent} from '../../base/component/AbstractComponent';
+import {Component, ComponentFactoryResolver, Inject, Injector} from '@angular/core';
 
-
+@Component({
+  template: ''
+})
 export abstract class AbstractFormComponent<T extends FormObject> extends AbstractComponent<T> {
 
   static _inc = 0;
@@ -23,6 +26,12 @@ export abstract class AbstractFormComponent<T extends FormObject> extends Abstra
   private _defaultValue: any = null;
 
   _value: any = null;
+
+  constructor(@Inject(Injector) public injector: Injector,
+              @Inject(ComponentFactoryResolver) public r: ComponentFactoryResolver) {
+    super(injector, r);
+    this.construct();
+  }
 
 
   construct() {

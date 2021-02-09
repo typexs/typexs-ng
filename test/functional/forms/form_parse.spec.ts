@@ -6,7 +6,7 @@ import {Log} from '@typexs/base';
 import {Entity, EntityRegistry, Property} from '@typexs/schema';
 import {Form, FORM_ELEMENTS} from '../../../src/libs/forms/elements';
 import {FormBuilder} from '../../../src/libs/forms/FormBuilder';
-import {Text, Type} from '../../../src';
+import {ComponentRegistry, Text, Type} from '../../../src';
 
 FORM_ELEMENTS;
 
@@ -81,7 +81,7 @@ class FormParseSpec {
     const entities = EntityRegistry.getSchema('default').getEntities();
 
 
-    const builder1 = new FormBuilder();
+    const builder1 = new FormBuilder(ComponentRegistry.$());
     const form = builder1.buildFromJSON(formJSON);
     // console.log(form);
 
@@ -89,7 +89,7 @@ class FormParseSpec {
 
     const entityDef = EntityRegistry.getEntityRefFor('TestUser');
 
-    const builder2 = new FormBuilder();
+    const builder2 = new FormBuilder(ComponentRegistry.$());
     const form2 = builder2.buildFromEntity(entityDef);
 
 

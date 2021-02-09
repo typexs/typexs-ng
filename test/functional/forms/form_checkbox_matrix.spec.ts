@@ -9,6 +9,7 @@ import {Form, FORM_ELEMENTS} from '../../../src/libs/forms/elements';
 import {FormBuilder} from '../../../src/libs/forms/FormBuilder';
 import {CheckboxMatrix} from '../../../src/modules/app/entities/CheckboxMatrix';
 import {CheckboxMatrixRow} from '../../../src/modules/app/entities/CheckboxMatrixRow';
+import {ComponentRegistry} from '../../../src';
 
 FORM_ELEMENTS;
 
@@ -46,7 +47,7 @@ class FormParseSpec {
 
     const registry = EntityRegistry.$();
     const entityRef = registry.getEntityRefByName('CheckboxMatrix');
-    const formBuilder = new FormBuilder();
+    const formBuilder = new FormBuilder(ComponentRegistry.$());
     const formElements = formBuilder.buildFromEntity(entityRef);
     const children = formElements.getChildren();
     expect(children).to.have.length(1);

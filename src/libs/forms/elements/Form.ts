@@ -53,7 +53,7 @@ export class Form extends FormObject {
       }
       // }
     }
-    return _path.length == 0 && element ? element : null;
+    return _path.length === 0 && element ? element : null;
 
   }
 

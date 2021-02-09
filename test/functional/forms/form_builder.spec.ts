@@ -7,6 +7,7 @@ import {Log} from '@typexs/base';
 import {Entity, Property, EntityRegistry} from '@typexs/schema';
 import {Form, FORM_ELEMENTS} from '../../../src/libs/forms/elements';
 import {FormBuilder} from '../../../src/libs/forms/FormBuilder';
+import {ComponentRegistry} from '../../../src';
 
 FORM_ELEMENTS;
 
@@ -40,7 +41,7 @@ class FormParseSpec {
   @test
   async 'tree data parse'() {
 
-    const builder = new FormBuilder();
+    const builder = new FormBuilder(ComponentRegistry.$());
     const entityDef = EntityRegistry.getEntityRefFor('TreeTestData');
     const tree = builder.buildFromEntity(entityDef);
     expect(tree.children).to.have.length(2);
