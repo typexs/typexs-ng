@@ -13,9 +13,10 @@ import {isTreeObject} from '../../../libs/views/ITreeObject';
 const PROP_METADATA = '__prop__metadata__';
 
 @Component({
+  // selector: 'txs-abstract-component',
   template: ''
 })
-export abstract class AbstractComponent<T/* extends TreeObject*/> implements IInstanceableComponent<T> {
+export class AbstractComponent<T> implements IInstanceableComponent<T> {
 
   inputKeys: string[] = [];
 

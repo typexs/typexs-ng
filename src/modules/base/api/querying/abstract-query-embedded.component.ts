@@ -29,7 +29,7 @@ import {first} from 'rxjs/operators';
 @Component({
   template: ''
 })
-export abstract class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQueryComponentApi {
+export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQueryComponentApi {
 
   @Input()
   get params() {

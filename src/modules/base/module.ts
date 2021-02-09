@@ -42,6 +42,11 @@ import {EntityResolverService} from './services/entity-resolver.service';
 import {JsonComponent} from './component/entities/json/json.component';
 import {EntityViewPageComponent} from './component/entities/page/page.component';
 import {BackendService} from './api/backend/backend.service';
+import {AbstractGridComponent} from './datatable/abstract-grid.component';
+import {AbstractEntityViewComponent} from './component/entities/abstract-entity-view.component';
+import {AbstractComponent} from './component/AbstractComponent';
+import {AbstractQueryEmbeddedComponent} from './api/querying/abstract-query-embedded.component';
+import {AbstractAggregateEmbeddedComponent} from './api/querying/abstract-aggregate-embedded.component';
 
 
 const PROVIDERS = [
@@ -77,7 +82,12 @@ const COMPONENTS = [
   SimpleHtmlCellObjectReferenceRendererComponent,
   SimpleHtmlCellEntityOperationsRendererComponent,
   SimpleHtmlCellRouterLinkRendererComponent,
-  FreeQueryInputComponent
+  FreeQueryInputComponent,
+  AbstractGridComponent,
+  AbstractEntityViewComponent,
+  AbstractComponent,
+  AbstractQueryEmbeddedComponent,
+  AbstractAggregateEmbeddedComponent
 ];
 
 

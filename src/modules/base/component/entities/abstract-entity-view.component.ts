@@ -9,7 +9,7 @@ import {ClassUtils} from '@allgemein/base';
 @Component({
   template: ''
 })
-export abstract class AbstractEntityViewComponent<T> implements IInstanceableComponent<T> {
+export class AbstractEntityViewComponent<T> implements IInstanceableComponent<T> {
 
   @Input()
   instance: T;

@@ -8,6 +8,7 @@ import {Context} from '../../../libs/views/Context';
 import {ISelectOption} from './ISelectOption';
 import {ISelectOptionsService} from './ISelectOptionsService';
 import {DataContainer} from '@typexs/base';
+import {EntityOptionsService} from '../../entity/entity-options.service';
 
 
 export class EnumHandle {
@@ -29,7 +30,7 @@ export class EnumHandle {
     let _enum = this.getElement().getEnum();
     if (this.getElement().getBinding().isEntityReference() && !_enum) {
       // set default
-      _enum = 'EntityOptionsService';
+      _enum = EntityOptionsService.name; // 'EntityOptionsService';
     }
 
     if (_.isArray(_enum)) {

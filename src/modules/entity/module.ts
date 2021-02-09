@@ -16,7 +16,7 @@ import {AppService} from '../base/services/app.service';
 import {ENTITY_ROUTES} from './routes';
 import {CommonModule} from '@angular/common';
 
-export const ENTITY_OPTIONS_SERVICE = 'EntityOptionsService';
+export const ENTITY_OPTIONS_SERVICE = EntityOptionsService.name;
 
 const PROVIDERS = [
   EntityService,

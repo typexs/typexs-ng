@@ -23,14 +23,14 @@ describe('Service: EntityOptionsService', () => {
         providers: [
           EntityService,
           EntityOptionsService,
-          {provide: 'EntityOptionsService', useClass: EntityOptionsService}
+          {provide: EntityOptionsService.name, useClass: EntityOptionsService}
         ]
       });
     });
 
 
     it('do initialization by string', () => {
-      service = TestBed.inject('EntityOptionsService' as any);
+      service = TestBed.inject(EntityOptionsService.name as any);
       expect(service).to.be.instanceOf(EntityOptionsService);
 
       let error = null;

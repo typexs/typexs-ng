@@ -14,7 +14,7 @@ import {Component, ComponentFactoryResolver, Inject, Injector} from '@angular/co
 @Component({
   template: ''
 })
-export abstract class AbstractFormComponent<T extends FormObject> extends AbstractComponent<T> {
+export class AbstractFormComponent<T extends FormObject> extends AbstractComponent<T> {
 
   static _inc = 0;
 

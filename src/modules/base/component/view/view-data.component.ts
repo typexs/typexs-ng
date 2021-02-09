@@ -1,6 +1,5 @@
 import * as _ from 'lodash';
 import {Component, ComponentFactoryResolver, Inject, Injector, Input, OnInit} from '@angular/core';
-import {TreeObject} from '../../../../libs/views/TreeObject';
 import {AbstractComponent} from '../AbstractComponent';
 import {C_DEFAULT} from '../../constants';
 import {IComponentBinding} from '../../../../libs/views/IComponentBinding';
@@ -13,7 +12,7 @@ import {ClassUtils} from '@allgemein/base';
   templateUrl: 'view-data.component.html',
   styleUrls: ['./view-data.component.scss']
 })
-export class ViewDataComponent<T extends TreeObject> extends AbstractComponent<T> implements OnInit {
+export class ViewDataComponent<T> extends AbstractComponent<T> implements OnInit {
 
   private _build = false;
 
