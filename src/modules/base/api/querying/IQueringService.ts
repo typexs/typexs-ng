@@ -1,4 +1,4 @@
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {ILookupRegistry, LookupRegistry} from 'commons-schema-api/browser';
 //
 // export interface IQueringServiceOptions {

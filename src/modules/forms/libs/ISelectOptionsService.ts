@@ -1,4 +1,4 @@
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {ISelectOption} from './ISelectOption';
 import {IPropertyRef} from 'commons-schema-api/browser';
 

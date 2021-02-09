@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import * as _ from 'lodash';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {AuthService} from '../base/api/auth/auth.service';
 import {
   API_CTRL_STORAGE_AGGREGATE_ENTITY,

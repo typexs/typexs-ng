@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {EntityService} from './entity.service';
 import {EntityRef, PropertyRef} from '@typexs/schema/browser';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {ISelectOptionsService} from '../forms/libs/ISelectOptionsService';
 import {ISelectOption} from '../forms/libs/ISelectOption';
 import {ClassRef, IEntityRef} from 'commons-schema-api/browser';

@@ -1,6 +1,6 @@
 import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 import {IUser} from '../../../../libs/api/auth/IUser';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {MessageChannel} from '../../messages/MessageChannel';
 import {AuthMessage} from '../../messages/types/AuthMessage';
 

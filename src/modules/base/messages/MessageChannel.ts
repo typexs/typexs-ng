@@ -1,6 +1,5 @@
 import {IMessage} from './IMessage';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Subscription} from 'rxjs/Subscription';
+import {BehaviorSubject, Subscription} from 'rxjs';
 
 export class MessageChannel<T extends IMessage> {
 

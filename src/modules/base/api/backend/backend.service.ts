@@ -1,9 +1,8 @@
 import {IBackendClientService} from './IBackendClientService';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import {Observable, of} from 'rxjs';
 import {IApiCallOptions} from '../../lib/http/IApiCallOptions';
 import {IRoutePointer} from './IRoutePointer';
-import {of} from 'rxjs';
 import {BACKEND_CLIENT_STATE} from './Constants';
 import {IRoute} from './IRoute';
 

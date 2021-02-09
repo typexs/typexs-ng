@@ -17,10 +17,8 @@ import {IModule, IStorageOptions, ITypexsOptions} from '@typexs/base/browser';
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
 import {HttpBackendService} from './http-backend.service';
 import {IWorkerInfo} from '@typexs/base/libs/worker/IWorkerInfo';
-import {Observable} from 'rxjs/Observable';
-import {Subject} from 'rxjs/Subject';
+import {Observable, Subject, BehaviorSubject, combineLatest} from 'rxjs';
 import {NodeRuntimeInfo} from '@typexs/base/libs/system/NodeRuntimeInfo';
-import {BehaviorSubject, combineLatest} from 'rxjs';
 import {filter} from 'rxjs/operators';
 import {BackendService} from '../api/backend/backend.service';
 

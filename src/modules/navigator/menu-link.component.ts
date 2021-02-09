@@ -2,8 +2,7 @@ import * as _ from 'lodash';
 import {Component, Injector, Input, OnDestroy, OnInit} from '@angular/core';
 import {INavTreeEntry} from './INavTreeEntry';
 import {IMenuLinkGuard} from './IMenuLinkGuard';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {of, Subscription, TeardownLogic} from 'rxjs';
+import {BehaviorSubject, of, Subscription, TeardownLogic} from 'rxjs';
 import {mergeMap} from 'rxjs/operators';
 
 

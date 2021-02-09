@@ -4,8 +4,7 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {ExprDesc, Expressions} from 'commons-expressions/browser';
 import {QueryAction} from '../QueryAction';
 import {Log} from '../../../lib/log/Log';
-import {Subject} from 'rxjs';
-import {Subscription} from 'rxjs/Subscription';
+import {Subject, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 

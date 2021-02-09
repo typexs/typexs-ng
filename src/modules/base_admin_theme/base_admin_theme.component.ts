@@ -9,8 +9,7 @@ import {CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE} from '../base/constants
 import {LogMessage} from '../base/messages/types/LogMessage';
 import {INotifyOptions} from './components/notifications/INotifyOptions';
 import {NotificationsService} from './components/notifications/notifications.service';
-import {Subscription} from 'rxjs/Subscription';
-import {of} from 'rxjs';
+import {Subscription, of} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {Log} from '../base/lib/log/Log';
 import {SystemInfoService} from '../base/services/system-info.service';

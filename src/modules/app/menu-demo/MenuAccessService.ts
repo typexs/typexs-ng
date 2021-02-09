@@ -2,8 +2,7 @@ import {Injectable} from '@angular/core';
 import * as _ from 'lodash';
 import {IMenuLinkGuard} from '../../navigator/IMenuLinkGuard';
 import {NavEntry} from '../../navigator/NavEntry';
-import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject, Subject} from 'rxjs';
+import {Observable, BehaviorSubject, Subject} from 'rxjs';
 
 @Injectable()
 export class MenuAccessService implements IMenuLinkGuard {

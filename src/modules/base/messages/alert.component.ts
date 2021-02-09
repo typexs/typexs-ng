@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {IMessage, MessageType} from './IMessage';
 import {MessageChannel} from './MessageChannel';
-import {ISubscription} from 'rxjs/Subscription';
+import {SubscriptionLike as ISubscription} from 'rxjs';
 
 
 @Component({

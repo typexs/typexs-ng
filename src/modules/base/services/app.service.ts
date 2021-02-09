@@ -1,14 +1,12 @@
 import {Injectable} from '@angular/core';
 import {NavigationCancel, NavigationEnd, NavigationError, Router} from '@angular/router';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {AuthService} from './../api/auth/auth.service';
 import {MessageService} from './../messages/message.service';
 import {AuthMessage} from './../messages/types/AuthMessage';
 import {C_ADMIN, CTXT_VIEW_ADMIN, CTXT_VIEW_DEFAULT, CTXT_VIEW_LOADING, CTXT_VIEW_LOGIN} from './../constants';
 import * as _ from 'lodash';
 import {switchMap} from 'rxjs/operators';
-import {of} from 'rxjs';
 import {Log} from './../lib/log/Log';
 import {BackendService} from '../api/backend/backend.service';
 

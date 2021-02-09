@@ -1,5 +1,5 @@
 import {NavEntry} from './NavEntry';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 
 export interface IMenuLinkGuard {
 

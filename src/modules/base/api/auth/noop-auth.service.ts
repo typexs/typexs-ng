@@ -7,12 +7,10 @@ import {MessageService} from '../../messages/message.service';
 
 import {MessageChannel} from '../../messages/MessageChannel';
 import {MessageType} from '../../messages/IMessage';
-import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Observable, BehaviorSubject, of} from 'rxjs';
 
 import {MESSAGE_TYPE_AUTH_SERVICE, MSG_TOPIC_AUTH_SET_USER} from '../../constants';
 import {AuthMessage} from '../../messages/types/AuthMessage';
-import {of} from 'rxjs';
 import {BackendService} from '../backend/backend.service';
 
 @Injectable()

@@ -6,7 +6,7 @@ import {ViewComponent} from '../../../libs/views/decorators/ViewComponent';
 import {GridHandle} from '../../../libs/forms/elements';
 import {FormObject, isFormObject} from '../../../libs/forms/FormObject';
 import {EnumHandle} from './../libs/EnumHandle';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {GridColumnDef} from './GridColumnDef';
 import {AbstractFormComponent} from '../component/AbstractFormComponent';
 import {AbstractComponent} from '../../base/component/AbstractComponent';
