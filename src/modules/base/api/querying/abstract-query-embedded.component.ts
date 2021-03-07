@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {ClassType, IEntityRef, JS_DATA_TYPES} from 'commons-schema-api/browser';
-import {IFindOptions, REGISTRY_TYPEORM} from '@typexs/base';
+import {IFindOptions} from '@typexs/base';
 import {ExprDesc, Expressions} from 'commons-expressions/browser';
 import {IDTGridOptions} from '../../datatable/IDTGridOptions';
 import {IGridColumn} from '../../datatable/IGridColumn';
@@ -48,8 +48,6 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
   @Input()
   columns: IGridColumn[];
 
-  @Input()
-  registryName: string = REGISTRY_TYPEORM;
 
   @Input()
   limit = 25;
@@ -143,11 +141,12 @@ export class AbstractQueryEmbeddedComponent implements OnInit, OnChanges, IQuery
 
 
   findEntityDef() {
-    if (!this.registryName) {
+    const registry = this.getQueryService().getRegistry();
+    if (!registry) {
       return;
     }
 
-    this.entityRef = this.getQueryService().getRegistry().getEntityRefFor(this.name);
+    this.entityRef = registry.getEntityRefFor(this.name);
 
     if (!this.entityRef) {
       this.error = `Can't find entity type for ${this.name}.`;
