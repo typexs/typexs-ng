@@ -47,6 +47,7 @@ import {AbstractEntityViewComponent} from './component/entities/abstract-entity-
 import {AbstractComponent} from './component/AbstractComponent';
 import {AbstractQueryEmbeddedComponent} from './api/querying/abstract-query-embedded.component';
 import {AbstractAggregateEmbeddedComponent} from './api/querying/abstract-aggregate-embedded.component';
+import {QueryEmbeddedComponent} from './component/query/query-embedded.component';
 
 
 const PROVIDERS = [
@@ -87,7 +88,8 @@ const COMPONENTS = [
   AbstractEntityViewComponent,
   AbstractComponent,
   AbstractQueryEmbeddedComponent,
-  AbstractAggregateEmbeddedComponent
+  AbstractAggregateEmbeddedComponent,
+  QueryEmbeddedComponent
 ];
 
 
@@ -102,7 +104,8 @@ const COMPONENTS = [
     SimpleHtmlCellEntityReferenceRendererComponent,
     SimpleHtmlCellObjectReferenceRendererComponent,
     SimpleHtmlCellEntityOperationsRendererComponent,
-    SimpleHtmlCellRouterLinkRendererComponent
+    SimpleHtmlCellRouterLinkRendererComponent,
+    QueryEmbeddedComponent
   ],
   imports: [
     CommonModule,

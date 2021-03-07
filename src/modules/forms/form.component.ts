@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDestroy, OnInit, Output} from '@angular/core';
 
 import {FormService} from './form.service';
 import {ViewComponent} from '../../libs/views/decorators/ViewComponent';
@@ -8,8 +8,9 @@ import {MessageChannel} from '../base/messages/MessageChannel';
 import {IMessage} from '../base/messages/IMessage';
 import {IFormOptions} from './IFormOptions';
 import {DataContainer} from '@typexs/base';
-import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
 import {AbstractFormComponent} from './component/AbstractFormComponent';
+import {EntityResolverService} from '../base/services/entity-resolver.service';
+import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
 
 
 @ViewComponent('form')
@@ -64,17 +65,16 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
 
   formObject: any;
 
-  constructor(@Inject(FormService)
-              private formService: FormService,
-              @Inject(Injector)
+  constructor(private formService: FormService,
               public injector: Injector,
-              @Inject(ComponentFactoryResolver)
-              public r: ComponentFactoryResolver) {
+              public r: ComponentFactoryResolver,
+              private resolver: EntityResolverService
+  ) {
     super(injector, r);
     // TODO ...
-    if (!this.registry) {
-      this.registry = EntityRegistry.$();
-    }
+    // if (!this.registry) {
+    //   this.registry = resolver.
+    // }
   }
 
 
@@ -87,8 +87,20 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
   reset() {
     // TODO instance must be present
     super.reset();
+
+    if (!this.registry) {
+      const service = this.resolver.getServiceFor(this.instance);
+      if (service) {
+        this.registry = service.getRegistry();
+      } else {
+        this.registry = EntityRegistry.$();
+      }
+    }
+    console.log(this.instance);
     this.data = new DataContainer(this.instance, this.registry);
+    console.log(this.data);
     this.formObject = this.formService.get(this.formName, this.instance, this.registry);
+    console.log(this.formObject);
     // TODO restructure form
     this.build(this.formObject);
   }

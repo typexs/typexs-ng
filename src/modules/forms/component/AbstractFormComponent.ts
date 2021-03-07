@@ -174,6 +174,7 @@ export class AbstractFormComponent<T extends FormObject> extends AbstractCompone
   build(form: FormObject): AbstractComponent<T>[] {
     const comp: AbstractComponent<T>[] = [];
     form.getChildren().forEach(formObject => {
+      console.log(formObject);
       if (isFormObject(formObject)) {
 
         const handle = this.getComponentRegistry().getOrCreateDef(formObject.type);

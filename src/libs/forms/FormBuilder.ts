@@ -1,6 +1,5 @@
 import {FormObject} from './FormObject';
 import {Form} from './elements';
-
 import {ResolveDataValue} from './ResolveDataValue';
 import * as _ from 'lodash';
 import {NoFormTypeDefinedError} from '../../libs/exceptions/NoFormTypeDefinedError';
@@ -16,15 +15,12 @@ export class FormBuilder {
 
   private registry: ComponentRegistry;
 
-  // private schema: SchemaDef;
-
   constructor(registry: ComponentRegistry) {
     this.registry = registry;
   }
 
   buildFromJSON(data: any): Form {
     this.data = data;
-    // this.schema = EntityRegistry.getSchema('default');
     return <Form>this._buildForm(data);
   }
 
