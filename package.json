@@ -38,6 +38,7 @@
   "homepage": "https://github.com/typexs/typexs-ng#readme",
   "devDependencies": {
     "@allgemein/packaging": "^1.1.0",
+    "@angular-builders/custom-webpack": "^11.0.0",
     "@angular-devkit/build-angular": "^0.1101.4",
     "@angular-devkit/core": "11.1.4",
     "@angular-devkit/schematics": "11.1.4",
@@ -104,6 +105,7 @@
     "karma-coverage": "^2.0.3",
     "karma-jasmine": "^4.0.1",
     "karma-jasmine-html-reporter": "^1.5.4",
+    "light-server": "^2.9.1",
     "merge-stream": "^2.0.0",
     "mocha": "^8.2.1",
     "ng-packagr": "^11.1.4",
