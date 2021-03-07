@@ -24,17 +24,6 @@ export class EntityQueryEmbeddedComponent extends AbstractQueryEmbeddedComponent
   constructor(private entityService: EntityService) {
     super();
     this.setQueryService(entityService);
-
-    this.registryName = C_DEFAULT;
   }
-
-  findEntityDef() {
-    this.entityRef = EntityRegistry.$().getEntityRefByName(this.name);
-
-    if (!this.entityRef) {
-      this.error = `Can't find entity type for ${this.name}.`;
-    }
-  }
-
 
 }
