@@ -3,6 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {IEntityRef} from 'commons-schema-api/browser';
 import {EntityResolverService} from '../../../services/entity-resolver.service';
+import {XS_P_$LABEL} from '@typexs/server';
 
 @Component({
   selector: 'txs-entity-view-page',
@@ -24,6 +25,17 @@ export class EntityViewPageComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private resolver: EntityResolverService) {
+  }
+
+  label() {
+    if (this.instance) {
+      if (_.isFunction(this.instance['label'])) {
+        return this.instance['label'];
+      } else if (this.instance[XS_P_$LABEL]) {
+        return this.instance[XS_P_$LABEL];
+      }
+    }
+    return undefined;
   }
 
 

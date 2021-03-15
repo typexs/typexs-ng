@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
 import {Injectable} from '@angular/core';
-import {ClassUtils} from '@allgemein/base';
 import {IEntityRef, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
 import {IQueringService} from './../api/querying/IQueringService';
 import {forkJoin} from 'rxjs';
+import {ComponentRegistry} from '../../../libs/views/ComponentRegistry';
 
 @Injectable()
 export class EntityResolverService {
@@ -13,6 +13,9 @@ export class EntityResolverService {
   cache: { [k: string]: any } = {};
 
   queryServices: IQueringService[] = [];
+
+
+
 
   registerService(service: IQueringService) {
     if (!this.queryServices.find(x => x === service)) {
@@ -29,7 +32,7 @@ export class EntityResolverService {
   }
 
   getEntityRef(obj: any): IEntityRef {
-    const className = ClassUtils.getClassName(obj);
+    const className = ComponentRegistry.getClassName(obj);
     if (['Object', 'Array'].includes(className)) {
       return null;
     }

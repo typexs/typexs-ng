@@ -5,6 +5,8 @@ import {TreeObject} from '../../../../../libs/views/TreeObject';
 import {ViewComponent} from '../../../../../libs/views/decorators/ViewComponent';
 import {AbstractComponent} from '../../../../base/component/AbstractComponent';
 import {ClassUtils} from '@allgemein/base';
+  import {EntityResolverService} from '../../../../base/services/entity-resolver.service';
+  import {ComponentRegistry} from '../../../../../libs/views/ComponentRegistry';
 
 
 @ViewContent('search-entry')
@@ -58,7 +60,7 @@ export class SearchEntryComponent extends AbstractComponent<SearchEntry> {
     const viewRef = comp.get(0) as EmbeddedViewRef<any>;
     const nodes = viewRef && _.has(viewRef, '_view.nodes') ? _.find(viewRef['_view'].nodes, x => !!x.instance) : null;
     if (nodes && nodes.instance) {
-      return ClassUtils.getClassName(nodes.instance.getInstance());
+      return ComponentRegistry.getClassName(nodes.instance.getInstance());
     }
 
     return 'unknown';

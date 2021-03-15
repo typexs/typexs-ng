@@ -5,6 +5,7 @@ import {EntityResolverService} from '../../services/entity-resolver.service';
 import {IQueringService} from '../../api/querying/IQueringService';
 import {IEntityViewOptions} from './IEntityViewOptions';
 import {ClassUtils} from '@allgemein/base';
+import {ComponentRegistry} from '../../../../libs/views/ComponentRegistry';
 
 @Component({
   template: ''
@@ -70,7 +71,7 @@ export class AbstractEntityViewComponent<T> implements IInstanceableComponent<T>
     if (obj) {
       return obj.name;
     }
-    return ClassUtils.getClassName(<any>this.getInstance());
+    return ComponentRegistry.getClassName(<any>this.getInstance());
   }
 
   url() {

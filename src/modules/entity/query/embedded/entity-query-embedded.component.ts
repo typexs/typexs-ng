@@ -1,9 +1,6 @@
 import {Component} from '@angular/core';
 import {AbstractQueryEmbeddedComponent} from '../../../base/api/querying/abstract-query-embedded.component';
-
 import {EntityService} from '../../entity.service';
-import {C_DEFAULT} from '../../../base/constants';
-import {EntityRegistry} from '@typexs/schema';
 
 
 /**

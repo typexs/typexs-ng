@@ -5,6 +5,8 @@ import {C_DEFAULT} from '../../constants';
 import {IComponentBinding} from '../../../../libs/views/IComponentBinding';
 import {ComponentRegistryService} from '../component-registry.service';
 import {ClassUtils} from '@allgemein/base';
+import {EntityResolverService} from '../../services/entity-resolver.service';
+import {ComponentRegistry} from '../../../../libs/views/ComponentRegistry';
 
 
 @Component({
@@ -78,7 +80,7 @@ export class ViewDataComponent<T> extends AbstractComponent<T> implements OnInit
     if (!this._build && this.instance) {
       // TODO check permissions for this!
       if (this.allowViewModeSwitch) {
-        const className = ClassUtils.getClassName(this.instance);
+        const className = ComponentRegistry.getClassName(this.instance);
         this.viewModes = this.componentRegistry.registry
           .forHandle(className)
           .filter(x => _.get(x, 'extra.context', false)
