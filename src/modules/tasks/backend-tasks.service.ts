@@ -222,8 +222,10 @@ export class BackendTasksService {
         });
 
     } else {
-      x.next(this.tasks);
-      x.complete();
+      setTimeout(() => {
+        x.next(this.tasks);
+        x.complete();
+      });
     }
     return x.asObservable();
   }
