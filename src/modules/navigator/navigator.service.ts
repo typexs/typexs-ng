@@ -194,9 +194,7 @@ export class NavigatorService {
     }
 
     const regex = new RegExp(pattern);
-    const entries = orderBy(this.entries, s => {
-      return s.getFullPath().length;
-    });
+    const entries = orderBy(this.entries, s => s.getFullPath().length);
 
     const selected: number[] = [];
     filter(entries, e => {
