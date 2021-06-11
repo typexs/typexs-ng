@@ -595,7 +595,7 @@ describe('Service: NavigatorService', () => {
     });
 
 
-    it('dev', () => {
+    it('dev', async () => {
       router = TestBed.get(Router);
       service = TestBed.get(NavigatorService);
 
@@ -603,7 +603,7 @@ describe('Service: NavigatorService', () => {
       expect(router.config.length).toEqual(2);
       expect(router.config[1]['_loadedConfig']).toBeUndefined();
       expect(entries.length).toEqual(2);
-      const followed = router.navigateByUrl('lazy');
+      const followed = await router.navigateByUrl('lazy');
       expect(followed).toBeTrue();
       expect(router.config[1]['_loadedConfig']).not.toBeUndefined();
       entries = service.getEntries();
