@@ -1,12 +1,7 @@
-  import * as _ from 'lodash';
+import {find, has} from 'lodash';
 import {Component, ComponentFactoryResolver, EmbeddedViewRef, Inject, Injector, ViewChild} from '@angular/core';
-import {ViewContent} from '../../../../../libs/views/decorators/ViewContent';
-import {TreeObject} from '../../../../../libs/views/TreeObject';
-import {ViewComponent} from '../../../../../libs/views/decorators/ViewComponent';
-import {AbstractComponent} from '../../../../base/component/AbstractComponent';
-import {ClassUtils} from '@allgemein/base';
-  import {EntityResolverService} from '../../../../base/services/entity-resolver.service';
-  import {ComponentRegistry} from '../../../../../libs/views/ComponentRegistry';
+import {ComponentRegistry, TreeObject, ViewComponent, ViewContent} from '@typexs/ng';
+import {AbstractComponent} from '@typexs/ng-base';
 
 
 @ViewContent('search-entry')
@@ -58,7 +53,7 @@ export class SearchEntryComponent extends AbstractComponent<SearchEntry> {
     // if(comp['getInstance'])
     // comp.element
     const viewRef = comp.get(0) as EmbeddedViewRef<any>;
-    const nodes = viewRef && _.has(viewRef, '_view.nodes') ? _.find(viewRef['_view'].nodes, x => !!x.instance) : null;
+    const nodes = viewRef && has(viewRef, '_view.nodes') ? find(viewRef['_view'].nodes, x => !!x.instance) : null;
     if (nodes && nodes.instance) {
       return ComponentRegistry.getClassName(nodes.instance.getInstance());
     }

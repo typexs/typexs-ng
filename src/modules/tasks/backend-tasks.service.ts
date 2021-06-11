@@ -1,5 +1,5 @@
+import {defaults, filter as _filter, find, intersection, isArray, isEmpty, isFunction, isNumber} from 'lodash';
 import {Injectable, Injector} from '@angular/core';
-
 import {
   API_CTRL_TASK_EXEC,
   API_CTRL_TASK_GET_METADATA_VALUE,
@@ -8,24 +8,17 @@ import {
   API_CTRL_TASKS_METADATA
 } from '@typexs/server';
 import {Tasks} from '@typexs/base';
-import {IEntityRefMetadata} from 'commons-schema-api';
-import {Observable, Subject, combineLatest, timer} from 'rxjs';
-import * as _ from 'lodash';
+import {combineLatest, Observable, Subject, timer} from 'rxjs';
 import {C_WORKERS} from '@typexs/base/libs/worker/Constants';
-import {SystemInfoService} from '../base/services/system-info.service';
+import {AbstractQueryService, AppService, BackendService, IApiCallOptions, Log, SystemInfoService} from '@typexs/ng-base';
 import {TaskEvent} from '@typexs/base/libs/tasks/worker/TaskEvent';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
-import {ExprDesc} from 'commons-expressions/browser';
+import {ExprDesc} from '@allgemein/expressions';
 import {IMessageOptions} from '@typexs/base/libs/messaging/IMessageOptions';
 import {ITaskExectorOptions} from '@typexs/base/libs/tasks/ITaskExectorOptions';
-import {IApiCallOptions} from '../base/lib/http/IApiCallOptions';
 import {filter, first, mergeMap, takeUntil, tap} from 'rxjs/operators';
-import {Log} from '../base/lib/log/Log';
-import {AbstractQueryService} from '../base/api/querying/abstract-query.service';
-import {AppService} from '../base/services/app.service';
 import {StorageService} from '../storage/storage.service';
-import {BackendService} from '../base/api/backend/backend.service';
 
 
 /**
@@ -56,7 +49,7 @@ export class BackendTasksService {
               private appService: AppService,
               private injector: Injector) {
     let serviceClass: Function = appService.getService('taskQueryService');
-    if (!serviceClass || !_.isFunction(serviceClass)) {
+    if (!serviceClass || !isFunction(serviceClass)) {
       serviceClass = StorageService;
     }
     this.queryService = injector.get(serviceClass);
@@ -90,7 +83,7 @@ export class BackendTasksService {
   }
 
   hasWorkerNodes() {
-    return !_.isEmpty(this.workerNodes);
+    return !isEmpty(this.workerNodes);
   }
 
   getWorkerNodes() {
@@ -134,7 +127,7 @@ export class BackendTasksService {
    */
   taskStatus(runnerId: string, options?: IMessageOptions & { interval?: number }): Observable<TaskLog> {
     options = options || {};
-    _.defaults(options, {interval: 5000});
+    defaults(options, {interval: 5000});
 
     const subject = new Subject();
     const repeat$:
@@ -143,7 +136,7 @@ export class BackendTasksService {
         .pipe(takeUntil(subject))
         .pipe(mergeMap(x => this.getTaskStatus(runnerId, options)))
         .pipe(tap(x => {
-            if (_.isArray(x)) {
+            if (isArray(x)) {
               let running = true;
               for (const y of x) {
                 running = running && y.running;
@@ -166,12 +159,12 @@ export class BackendTasksService {
              offset: number = null,
              tail: number = 50): Observable<any[]> {
     const opts: any = {};
-    if (_.isNumber(from) &&
-      _.isNumber(offset) && from >= 0 && offset >= 0
+    if (isNumber(from) &&
+      isNumber(offset) && from >= 0 && offset >= 0
     ) {
       opts.offset = from;
       opts.limit = offset;
-    } else if (_.isNumber(from) && from >= 0) {
+    } else if (isNumber(from) && from >= 0) {
       opts.offset = from;
     } else {
       opts.tail = tail;
@@ -195,20 +188,20 @@ export class BackendTasksService {
 
           // filter worker with task_queue_worker
           const nodes: SystemNodeInfo[] = this.infoService.allNodes;
-          this.workerNodes = _.filter(nodes, c => {
-            const x = _.find(c.contexts, cc => cc.context === C_WORKERS);
+          this.workerNodes = _filter(nodes, c => {
+            const x = find(c.contexts, cc => cc.context === C_WORKERS);
             if (x) {
-              return !!_.find(x.workers, w => w.name === 'task_queue_worker');
+              return !!find(x.workers, w => w.name === 'task_queue_worker');
             }
             return false;
           });
 
           this.backend.callApi(API_CTRL_TASKS_METADATA).subscribe(
-            (data: IEntityRefMetadata[]) => {
+            (data: any[]) => {
               this.tasks = new Tasks(null);
-              data.forEach((d: any) => {
-                d.nodeIds = _.intersection(d.nodeIds, this.workerNodes.map(w => w.nodeId));
-                this.tasks.fromJson(d);
+              data.forEach(async (d: any) => {
+                d.nodeIds = intersection(d.nodeIds, this.workerNodes.map(w => w.nodeId));
+                await this.tasks.fromJsonSchema(d);
               });
               x.next(this.tasks);
             },

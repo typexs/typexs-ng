@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AuthService} from '../../base/api/auth/auth.service';
+import {AbstractQueryService, AuthService, BackendService, EntityResolverService, IQueringService} from '@typexs/ng-base';
 import {
   API_CTRL_DISTRIBUTED_STORAGE,
   API_CTRL_DISTRIBUTED_STORAGE_DELETE_ENTITY,
@@ -8,10 +8,6 @@ import {
   API_CTRL_DISTRIBUTED_STORAGE_SAVE_ENTITY,
   API_CTRL_DISTRIBUTED_STORAGE_UPDATE_ENTITY
 } from '@typexs/server';
-import {IQueringService} from '../../base/api/querying/IQueringService';
-import {AbstractQueryService} from '../../base/api/querying/abstract-query.service';
-import {EntityResolverService} from '../../base/services/entity-resolver.service';
-import {BackendService} from '../../base/api/backend/backend.service';
 
 
 @Injectable()

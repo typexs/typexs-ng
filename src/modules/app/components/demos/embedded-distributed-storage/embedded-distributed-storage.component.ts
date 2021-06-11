@@ -1,11 +1,10 @@
-import * as _ from 'lodash';
+import {isEmpty, set} from 'lodash';
 import {AfterViewInit, ChangeDetectorRef, Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {IQueryParams} from '../../../../base/datatable/IQueryParams';
-import {Like, Value} from 'commons-expressions/browser';
+import {IQueryParams} from '@typexs/ng-base';
+import {Like, Value} from '@allgemein/expressions';
 import {IDSOptions} from '../../../../distributed_storage/lib/IDSOptions';
 import {DistributedStorageQueryEmbeddedComponent} from '../../../../distributed_storage/components/query/embedded/query-embedded.component';
 import {DistributedStorageService} from '../../../../distributed_storage/services/distributed_storage.service';
-import {StorageService} from '../../../../storage/storage.service';
 
 
 export class C {
@@ -76,7 +75,7 @@ export class EmbeddedDistributedStorageComponent implements OnInit, OnChanges, A
 
   setFilterText() {
     const p = this.simpleItemParams;
-    _.set(p, 'filters.text', Like('text', Value('Text 5*')));
+    set(p, 'filters.text', Like('text', Value('Text 5*')));
     this.simpleItemParams = p;
     this.simpleItemQuery.requery();
 
@@ -84,7 +83,7 @@ export class EmbeddedDistributedStorageComponent implements OnInit, OnChanges, A
 
   setSortText() {
     const p = this.simpleItemParams;
-    _.set(p, 'filters.text', Like('text', Value('Text 5*')));
+    set(p, 'filters.text', Like('text', Value('Text 5*')));
     this.simpleItemParams = p;
     this.simpleItemQuery.requery();
 
@@ -92,17 +91,17 @@ export class EmbeddedDistributedStorageComponent implements OnInit, OnChanges, A
 
   doSubmit() {
     const p = this.simpleItemParams;
-    if (!_.isEmpty(this.simpleQueryModul.sort)) {
-      _.set(p, 'sorting.' + this.simpleQueryModul.sort, this.simpleQueryModul.sortDir === 'asc' ? 'asc' : 'desc');
+    if (!isEmpty(this.simpleQueryModul.sort)) {
+      set(p, 'sorting.' + this.simpleQueryModul.sort, this.simpleQueryModul.sortDir === 'asc' ? 'asc' : 'desc');
     } else {
-      _.set(p, 'sorting', {});
+      set(p, 'sorting', {});
     }
 
-    if (!_.isEmpty(this.simpleQueryModul.filterKey)) {
-      _.set(p, 'filters.' + this.simpleQueryModul.filterKey, Like(this.simpleQueryModul.filterKey,
+    if (!isEmpty(this.simpleQueryModul.filterKey)) {
+      set(p, 'filters.' + this.simpleQueryModul.filterKey, Like(this.simpleQueryModul.filterKey,
         Value(this.simpleQueryModul.filterValue ? this.simpleQueryModul.filterValue : '')));
     } else {
-      _.set(p, 'filters', {});
+      set(p, 'filters', {});
     }
 
     this.simpleItemQuery.requery();

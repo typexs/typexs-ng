@@ -1,18 +1,14 @@
-import * as _ from 'lodash';
+import {isBoolean, values} from 'lodash';
 import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit, Renderer2, TemplateRef, ViewEncapsulation} from '@angular/core';
-import {IUser} from '../../libs/api/auth/IUser';
+import {IUser} from '@typexs/ng';
 import PerfectScrollbar from 'perfect-scrollbar';
 import {IMenuOptions} from '../navigator/IMenuOptions';
-import {AppService} from '../base/services/app.service';
+import {AppService, CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE, Log, LogMessage, SystemInfoService} from '@typexs/ng-base';
 import {NavigatorService} from '../navigator/navigator.service';
-import {CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE} from '../base/constants';
-import {LogMessage} from '../base/messages/types/LogMessage';
 import {INotifyOptions} from './components/notifications/INotifyOptions';
 import {NotificationsService} from './components/notifications/notifications.service';
-import {Subscription, of} from 'rxjs';
+import {of, Subscription} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
-import {Log} from '../base/lib/log/Log';
-import {SystemInfoService} from '../base/services/system-info.service';
 
 
 @Component({
@@ -125,13 +121,13 @@ export class BaseAdminThemeComponent implements OnInit, OnDestroy {
         }
       }))
       .subscribe(x => {
-        if (x && !_.isBoolean(x)) {
+        if (x && !isBoolean(x)) {
           this.user = x;
           this.getSystemService().refresh();
         }
       }, error => Log.error(error));
 
-    _.values(subs).map(x => this.subscription.add(x));
+    values(subs).map(x => this.subscription.add(x));
     let entry = this.navigatorService.getEntryByContext(CTXT_ROUTE_USER_PROFILE);
     if (entry) {
       this.userRouterLinks.profile = '/' + entry.getFullPath();

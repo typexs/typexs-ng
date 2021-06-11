@@ -1,7 +1,7 @@
+import {assign, defaults, get, isArray, keys, set} from 'lodash';
 import {Injectable} from '@angular/core';
-import * as _ from 'lodash';
+
 import {Observable} from 'rxjs';
-import {AuthService} from '../base/api/auth/auth.service';
 import {
   API_CTRL_STORAGE_AGGREGATE_ENTITY,
   API_CTRL_STORAGE_DELETE_ENTITIES_BY_CONDITION,
@@ -15,13 +15,18 @@ import {
   API_CTRL_STORAGE_UPDATE_ENTITY,
   IStorageRefMetadata
 } from '@typexs/server';
-import {__CLASS__, __REGISTRY__, REGISTRY_TYPEORM, TypeOrmEntityRegistry} from '@typexs/base';
-import {IBuildOptions, IEntityRef} from 'commons-schema-api/browser';
-import {IQueringService} from '../base/api/querying/IQueringService';
-import {AbstractQueryService} from '../base/api/querying/abstract-query.service';
-import {C_RAW, C_SKIP_BUILDS, STORAGE_REQUEST_MODE} from '../base/api/querying/Constants';
-import {EntityResolverService} from '../base/services/entity-resolver.service';
-import {BackendService} from '../base/api/backend/backend.service';
+import {__CLASS__, __REGISTRY__, REGISTRY_TYPEORM} from '@typexs/base';
+import {IBuildOptions, IEntityRef, RegistryFactory} from '@allgemein/schema-api';
+import {
+  AbstractQueryService,
+  AuthService,
+  BackendService,
+  C_RAW,
+  C_SKIP_BUILDS,
+  EntityResolverService,
+  IQueringService,
+  STORAGE_REQUEST_MODE
+} from '@typexs/ng-base';
 
 
 @Injectable()
@@ -45,7 +50,7 @@ export class StorageService extends AbstractQueryService implements IQueringServ
           update: API_CTRL_STORAGE_UPDATE_ENTITY,
           update_by_condition: API_CTRL_STORAGE_UPDATE_ENTITIES_BY_CONDITION,
         },
-        registry: TypeOrmEntityRegistry.$(),
+        registry: RegistryFactory.get(REGISTRY_TYPEORM),
         ngRoutePrefix: '/storage',
         registryName: REGISTRY_TYPEORM
       });
@@ -53,13 +58,13 @@ export class StorageService extends AbstractQueryService implements IQueringServ
 
 
   private static _beforeBuild(entityDef: IEntityRef, from: any, to: any) {
-    _.keys(from).filter(k => k.startsWith('$')).forEach(k => {
+    keys(from).filter(k => k.startsWith('$')).forEach(k => {
       to[k] = from[k];
     });
   }
 
   private static _beforeBuildRaw(entityDef: IEntityRef, from: any, to: any) {
-    _.keys(from).filter(k => !k.startsWith('$')).forEach(k => {
+    keys(from).filter(k => !k.startsWith('$')).forEach(k => {
       to[k] = from[k];
     });
   }
@@ -87,15 +92,15 @@ export class StorageService extends AbstractQueryService implements IQueringServ
 
     if (def) {
       const dynamic = def.getOptions('dynamic');
-      if (_.get(options, C_SKIP_BUILDS, false) || dynamic === true) {
+      if (get(options, C_SKIP_BUILDS, false) || dynamic === true) {
         const x = def.create();
-        _.assign(x, entity);
+        assign(x, entity);
         return x;
       }
-      const opts = _.defaults(options, {
+      const opts = defaults(options, {
         beforeBuild: StorageService._beforeBuild
       });
-      if (_.get(options, C_RAW, false)) {
+      if (get(options, C_RAW, false)) {
         opts.beforeBuild = StorageService._beforeBuildRaw;
       }
       return def.build(entity, opts);
@@ -111,7 +116,7 @@ export class StorageService extends AbstractQueryService implements IQueringServ
     }
 
     let result = null;
-    if (_.isArray(rawEntities)) {
+    if (isArray(rawEntities)) {
       result = rawEntities.map(r => this._buildEntitySingle(entityDef, r, options));
     } else {
       result = this._buildEntitySingle(entityDef, rawEntities, options);
@@ -122,8 +127,8 @@ export class StorageService extends AbstractQueryService implements IQueringServ
 
 
   buildOptions(method: STORAGE_REQUEST_MODE, options: any, buildOptions: any) {
-    if (_.get(options, C_RAW, false)) {
-      _.set(buildOptions, C_RAW, options.raw);
+    if (get(options, C_RAW, false)) {
+      set(buildOptions, C_RAW, options.raw);
     }
   }
 

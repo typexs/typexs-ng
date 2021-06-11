@@ -1,3 +1,4 @@
+import {map} from 'lodash';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {NavigatorService} from './navigator.service';
 import {Router, Routes} from '@angular/router';
@@ -5,16 +6,13 @@ import {APP_BASE_HREF} from '@angular/common';
 import {ApplicationInitStatus, Injectable} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
 import {BrowserTestingModule} from '@angular/platform-browser/testing';
-import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-
 import {MenuComponent} from './menu.component';
 import {MenuLinkComponent} from './menu-link.component';
-import * as _ from 'lodash';
 import {NavEntry} from './NavEntry';
 import {IMenuLinkGuard} from './IMenuLinkGuard';
 import {IMenuOptions} from './IMenuOptions';
 import {DummyComponent} from './test/componets/dummy.component';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 
 describe('Component: Menu', () => {
@@ -92,7 +90,7 @@ describe('Component: Menu', () => {
       component.ngOnInit();
 
       expect(component.tree.length).toEqual(3);
-      expect(_.map(component.tree, e => e.path)).toEqual(['home', 'admin', 'level']);
+      expect(map(component.tree, e => e.path)).toEqual(['home', 'admin', 'level']);
       expect(component.tree[1].children.length).toEqual(2);
     });
 
@@ -101,7 +99,7 @@ describe('Component: Menu', () => {
       component.options = {level: 0};
       component.ngOnInit();
       expect(component.tree.length).toEqual(3);
-      expect(_.map(component.tree, e => e.path)).toEqual(['home', 'admin', 'level']);
+      expect(map(component.tree, e => e.path)).toEqual(['home', 'admin', 'level']);
       expect(component.tree[1].children.length).toEqual(0);
     });
 
@@ -110,7 +108,7 @@ describe('Component: Menu', () => {
       component.options = {base: 'admin'};
       component.ngOnInit();
       expect(component.tree.length).toEqual(2);
-      expect(_.map(component.tree, e => e.path)).toEqual(['admin/configure', 'admin/storages']);
+      expect(map(component.tree, e => e.path)).toEqual(['admin/configure', 'admin/storages']);
     });
 
 
@@ -118,7 +116,7 @@ describe('Component: Menu', () => {
       component.options = {base: 'level/one'};
       component.ngOnInit();
       expect(component.tree.length).toEqual(2);
-      expect(_.map(component.tree, e => e.path)).toEqual(['level/one/subone',
+      expect(map(component.tree, e => e.path)).toEqual(['level/one/subone',
         'level/one/subtwo']);
     });
 
@@ -127,7 +125,7 @@ describe('Component: Menu', () => {
       component.options = {group: 'test'};
       component.ngOnInit();
       expect(component.tree.length).toEqual(1);
-      expect(_.map(component.tree, e => e.path)).toEqual(['home']);
+      expect(map(component.tree, e => e.path)).toEqual(['home']);
     });
 
 
@@ -143,7 +141,7 @@ describe('Component: Menu', () => {
       };
       component.ngOnInit();
       expect(component.tree.length).toEqual(1);
-      expect(_.map(component.tree, e => e.path)).toEqual(['admin']);
+      expect(map(component.tree, e => e.path)).toEqual(['admin']);
     });
 
     it('create menu link and test menu guard', async () => {

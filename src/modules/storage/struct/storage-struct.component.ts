@@ -1,12 +1,9 @@
+import {clone, filter} from 'lodash';
 import {Component, OnInit} from '@angular/core';
-
 import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {getMetadataStorage} from 'class-validator';
-import * as _ from 'lodash';
-import {IClassRef, IEntityRef, IPropertyRef, LookupRegistry, XS_TYPE_ENTITY, XS_TYPE_PROPERTY} from 'commons-schema-api/browser';
+import {IClassRef, IEntityRef, IPropertyRef, IValidatorEntry, METATYPE_PROPERTY, Validator} from '@allgemein/schema-api';
 import {StorageService} from '../storage.service';
-import {REGISTRY_TYPEORM} from '@typexs/base';
+import {from} from 'rxjs';
 
 
 @Component({
@@ -16,23 +13,22 @@ import {REGISTRY_TYPEORM} from '@typexs/base';
 })
 export class StorageStructComponent implements OnInit {
 
-  _name: Observable<string>;
-
   name: string;
 
-  entityDef: IEntityRef;
+  entityRef: IEntityRef;
 
   referrerProps: IPropertyRef[] = [];
 
-  propertyDefs: { property: IPropertyRef, level: number }[] = [];
+  propertyRefs: { ref: IPropertyRef, level: number }[] = [];
 
+  validationEntries: IValidatorEntry[] = [];
 
-  constructor(public entityService: StorageService,
+  constructor(public storageService: StorageService,
               private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.entityService.isReady(() => {
+    this.storageService.isReady(() => {
       this.route.params.subscribe((params => {
         if (params.name) {
           this.load(params.name);
@@ -44,28 +40,29 @@ export class StorageStructComponent implements OnInit {
 
   load(name: string) {
     this.referrerProps = [];
-    this.propertyDefs = [];
-
+    this.propertyRefs = [];
     this.name = name;
-    // this.storageService.getRegistry().getEntityRefFor(this.name);
-    this.entityDef = LookupRegistry.$(REGISTRY_TYPEORM).find(XS_TYPE_ENTITY, (e: IEntityRef) => {
-      return e.name === name;
+    this.entityRef = this.getRegistry().getEntityRefFor(this.name);
+    this.referrerProps = this.getRegistry().filter(METATYPE_PROPERTY, (referrer: IPropertyRef) => {
+      return referrer.isReference() && referrer.getTargetRef() === this.entityRef.getClassRef();
     });
-
-
-    this.referrerProps = LookupRegistry.$(REGISTRY_TYPEORM).filter(XS_TYPE_PROPERTY, (referrer: IPropertyRef) => {
-      return referrer.isReference() && referrer.getTargetRef() === this.entityDef.getClassRef();
+    this.scan(this.entityRef);
+    from(Validator.getValidationEntries(this.entityRef)).subscribe((x: IValidatorEntry[]) => {
+      this.validationEntries = x;
     });
-    this.scan(this.entityDef);
   }
 
 
   type(propertyDef: IPropertyRef): string {
-    if (propertyDef.isEntityReference()) {
+    if (propertyDef.isReference() && propertyDef.getTargetRef().hasEntityRef()) {
       return propertyDef.getTargetRef().name;
     } else {
       return propertyDef.getOptions('type');
     }
+  }
+
+  getRegistry() {
+    return this.storageService.getRegistry();
   }
 
 
@@ -75,7 +72,7 @@ export class StorageStructComponent implements OnInit {
     }
     if (source) {
       for (const props of source.getPropertyRefs()) {
-        this.propertyDefs.push({property: props, level: level});
+        this.propertyRefs.push({ref: props, level: level});
         if (props.isReference()) {
           this.scan(props.getTargetRef(), level + 1);
         }
@@ -83,12 +80,9 @@ export class StorageStructComponent implements OnInit {
     }
   }
 
-
-  validator(property: IPropertyRef) {
-    const validators = getMetadataStorage().getTargetValidationMetadatas(this.entityDef.getClassRef().getClass(), null, true, false);
-    return _.filter(validators, v => v.propertyName === property.name);
+  async validator(property: IPropertyRef) {
+    return filter(this.validationEntries, v => v.property === property.name);
   }
-
 
   cardinality(propDef: IPropertyRef) {
     return propDef.isCollection() ? 0 : 1;
@@ -96,7 +90,7 @@ export class StorageStructComponent implements OnInit {
 
 
   options(propDef: IPropertyRef) {
-    const opts = _.clone(propDef.getOptions());
+    const opts = clone(propDef.getOptions());
     if (opts.target) {
       delete opts.target;
     }

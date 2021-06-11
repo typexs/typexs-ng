@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
-import {ViewComponent} from '../../libs/views/decorators/ViewComponent';
-import {LabelHandle} from '../../libs/forms/elements/LabelHandle';
+import {ViewComponent} from '@typexs/ng';
+import {LabelHandle} from '@typexs/ng';
 import {AbstractFormComponent} from './component/AbstractFormComponent';
 
 

@@ -1,13 +1,15 @@
+import {get, isArray} from 'lodash';
 import {Component, OnInit} from '@angular/core';
-import {ClassType} from 'commons-schema-api/browser';
-import {AbstractGridComponent} from '../../../../base/datatable/abstract-grid.component';
-import {IComponentBinding} from '../../../../../libs/views/IComponentBinding';
+import {ClassType} from '@allgemein/schema-api';
+import {
+  AbstractGridComponent,
+  CC_GRID_CELL_ENTITY_OPERATIONS,
+  ComponentRegistryService,
+  IGridColumn,
+  IQueryComponentApi
+} from '@typexs/ng-base';
+import {IComponentBinding} from '@typexs/ng';
 import {ActivatedRoute} from '@angular/router';
-import {ComponentRegistryService} from '../../../../base/component/component-registry.service';
-import * as _ from 'lodash';
-import {IGridColumn} from '../../../../base/datatable/IGridColumn';
-import {IQueryComponentApi} from '../../../../base/api/querying/IQueryComponentApi';
-import {CC_GRID_CELL_ENTITY_OPERATIONS} from '../../../../base/constants';
 import {IDSOptions} from '../../../lib/IDSOptions';
 
 
@@ -35,8 +37,8 @@ export class DistributedStorageQueryPageComponent
 
 
   ngOnInit() {
-    this.viewTypes = this.componentRegistry.registry.filter(x => _.get(x, 'extra.datatable', false));
-    const defaultComponent = this.viewTypes.find(x => _.get(x, 'extra.default', false));
+    this.viewTypes = this.componentRegistry.registry.filter(x => get(x, 'extra.datatable', false));
+    const defaultComponent = this.viewTypes.find(x => get(x, 'extra.default', false));
     if (defaultComponent) {
       this.gridComponentClass = defaultComponent.component as ClassType<AbstractGridComponent>;
     }
@@ -51,7 +53,7 @@ export class DistributedStorageQueryPageComponent
   }
 
   columnsPostProcess(columns: IGridColumn[], api: IQueryComponentApi) {
-    if (_.isArray(columns) && api) {
+    if (isArray(columns) && api) {
       columns.unshift(<IGridColumn & { urlPrefix: string }>{
         label: 'Ops',
         field: null,

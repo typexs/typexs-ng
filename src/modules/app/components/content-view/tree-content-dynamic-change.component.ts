@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {SearchEntry} from './search/search-entry.component';
 import {ViewParent} from './search/view-parent.component';
-import {ViewDataComponent} from '../../../base/component/view/view-data.component';
+import {ViewDataComponent} from '@typexs/ng-base';
 
 
 @Component({

@@ -1,15 +1,12 @@
+import {first, get, isEmpty, set} from 'lodash';
 import {Component, ComponentRef, OnInit} from '@angular/core';
 import {GridRowComponent} from './grid-row.component';
-
-import * as _ from 'lodash';
-import {ViewComponent} from '../../../libs/views/decorators/ViewComponent';
-import {GridHandle} from '../../../libs/forms/elements';
-import {FormObject, isFormObject} from '../../../libs/forms/FormObject';
-import {EnumHandle} from './../libs/EnumHandle';
+import {FormObject, GridHandle, isFormObject, ViewComponent} from '@typexs/ng';
 import {Observable} from 'rxjs';
 import {GridColumnDef} from './GridColumnDef';
 import {AbstractFormComponent} from '../component/AbstractFormComponent';
-import {AbstractComponent} from '../../base/component/AbstractComponent';
+import {AbstractComponent} from '@typexs/ng-base';
+import {EnumHandle} from '../libs/EnumHandle';
 
 
 @ViewComponent('grid')
@@ -46,7 +43,7 @@ export class GridComponent extends AbstractFormComponent<GridHandle> implements 
         if (obj.isReplicable()) {
           // it is so has enum select + multiple but one-decision element like checkbox or radio
           if (!tmpObj) {
-            tmpObj = obj.getBinding().getSourceRef().create();
+            tmpObj = obj.getBinding().getClassRef().create();
           }
 
           const enumHandle = new EnumHandle(this.injector, obj);
@@ -79,10 +76,10 @@ export class GridComponent extends AbstractFormComponent<GridHandle> implements 
   build(form: FormObject): AbstractComponent<any>[] {
     this.context.labelDisplay = 'none';
     const dataEntries = this.getInstance().getBinding().get(this.data.instance);
-    this.findColumns(form, _.first(dataEntries));
+    this.findColumns(form, first(dataEntries));
 
     const ret = [];
-    if (!_.isEmpty(dataEntries)) {
+    if (!isEmpty(dataEntries)) {
       for (let i = 0; i < dataEntries.length; i++) {
         const c = this.addRow(dataEntries[i], i);
         ret.push(c);
@@ -111,14 +108,14 @@ export class GridComponent extends AbstractFormComponent<GridHandle> implements 
       const path = this.context.path();
 
       if (this.getInstance().isMultiple()) {
-        let arraySetted = _.get(this.data.instance, path, null);
+        let arraySetted = get(this.data.instance, path, null);
         if (!arraySetted) {
           arraySetted = [];
         }
         arraySetted[cGridRow.instance.context.idx] = object;
-        _.set(this.data.instance, path, arraySetted);
+        set(this.data.instance, path, arraySetted);
       } else {
-        _.set(this.data.instance, path, object);
+        set(this.data.instance, path, object);
       }
 
     }
@@ -137,15 +134,15 @@ export class GridComponent extends AbstractFormComponent<GridHandle> implements 
 
     this.vc.remove(idx);
     if (this.getInstance().getBinding().isCollection()) {
-      let arraySetted = _.get(this.data.instance, path, null);
+      let arraySetted = get(this.data.instance, path, null);
       if (!arraySetted) {
         arraySetted = [];
       }
       arraySetted.splice(idx, 1);
 
-      _.set(this.data.instance, path, arraySetted);
+      set(this.data.instance, path, arraySetted);
     } else {
-      _.set(this.data.instance, path, null);
+      set(this.data.instance, path, null);
     }
 
     for (let i = this.entries.length - 1; i >= 0; i--) {

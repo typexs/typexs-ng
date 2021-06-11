@@ -1,11 +1,16 @@
+import {
+  defaults, find, isArray, isEmpty, isFunction, isNumber, intersection,
+  get, clone, upperFirst, isNull, keys, values, isString, filter, merge, isPlainObject,
+  concat, kebabCase, has, snakeCase, isRegExp, orderBy, remove, first, set, assign,
+  capitalize, isUndefined
+} from 'lodash';
 import {Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import * as _ from 'lodash';
-import {JsonUtils} from '@allgemein/base/libs/utils/JsonUtils';
+import {JsonUtils} from '@allgemein/base';
 import {DatePipe} from '@angular/common';
 import {BackendTasksService} from '../../backend-tasks.service';
 import {Observable, Subscriber, Subscription, timer} from 'rxjs';
 import {mergeMap} from 'rxjs/operators';
-import {Log} from '../../../base/lib/log/Log';
+import {Log} from '@typexs/ng-base';
 
 /**
  * Show tasks list which should be filtered for running tasks, runned task
@@ -193,7 +198,7 @@ export class TasksLogViewerComponent implements OnInit, OnChanges, OnDestroy {
 
 
   extractLines(log: any[]): string[] {
-    const firstEntry = _.first(log);
+    const firstEntry = first(log);
     if (firstEntry) {
       return firstEntry.split('\n');
     }
@@ -202,7 +207,7 @@ export class TasksLogViewerComponent implements OnInit, OnChanges, OnDestroy {
 
 
   buildLog(log: any[]): string[] {
-    let logs = log.filter((x: any) => !_.isEmpty(x));
+    let logs = log.filter((x: any) => !isEmpty(x));
     logs = logs.map((x: any) => JsonUtils.parse(x));
     return logs
       .map((e: any) =>
@@ -226,10 +231,10 @@ export class TasksLogViewerComponent implements OnInit, OnChanges, OnDestroy {
 
 
   append(x: string[]) {
-    if (_.isUndefined(this.position) || !this.position) {
+    if (isUndefined(this.position) || !this.position) {
       this.position = 1;
     }
-    if (_.isUndefined(this.log) || !this.log) {
+    if (isUndefined(this.log) || !this.log) {
       this.log = '';
     }
     const buildLines = this.buildLog(x);

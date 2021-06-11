@@ -1,6 +1,6 @@
 import {Observable} from 'rxjs';
 import {ISelectOption} from './ISelectOption';
-import {IPropertyRef} from 'commons-schema-api/browser';
+import {IPropertyRef} from '@allgemein/schema-api';
 
 
 export interface ISelectOptionsService {

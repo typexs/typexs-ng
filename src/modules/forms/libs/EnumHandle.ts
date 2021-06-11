@@ -1,10 +1,15 @@
+import {
+  defaults, find, isArray, isEmpty, isFunction, isNumber, intersection,
+  get, clone, upperFirst, isNull, keys, values, isString, filter, merge, isPlainObject,
+  concat, kebabCase, has, snakeCase, isRegExp, orderBy, remove, first, set
+} from 'lodash';
 import {Observable} from 'rxjs';
 
-import * as _ from 'lodash';
+
 import {Injector} from '@angular/core';
 
-import {FormObject} from '../../../libs/forms/FormObject';
-import {Context} from '../../../libs/views/Context';
+import {FormObject} from '@typexs/ng';
+import {Context} from '@typexs/ng';
 import {ISelectOption} from './ISelectOption';
 import {ISelectOptionsService} from './ISelectOptionsService';
 import {DataContainer} from '@typexs/base';
@@ -28,17 +33,18 @@ export class EnumHandle {
 
   retrieveEnum(instance: any, parentContext?: Context): ISelectOption[] | Observable<ISelectOption[]> {
     let _enum = this.getElement().getEnum();
-    if (this.getElement().getBinding().isEntityReference() && !_enum) {
+    const isEntityReference = this.getElement().getBinding().isReference() && this.getElement().getBinding().getTargetRef().hasEntityRef();
+    if (isEntityReference && !_enum) {
       // set default
       _enum = EntityOptionsService.name; // 'EntityOptionsService';
     }
 
-    if (_.isArray(_enum)) {
+    if (isArray(_enum)) {
       return _enum;
-    } else if (_.isFunction(_enum)) {
+    } else if (isFunction(_enum)) {
       const service = (<ISelectOptionsService>this.injector.get(_enum));
       return service.options(this.getElement().getBinding());
-    } else if (_.isString(_enum)) {
+    } else if (isString(_enum)) {
       let error = null;
       let observer = null;
       try {
@@ -48,7 +54,7 @@ export class EnumHandle {
         error = e;
       }
 
-      if (!_.isNull(error)) {
+      if (!isNull(error)) {
 
         if (instance instanceof DataContainer) {
           instance = instance.instance;
@@ -62,9 +68,9 @@ export class EnumHandle {
         lookupPath.push(_enum);
         lookupPath = (<string[]>lookupPath).join('.');
 
-        if (_.has(instance, lookupPath)) {
+        if (has(instance, lookupPath)) {
           // TODO observe if property is changed, if it does then reset enum
-          return _.get(instance, lookupPath, []);
+          return get(instance, lookupPath, []);
         } else {
           throw new Error('not found enum reference');
         }

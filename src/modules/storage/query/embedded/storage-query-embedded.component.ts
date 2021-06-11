@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AbstractQueryEmbeddedComponent} from '../../../base/api/querying/abstract-query-embedded.component';
+import {AbstractQueryEmbeddedComponent} from '@typexs/ng-base';
 import {StorageService} from '../../storage.service';
 
 

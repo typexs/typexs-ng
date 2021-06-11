@@ -1,6 +1,6 @@
-import {Component, Input} from '@angular/core';
-import {RadioHandle} from '../../libs/forms/elements/RadioHandle';
-import {ViewComponent} from '../../libs/views/decorators/ViewComponent';
+import {Component} from '@angular/core';
+import {RadioHandle} from '@typexs/ng';
+import {ViewComponent} from '@typexs/ng';
 import {AbstractFormComponent} from './component/AbstractFormComponent';
 
 

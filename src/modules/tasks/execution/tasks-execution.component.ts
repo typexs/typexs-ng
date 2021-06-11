@@ -1,6 +1,10 @@
-import * as _ from 'lodash';
+import {
+  defaults, find, isArray, isEmpty, isFunction, isNumber, intersection,
+  get, clone, upperFirst, isNull, keys, values, isString, filter, merge, isPlainObject,
+  concat, kebabCase, has, snakeCase, isRegExp, orderBy, remove, first, set, assign,
+  capitalize, isUndefined
+} from 'lodash';
 import {Component, OnInit} from '@angular/core';
-
 import {TaskExchangeRef, TaskRef} from '@typexs/base';
 import {ActivatedRoute} from '@angular/router';
 import {BackendTasksService} from '../backend-tasks.service';
@@ -45,14 +49,14 @@ export class TasksExecutionComponent implements OnInit {
       this.taskName = this.route.snapshot.paramMap.get('taskName');
       this.taskRef = tasks.get(this.taskName);
       this.taskRef.getPropertyRefs().forEach(p => {
-        if (p.descriptor.type === 'incoming') {
+        if (p.getPropertyType() === 'incoming') {
           this.parameters[p.machineName] = p.getOptions('default', null);
           this.properties.push(<TaskExchangeRef>p);
           if (!this._cachedValues[p.name]) {
             const valueProvider = p.getOptions('valueProvider');
             if (valueProvider) {
               const optional = p.isOptional();
-              if (_.isString(valueProvider)) {
+              if (isString(valueProvider)) {
                 this.tasksService.getTaskIncomingValues(this.taskName, p.name).subscribe(value => {
                   this.setCachedValues(p.name, value, optional);
                 });
@@ -82,7 +86,7 @@ export class TasksExecutionComponent implements OnInit {
 
   isCollection(p: TaskExchangeRef) {
     const cardinality = p.getOptions('cardinality');
-    return _.isNumber(cardinality) && (cardinality === 0 || cardinality > 1);
+    return isNumber(cardinality) && (cardinality === 0 || cardinality > 1);
   }
 
 

@@ -1,16 +1,15 @@
-import * as _ from 'lodash';
+import {cloneDeep, find} from 'lodash';
 import {Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDestroy, OnInit, Output} from '@angular/core';
-
 import {FormService} from './form.service';
-import {ViewComponent} from '../../libs/views/decorators/ViewComponent';
-import {Form} from '../../libs/forms/elements';
-import {MessageChannel} from '../base/messages/MessageChannel';
-import {IMessage} from '../base/messages/IMessage';
+import {ViewComponent} from '@typexs/ng';
+import {Form} from '@typexs/ng';
+import {MessageChannel} from '@typexs/ng-base';
+import {IMessage} from '@typexs/ng-base';
 import {IFormOptions} from './IFormOptions';
-import {DataContainer} from '@typexs/base';
 import {AbstractFormComponent} from './component/AbstractFormComponent';
-import {EntityResolverService} from '../base/services/entity-resolver.service';
+import {EntityResolverService} from '@typexs/ng-base';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
+import {DataContainer} from '@typexs/base';
 
 
 @ViewComponent('form')
@@ -79,7 +78,7 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
 
 
   ngOnInit() {
-    this.original = _.cloneDeep(this.instance);
+    this.original = cloneDeep(this.instance);
     this.reset();
   }
 
@@ -131,7 +130,7 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
       this.channel.publish(null);
     }
 
-    this.instance = _.cloneDeep(this.original);
+    this.instance = cloneDeep(this.original);
 
     this.reset();
     this.ngReset.emit({event: $event, data: this.data});
@@ -140,7 +139,7 @@ export class FormComponent extends AbstractFormComponent<Form> implements OnInit
 
 
   async onButton(key: string, $event: Event): Promise<boolean> {
-    const btn = _.find(this.options.buttons, b => b.key === key);
+    const btn = find(this.options.buttons, b => b.key === key);
     if (btn.type === 'submit') {
       return this.onSubmit($event);
     } else if (btn.type === 'restore') {

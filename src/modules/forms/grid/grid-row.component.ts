@@ -1,11 +1,11 @@
 import {Component, HostBinding} from '@angular/core';
 import {GridComponent} from './grid.component';
 import {GridCellComponent} from './grid-cell.component';
-import {NoFormTypeDefinedError} from '../../../libs/exceptions/NoFormTypeDefinedError';
-import {FormObject, isFormObject} from '../../../libs/forms/FormObject';
-import {Log} from '../../base/lib/log/Log';
+import {NoFormTypeDefinedError} from '@typexs/ng';
+import {FormObject, isFormObject} from '@typexs/ng';
+import {Log} from '@typexs/ng-base';
 import {AbstractFormComponent} from '../component/AbstractFormComponent';
-import {AbstractComponent} from '../../base/component/AbstractComponent';
+import {AbstractComponent} from '@typexs/ng-base';
 
 @Component({
   selector: 'txs-gridrow',

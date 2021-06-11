@@ -1,10 +1,15 @@
+import {assign, defaults, get, isArray, keys, set} from 'lodash';
 import {Injectable} from '@angular/core';
-import * as _ from 'lodash';
-import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
-import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
-import {AuthService} from '../base/api/auth/auth.service';
-import {IQueringService} from '../base/api/querying/IQueringService';
-import {AbstractQueryService} from '../base/api/querying/abstract-query.service';
+import {
+  AbstractQueryService,
+  AuthService,
+  BackendService,
+  C_RAW,
+  C_SKIP_BUILDS,
+  EntityResolverService,
+  IQueringService,
+  STORAGE_REQUEST_MODE
+} from '@typexs/ng-base';
 import {
   API_CTRL_ENTITY_DELETE_ENTITY,
   API_CTRL_ENTITY_FIND_ENTITY,
@@ -13,20 +18,18 @@ import {
   API_CTRL_ENTITY_SAVE_ENTITY,
   API_CTRL_ENTITY_UPDATE_ENTITY,
   API_ENTITY_PREFIX,
-  REGISTRY_TXS_SCHEMA
+  NAMESPACE_BUILT_ENTITY
 } from '@typexs/schema';
-import {IBuildOptions, IEntityRef} from 'commons-schema-api/browser';
-import {C_RAW, C_SKIP_BUILDS, STORAGE_REQUEST_MODE} from '../base/api/querying/Constants';
-import {EntityResolverService} from '../base/services/entity-resolver.service';
-import {BackendService} from '../base/api/backend/backend.service';
-import {__CLASS__, __REGISTRY__} from '@typexs/base';
+import {__CLASS__, __NS__, IBuildOptions, IEntityRef, RegistryFactory} from '@allgemein/schema-api';
 
 
 @Injectable()
 export class EntityService extends AbstractQueryService implements IQueringService {
 
 
-  constructor(private backend: BackendService, private authService: AuthService, private resolverService: EntityResolverService) {
+  constructor(private backend: BackendService,
+              private authService: AuthService,
+              private resolverService: EntityResolverService) {
     super(backend, authService, resolverService, {
       ngRoutePrefix: API_ENTITY_PREFIX,
       routes: {
@@ -40,20 +43,21 @@ export class EntityService extends AbstractQueryService implements IQueringServi
         get: API_CTRL_ENTITY_GET_ENTITY,
         aggregate: null,
       },
-      registry: EntityRegistry.$(),
-      registryName: REGISTRY_TXS_SCHEMA
+      // namespace: NAMESPACE_BUILT_ENTITY
+      registry: RegistryFactory.get(NAMESPACE_BUILT_ENTITY),
+      // registryName: REGISTRY_TXS_SCHEMA
     });
   }
 
 
-  private static _beforeBuild(entityDef: EntityRef, from: any, to: any) {
-    _.keys(from).filter(k => k.startsWith('$')).forEach(k => {
+  private static _beforeBuild(entityDef: IEntityRef, from: any, to: any) {
+    keys(from).filter(k => k.startsWith('$')).forEach(k => {
       to[k] = from[k];
     });
   }
 
   private static _beforeBuildRaw(entityDef: IEntityRef, from: any, to: any) {
-    _.keys(from).filter(k => !k.startsWith('$')).forEach(k => {
+    keys(from).filter(k => !k.startsWith('$')).forEach(k => {
       to[k] = from[k];
     });
   }
@@ -75,22 +79,22 @@ export class EntityService extends AbstractQueryService implements IQueringServi
   private _buildEntitySingle(entityDef: IEntityRef, entity: any, options?: IBuildOptions) {
     let def = entityDef;
     if (!entityDef) {
-      if (entity[__CLASS__] && entity[__REGISTRY__]) {
+      if (entity[__CLASS__] && entity[__NS__]) {
         def = this.getRegistry().getEntityRefFor(entity[__CLASS__]);
       }
     }
 
     if (def) {
       const dynamic = def.getOptions('dynamic');
-      if (_.get(options, C_SKIP_BUILDS, false) || dynamic === true) {
+      if (get(options, C_SKIP_BUILDS, false) || dynamic === true) {
         const x = def.create();
-        _.assign(x, entity);
+        assign(x, entity);
         return x;
       }
-      const opts = _.defaults(options, {
+      const opts = defaults(options, {
         beforeBuild: EntityService._beforeBuild
       });
-      if (_.get(options, C_RAW, false)) {
+      if (get(options, C_RAW, false)) {
         opts.beforeBuild = EntityService._beforeBuildRaw;
       }
       return def.build(entity, opts);
@@ -107,7 +111,7 @@ export class EntityService extends AbstractQueryService implements IQueringServi
     }
 
     let result = null;
-    if (_.isArray(rawEntities)) {
+    if (isArray(rawEntities)) {
       result = rawEntities.map(r => this._buildEntitySingle(entityRef, r, buildOptions));
     } else {
       result = this._buildEntitySingle(entityRef, rawEntities, buildOptions);
@@ -116,8 +120,8 @@ export class EntityService extends AbstractQueryService implements IQueringServi
   }
 
   buildOptions(method: STORAGE_REQUEST_MODE, options: any, buildOptions: any) {
-    if (_.get(options, C_RAW, false)) {
-      _.set(buildOptions, C_RAW, options.raw);
+    if (get(options, C_RAW, false)) {
+      set(buildOptions, C_RAW, options.raw);
     }
   }
 

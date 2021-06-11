@@ -1,9 +1,14 @@
-import * as _ from 'lodash';
+import {
+  defaults, find, isArray, isEmpty, isFunction, isNumber, intersection,
+  get, clone, upperFirst, isNull, keys, values, isString, filter, merge, isPlainObject,
+  concat, kebabCase, has, snakeCase, isRegExp, orderBy, remove, first, set, assign,
+  capitalize, isUndefined
+} from 'lodash';
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {BackendTasksService} from '../backend-tasks.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {Subscription} from 'rxjs';
-import {Log} from '../../base/lib/log/Log';
+import {Log} from '@typexs/ng-base';
 
 @Component({
   selector: 'txs-task-status-row',
@@ -51,8 +56,8 @@ export class TaskStatusRowComponent implements OnInit, OnDestroy {
   update() {
     Log.debug('update', this.runnerId, this.nodeId);
     this.subscription = this.tasksService.taskStatus(this.runnerId, {targetIds: [this.nodeId]}).subscribe(tasks => {
-      if (tasks && !_.isEmpty(tasks)) {
-        if (_.isArray(tasks)) {
+      if (tasks && !isEmpty(tasks)) {
+        if (isArray(tasks)) {
           this.taskLog = tasks.shift();
         } else {
           this.taskLog = tasks;

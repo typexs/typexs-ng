@@ -16,6 +16,8 @@
   },
   "include": [
     "src/dummy.ts",
+    "packages/ng/src/browser.ts",
+    "packages/ng-base/src/public_api.ts",
     "src/app/polyfills.ts",
     "src/app/main.ts"
   ],
@@ -30,7 +32,10 @@
   "angularCompilerOptions": {
     "genDir": "build/app-aot",
     "skipMetadataEmit": false,
-    "skipTemplateCodegen": false
-    //"aot":false
+    "skipTemplateCodegen": false,
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
   }
 }

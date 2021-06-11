@@ -2,9 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 
 import {StorageService} from '../storage.service';
-import {IEntityRef, LookupRegistry, XS_TYPE_ENTITY} from 'commons-schema-api/browser';
-import {REGISTRY_TYPEORM} from '@typexs/base';
-import * as _ from 'lodash';
+import {IEntityRef} from '@allgemein/schema-api';
 
 @Component({
   selector: 'storage-view',

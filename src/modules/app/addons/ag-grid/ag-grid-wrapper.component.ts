@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AbstractGridComponent} from '../../../base/datatable/abstract-grid.component';
+import {AbstractGridComponent} from '@typexs/ng-base';
 
 
 export interface IAgGridColumn {

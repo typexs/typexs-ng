@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
 import {StorageService} from '../../storage.service';
-import {AbstractAggregateEmbeddedComponent} from '../../../base/api/querying/abstract-aggregate-embedded.component';
-import {IGridColumn} from '../../../base/datatable/IGridColumn';
-import {CC_GRID_CELL_ENTITY_OPERATIONS} from '../../../base/constants';
 import {ActivatedRoute} from '@angular/router';
+import {AbstractAggregateEmbeddedComponent, CC_GRID_CELL_ENTITY_OPERATIONS, IGridColumn} from '@typexs/ng-base';
 
 
 /**

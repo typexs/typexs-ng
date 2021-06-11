@@ -5,12 +5,12 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 // Theme initialization
 // import {THEMES} from './themes';
 // import {STYLES} from './stylesheets';
-// import {ThemeRegistry} from '../libs/angular/ThemeRegistry';
+// import {ThemeRegistry} from '@typexs/ng';
 // ThemeRegistry.register(THEMES, STYLES);
 
 import {AppModule} from './../modules/app/module';
 import {environment} from './environments/environment';
-// import {FORM_ELEMENTS} from '../libs/form/elements';
+// import {FORM_ELEMENTS} from '@typexs/ng';
 
 
 if (environment.production) {

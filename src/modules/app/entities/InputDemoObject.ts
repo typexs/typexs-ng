@@ -1,14 +1,11 @@
-import {Text} from '../../../libs/forms/decorators/Text';
-import {Type} from '../../../libs/forms/decorators/Type';
+import {EqualWith, Text, Type} from '@typexs/ng';
 import {Property} from '@typexs/schema/libs/decorators/Property';
 import {Entity} from '@typexs/schema/libs/decorators/Entity';
-import {IsEmail, MaxLength, MinLength} from 'class-validator';
-import {EqualWith} from '../../../libs/validators/EqualWith';
+import {IsEmail, MaxLength, MinLength} from '@allgemein/schema-api';
 import {OptionsService} from '../services/OptionsService';
 
 
-
-@Entity({storeable: false})
+@Entity({storable: false})
 export class InputDemoObject {
 
   // HTML Type text

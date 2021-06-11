@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
-import {AppService} from '../base/services/app.service';
 import {UI_ADMIN_LAYOUT} from './lib/Constants';
+import {AppService} from '@typexs/ng-base';
 
 @Component({
   selector: 'admin',

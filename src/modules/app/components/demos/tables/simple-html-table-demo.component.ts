@@ -1,10 +1,15 @@
-import * as _ from 'lodash';
+import {
+  defaults, find, isArray, isEmpty, isFunction, isNumber, intersection,
+  get, clone, upperFirst, isNull, keys, values, isString, filter, merge, isPlainObject,
+  concat, kebabCase, has, snakeCase, isRegExp, orderBy, remove, first, set, assign,
+  capitalize, isUndefined, isDate, range
+} from 'lodash';
 import {Component} from '@angular/core';
-import {IGridColumn} from '../../../../base/datatable/IGridColumn';
-import {SimpleHtmlTableComponent} from '../../../../base/datatable/simple-html-table/simple-html-table.component';
-import {IDTGridOptions} from '../../../../base/datatable/IDTGridOptions';
-import {IGridApi} from '../../../../base/datatable/IGridApi';
-import {And, ExprDesc} from 'commons-expressions';
+import {IGridColumn} from '@typexs/ng-base';
+import {SimpleHtmlTableComponent} from '@typexs/ng-base';
+import {IDTGridOptions} from '@typexs/ng-base';
+import {IGridApi} from '@typexs/ng-base';
+import {And, ExprDesc} from '@allgemein/expressions';
 
 
 @Component({
@@ -51,7 +56,7 @@ export class SimpleHtmlTableDemoComponent {
   }
 
   generateData(offset: number, limit: number) {
-    return _.range(offset, offset + limit).map(x => {
+    return range(offset, offset + limit).map(x => {
       return {
         id: x,
         name: 'Entry ' + x
@@ -63,12 +68,12 @@ export class SimpleHtmlTableDemoComponent {
     let generated = this.generateData(api.params.offset, api.params.limit);
 
     if (api.params.filters) {
-      const keys = _.keys(api.params.filters);
+      const _keys = keys(api.params.filters);
       let filter: ExprDesc = null;
-      if (keys.length > 1) {
-        filter = And(...keys.map(x => api.params.filters[x]));
+      if (_keys.length > 1) {
+        filter = And(..._keys.map(x => api.params.filters[x]));
       } else {
-        filter = api.params.filters[keys.shift()];
+        filter = api.params.filters[_keys.shift()];
       }
       const _filter = filter.lookup({});
       generated = generated.filter(v => _filter(v));

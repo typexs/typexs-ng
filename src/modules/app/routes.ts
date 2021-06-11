@@ -9,7 +9,6 @@ import {MenuAccessService} from './menu-demo/MenuAccessService';
 import {PagerDemoComponent} from './pager-demo/pager-demo.component';
 import {LogoutComponent} from './dummy/logout/logout.component';
 import {ProfileComponent} from './dummy/profile/profile.component';
-import {CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE} from '../base/constants';
 import {NotificationDemoComponent} from './components/demos/notification/notification-demo.component';
 import {InputDemoComponent} from './components/demos/form-input/input-demo.component';
 import {TablesDemoComponent} from './components/demos/tables/tables-demo.component';
@@ -27,7 +26,7 @@ import {EmbeddedStorageAgGridComponent} from './components/demos/embedded-storag
 import {TreeContentDynamicChangeComponent} from './components/content-view/tree-content-dynamic-change.component';
 import {TreeContentComponent} from './components/content-view/tree-content.component';
 import {SimpleViewVariantsComponent} from './components/content-view/simple-view-variants.component';
-import {EntityViewPageComponent} from '../base/component/entities/page/page.component';
+import {CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE, EntityViewPageComponent} from '@typexs/ng-base';
 
 
 export const APP_ROUTES: Routes = [

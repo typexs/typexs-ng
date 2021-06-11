@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Pager} from '../../base/pager/Pager';
-import {PagerService} from '../../base/pager/PagerService';
-import {PagerAction} from '../../base/pager/PagerAction';
+import {Pager} from '@typexs/ng-base';
+import {PagerService} from '@typexs/ng-base';
+import {PagerAction} from '@typexs/ng-base';
 
 
 @Component({

@@ -1,5 +1,5 @@
 // to integrate the elements
-import {FORM_ELEMENTS} from '../../libs/forms/elements';
+import {FORM_ELEMENTS} from '@typexs/ng';
 import {FormComponent} from './form.component';
 import {InputComponent} from './input.component';
 import {CheckboxComponent} from './checkbox.component';

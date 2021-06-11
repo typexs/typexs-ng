@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import {get, isArray, isEmpty} from 'lodash';
 import {Component, Injector, Input, OnDestroy, OnInit} from '@angular/core';
 import {INavTreeEntry} from './INavTreeEntry';
 import {IMenuLinkGuard} from './IMenuLinkGuard';
@@ -31,7 +31,7 @@ export class MenuLinkComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const activators = this.getActivator();
-    if (!_.isEmpty(activators)) {
+    if (!isEmpty(activators)) {
       for (const canAct of activators) {
         if (canAct.isDisabled) {
           const s = (<IMenuLinkGuard>canAct).isDisabled(this.entry.entry)
@@ -86,7 +86,7 @@ export class MenuLinkComponent implements OnInit, OnDestroy {
     }
     this.activators = [];
     const canActivate = this.entry.entry.getCanActivate();
-    if (canActivate && _.isArray(canActivate)) {
+    if (canActivate && isArray(canActivate)) {
       for (const canAct of canActivate) {
         const guard = this.injector.get(canAct) as IMenuLinkGuard;
         if (guard.isDisabled || guard.isShown) {
@@ -99,7 +99,7 @@ export class MenuLinkComponent implements OnInit, OnDestroy {
 
 
   icon() {
-    const icon = _.get(this.entry, 'entry.data.icon', null);
+    const icon = get(this.entry, 'entry.data.icon', null);
     if (icon) {
       return icon;
     }

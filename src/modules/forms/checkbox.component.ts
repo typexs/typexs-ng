@@ -1,7 +1,7 @@
-import * as _ from 'lodash';
+import {isBoolean, remove} from 'lodash';
 import {Component} from '@angular/core';
-import {ViewComponent} from '../../libs/views/decorators/ViewComponent';
-import {CheckboxHandle} from '../../libs/forms/elements/CheckboxHandle';
+import {ViewComponent} from '@typexs/ng';
+import {CheckboxHandle} from '@typexs/ng';
 import {AbstractFormComponent} from './component/AbstractFormComponent';
 
 
@@ -41,14 +41,14 @@ export class CheckboxComponent extends AbstractFormComponent<CheckboxHandle> {
       if (value.indexOf(this.defaultValue) === -1) {
         value.push(this.defaultValue);
       } else {
-        _.remove(value, v => this.defaultValue === v);
+        remove(value, v => this.defaultValue === v);
       }
       this.setValue(value);
     } else {
 
       if (datatype === 'boolean') {
         const v = this.getValue();
-        if (_.isBoolean(v)) {
+        if (isBoolean(v)) {
           this.setValue(!v);
         } else {
           this.setValue(true);

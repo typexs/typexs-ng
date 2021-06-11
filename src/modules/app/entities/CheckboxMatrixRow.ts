@@ -1,21 +1,21 @@
-
 import {ISelectOption} from '../../forms/libs/ISelectOption';
 import {Entity} from '@typexs/schema/libs/decorators/Entity';
 import {Property} from '@typexs/schema/libs/decorators/Property';
-import {Label} from '../../../libs/forms/decorators/Label';
-import {Checkbox} from '../../../libs/forms/decorators/Checkbox';
+import {Checkbox, Label} from '@typexs/ng';
+import {K_STORABLE} from '@typexs/schema';
 
-@Entity({storeable: false})
+@Entity({[K_STORABLE]: false})
 export class CheckboxMatrixRow {
 
   @Label()
-  @Property({type: 'string'})
+  @Property()
   label: string;
 
   @Checkbox({enum: 'rolesValues'})
   @Property({type: 'string', cardinality: 0})
   roles: string[];
 
+  @Property({virtual: true})
   rolesValues: ISelectOption[] = [
     {value: 'admin', label: 'Admin'},
     {value: 'user', label: 'User'}

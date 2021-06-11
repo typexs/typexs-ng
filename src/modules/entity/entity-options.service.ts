@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {EntityService} from './entity.service';
-import {EntityRef, PropertyRef} from '@typexs/schema';
+import {EntityRef, K_STORABLE, PropertyRef} from '@typexs/schema';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {ISelectOptionsService} from '../forms/libs/ISelectOptionsService';
 import {ISelectOption} from '../forms/libs/ISelectOption';
-import {ClassRef, IEntityRef} from 'commons-schema-api/browser';
-import {Log} from '../base/lib/log/Log';
+import {IClassRef, IEntityRef} from '@allgemein/schema-api';
+import {Log} from '@typexs/ng-base';
 
 @Injectable()
 export class EntityOptionsService implements ISelectOptionsService {
@@ -19,16 +19,16 @@ export class EntityOptionsService implements ISelectOptionsService {
     const bs = new BehaviorSubject<ISelectOption[]>(null);
 
     let storeable = true;
-    let sourceRef: ClassRef | IEntityRef = propertyDef.getSourceRef();
-    if (sourceRef.isEntity) {
+    let sourceRef: IClassRef | IEntityRef = propertyDef.getSourceRef();
+    if (sourceRef.hasEntityRef()) {
       sourceRef = sourceRef.getEntityRef();
-      storeable = sourceRef.getOptions('storeable');
+      storeable = sourceRef.getOptions(K_STORABLE);
       if (storeable !== false) {
         storeable = true;
       }
     }
 
-    if (storeable && propertyDef.targetRef.isEntity) {
+    if (storeable && propertyDef.getTargetRef().hasEntityRef()) {
       const entityDef = <EntityRef>propertyDef.getTargetRef().getEntityRef();
       this.entityService.query(entityDef.name, null, {limit: limit}).subscribe(
         result => {

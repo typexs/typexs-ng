@@ -47,23 +47,24 @@ export class TaskStatusPageComponent {
   lookupNeighbours() {
     if (this.taskLog) {
       this.taskLogs = {};
-      this.taskService.query({$or: [{id: this.taskLog.id + 1}, {id: this.taskLog.id - 1}]}, {targetIds: [this.nodeId]}).subscribe(x => {
-        if (x) {
-          x.entities.map((y: TaskLog) => {
-            if (y.id === this.taskLog.id - 1) {
-              this.taskLogs['prev'] = y;
-            } else if (y.id === this.taskLog.id + 1) {
-              this.taskLogs['next'] = y;
-            }
-          });
-        }
-      });
+      this.taskService.query({$or: [{id: this.taskLog.id + 1}, {id: this.taskLog.id - 1}]}, {targetIds: [this.nodeId]})
+        .subscribe(x => {
+          if (x) {
+            x.entities.map((y: TaskLog) => {
+              if (y.id === this.taskLog.id - 1) {
+                this.taskLogs['prev'] = y;
+              } else if (y.id === this.taskLog.id + 1) {
+                this.taskLogs['next'] = y;
+              }
+            });
+          }
+        });
     }
 
 
   }
 
-  changeRunnerId(runnerId: string){
+  changeRunnerId(runnerId: string) {
     this.runnerId = runnerId;
   }
 

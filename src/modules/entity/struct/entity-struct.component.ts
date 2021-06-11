@@ -1,13 +1,10 @@
-import {getMetadataStorage} from 'class-validator';
+// import {getMetadataStorage} from 'class-validator';
+import {clone} from 'lodash';
 import {Component, OnInit} from '@angular/core';
 import {EntityService} from './../entity.service';
-import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
-import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
 import {ActivatedRoute, Router} from '@angular/router';
-import {PropertyRef} from '@typexs/schema/libs/registry/PropertyRef';
 import {Observable} from 'rxjs';
-import * as _ from 'lodash';
-import {ClassRef, LookupRegistry, XS_TYPE_PROPERTY} from 'commons-schema-api/browser';
+import {IClassRef, IEntityRef, IPropertyRef, METATYPE_PROPERTY} from '@allgemein/schema-api';
 
 
 @Component({
@@ -21,14 +18,16 @@ export class EntityStructComponent implements OnInit {
 
   name: string;
 
-  entityDef: EntityRef;
+  entityDef: IEntityRef;
 
-  referrerProps: PropertyRef[] = [];
+  referrerProps: IPropertyRef[] = [];
 
-  propertyDefs: { property: PropertyRef, level: number }[] = [];
+  propertyDefs: { property: IPropertyRef, level: number }[] = [];
 
 
-  constructor(public entityService: EntityService, private route: ActivatedRoute, private router: Router) {
+  constructor(public entityService: EntityService,
+              private route: ActivatedRoute,
+              private router: Router) {
 
   }
 
@@ -47,49 +46,49 @@ export class EntityStructComponent implements OnInit {
     this.propertyDefs = [];
 
     this.name = name;
-    this.entityDef = EntityRegistry.$().getEntityRefByName(this.name);
-    this.referrerProps = LookupRegistry.$().filter(XS_TYPE_PROPERTY, (referrer: PropertyRef) => {
-      return referrer.isReference() && referrer.targetRef === this.entityDef.getClassRef();
+    this.entityDef = this.entityDef.getRegistry().getEntityRefFor(this.name);
+    this.referrerProps = this.entityDef.getRegistry().filter(METATYPE_PROPERTY, (referrer: IPropertyRef) => {
+      return referrer.isReference() && referrer.getTargetRef() === this.entityDef.getClassRef();
     });
     this.scan(this.entityDef);
   }
 
 
-  type(propertyDef: PropertyRef): string {
-    if (propertyDef.isEmbedded()) {
-      return propertyDef.propertyRef.className;
+  type(propertyDef: IPropertyRef): string {
+    if ((<any>propertyDef).isEmbedded()) {
+      return propertyDef.getTargetRef().name;
     } else if (propertyDef.isReference()) {
-      return propertyDef.targetRef.className;
+      return propertyDef.getTargetRef().name;
     } else {
-      return propertyDef.dataType;
+      return (<any>propertyDef).dataType;
     }
   }
 
-  scan(source: ClassRef | EntityRef, level: number = 0) {
+  scan(source: IClassRef | IEntityRef, level: number = 0) {
     if (level > 8) {
       return;
     }
-    for (const props of <PropertyRef[]>source.getPropertyRefs()) {
+    for (const props of <IPropertyRef[]>source.getPropertyRefs()) {
       this.propertyDefs.push({property: props, level: level});
       if (props.isReference()) {
         this.scan(props.getTargetRef(), level + 1);
-      } else if (!props.isInternal()) {
-        this.scan(props.propertyRef, level + 1);
+        // } else if (!props.isInternal()) {
+        //   this.scan(props.getTargetRef(), level + 1);
       }
     }
   }
 
-  validator(property: PropertyRef) {
-    const validators = getMetadataStorage().getTargetValidationMetadatas(this.entityDef.getClass(), null, true, false);
-    return _.filter(validators, v => v.propertyName === property.name);
+  // validator(property: PropertyRef) {
+  //   const validators = getMetadataStorage().getTargetValidationMetadatas(this.entityDef.getClass(), null, true, false);
+  //   return filter(validators, v => v.propertyName === property.name);
+  // }
+
+  cardinality(propDef: IPropertyRef) {
+    return propDef.getOptions('cardinality', 1);
   }
 
-  cardinality(propDef: PropertyRef) {
-    return propDef.cardinality;
-  }
-
-  options(propDef: PropertyRef) {
-    const opts = _.clone(propDef.getOptions());
+  options(propDef: IPropertyRef) {
+    const opts = clone(propDef.getOptions());
     if (opts.sourceClass) {
       delete opts.sourceClass._cacheEntity;
     }

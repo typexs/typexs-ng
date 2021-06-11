@@ -60,7 +60,7 @@ export class EntityModifyComponent implements OnInit {
         });
       } else {
         this.new = true;
-        this.instance = this.entityDef.new();
+        this.instance = this.entityDef.create();
       }
 
     } else {

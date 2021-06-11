@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Person} from '../../entities/Person';
 import {Book} from '../../entities/Book';
-import {C_DEFAULT} from '../../../base/constants';
+import {C_DEFAULT} from '@typexs/ng-base';
 
 
 @Component({

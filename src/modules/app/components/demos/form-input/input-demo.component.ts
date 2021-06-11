@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {InputDemoObject} from '../../../entities/InputDemoObject';
-import {IMessage, MessageType} from '../../../../base/messages/IMessage';
-import {MessageChannel} from '../../../../base/messages/MessageChannel';
-import {MessageService} from '../../../../base/messages/message.service';
-import {LogMessage} from '../../../../base/messages/types/LogMessage';
+import {IMessage, MessageType} from '@typexs/ng-base';
+import {MessageChannel} from '@typexs/ng-base';
+import {MessageService} from '@typexs/ng-base';
+import {LogMessage} from '@typexs/ng-base';
 
 
 @Component({

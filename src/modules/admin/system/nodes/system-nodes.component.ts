@@ -1,8 +1,14 @@
+import {
+  defaults, find, isArray, isEmpty, isFunction, isNumber, intersection,
+  get, clone, upperFirst, isNull, keys, values, isString, filter, merge, isPlainObject,
+  concat, kebabCase, has, snakeCase, isRegExp, orderBy, remove, first, set, assign,
+  capitalize, isUndefined
+} from 'lodash';
 import {Component, OnInit} from '@angular/core';
 
 
-import * as _ from 'lodash';
-import {SystemInfoService} from '../../../base/services/system-info.service';
+
+import {SystemInfoService} from '@typexs/ng-base';
 import {INodeInfo} from '@typexs/base/libs/system/INodeInfo';
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
 import {interval, Subscription} from 'rxjs';
@@ -26,7 +32,7 @@ export class SystemNodesComponent implements OnInit {
 
 
   selectContext(node: SystemNodeInfo, type: 'tasks' | 'workers'): any[] {
-    const x = _.find(node.contexts, (y: INodeInfo) => y.name === type);
+    const x = find(node.contexts, (y: INodeInfo) => y.name === type);
     if (!x) {
       return [];
     }
@@ -40,7 +46,7 @@ export class SystemNodesComponent implements OnInit {
 
 
   networks() {
-    return _.keys(this.getInfoService().getRuntimeInfoValue().networks);
+    return keys(this.getInfoService().getRuntimeInfoValue().networks);
   }
 
 

@@ -1,6 +1,6 @@
 import {Routes} from '@angular/router';
 import {EntityTypesComponent} from './types/entity-types.component';
-import {AuthGuardService} from '../base/api/auth/auth-guard.service';
+import {AuthGuardService} from '@typexs/ng-base';
 import {EntityModifyComponent} from './modify/entity-modify.component';
 import {EntityViewComponent} from './view/entity-view.component';
 import {EntityDeleteComponent} from './delete/entity-delete.component';

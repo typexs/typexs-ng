@@ -7,37 +7,36 @@
     <table class="table hover">
       <thead>
       <tr>
-        <th>Storage</th>
+        <th>Namespace</th>
         <th>Schema</th>
         <th>Name</th>
-        <th>name</th>
+        <th>Klassname</th>
         <th>Options</th>
         <th>Ops</th>
       </tr>
       </thead>
 
       <tbody>
-      <tr *ngFor="let entityDef of getEntityRefs()">
-        <td>{{entityDef.metadata.storage}}</td>
-        <td>{{entityDef.object.schema}}</td>
-        <td>{{entityDef.name}}</td>
-        <td>{{entityDef.name}}</td>
+      <tr *ngFor="let entityRef of getEntityRefs()">
+        <td>{{entityRef.getNamespace()}}</td>
+        <td>{{entityRef.getOptions('schema').join(', ')}}</td>
+        <td>{{entityRef.name}}</td>
+        <td>{{entityRef.getClass().name}}</td>
         <td>
           <details>
             <summary>JSON</summary>
-            <pre class="language-json">{{entityDef.getOptions() | json}}</pre>
+            <pre class="language-json">{{entityRef.getOptions() | json}}</pre>
           </details>
-
         </td>
         <td>
           <a class="btn btn-primary" *ngIf="storageService.isSupported('query')"
-             [routerLink]="[storageService.getNgUrlPrefix(),entityDef.name,'query']">Query</a>
+             [routerLink]="[storageService.getNgUrlPrefix(),entityRef.name,'query']">Query</a>
           <a class="btn btn-secondary" *ngIf="storageService.isSupported('aggregate')"
-             [routerLink]="[storageService.getNgUrlPrefix(),entityDef.name,'aggregate']">Aggregate</a>
+             [routerLink]="[storageService.getNgUrlPrefix(),entityRef.name,'aggregate']">Aggregate</a>
           <a class="btn btn-success" *ngIf="storageService.isSupported('save')"
-             [routerLink]="[storageService.getNgUrlPrefix(),entityDef.name,'create']">New</a>
+             [routerLink]="[storageService.getNgUrlPrefix(),entityRef.name,'create']">New</a>
           <a class="btn btn-warning" *ngIf="storageService.isSupported('metadata')"
-             [routerLink]="[storageService.getNgUrlPrefix(),entityDef.name,'structure']">Schema</a>
+             [routerLink]="[storageService.getNgUrlPrefix(),entityRef.name,'structure']">Schema</a>
         </td>
       </tr>
       </tbody>

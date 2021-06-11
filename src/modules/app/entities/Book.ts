@@ -2,8 +2,8 @@ import {Entity} from '@typexs/schema/libs/decorators/Entity';
 import {Property} from '@typexs/schema/libs/decorators/Property';
 import {IProperty} from '@typexs/schema/libs/registry/IProperty';
 import {Person} from './Person';
-import {Readonly} from '../../../libs/forms/decorators/Readonly';
-import {Text} from '../../../libs/forms/decorators/Text';
+import {Readonly} from '@typexs/ng';
+import {Text} from '@typexs/ng';
 import {EntityOptionsService} from '../../entity/entity-options.service';
 
 @Entity()

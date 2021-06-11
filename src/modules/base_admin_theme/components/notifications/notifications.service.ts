@@ -1,6 +1,6 @@
-import * as _ from 'lodash';
-import {Injectable, EventEmitter} from '@angular/core';
-import {IMessage} from '../../../base/messages/IMessage';
+import {assign, isArray} from 'lodash';
+import {EventEmitter, Injectable} from '@angular/core';
+import {IMessage} from '@typexs/ng-base';
 import {NotifyItem} from './NotifyItem';
 
 
@@ -22,7 +22,7 @@ export class NotificationsService {
 
     // need id to know that the right one is being removed
     const message = new NotifyItem();
-    _.assign(message, {
+    assign(message, {
       heading: msg.topic,
       message: msg.content,
       type: msg.type,
@@ -44,8 +44,10 @@ export class NotificationsService {
   }
 
   addMessage(msg: IMessage, displayTime: number = null) {
-    if (!msg) { return; }
-    const arrayMsg: IMessage[] | string[] = _.isArray(msg) ? msg : [msg];
+    if (!msg) {
+      return;
+    }
+    const arrayMsg: IMessage[] | string[] = isArray(msg) ? msg : [msg];
     for (const item of arrayMsg) {
       this.message(item, displayTime);
     }

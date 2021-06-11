@@ -1,9 +1,7 @@
 import {AfterViewInit, Component, ComponentFactoryResolver, Inject, Injector, OnInit, ViewChild} from '@angular/core';
 import {SearchEntryComponent} from './search-entry.component';
-import {TreeObject} from '../../../../../libs/views/TreeObject';
-import {ViewContent} from '../../../../../libs/views/decorators/ViewContent';
-import {ViewComponent} from '../../../../../libs/views/decorators/ViewComponent';
-import {AbstractComponent} from '../../../../base/component/AbstractComponent';
+import {TreeObject, ViewComponent, ViewContent} from '@typexs/ng';
+import {AbstractComponent} from '@typexs/ng-base';
 
 
 @ViewContent('view-parent')
@@ -11,11 +9,11 @@ export class ViewParent extends TreeObject {
   type = 'view-parent';
 }
 
+
 @ViewComponent('view-parent')
 @Component({
   selector: 'view-parent',
   templateUrl: 'view-parent.component.html',
-
 })
 export class ViewParentComponent extends AbstractComponent<ViewParent> implements AfterViewInit, OnInit {
 

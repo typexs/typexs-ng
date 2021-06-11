@@ -9,7 +9,7 @@ import {SystemStoragesComponent} from './system/storages/system-storages.compone
 import {SystemConfigComponent} from './system/config/system-config.component';
 import {NgRoutesComponent} from './ng/routes/ng-routes.component';
 import {FormsModule} from '../forms/module';
-import {BaseModule} from '../base/module';
+import {AppService, BaseModule} from '@typexs/ng-base';
 import {NavigatorService} from '../navigator/navigator.service';
 import {BaseAdminThemeModule} from '../base_admin_theme/base_admin_theme.module';
 import {DashboardComponent} from './dashboard/dashboard.component';
@@ -18,7 +18,6 @@ import {BackendTasksService} from '../tasks/backend-tasks.service';
 import {SystemNodesComponent} from './system/nodes/system-nodes.component';
 import {SystemNodeInfoComponent} from './system/nodes/node-info/system-node-info.component';
 import {SettingsComponent} from './components/settings/settings.component';
-import {AppService} from '../base/services/app.service';
 import {CommonModule} from '@angular/common';
 
 const PROVIDERS: Provider[] = [];

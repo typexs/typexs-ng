@@ -1,8 +1,7 @@
 import {Entity} from '@typexs/schema/libs/decorators/Entity';
 import {Property} from '@typexs/schema/libs/decorators/Property';
-import {IsNotEmpty} from 'class-validator';
-import {Readonly} from '../../../libs/forms/decorators/Readonly';
-import {Text} from '../../../libs/forms/decorators/Text';
+import {Readonly, Text} from '@typexs/ng';
+import {IsNotEmpty} from '@allgemein/schema-api';
 
 @Entity()
 export class Person {

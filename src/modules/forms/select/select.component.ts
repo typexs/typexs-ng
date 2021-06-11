@@ -1,12 +1,11 @@
+import {get, has, isArray, isString} from 'lodash';
 import {Component, OnInit} from '@angular/core';
 
-import * as _ from 'lodash';
-import {SelectHandle} from '../../../libs/forms/elements';
-import {ViewComponent} from '../../../libs/views/decorators/ViewComponent';
-import {Option} from '../../../libs/forms/elements/Option';
-import {ISelectOption} from './../libs/ISelectOption';
-import {EnumHandle} from '../libs/EnumHandle';
+
+import {Option, SelectHandle, ViewComponent} from '@typexs/ng';
 import {AbstractFormComponent} from '../component/AbstractFormComponent';
+import {ISelectOption} from '../libs/ISelectOption';
+import {EnumHandle} from '../libs/EnumHandle';
 
 
 @ViewComponent('select')
@@ -22,16 +21,15 @@ export class SelectComponent extends AbstractFormComponent<SelectHandle> impleme
   }
 
 
-
   cachedOptions: Option[] = [];
 
   static checkAndCreateOption(e: any) {
     const o = new Option();
-    if (_.isString(e)) {
+    if (isString(e)) {
       o.label = o.value = e;
-    } else if (_.has(e, 'label') || _.has(e, 'value')) {
-      o.label = _.get(e, 'label', _.get(e, 'value'));
-      o.value = _.get(e, 'value', _.get(e, 'label'));
+    } else if (has(e, 'label') || has(e, 'value')) {
+      o.label = get(e, 'label', get(e, 'value'));
+      o.value = get(e, 'value', get(e, 'label'));
     } else {
       throw new Error('not found');
     }
@@ -64,7 +62,7 @@ export class SelectComponent extends AbstractFormComponent<SelectHandle> impleme
 
     if (enums) {
 
-      if (!_.isArray(enums)) {
+      if (!isArray(enums)) {
         enums.subscribe((e: ISelectOption[]) => {
           if (e) {
             this.cachedOptions = [];

@@ -12,7 +12,6 @@ import {MenuAccessService} from './menu-demo/MenuAccessService';
 import {DummyComponent} from './dummy/dummy.component';
 import {OptionsService} from './services/OptionsService';
 import {PagerDemoComponent} from './pager-demo/pager-demo.component';
-import {AuthService} from '../base/api/auth/auth.service';
 import {EmbeddedContentComponent} from './embedded-content/embedded-content.component';
 import {EmbeddedContentDemoComponent} from './embedded-content/embedded-content-demo.component';
 import {EmbeddedContentDirective} from './embedded-content/embedded-content.directive';
@@ -30,7 +29,6 @@ import {EntityService} from '../entity/entity.service';
 import {DistributedStorageService} from '../distributed_storage/services/distributed_storage.service';
 import {DataViewComponent} from './dataview/dataview.component';
 import {EmbeddedDistributedStorageComponent} from './components/demos/embedded-distributed-storage/embedded-distributed-storage.component';
-import {AppService} from '../base/services/app.service';
 import {UI_ADMIN_LAYOUT} from '../admin/lib/Constants';
 import {EmbeddedStorageDefaultComponent} from './components/demos/embedded-storage/default.component';
 import {EmbeddedStorageOverviewComponent} from './components/demos/embedded-storage/overview.component';
@@ -39,13 +37,13 @@ import {SearchResultComponent} from './components/content-view/search/search-res
 import {SearchEntryComponent} from './components/content-view/search/search-entry.component';
 import {ViewParentComponent} from './components/content-view/search/view-parent.component';
 import {PersonComponent} from './components/entities/person/person.component';
-import {ComponentRegistryService} from '../base/component/component-registry.service';
 import {Person} from './entities/Person';
 import {TreeContentComponent} from './components/content-view/tree-content.component';
 import {TreeContentDynamicChangeComponent} from './components/content-view/tree-content-dynamic-change.component';
 import {SimpleViewVariantsComponent} from './components/content-view/simple-view-variants.component';
 import {BookComponent} from './components/entities/book/book.component';
 import {Book} from './entities/Book';
+import {AppService, AuthService, ComponentRegistryService} from '@typexs/ng-base';
 
 
 @NgModule({

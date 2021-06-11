@@ -1,14 +1,19 @@
-import * as _ from 'lodash';
+import {
+  defaults, find, isArray, isEmpty, isFunction, isNumber, intersection,
+  get, clone, upperFirst, isNull, keys, values, isString, filter, merge, isPlainObject,
+  concat, kebabCase, has, snakeCase, isRegExp, orderBy, remove, first, set, assign,
+  capitalize, isUndefined
+} from 'lodash';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {IDTGridOptions} from '../../../base/datatable/IDTGridOptions';
-import {IGridColumn} from '../../../base/datatable/IGridColumn';
-import {CC_GRID_CELL_ENTITY_OPERATIONS} from '../../../base/constants';
-import {IQueryComponentApi} from '../../../base/api/querying/IQueryComponentApi';
-import {ComponentRegistryService} from '../../../base/component/component-registry.service';
-import {IComponentBinding} from '../../../../libs/views/IComponentBinding';
-import {ClassType} from 'commons-schema-api/browser';
-import {AbstractGridComponent} from '../../../base/datatable/abstract-grid.component';
+import {IDTGridOptions} from '@typexs/ng-base';
+import {IGridColumn} from '@typexs/ng-base';
+import {CC_GRID_CELL_ENTITY_OPERATIONS} from '@typexs/ng-base';
+import {IQueryComponentApi} from '@typexs/ng-base';
+import {ComponentRegistryService} from '@typexs/ng-base';
+import {IComponentBinding} from '@typexs/ng';
+import {ClassType} from '@allgemein/schema-api';
+import {AbstractGridComponent} from '@typexs/ng-base';
 
 
 @Component({
@@ -36,8 +41,8 @@ export class StorageQueryComponent
 
 
   ngOnInit() {
-    this.viewTypes = this.componentRegistry.registry.filter(x => _.get(x, 'extra.datatable', false));
-    const defaultComponent = this.viewTypes.find(x => _.get(x, 'extra.default', false));
+    this.viewTypes = this.componentRegistry.registry.filter(x => get(x, 'extra.datatable', false));
+    const defaultComponent = this.viewTypes.find(x => get(x, 'extra.default', false));
     if (defaultComponent) {
       this.gridComponentClass = defaultComponent.component as ClassType<AbstractGridComponent>;
     }
@@ -54,14 +59,14 @@ export class StorageQueryComponent
 
   switchQueryOption(name: string) {
     if (name === 'raw') {
-      const raw = _.get(this.options, 'queryOptions.raw', false);
-      _.set(this.options, 'queryOptions.raw', !raw);
-      this.options = _.clone(this.options);
+      const raw = get(this.options, 'queryOptions.raw', false);
+      set(this.options, 'queryOptions.raw', !raw);
+      this.options = clone(this.options);
     }
   }
 
   columnsPostProcess(columns: IGridColumn[], api: IQueryComponentApi) {
-    if (_.isArray(columns) && api) {
+    if (isArray(columns) && api) {
       columns.unshift(<IGridColumn & { urlPrefix: string }>{
         label: 'Ops',
         field: null,

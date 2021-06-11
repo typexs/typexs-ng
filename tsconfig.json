@@ -6,6 +6,7 @@
       "es5",
       "es6"
     ],
+    "esModuleInterop": true,
     "outDir": "./build/compiled",
     "target": "es6",
     "module": "CommonJS",

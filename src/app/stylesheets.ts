@@ -1,5 +1,5 @@
-
-
-import {IStylesheetEntry} from '../libs/angular/IStylesheetEntry';
-
-export const STYLES: IStylesheetEntry[] = [];
+//
+//
+// import {IStylesheetEntry} from '@typexs/ng';
+//
+// export const STYLES: IStylesheetEntry[] = [];

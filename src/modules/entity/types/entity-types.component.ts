@@ -13,6 +13,6 @@ export class EntityTypesComponent {
   }
 
   getEntityRefs() {
-    return this.entityService.getEntityRefs().filter(e => (e as EntityRef).isStoreable());
+    return this.entityService.getEntityRefs().filter(e => (e as EntityRef).isStorable());
   }
 }

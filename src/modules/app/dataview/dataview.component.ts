@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import * as _ from 'lodash';
+import {get, isBoolean, isDate, isNumber, isString} from 'lodash';
 import {
   AfterViewInit,
   Component,
@@ -15,11 +15,11 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import {AbstractQueryService} from '../../base/api/querying/abstract-query.service';
+import {AbstractQueryService} from '@typexs/ng-base';
 import {StorageService} from '../../storage/storage.service';
 import {EntityService} from '../../entity/entity.service';
-import {IEntityRef} from 'commons-schema-api';
-import {filter, first, mergeMap} from 'rxjs/operators';
+import {IEntityRef} from '@allgemein/schema-api';
+import {filter as rFilter, first as rFirst, mergeMap} from 'rxjs/operators';
 
 
 class FieldRef {
@@ -110,8 +110,8 @@ export class DataViewComponent implements OnInit, OnChanges, OnDestroy, AfterVie
     const entityRef = this.entities[this.entityIdx];
     const service = this.getService();
     service.isReady()
-      .pipe(filter(x => x))
-      .pipe(first())
+      .pipe(rFilter(x => x))
+      .pipe(rFirst())
       .pipe(mergeMap(x => service.query(entityRef.name, null, {limit: 10})))
       .subscribe(x => {
         if (x) {
@@ -129,14 +129,14 @@ export class DataViewComponent implements OnInit, OnChanges, OnDestroy, AfterVie
     this.filtered = this.entries.map(entry => {
       const ret = {};
       for (const f of this.fieldRefs) {
-        ret[f.name] = _.get(entry, f.path, undefined);
-        if (_.isNumber(ret[f.name])) {
+        ret[f.name] = get(entry, f.path, undefined);
+        if (isNumber(ret[f.name])) {
           f.type = 'number';
-        } else if (_.isDate(ret[f.name])) {
+        } else if (isDate(ret[f.name])) {
           f.type = 'date';
-        } else if (_.isString(ret[f.name])) {
+        } else if (isString(ret[f.name])) {
           f.type = 'string';
-        } else if (_.isBoolean(ret[f.name])) {
+        } else if (isBoolean(ret[f.name])) {
           f.type = 'boolean';
         }
 

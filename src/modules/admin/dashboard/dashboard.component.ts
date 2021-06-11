@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {SystemInfoService} from '../../base/services/system-info.service';
+import {SystemInfoService} from '@typexs/ng-base';
 import {IWorkerInfo} from '@typexs/base/libs/worker/IWorkerInfo';
 import {Observable, Subscription, timer} from 'rxjs';
 import {mergeMap} from 'rxjs/operators';

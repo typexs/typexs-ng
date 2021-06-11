@@ -1,15 +1,10 @@
-import * as _ from 'lodash';
-
-
+import {get, isArray, set} from 'lodash';
 import {DataContainer} from '@typexs/base';
-import {ClassRef, XS_TYPE_PROPERTY} from 'commons-schema-api/browser';
-import {Expressions} from 'commons-expressions/browser';
-import {Context} from '../../../libs/views/Context';
-import {UrlHelper} from '../../base/lib/UrlHelper';
-import {FormObject, isFormObject} from '../../../libs/forms/FormObject';
-import {NoFormTypeDefinedError} from '../../../libs/exceptions/NoFormTypeDefinedError';
-import {AbstractComponent} from '../../base/component/AbstractComponent';
+import {ClassRef, METATYPE_PROPERTY} from '@allgemein/schema-api';
+import {Expressions} from '@allgemein/expressions';
+import {FormObject, isFormObject, NoFormTypeDefinedError, Context} from '@typexs/ng';
 import {Component, ComponentFactoryResolver, Inject, Injector} from '@angular/core';
+import {AbstractComponent, UrlHelper} from '@typexs/ng-base';
 
 @Component({
   template: ''
@@ -92,7 +87,7 @@ export class AbstractFormComponent<T extends FormObject> extends AbstractCompone
       this.context = parent.child(elem.name, idx);
     } else {
       this.context = new Context();
-      if (elem.getBinding().baseType === XS_TYPE_PROPERTY) {
+      if (elem.getBinding().metaType === METATYPE_PROPERTY) {
         this.context.name = elem.name;
         this.context.idx = idx;
       }
@@ -101,12 +96,12 @@ export class AbstractFormComponent<T extends FormObject> extends AbstractCompone
 
   getValue() {
     const path = this.context.path();
-    return _.get(this.data.instance, path, null);
+    return get(this.data.instance, path, null);
   }
 
   setValue(v: any) {
     const path = this.context.path();
-    return _.set(this.data.instance, path, v);
+    return set(this.data.instance, path, v);
   }
 
   get value() {
@@ -116,8 +111,8 @@ export class AbstractFormComponent<T extends FormObject> extends AbstractCompone
       this._value = this.getValue();
       if (this._value) {
         const binding = this.getInstance().getBinding();
-        if (binding.isEntityReference()) {
-          if (_.isArray(this._value)) {
+        if (binding.isReference() && binding.getTargetRef().hasEntityRef()) {
+          if (isArray(this._value)) {
             this._value = this._value.map(v =>
               UrlHelper.buildLookupConditions((<ClassRef>binding.getTargetRef()).getEntityRef(), v) + '');
           } else {
@@ -126,7 +121,7 @@ export class AbstractFormComponent<T extends FormObject> extends AbstractCompone
           }
         } else if (binding.isCollection()) {
           if (this._value) {
-            if (!_.isArray(this._value)) {
+            if (!isArray(this._value)) {
               this._value = [this._value];
             }
           }
@@ -140,9 +135,9 @@ export class AbstractFormComponent<T extends FormObject> extends AbstractCompone
   set value(v: any) {
     this._value = v;
     const binding = this.getInstance().getBinding();
-    if (binding.isEntityReference()) {
+    if (binding.isReference() && binding.getTargetRef().hasEntityRef()) {
       let data = [];
-      if (_.isArray(v)) {
+      if (isArray(v)) {
         data = v;
       } else {
         data = [v];
@@ -154,13 +149,13 @@ export class AbstractFormComponent<T extends FormObject> extends AbstractCompone
       this.setValue(refs);
     } else {
       if (binding.isCollection()) {
-        if (_.isArray(v)) {
+        if (isArray(v)) {
           this.setValue(v);
         } else {
           this.setValue([v]);
         }
       } else {
-        if (_.isArray(v) && v.length === 1) {
+        if (isArray(v) && v.length === 1) {
           this.setValue(v[0]);
         } else {
           this.setValue(v);
@@ -174,7 +169,7 @@ export class AbstractFormComponent<T extends FormObject> extends AbstractCompone
   build(form: FormObject): AbstractComponent<T>[] {
     const comp: AbstractComponent<T>[] = [];
     form.getChildren().forEach(formObject => {
-      console.log(formObject);
+      // console.log(formObject);
       if (isFormObject(formObject)) {
 
         const handle = this.getComponentRegistry().getOrCreateDef(formObject.type);

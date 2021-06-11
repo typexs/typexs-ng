@@ -9,16 +9,14 @@
       "projectType": "application",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "customWebpackConfig": {
-              "path": "./extra-webpack.config.js"
-            },
             "outputPath": "dist",
             "index": "src/app/index.html",
             "main": "src/app/main.ts",
-            "tsConfig": "src/app/../../tsconfig.app.json",
+            "tsConfig": "tsconfig.app.json",
             "polyfills": "src/app/polyfills.ts",
+            "inlineStyleLanguage": "scss",
             "allowedCommonJsDependencies": [
               "class-validator"
             ],
@@ -48,20 +46,31 @@
                   "with": "src/app/environments/environment.prod.ts"
                 }
               ]
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": true,
+              "sourceMap": true,
+              "namedChunks": true
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "typexs-ng:build",
-            "proxyConfig": "proxy.conf.json"
-          },
           "configurations": {
             "production": {
-              "browserTarget": "typexs-ng:build:production"
+              "browserTarget": "typexs-ng:build:production",
+              "proxyConfig": "proxy.conf.json"
+            },
+            "development": {
+              "browserTarget": "typexs-ng:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -75,7 +84,7 @@
             "main": "src/app/test.ts",
             "karmaConfig": "./karma.conf.js",
             "polyfills": "src/app/polyfills.ts",
-            "tsConfig": "src/app/../../tsconfig.spec.json",
+            "tsConfig": "./tsconfig.spec.json",
             "scripts": [],
             "styles": [
               "src/app/styles/styles.scss",
@@ -93,31 +102,6 @@
             "tsConfig": [
               "tsconfig.app.json",
               "tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
-    "typexs-ng-e2e": {
-      "root": "src/e2e",
-      "sourceRoot": "src/e2e",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "typexs-ng:serve"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "e2e/tsconfig.e2e.json"
             ],
             "exclude": [
               "**/node_modules/**"

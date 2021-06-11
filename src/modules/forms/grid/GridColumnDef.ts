@@ -1,4 +1,4 @@
-import {FormObject} from '../../../libs/forms/FormObject';
+import {FormObject} from '@typexs/ng';
 
 export class GridColumnDef {
 

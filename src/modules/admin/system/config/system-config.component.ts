@@ -1,9 +1,7 @@
+import {isArray, keys} from 'lodash';
 import {Component, OnInit} from '@angular/core';
-
-
-import * as _ from 'lodash';
 import {ITypexsOptions} from '@typexs/base/libs/ITypexsOptions';
-import {SystemInfoService} from '../../../base/services/system-info.service';
+import {SystemInfoService} from '@typexs/ng-base';
 
 
 @Component({
@@ -19,13 +17,13 @@ export class SystemConfigComponent implements OnInit {
   }
 
   objectKeys(obj: any) {
-    return _.keys(obj);
+    return keys(obj);
   }
 
 
   ngOnInit() {
     this.infoService.loadConfig((err: Error, x: ITypexsOptions[]) => {
-      if (_.isArray(x)) {
+      if (isArray(x)) {
         this.config = x.shift();
       } else {
         this.config = x;

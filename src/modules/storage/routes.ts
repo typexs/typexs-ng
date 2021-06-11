@@ -1,5 +1,5 @@
 import {StorageTypesComponent} from './types/storage-types.component';
-import {AuthGuardService} from '../base/api/auth/auth-guard.service';
+import {AuthGuardService} from '@typexs/ng-base';
 import {StorageStructComponent} from './struct/storage-struct.component';
 import {StorageModifyComponent} from './modify/storage-modify.component';
 import {StorageViewComponent} from './view/storage-view.component';

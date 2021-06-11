@@ -1,8 +1,8 @@
 import {Component, ComponentFactoryResolver, Inject, Injector} from '@angular/core';
-import {ViewContent} from '../../../../../libs/views/decorators/ViewContent';
-import {TreeObject} from '../../../../../libs/views/TreeObject';
-import {ViewComponent} from '../../../../../libs/views/decorators/ViewComponent';
-import {AbstractComponent} from '../../../../base/component/AbstractComponent';
+import {ViewContent} from '@typexs/ng';
+import {TreeObject} from '@typexs/ng';
+import {ViewComponent} from '@typexs/ng';
+import {AbstractComponent} from '@typexs/ng-base';
 
 
 @ViewContent('search-result')

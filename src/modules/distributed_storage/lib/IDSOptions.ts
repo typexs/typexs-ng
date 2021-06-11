@@ -1,4 +1,4 @@
-import {IDTGridOptions} from '../../base/datatable/IDTGridOptions';
+import {IDTGridOptions} from '@typexs/ng-base';
 
 export const DEFAULT_DS_OPTIONS: IDSOptions = {
   pagerId: 'page',

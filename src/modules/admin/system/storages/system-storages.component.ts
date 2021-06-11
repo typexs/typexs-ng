@@ -1,7 +1,13 @@
+import {
+  defaults, find, isArray, isEmpty, isFunction, isNumber, intersection,
+  get, clone, upperFirst, isNull, keys, values, isString, filter, merge, isPlainObject,
+  concat, kebabCase, has, snakeCase, isRegExp, orderBy, remove, first, set, assign,
+  capitalize, isUndefined
+} from 'lodash';
 import {Component, OnInit} from '@angular/core';
-import * as _ from 'lodash';
+
 import {IStorageOptions} from '@typexs/base/libs/storage/IStorageOptions';
-import {SystemInfoService} from '../../../base/services/system-info.service';
+import {SystemInfoService} from '@typexs/ng-base';
 
 
 const API_CTRL_URL = '/api/storages';
@@ -19,7 +25,7 @@ export class SystemStoragesComponent implements OnInit {
   }
 
   objectKeys(obj: any) {
-    return _.keys(obj);
+    return keys(obj);
   }
 
 

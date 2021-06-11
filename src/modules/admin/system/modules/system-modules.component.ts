@@ -1,8 +1,9 @@
+import {keys} from 'lodash';
 import {Component, OnInit} from '@angular/core';
 import {IModule} from '@typexs/base/api/IModule';
-import * as _ from 'lodash';
 
-import {SystemInfoService} from '../../../base/services/system-info.service';
+
+import {SystemInfoService} from '@typexs/ng-base';
 
 @Component({
   selector: 'system-modules',
@@ -16,7 +17,7 @@ export class SystemModulesComponent implements OnInit {
   }
 
   objectKeys(obj: any) {
-    return _.keys(obj);
+    return keys(obj);
   }
 
 

@@ -1,5 +1,5 @@
+import {assign, capitalize, get, has, isArray, isEmpty, last} from 'lodash';
 import {Route} from '@angular/router';
-import * as _ from 'lodash';
 import {hasComponent, isLazyLoading, isRedirect} from './lib/Helper';
 
 export class NavEntry {
@@ -68,7 +68,7 @@ export class NavEntry {
     this.parseData(route.data);
 
     if (!this.label) {
-      this.label = !_.isEmpty(fixedPath) ? _.capitalize(_.last(fixedPath)) : 'Undefined';
+      this.label = !isEmpty(fixedPath) ? capitalize(last(fixedPath)) : 'Undefined';
     }
 
     if (!hasComponent(route) && !isRedirect(route)) {
@@ -85,14 +85,14 @@ export class NavEntry {
 
   parseData(data: any) {
     if (data) {
-      if (_.has(data, 'label')) {
+      if (has(data, 'label')) {
         this.label = data.label;
       }
-      if (_.has(data, 'group') || _.has(data, 'groups')) {
-        const groups = _.get(data, 'group', _.get(data, 'groups'));
-        this.groups = _.isArray(groups) ? groups : [groups];
+      if (has(data, 'group') || has(data, 'groups')) {
+        const groups = get(data, 'group', get(data, 'groups'));
+        this.groups = isArray(groups) ? groups : [groups];
       }
-      if (_.has(data, 'skip')) {
+      if (has(data, 'skip')) {
         this.ignore = data.skip;
       }
 
@@ -103,13 +103,13 @@ export class NavEntry {
 
   merge(route: Route) {
     if (isLazyLoading(route)) {
-      this.route = _.assign(this.route, route);
+      this.route = assign(this.route, route);
       route['navId'] = this.id;
     }
   }
 
   getCanActivate() {
-    if (_.has(this.route, 'canActivate')) {
+    if (has(this.route, 'canActivate')) {
       return this.route.canActivate;
     }
     return false;
@@ -123,14 +123,14 @@ export class NavEntry {
     this.groupType = 'pattern';
     this.parseData(data);
     this.groupRegex = pattern;
-    if (_.has(data, 'canActivate')) {
+    if (has(data, 'canActivate')) {
       this.route.canActivate = data.canActivate;
     }
   }
 
   getPermissions() {
-    if (_.has(this.route, 'data.permissions')) {
-      return _.get(this.route, 'data.permissions', []);
+    if (has(this.route, 'data.permissions')) {
+      return get(this.route, 'data.permissions', []);
     }
     return null;
   }
@@ -200,7 +200,7 @@ export class NavEntry {
     if (this.path) {
       path.push(this.path);
     }
-    return path.filter(x => !_.isEmpty(x)).join('/');
+    return path.filter(x => !isEmpty(x)).join('/');
   }
 
 
@@ -213,7 +213,7 @@ export class NavEntry {
 
 
   isLazyLoading() {
-    if (this.route && (this.route.loadChildren || _.has(this.route, '_loadedConfig'))) {
+    if (this.route && (this.route.loadChildren || has(this.route, '_loadedConfig'))) {
       return true;
     }
     return false;
@@ -221,7 +221,7 @@ export class NavEntry {
 
 
   isLazyLoaded() {
-    return this.isLazyLoading() && _.has(this.route, '_loadedConfig.routes');
+    return this.isLazyLoading() && has(this.route, '_loadedConfig.routes');
   }
 
   toIgnore() {

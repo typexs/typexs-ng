@@ -1,5 +1,6 @@
-import {MessageType} from '../../../base/messages/IMessage';
-import * as _ from 'lodash';
+import {isNull} from 'lodash';
+import {MessageType} from '@typexs/ng-base';
+
 
 export class NotifyItem {
   heading?: string;
@@ -12,7 +13,7 @@ export class NotifyItem {
 
 
   getTypeAsLowerCase(): string {
-    if (!_.isNull(this.type)) {
+    if (!isNull(this.type)) {
       const name = MessageType[this.type];
       return name.toLowerCase();
     }

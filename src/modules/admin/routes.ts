@@ -5,13 +5,13 @@ import {SystemRoutesComponent} from './system/routes/system-routes.component';
 import {SystemStoragesComponent} from './system/storages/system-storages.component';
 import {SystemConfigComponent} from './system/config/system-config.component';
 import {NgRoutesComponent} from './ng/routes/ng-routes.component';
-import {AuthGuardService} from '../base/api/auth/auth-guard.service';
+import {AuthGuardService} from '@typexs/ng-base';
 import {StorageBackendsComponent} from '../storage/backends/storage-backends.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {SystemNodesComponent} from './system/nodes/system-nodes.component';
 import {SettingsComponent} from './components/settings/settings.component';
-import {PERMISSION_ACCESS_ADMIN_UI} from '../../libs/Constants';
-import {PERMISSION_ALLOW_STORAGES_VIEW} from '@typexs/server';
+import {PERMISSION_ACCESS_ADMIN_UI} from '@typexs/ng';
+import {PERMISSION_ALLOW_STORAGES_VIEW} from '@typexs/server/libs/Constants';
 
 
 export const ADMIN_ROUTES: Routes = [

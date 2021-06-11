@@ -1,10 +1,9 @@
-import {Entity} from '@typexs/schema/libs/decorators/Entity';
-import {Property} from '@typexs/schema/libs/decorators/Property';
+import {Entity, K_STORABLE, Property} from '@typexs/schema';
 import {CheckboxMatrixRow} from './CheckboxMatrixRow';
-import {Grid} from '../../../libs/forms/decorators/Grid';
+import {Grid} from '@typexs/ng';
 
 
-@Entity({storeable: false})
+@Entity({[K_STORABLE]: false})
 export class CheckboxMatrix {
 
   @Grid({fixed: true, nr: false})

@@ -2,7 +2,7 @@ import {NgModule, Provider} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {NavigatorModule} from '../navigator/module';
 import {FormsModule} from '../forms/module';
-import {BaseModule} from '../base/module';
+import {BaseModule} from '@typexs/ng-base';
 import {BaseAdminThemeComponent} from './base_admin_theme.component';
 import {ToggleDirective} from './toggle.directive';
 import {PerfectScrollbarDirective} from './perfect-scrollbar.directive';

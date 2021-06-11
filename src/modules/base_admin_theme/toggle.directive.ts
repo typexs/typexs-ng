@@ -1,4 +1,8 @@
-import * as _ from 'lodash';
+import {
+  defaults, find, isArray, isEmpty, isFunction, isNumber, intersection,
+  get, clone, upperFirst, isNull, keys, values, isString, filter, merge, isPlainObject,
+  concat
+} from 'lodash';
 import {Directive, ElementRef, HostListener, Input, Renderer2} from '@angular/core';
 
 export interface ToggleSelector {
@@ -24,24 +28,24 @@ export class ToggleDirective {
 
   @HostListener('click')
   onClick() {
-    if (_.isString(this.toggle)) {
+    if (isString(this.toggle)) {
       this._toggleSelf(this.toggle);
-    } else if (_.isArray(this.toggle)) {
-      const hostToggleClassesArray: string[][] = <string[][]>_.filter(this.toggle, e => _.isArray(e));
-      let hostToggleClasses: string[] = <string[]>_.filter(this.toggle, e => _.isString(e));
-      const hostToggleRfes: ToggleSelector = _.merge({}, ...<ToggleSelector[]>_.filter(this.toggle, e => _.isPlainObject(e)));
+    } else if (isArray(this.toggle)) {
+      const hostToggleClassesArray: string[][] = <string[][]>filter(this.toggle, e => isArray(e));
+      let hostToggleClasses: string[] = <string[]>filter(this.toggle, e => isString(e));
+      const hostToggleRfes: ToggleSelector = merge({}, ...<ToggleSelector[]>filter(this.toggle, e => isPlainObject(e)));
 
-      if (!_.isEmpty(hostToggleClassesArray)) {
-        hostToggleClasses = _.concat(hostToggleClasses, ...hostToggleClassesArray);
+      if (!isEmpty(hostToggleClassesArray)) {
+        hostToggleClasses = concat(hostToggleClasses, ...hostToggleClassesArray);
       }
 
-      if (!_.isEmpty(hostToggleClasses)) {
+      if (!isEmpty(hostToggleClasses)) {
         this._toggleSelf(hostToggleClasses);
       }
 
-      if (!_.isEmpty(hostToggleRfes)) {
-        const keys = _.keys(hostToggleRfes);
-        for (const k of keys) {
+      if (!isEmpty(hostToggleRfes)) {
+        const _keys = keys(hostToggleRfes);
+        for (const k of _keys) {
           this._toggleRef(k, hostToggleRfes[k]);
         }
       }
@@ -51,7 +55,7 @@ export class ToggleDirective {
 
   private _toggleRef(ref: string, clazz: string | string[]) {
     let arr: string[] = [];
-    if (!_.isArray(clazz)) {
+    if (!isArray(clazz)) {
       arr.push(clazz);
     } else {
       arr = clazz;
@@ -70,7 +74,7 @@ export class ToggleDirective {
 
   private _toggleSelf(clazz: string | string[]) {
     let arr: string[] = [];
-    if (!_.isArray(clazz)) {
+    if (!isArray(clazz)) {
       arr.push(clazz);
     } else {
       arr = clazz;

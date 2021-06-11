@@ -1,5 +1,5 @@
 import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn} from 'typeorm';
-import {Label} from '../../../src/libs/forms/decorators/Label';
+import {Label} from '@typexs/ng';
 
 
 @Entity()

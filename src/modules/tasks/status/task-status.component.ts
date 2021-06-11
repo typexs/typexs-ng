@@ -1,9 +1,9 @@
-import * as _ from 'lodash';
+import {isArray} from 'lodash';
 import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
 import {BackendTasksService} from '../backend-tasks.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {Subscription} from 'rxjs';
-import {Log} from '../../base/lib/log/Log';
+import {Log} from '@typexs/ng-base';
 
 /**
  * Show status of a task (running or finished)
@@ -89,7 +89,7 @@ export class TaskStatusComponent implements OnInit, OnDestroy, OnChanges {
       this.subscription = this.tasksService
         .taskStatus(this.runnerId, {targetIds: [this.nodeId]})
         .subscribe(tasks => {
-            if (_.isArray(tasks)) {
+            if (isArray(tasks)) {
               this.taskLog = tasks.shift();
             } else {
               this.taskLog = tasks;

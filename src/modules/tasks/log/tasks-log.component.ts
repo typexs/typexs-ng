@@ -1,13 +1,18 @@
-import * as _ from 'lodash';
+import {
+  defaults, find, isArray, isEmpty, isFunction, isNumber, intersection,
+  get, clone, upperFirst, isNull, keys, values, isString, filter, merge, isPlainObject,
+  concat, kebabCase, has, snakeCase, isRegExp, orderBy, remove, first, set, assign,
+  capitalize, isUndefined
+} from 'lodash';
 import {Component, OnInit} from '@angular/core';
 import {TaskRef} from '@typexs/base';
 import {BackendTasksService} from '../backend-tasks.service';
-import {SystemInfoService} from '../../base/services/system-info.service';
+import {SystemInfoService} from '@typexs/ng-base';
 import {StorageService} from '../../storage/storage.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
-import {IDTGridOptions} from '../../base/datatable/IDTGridOptions';
-import {IGridColumn} from '../../base/datatable/IGridColumn';
-import {C_URL_HANDLER, C_URL_TITLE, CC_GRID_CELL_ROUTER_LINK} from '../../base/constants';
+import {IDTGridOptions} from '@typexs/ng-base';
+import {IGridColumn} from '@typexs/ng-base';
+import {C_URL_HANDLER, C_URL_TITLE, CC_GRID_CELL_ROUTER_LINK} from '@typexs/ng-base';
 
 /**
  * Show tasks list which should be filtered for running tasks, runned task
@@ -43,10 +48,10 @@ export class TasksLogComponent implements OnInit {
   columnsPostProcess(columns: IGridColumn[]) {
     const column = columns.find(x => x.field === 'tasksId');
     column.cellValueRenderer = CC_GRID_CELL_ROUTER_LINK;
-    _.set((<any>column), C_URL_HANDLER, (v: any, row: any) => {
+    set((<any>column), C_URL_HANDLER, (v: any, row: any) => {
       return [this.tasksService.getNgUrlPrefix(), 'status', row.respId, row.tasksId];
     });
-    _.set((<any>column), C_URL_TITLE, (v: any, row: any) => {
+    set((<any>column), C_URL_TITLE, (v: any, row: any) => {
       return v;
     });
   }

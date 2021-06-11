@@ -1,15 +1,20 @@
-import * as _ from 'lodash';
+import {
+  defaults, find, isArray, isEmpty, isFunction, isNumber, intersection,
+  get, clone, upperFirst, isNull, keys, values, isString, filter, merge, isPlainObject,
+  concat, kebabCase, has, snakeCase, isRegExp, orderBy, remove, first, set, assign,
+  capitalize
+} from 'lodash';
 import {Route} from '@angular/router';
 
 
 export function isLazyLoading(route: Route) {
-  return _.has(route, 'loadChildren') || _.has(route, '_loadedConfig');
+  return has(route, 'loadChildren') || has(route, '_loadedConfig');
 }
 
 export function isRedirect(route: Route) {
-  return _.has(route, 'redirectTo');
+  return has(route, 'redirectTo');
 }
 
 export function hasComponent(route: Route) {
-  return _.has(route, 'component');
+  return has(route, 'component');
 }

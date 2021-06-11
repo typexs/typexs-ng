@@ -1,5 +1,4 @@
-import {Text} from '../../../libs/forms/decorators/Text';
-import {Select} from '../../../libs/forms/decorators/Select';
+import {Select, Text} from '@typexs/ng';
 import {Property} from '@typexs/schema/libs/decorators/Property';
 
 
@@ -13,7 +12,7 @@ export class Places {
   @Property({type: 'string'})
   city: string;
 
-  @Select({enum:'continents'})
+  @Select({enum: 'continents'})
   @Property(<any>{type: 'string', label: 'Continent'})
   continent: string;
 

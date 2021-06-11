@@ -3,7 +3,7 @@ import {EntityService} from './../entity.service';
 import {ActivatedRoute} from '@angular/router';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
 import {EntityRef} from '@typexs/schema/libs/registry/EntityRef';
-import {IEntityRef} from 'commons-schema-api/browser';
+import {IEntityRef} from '@allgemein/schema-api';
 
 @Component({
   selector: 'txs-entity-view',

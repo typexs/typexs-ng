@@ -1,10 +1,9 @@
-import * as _ from 'lodash';
+import {isEmpty, set} from 'lodash';
 import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
-import {IDTGridOptions} from '../../../../base/datatable/IDTGridOptions';
-import {IQueryParams} from '../../../../base/datatable/IQueryParams';
-import {Like, Value} from 'commons-expressions/browser';
+import {Like, Value} from '@allgemein/expressions';
 import {StorageQueryEmbeddedComponent} from '../../../../storage/query/embedded/storage-query-embedded.component';
-import {IEntityRef} from 'commons-schema-api/browser';
+import {IEntityRef} from '@allgemein/schema-api';
+import {IDTGridOptions, IQueryParams} from '@typexs/ng-base';
 import {StorageService} from '../../../../storage/storage.service';
 
 
@@ -65,7 +64,7 @@ export class EmbeddedStorageAgGridComponent implements OnInit {
 
   setFilterText() {
     const p = this.simpleItemParams;
-    _.set(p, 'filters.text', Like('text', Value('Text 5*')));
+    set(p, 'filters.text', Like('text', Value('Text 5*')));
     this.simpleItemParams = p;
     this.simpleItemQuery.requery();
 
@@ -73,7 +72,7 @@ export class EmbeddedStorageAgGridComponent implements OnInit {
 
   setSortText() {
     const p = this.simpleItemParams;
-    _.set(p, 'filters.text', Like('text', Value('Text 5*')));
+    set(p, 'filters.text', Like('text', Value('Text 5*')));
     this.simpleItemParams = p;
     this.simpleItemQuery.requery();
   }
@@ -81,17 +80,17 @@ export class EmbeddedStorageAgGridComponent implements OnInit {
 
   doSubmit() {
     const p = this.simpleItemParams;
-    if (!_.isEmpty(this.simpleQueryModul.sort)) {
-      _.set(p, 'sorting.' + this.simpleQueryModul.sort, this.simpleQueryModul.sortDir === 'asc' ? 'asc' : 'desc');
+    if (!isEmpty(this.simpleQueryModul.sort)) {
+      set(p, 'sorting.' + this.simpleQueryModul.sort, this.simpleQueryModul.sortDir === 'asc' ? 'asc' : 'desc');
     } else {
-      _.set(p, 'sorting', {});
+      set(p, 'sorting', {});
     }
 
-    if (!_.isEmpty(this.simpleQueryModul.filterKey)) {
-      _.set(p, 'filters.' + this.simpleQueryModul.filterKey, Like(this.simpleQueryModul.filterKey,
+    if (!isEmpty(this.simpleQueryModul.filterKey)) {
+      set(p, 'filters.' + this.simpleQueryModul.filterKey, Like(this.simpleQueryModul.filterKey,
         Value(this.simpleQueryModul.filterValue ? this.simpleQueryModul.filterValue : '')));
     } else {
-      _.set(p, 'filters', {});
+      set(p, 'filters', {});
     }
 
     this.simpleItemQuery.requery();

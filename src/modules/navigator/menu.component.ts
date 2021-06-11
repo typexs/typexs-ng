@@ -1,8 +1,8 @@
+import {defaults, isNull} from 'lodash';
 import {Component, Input, OnInit} from '@angular/core';
 import {NavigatorService} from './navigator.service';
 import {INavTreeEntry} from './INavTreeEntry';
 import {NavEntry} from './NavEntry';
-import * as _ from 'lodash';
 import {IMenuOptions} from './IMenuOptions';
 
 const DEFAULT_OPTIONS: IMenuOptions = {
@@ -13,13 +13,13 @@ const DEFAULT_OPTIONS: IMenuOptions = {
   regex: null,
   filter: (options: IMenuOptions, e: NavEntry) => {
     let ret = true;
-    if (!_.isNull(options.group)) {
+    if (!isNull(options.group)) {
       ret = ret && e.groups && e.groups.indexOf(options.group) !== -1;
     }
-    if (!_.isNull(options.level)) {
+    if (!isNull(options.level)) {
       ret = ret && e.getLevel() <= options.level;
     }
-    if (!_.isNull(options.regex)) {
+    if (!isNull(options.regex)) {
       let regex: RegExp = options.regex as any;
       if (!(options.regex instanceof RegExp)) {
         regex = new RegExp(regex);
@@ -47,7 +47,7 @@ export class MenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.options = _.defaults(this.options, DEFAULT_OPTIONS);
+    this.options = defaults(this.options, DEFAULT_OPTIONS);
     this.tree = this.navigator.getTree(
       this.options.base, this.options.filter ?
         this.options.filter.bind(this, this.options) : null);

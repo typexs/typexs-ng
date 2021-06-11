@@ -1,9 +1,7 @@
 import {Injectable} from '@angular/core';
-
-import {Form} from '../../libs/forms/elements';
-import {FormBuilder} from '../../libs/forms/FormBuilder';
-import {ILookupRegistry} from 'commons-schema-api/browser';
-import {ComponentRegistryService} from '../base/component/component-registry.service';
+import {Form, FormBuilder} from '@typexs/ng';
+import {ILookupRegistry} from '@allgemein/schema-api';
+import {ComponentRegistryService} from '@typexs/ng-base';
 
 
 @Injectable()

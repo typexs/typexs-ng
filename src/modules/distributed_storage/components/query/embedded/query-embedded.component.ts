@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
-import {AbstractQueryEmbeddedComponent} from '../../../../base/api/querying/abstract-query-embedded.component';
 import {DistributedStorageService} from '../../../services/distributed_storage.service';
 import {DEFAULT_DS_OPTIONS, IDSOptions} from '../../../lib/IDSOptions';
+import {AbstractQueryEmbeddedComponent} from '../../../../../../packages/ng-base';
 
 
 /**

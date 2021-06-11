@@ -1,6 +1,6 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {FormsModule} from '../forms/module';
-import {BaseModule} from '../base/module';
+import {BaseModule} from '@typexs/ng-base';
 import {RouterModule} from '@angular/router';
 import {FormsModule as NgFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
@@ -8,7 +8,7 @@ import {DISTRIBUTED_STORAGE_ROUTES} from './routes';
 import {DistributedStorageService} from './services/distributed_storage.service';
 import {DistributedStorageQueryEmbeddedComponent} from './components/query/embedded/query-embedded.component';
 import {DistributedStorageQueryPageComponent} from './components/query/page/query-page.component';
-import {AppService} from '../base/services/app.service';
+import {AppService} from '@typexs/ng-base';
 
 const PROVIDERS = [
   DistributedStorageService,

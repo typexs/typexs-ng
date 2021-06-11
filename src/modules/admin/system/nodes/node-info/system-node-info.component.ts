@@ -1,7 +1,13 @@
+import {
+  defaults, find, isArray, isEmpty, isFunction, isNumber, intersection,
+  get, clone, upperFirst, isNull, keys, values, isString, filter, merge, isPlainObject,
+  concat, kebabCase, has, snakeCase, isRegExp, orderBy, remove, first, set, assign,
+  capitalize, isUndefined
+} from 'lodash';
 import {Component, HostBinding, Input} from '@angular/core';
 
 
-import * as _ from 'lodash';
+
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
 import {INodeInfo} from '@typexs/base/libs/system/INodeInfo';
 
@@ -23,7 +29,7 @@ export class SystemNodeInfoComponent {
 
 
   selectContext(node: SystemNodeInfo, type: 'tasks' | 'workers'): any[] {
-    const x = _.find(node.contexts, (y: INodeInfo) => y.context === type);
+    const x = find(node.contexts, (y: INodeInfo) => y.context === type);
     if (!x) {
       return [];
     }

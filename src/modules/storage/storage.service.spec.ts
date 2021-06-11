@@ -3,14 +3,16 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import {RouterTestingModule} from '@angular/router/testing';
 import {API_CTRL_STORAGE_METADATA_ALL_ENTITIES} from '@typexs/server';
 import {StorageService} from './storage.service';
-import {Log} from '../base/lib/log/Log';
-import {MessageService} from '../base/messages/message.service';
-import {NoopAuthService} from '../base/api/auth/noop-auth.service';
-import {AuthService} from '../base/api/auth/auth.service';
-import {IEntityRefMetadata} from 'commons-schema-api/browser';
-import {HttpBackendService} from '../base/services/http-backend.service';
-import {EntityResolverService} from '../base/services/entity-resolver.service';
-import {BackendService} from '../base/api/backend/backend.service';
+import {
+  AuthService,
+  BackendService,
+  EntityResolverService,
+  HttpBackendService,
+  Log,
+  MessageService,
+  NoopAuthService
+} from '@typexs/ng-base';
+import {IJsonSchema7} from '@allgemein/schema-api';
 
 
 /**
@@ -56,7 +58,7 @@ describe('StorageService', () => {
 
 
   it('should have a service instance and load metadata', () => {
-    const entitiesMetadata: IEntityRefMetadata[] = [];
+    const entitiesMetadata: IJsonSchema7[] = [];
     const backendClientService: HttpBackendService = injector.get(BackendService) as HttpBackendService;
     backendClientService.getState().next('online');
     backendClientService.addRoute({

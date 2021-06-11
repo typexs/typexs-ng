@@ -1,8 +1,8 @@
+import {has, snakeCase} from 'lodash';
 import {Injectable} from '@angular/core';
-import * as _ from 'lodash';
 import {IMenuLinkGuard} from '../../navigator/IMenuLinkGuard';
 import {NavEntry} from '../../navigator/NavEntry';
-import {Observable, BehaviorSubject, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 
 @Injectable()
 export class MenuAccessService implements IMenuLinkGuard {
@@ -20,12 +20,12 @@ export class MenuAccessService implements IMenuLinkGuard {
   }
 
   has(k: string) {
-    return _.has(this.entry, k);
+    return has(this.entry, k);
   }
 
 
   isDisabled(entry: NavEntry): Observable<boolean> {
-    const key = (entry.isGroup() ? _.snakeCase(entry.groupRegex) : entry.getPath()) + '.disabled';
+    const key = (entry.isGroup() ? snakeCase(entry.groupRegex) : entry.getPath()) + '.disabled';
     if (!this.entry[key]) {
       this.entry[key] = new BehaviorSubject(true);
       this.change.next(true);
@@ -34,7 +34,7 @@ export class MenuAccessService implements IMenuLinkGuard {
   }
 
   isShown(entry: NavEntry): Observable<boolean> {
-    const key = (entry.isGroup() ? _.snakeCase(entry.groupRegex) : entry.getPath()) + '.show';
+    const key = (entry.isGroup() ? snakeCase(entry.groupRegex) : entry.getPath()) + '.show';
     if (!this.entry[key]) {
       this.entry[key] = new BehaviorSubject(true);
       this.change.next(true);
