@@ -136,9 +136,7 @@ for (const path of packages) {
    */
   let taskName = 'package_cleanup__' + dirName;
   const taskNames = [taskName];
-  gulp.task(taskName, () => {
-    return del([buildPath + '/**']);
-  });
+  gulp.task(taskName, () => del([buildPath + '/**']));
 
 
   /**
@@ -215,20 +213,6 @@ for (const path of packages) {
         );
     });
 
-
-    // shell.task('ng build ' + ngLibName, {cwd: buildTmp}));
-
-    // taskName = 'package_ng_copy__' + dirName;
-    // taskNames.push(taskName);
-    // gulp.task(taskName, () => {
-    //   return gulp.src([
-    //     './src/**/*.+(html|css|less|sass|scss)',
-    //     '!./src/*/api/**',
-    //     '!./src/*/entities/**',
-    //     '!./src/app/**'])
-    //     .pipe(gulp.dest(buildOut));
-    // });
-
     /**
      * Tests
      */
@@ -243,26 +227,24 @@ for (const path of packages) {
 
     taskName = 'package_nodejs__' + dirName;
     taskNames.push(taskName);
-    gulp.task(taskName, () => {
-      return gulp.src(tmpPackagePath)
-        .pipe(through.obj(function (file, enc, cb) {
+    gulp.task(taskName, () => gulp.src(tmpPackagePath)
+      .pipe(through.obj(function (file, enc, cb) {
 
-          if (file.isNull()) {
-            return cb(null, file);
-          }
-          if (file.isStream()) {
-            return cb(new Error('Json Streaming not supported'));
-          }
-          const json = JSON.parse(String(file.contents));
-          unset(json, '$schema');
-          unset(json, 'private');
-          set(json, 'main', 'index.js');
-          set(json, 'browser', 'browser.js');
-          file.contents = new Buffer(JSON.stringify(json, null, 2));
-          cb(null, file);
-        }))
-        .pipe(gulp.dest(buildOut));
-    });
+        if (file.isNull()) {
+          return cb(null, file);
+        }
+        if (file.isStream()) {
+          return cb(new Error('Json Streaming not supported'));
+        }
+        const json = JSON.parse(String(file.contents));
+        unset(json, '$schema');
+        unset(json, 'private');
+        set(json, 'main', 'index.js');
+        set(json, 'browser', 'browser.js');
+        file.contents = new Buffer(JSON.stringify(json, null, 2));
+        cb(null, file);
+      }))
+      .pipe(gulp.dest(buildOut)));
 
 
     /**
@@ -302,12 +284,10 @@ for (const path of packages) {
      */
     taskName = 'package_replace_references__' + dirName;
     taskNames.push(taskName);
-    gulp.task(taskName, () => {
-      return gulp.src(join(buildOut, '**', '*.d.ts'))
-        .pipe(replace(`/// <reference types="node" />`, ''))
-        .pipe(replace(`/// <reference types="chai" />`, ''))
-        .pipe(gulp.dest(buildOut));
-    });
+    gulp.task(taskName, () => gulp.src(join(buildOut, '**', '*.d.ts'))
+      .pipe(replace('/// <reference types="node" />', ''))
+      .pipe(replace('/// <reference types="chai" />', ''))
+      .pipe(gulp.dest(buildOut)));
 
 
     /**
@@ -315,14 +295,12 @@ for (const path of packages) {
      */
     taskName = 'package_copy_files__' + dirName;
     taskNames.push(taskName);
-    gulp.task(taskName, () => {
-      return gulp.src([
-        './README.md',
-        './src/**/files/*',
-        './bin/*',
-        './src/**/*.json'
-      ], {cwd: sourcePath}).pipe(gulp.dest(buildOut));
-    });
+    gulp.task(taskName, () => gulp.src([
+      './README.md',
+      './src/**/files/*',
+      './bin/*',
+      './src/**/*.json'
+    ], {cwd: sourcePath}).pipe(gulp.dest(buildOut)));
 
     /**
      * Test
@@ -331,27 +309,18 @@ for (const path of packages) {
     if (foundTestFiles.length > 0) {
       taskName = 'test__' + dirName;
       testDeps.push(taskName);
-      gulp.task(taskName, shell.task('nyc mocha ./packages/' + dirName + '/test/**/*.spec.ts'));
+      gulp.task(taskName, shell.task(`nyc mocha ./packages/${dirName}/test/**/*.spec.ts`));
     }
-    // () => {
-    //   return gulp.src([], {read: false, cwd: sourcePath})
-    //     .pipe(shell('nyc mocha ./packages/' + dirName + '/test/**/*.spec.ts'));
-    //   //   const mochaRdPath = resolve(join('.', '.mocharc.js'));
-    //   //   const mochaOpts = require(mochaRdPath);
-    //   //   mochaOpts.exit = true;
-    //   //   return gulp.src(['test/**/*.spec.ts'], {read: false, cwd: sourcePath})
-    //   //     .pipe(mocha(mochaOpts))
-    //   //     .on('error', console.error);
-    // });
   }
 
   taskName = 'package__' + dirName;
   packageNames.push(taskName);
   gulp.task(taskName, gulp.series(...taskNames));
 
-  taskName = 'package_publish__' + dirName;
+  taskName = 'publish__' + dirName;
   publishDeps.push(taskName);
   gulp.task(taskName, shell.task('npm publish --access=public', {cwd: buildOut}));
+
 }
 
 
@@ -362,7 +331,7 @@ const foundTestFiles = glob.sync(join(resolve('.'), 'test', '**', '*.spec.ts'));
 if (foundTestFiles.length > 0) {
   const json = getJson();
   const name = json.name.replace(/^@/, '').replace(/[^\w]+/g, '-');
-  const taskName = 'test__' + name + + '__nodejs';
+  const taskName = 'test__' + name + +'__nodejs';
   testDeps.push(taskName);
   gulp.task(taskName, shell.task('nyc mocha test/{**,**/**}/*.spec.ts'));
 }

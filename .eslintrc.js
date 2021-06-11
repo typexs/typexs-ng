@@ -79,7 +79,8 @@ module.exports = {
     "@typescript-eslint/prefer-function-type": "error",
     "@typescript-eslint/quotes": [
       "error",
-      "single"
+      "single",
+      {"allowTemplateLiterals": true}
     ],
     "@typescript-eslint/semi": [
       "error",
