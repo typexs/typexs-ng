@@ -10,7 +10,7 @@ import {DatePipe} from '@angular/common';
 import {BackendTasksService} from '../../backend-tasks.service';
 import {Observable, Subscriber, Subscription, timer} from 'rxjs';
 import {mergeMap} from 'rxjs/operators';
-import {Log} from '@typexs/ng-base';
+import {Log} from '@typexs/base-ng';
 
 /**
  * Show tasks list which should be filtered for running tasks, runned task

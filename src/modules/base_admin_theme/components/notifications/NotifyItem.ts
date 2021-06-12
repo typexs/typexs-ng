@@ -1,5 +1,5 @@
 import {isNull} from 'lodash';
-import {MessageType} from '@typexs/ng-base';
+import {MessageType} from '@typexs/base-ng';
 
 
 export class NotifyItem {

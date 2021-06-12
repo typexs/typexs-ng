@@ -3,7 +3,7 @@ import {TestBed} from '@angular/core/testing';
 import {EntityOptionsService} from './entity-options.service';
 import {EntityService} from './entity.service';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {BaseModule} from '@typexs/ng-base';
+import {BaseModule} from '@typexs/base-ng';
 import {RouterTestingModule} from '@angular/router/testing';
 
 

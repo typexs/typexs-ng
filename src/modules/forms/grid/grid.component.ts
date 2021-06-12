@@ -5,7 +5,7 @@ import {FormObject, GridHandle, isFormObject, ViewComponent} from '@typexs/ng';
 import {Observable} from 'rxjs';
 import {GridColumnDef} from './GridColumnDef';
 import {AbstractFormComponent} from '../component/AbstractFormComponent';
-import {AbstractComponent} from '@typexs/ng-base';
+import {AbstractComponent} from '@typexs/base-ng';
 import {EnumHandle} from '../libs/EnumHandle';
 
 

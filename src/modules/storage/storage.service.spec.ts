@@ -11,7 +11,7 @@ import {
   Log,
   MessageService,
   NoopAuthService
-} from '@typexs/ng-base';
+} from '@typexs/base-ng';
 import {IJsonSchema7} from '@allgemein/schema-api';
 
 

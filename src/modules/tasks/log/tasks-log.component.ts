@@ -7,12 +7,12 @@ import {
 import {Component, OnInit} from '@angular/core';
 import {TaskRef} from '@typexs/base';
 import {BackendTasksService} from '../backend-tasks.service';
-import {SystemInfoService} from '@typexs/ng-base';
+import {SystemInfoService} from '@typexs/base-ng';
 import {StorageService} from '../../storage/storage.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
-import {IDTGridOptions} from '@typexs/ng-base';
-import {IGridColumn} from '@typexs/ng-base';
-import {C_URL_HANDLER, C_URL_TITLE, CC_GRID_CELL_ROUTER_LINK} from '@typexs/ng-base';
+import {IDTGridOptions} from '@typexs/base-ng';
+import {IGridColumn} from '@typexs/base-ng';
+import {C_URL_HANDLER, C_URL_TITLE, CC_GRID_CELL_ROUTER_LINK} from '@typexs/base-ng';
 
 /**
  * Show tasks list which should be filtered for running tasks, runned task

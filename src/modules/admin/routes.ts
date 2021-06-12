@@ -5,7 +5,7 @@ import {SystemRoutesComponent} from './system/routes/system-routes.component';
 import {SystemStoragesComponent} from './system/storages/system-storages.component';
 import {SystemConfigComponent} from './system/config/system-config.component';
 import {NgRoutesComponent} from './ng/routes/ng-routes.component';
-import {AuthGuardService} from '@typexs/ng-base';
+import {AuthGuardService} from '@typexs/base-ng';
 import {StorageBackendsComponent} from '../storage/backends/storage-backends.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {SystemNodesComponent} from './system/nodes/system-nodes.component';

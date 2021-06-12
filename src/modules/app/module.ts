@@ -43,7 +43,7 @@ import {TreeContentDynamicChangeComponent} from './components/content-view/tree-
 import {SimpleViewVariantsComponent} from './components/content-view/simple-view-variants.component';
 import {BookComponent} from './components/entities/book/book.component';
 import {Book} from './entities/Book';
-import {AppService, AuthService, ComponentRegistryService} from '@typexs/ng-base';
+import {AppService, AuthService, ComponentRegistryService} from '@typexs/base-ng';
 
 
 @NgModule({

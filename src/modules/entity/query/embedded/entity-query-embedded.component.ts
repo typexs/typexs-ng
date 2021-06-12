@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AbstractQueryEmbeddedComponent} from '@typexs/ng-base';
+import {AbstractQueryEmbeddedComponent} from '@typexs/base-ng';
 import {EntityService} from '../../entity.service';
 
 

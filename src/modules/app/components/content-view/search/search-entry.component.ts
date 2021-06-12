@@ -1,7 +1,7 @@
 import {find, has} from 'lodash';
 import {Component, ComponentFactoryResolver, EmbeddedViewRef, Inject, Injector, ViewChild} from '@angular/core';
 import {ComponentRegistry, TreeObject, ViewComponent, ViewContent} from '@typexs/ng';
-import {AbstractComponent} from '@typexs/ng-base';
+import {AbstractComponent} from '@typexs/base-ng';
 
 
 @ViewContent('search-entry')

@@ -8,11 +8,11 @@ import {EntityStructComponent} from './struct/entity-struct.component';
 import {EntityService} from './entity.service';
 import {EntityOptionsService} from './entity-options.service';
 import {FormsModule} from '../forms/module';
-import {BaseModule} from '@typexs/ng-base';
+import {BaseModule} from '@typexs/base-ng';
 import {RouterModule} from '@angular/router';
 import {FormsModule as NgFormsModule} from '@angular/forms';
 import {EntityQueryEmbeddedComponent} from './query/embedded/entity-query-embedded.component';
-import {AppService} from '@typexs/ng-base';
+import {AppService} from '@typexs/base-ng';
 import {ENTITY_ROUTES} from './routes';
 import {CommonModule} from '@angular/common';
 

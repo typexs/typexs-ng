@@ -4,7 +4,7 @@ import {ClassRef, METATYPE_PROPERTY} from '@allgemein/schema-api';
 import {Expressions} from '@allgemein/expressions';
 import {FormObject, isFormObject, NoFormTypeDefinedError, Context} from '@typexs/ng';
 import {Component, ComponentFactoryResolver, Inject, Injector} from '@angular/core';
-import {AbstractComponent, UrlHelper} from '@typexs/ng-base';
+import {AbstractComponent, UrlHelper} from '@typexs/base-ng';
 
 @Component({
   template: ''

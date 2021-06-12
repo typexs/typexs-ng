@@ -4,8 +4,8 @@ import {
   concat, kebabCase, has, snakeCase, isRegExp, orderBy, remove, first, set
 } from 'lodash';
 import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
-import {IDTGridOptions} from '@typexs/ng-base';
-import {IQueryParams} from '@typexs/ng-base';
+import {IDTGridOptions} from '@typexs/base-ng';
+import {IQueryParams} from '@typexs/base-ng';
 import {Like, Value} from '@allgemein/expressions';
 import {StorageQueryEmbeddedComponent} from '../../../../storage/query/embedded/storage-query-embedded.component';
 import {IEntityRef} from '@allgemein/schema-api';

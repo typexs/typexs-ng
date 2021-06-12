@@ -3,11 +3,11 @@ import {Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDe
 import {FormService} from './form.service';
 import {ViewComponent} from '@typexs/ng';
 import {Form} from '@typexs/ng';
-import {MessageChannel} from '@typexs/ng-base';
-import {IMessage} from '@typexs/ng-base';
+import {MessageChannel} from '@typexs/base-ng';
+import {IMessage} from '@typexs/base-ng';
 import {IFormOptions} from './IFormOptions';
 import {AbstractFormComponent} from './component/AbstractFormComponent';
-import {EntityResolverService} from '@typexs/ng-base';
+import {EntityResolverService} from '@typexs/base-ng';
 import {EntityRegistry} from '@typexs/schema/libs/EntityRegistry';
 import {DataContainer} from '@typexs/base';
 

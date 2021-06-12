@@ -10,7 +10,7 @@ import {
 import {Tasks} from '@typexs/base';
 import {combineLatest, Observable, Subject, timer} from 'rxjs';
 import {C_WORKERS} from '@typexs/base/libs/worker/Constants';
-import {AbstractQueryService, AppService, BackendService, IApiCallOptions, Log, SystemInfoService} from '@typexs/ng-base';
+import {AbstractQueryService, AppService, BackendService, IApiCallOptions, Log, SystemInfoService} from '@typexs/base-ng';
 import {TaskEvent} from '@typexs/base/libs/tasks/worker/TaskEvent';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';

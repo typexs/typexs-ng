@@ -1,6 +1,6 @@
 import {assign, isArray} from 'lodash';
 import {EventEmitter, Injectable} from '@angular/core';
-import {IMessage} from '@typexs/ng-base';
+import {IMessage} from '@typexs/base-ng';
 import {NotifyItem} from './NotifyItem';
 
 

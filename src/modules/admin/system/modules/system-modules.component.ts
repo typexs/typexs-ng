@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {IModule} from '@typexs/base/api/IModule';
 
 
-import {SystemInfoService} from '@typexs/ng-base';
+import {SystemInfoService} from '@typexs/base-ng';
 
 @Component({
   selector: 'system-modules',

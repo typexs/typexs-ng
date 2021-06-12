@@ -3,9 +3,9 @@ import {GridComponent} from './grid.component';
 import {GridCellComponent} from './grid-cell.component';
 import {NoFormTypeDefinedError} from '@typexs/ng';
 import {FormObject, isFormObject} from '@typexs/ng';
-import {Log} from '@typexs/ng-base';
+import {Log} from '@typexs/base-ng';
 import {AbstractFormComponent} from '../component/AbstractFormComponent';
-import {AbstractComponent} from '@typexs/ng-base';
+import {AbstractComponent} from '@typexs/base-ng';
 
 @Component({
   selector: 'txs-gridrow',

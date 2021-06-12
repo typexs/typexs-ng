@@ -1,6 +1,6 @@
 import {isEmpty, set} from 'lodash';
 import {AfterViewInit, ChangeDetectorRef, Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {IQueryParams} from '@typexs/ng-base';
+import {IQueryParams} from '@typexs/base-ng';
 import {Like, Value} from '@allgemein/expressions';
 import {IDSOptions} from '../../../../distributed_storage/lib/IDSOptions';
 import {DistributedStorageQueryEmbeddedComponent} from '../../../../distributed_storage/components/query/embedded/query-embedded.component';

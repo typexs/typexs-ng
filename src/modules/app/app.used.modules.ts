@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule} from '@angular/router';
 import {ModuleWithProviders, Type} from '@angular/core';
-import {BaseModule} from '@typexs/ng-base';
+import {BaseModule} from '@typexs/base-ng';
 import {FormsModule as NgFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {AgGridModule} from 'ag-grid-angular';

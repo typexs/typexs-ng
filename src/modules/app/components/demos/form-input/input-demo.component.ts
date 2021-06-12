@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {InputDemoObject} from '../../../entities/InputDemoObject';
-import {IMessage, MessageType} from '@typexs/ng-base';
-import {MessageChannel} from '@typexs/ng-base';
-import {MessageService} from '@typexs/ng-base';
-import {LogMessage} from '@typexs/ng-base';
+import {IMessage, MessageType} from '@typexs/base-ng';
+import {MessageChannel} from '@typexs/base-ng';
+import {MessageService} from '@typexs/base-ng';
+import {LogMessage} from '@typexs/base-ng';
 
 
 @Component({

@@ -1,7 +1,7 @@
 import {isArray, keys} from 'lodash';
 import {Component, OnInit} from '@angular/core';
 import {ITypexsOptions} from '@typexs/base/libs/ITypexsOptions';
-import {SystemInfoService} from '@typexs/ng-base';
+import {SystemInfoService} from '@typexs/base-ng';
 
 
 @Component({

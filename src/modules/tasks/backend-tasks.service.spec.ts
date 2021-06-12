@@ -13,7 +13,7 @@ import {
   MessageService,
   NoopAuthService,
   SystemInfoService
-} from '@typexs/ng-base';
+} from '@typexs/base-ng';
 
 
 /**

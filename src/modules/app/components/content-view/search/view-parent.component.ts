@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ComponentFactoryResolver, Inject, Injector, OnInit, ViewChild} from '@angular/core';
 import {SearchEntryComponent} from './search-entry.component';
 import {TreeObject, ViewComponent, ViewContent} from '@typexs/ng';
-import {AbstractComponent} from '@typexs/ng-base';
+import {AbstractComponent} from '@typexs/base-ng';
 
 
 @ViewContent('view-parent')

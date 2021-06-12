@@ -26,7 +26,7 @@ import {EmbeddedStorageAgGridComponent} from './components/demos/embedded-storag
 import {TreeContentDynamicChangeComponent} from './components/content-view/tree-content-dynamic-change.component';
 import {TreeContentComponent} from './components/content-view/tree-content.component';
 import {SimpleViewVariantsComponent} from './components/content-view/simple-view-variants.component';
-import {CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE, EntityViewPageComponent} from '@typexs/ng-base';
+import {CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE, EntityViewPageComponent} from '@typexs/base-ng';
 
 
 export const APP_ROUTES: Routes = [

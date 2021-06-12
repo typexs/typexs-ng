@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Form, FormBuilder} from '@typexs/ng';
 import {ILookupRegistry} from '@allgemein/schema-api';
-import {ComponentRegistryService} from '@typexs/ng-base';
+import {ComponentRegistryService} from '@typexs/base-ng';
 
 
 @Injectable()

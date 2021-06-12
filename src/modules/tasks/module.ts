@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {FormsModule} from '../forms/module';
-import {BaseModule} from '@typexs/ng-base';
+import {BaseModule} from '@typexs/base-ng';
 import {RouterModule} from '@angular/router';
 import {FormsModule as NgFormsModule} from '@angular/forms';
 import {BackendTasksService} from './backend-tasks.service';

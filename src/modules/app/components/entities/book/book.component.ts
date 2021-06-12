@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IInstanceableComponent} from '@typexs/ng-base';
+import {IInstanceableComponent} from '@typexs/base-ng';
 import {Book} from '../../../entities/Book';
 
 

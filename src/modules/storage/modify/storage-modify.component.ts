@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {StorageService} from '../storage.service';
 import {IEntityRef} from '@allgemein/schema-api';
-import {UrlHelper} from '@typexs/ng-base';
+import {UrlHelper} from '@typexs/base-ng';
 
 @Component({
   selector: 'storage-modify',

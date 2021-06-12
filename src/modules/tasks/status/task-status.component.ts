@@ -3,7 +3,7 @@ import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, Si
 import {BackendTasksService} from '../backend-tasks.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {Subscription} from 'rxjs';
-import {Log} from '@typexs/ng-base';
+import {Log} from '@typexs/base-ng';
 
 /**
  * Show status of a task (running or finished)

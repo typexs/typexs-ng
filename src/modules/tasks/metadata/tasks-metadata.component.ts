@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TaskRef, Tasks} from '@typexs/base';
 import {BackendTasksService} from '../backend-tasks.service';
-import {SystemInfoService} from '@typexs/ng-base';
-import {Log} from '@typexs/ng-base';
+import {SystemInfoService} from '@typexs/base-ng';
+import {Log} from '@typexs/base-ng';
 import {Subscription} from 'rxjs';
 
 

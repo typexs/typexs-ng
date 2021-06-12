@@ -5,7 +5,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {ISelectOptionsService} from '../forms/libs/ISelectOptionsService';
 import {ISelectOption} from '../forms/libs/ISelectOption';
 import {IClassRef, IEntityRef} from '@allgemein/schema-api';
-import {Log} from '@typexs/ng-base';
+import {Log} from '@typexs/base-ng';
 
 @Injectable()
 export class EntityOptionsService implements ISelectOptionsService {

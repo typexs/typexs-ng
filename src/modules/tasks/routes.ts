@@ -6,7 +6,7 @@ import {
   PERMISSION_ALLOW_TASK_STATUS,
   PERMISSION_ALLOW_TASKS_LIST
 } from '@typexs/server';
-import {AuthGuardService} from '@typexs/ng-base';
+import {AuthGuardService} from '@typexs/base-ng';
 import {TasksLogComponent} from './log/tasks-log.component';
 import {TasksExecutionComponent} from './execution/tasks-execution.component';
 import {TaskStatusPageComponent} from './status/task-status-page.component';

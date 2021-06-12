@@ -7,7 +7,7 @@ import {
 import {Component, OnInit} from '@angular/core';
 
 import {IStorageOptions} from '@typexs/base/libs/storage/IStorageOptions';
-import {SystemInfoService} from '@typexs/ng-base';
+import {SystemInfoService} from '@typexs/base-ng';
 
 
 const API_CTRL_URL = '/api/storages';

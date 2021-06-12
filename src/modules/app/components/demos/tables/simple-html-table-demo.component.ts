@@ -5,10 +5,10 @@ import {
   capitalize, isUndefined, isDate, range
 } from 'lodash';
 import {Component} from '@angular/core';
-import {IGridColumn} from '@typexs/ng-base';
-import {SimpleHtmlTableComponent} from '@typexs/ng-base';
-import {IDTGridOptions} from '@typexs/ng-base';
-import {IGridApi} from '@typexs/ng-base';
+import {IGridColumn} from '@typexs/base-ng';
+import {SimpleHtmlTableComponent} from '@typexs/base-ng';
+import {IDTGridOptions} from '@typexs/base-ng';
+import {IGridApi} from '@typexs/base-ng';
 import {And, ExprDesc} from '@allgemein/expressions';
 
 

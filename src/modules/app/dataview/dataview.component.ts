@@ -15,7 +15,7 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import {AbstractQueryService} from '@typexs/ng-base';
+import {AbstractQueryService} from '@typexs/base-ng';
 import {StorageService} from '../../storage/storage.service';
 import {EntityService} from '../../entity/entity.service';
 import {IEntityRef} from '@allgemein/schema-api';

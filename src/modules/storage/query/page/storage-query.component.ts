@@ -6,14 +6,14 @@ import {
 } from 'lodash';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {IDTGridOptions} from '@typexs/ng-base';
-import {IGridColumn} from '@typexs/ng-base';
-import {CC_GRID_CELL_ENTITY_OPERATIONS} from '@typexs/ng-base';
-import {IQueryComponentApi} from '@typexs/ng-base';
-import {ComponentRegistryService} from '@typexs/ng-base';
+import {IDTGridOptions} from '@typexs/base-ng';
+import {IGridColumn} from '@typexs/base-ng';
+import {CC_GRID_CELL_ENTITY_OPERATIONS} from '@typexs/base-ng';
+import {IQueryComponentApi} from '@typexs/base-ng';
+import {ComponentRegistryService} from '@typexs/base-ng';
 import {IComponentBinding} from '@typexs/ng';
 import {ClassType} from '@allgemein/schema-api';
-import {AbstractGridComponent} from '@typexs/ng-base';
+import {AbstractGridComponent} from '@typexs/base-ng';
 
 
 @Component({

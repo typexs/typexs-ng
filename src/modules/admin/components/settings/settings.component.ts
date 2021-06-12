@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {AppService} from '@typexs/ng-base';
-import {ILoggerOptions} from '@typexs/ng-base';
-import {Log, LOGLEVELS} from '@typexs/ng-base';
+import {AppService} from '@typexs/base-ng';
+import {ILoggerOptions} from '@typexs/base-ng';
+import {Log, LOGLEVELS} from '@typexs/base-ng';
 
 
 @Component({

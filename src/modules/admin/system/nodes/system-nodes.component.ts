@@ -8,7 +8,7 @@ import {Component, OnInit} from '@angular/core';
 
 
 
-import {SystemInfoService} from '@typexs/ng-base';
+import {SystemInfoService} from '@typexs/base-ng';
 import {INodeInfo} from '@typexs/base/libs/system/INodeInfo';
 import {SystemNodeInfo} from '@typexs/base/entities/SystemNodeInfo';
 import {interval, Subscription} from 'rxjs';

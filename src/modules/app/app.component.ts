@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {AppService} from '@typexs/ng-base';
+import {AppService} from '@typexs/base-ng';
 
 
 @Component({

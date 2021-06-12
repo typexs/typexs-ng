@@ -8,7 +8,7 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {BackendTasksService} from '../backend-tasks.service';
 import {TaskLog} from '@typexs/base/entities/TaskLog';
 import {Subscription} from 'rxjs';
-import {Log} from '@typexs/ng-base';
+import {Log} from '@typexs/base-ng';
 
 @Component({
   selector: 'txs-task-status-row',

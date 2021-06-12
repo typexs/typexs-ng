@@ -2,7 +2,7 @@ import {Component, ComponentFactoryResolver, Inject, Injector} from '@angular/co
 import {ViewContent} from '@typexs/ng';
 import {TreeObject} from '@typexs/ng';
 import {ViewComponent} from '@typexs/ng';
-import {AbstractComponent} from '@typexs/ng-base';
+import {AbstractComponent} from '@typexs/base-ng';
 
 
 @ViewContent('search-result')

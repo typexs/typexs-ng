@@ -7,7 +7,7 @@ import {
   ComponentRegistryService,
   IGridColumn,
   IQueryComponentApi
-} from '@typexs/ng-base';
+} from '@typexs/base-ng';
 import {IComponentBinding} from '@typexs/ng';
 import {ActivatedRoute} from '@angular/router';
 import {IDSOptions} from '../../../lib/IDSOptions';

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Person} from '../../../entities/Person';
-import {IInstanceableComponent} from '@typexs/ng-base';
+import {IInstanceableComponent} from '@typexs/base-ng';
 
 
 @Component({

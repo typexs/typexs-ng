@@ -9,7 +9,7 @@ import {
   EntityResolverService,
   IQueringService,
   STORAGE_REQUEST_MODE
-} from '@typexs/ng-base';
+} from '@typexs/base-ng';
 import {
   API_CTRL_ENTITY_DELETE_ENTITY,
   API_CTRL_ENTITY_FIND_ENTITY,

@@ -8,7 +8,7 @@ import {
   IDTGridOptions,
   IGridColumn,
   IQueryComponentApi
-} from '@typexs/ng-base';
+} from '@typexs/base-ng';
 import {IComponentBinding} from '@typexs/ng';
 import {ClassType} from '@allgemein/schema-api';
 

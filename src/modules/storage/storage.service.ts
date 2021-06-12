@@ -26,7 +26,7 @@ import {
   EntityResolverService,
   IQueringService,
   STORAGE_REQUEST_MODE
-} from '@typexs/ng-base';
+} from '@typexs/base-ng';
 
 
 @Injectable()

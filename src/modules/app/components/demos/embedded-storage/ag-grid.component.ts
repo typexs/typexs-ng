@@ -3,7 +3,7 @@ import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {Like, Value} from '@allgemein/expressions';
 import {StorageQueryEmbeddedComponent} from '../../../../storage/query/embedded/storage-query-embedded.component';
 import {IEntityRef} from '@allgemein/schema-api';
-import {IDTGridOptions, IQueryParams} from '@typexs/ng-base';
+import {IDTGridOptions, IQueryParams} from '@typexs/base-ng';
 import {StorageService} from '../../../../storage/storage.service';
 
 

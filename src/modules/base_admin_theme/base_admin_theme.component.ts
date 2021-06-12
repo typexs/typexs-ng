@@ -3,7 +3,7 @@ import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit, Renderer2, Templ
 import {IUser} from '@typexs/ng';
 import PerfectScrollbar from 'perfect-scrollbar';
 import {IMenuOptions} from '../navigator/IMenuOptions';
-import {AppService, CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE, Log, LogMessage, SystemInfoService} from '@typexs/ng-base';
+import {AppService, CTXT_ROUTE_USER_LOGOUT, CTXT_ROUTE_USER_PROFILE, Log, LogMessage, SystemInfoService} from '@typexs/base-ng';
 import {NavigatorService} from '../navigator/navigator.service';
 import {INotifyOptions} from './components/notifications/INotifyOptions';
 import {NotificationsService} from './components/notifications/notifications.service';

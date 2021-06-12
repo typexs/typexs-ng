@@ -1,6 +1,6 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {FormsModule} from '../forms/module';
-import {BaseModule} from '@typexs/ng-base';
+import {BaseModule} from '@typexs/base-ng';
 import {RouterModule} from '@angular/router';
 import {FormsModule as NgFormsModule} from '@angular/forms';
 import {StorageService} from './storage.service';
@@ -16,7 +16,7 @@ import {StorageQueryEmbeddedComponent} from './query/embedded/storage-query-embe
 import {STORAGE_ROUTES} from './routes';
 import {StorageAggregateComponent} from './aggregate/page/storage-aggregate.component';
 import {StorageAggregateEmbeddedComponent} from './aggregate/embedded/storage-aggregate-embedded.component';
-import {AppService} from '@typexs/ng-base';
+import {AppService} from '@typexs/base-ng';
 // import {StorageRoutingModule} from './module.routing';
 // import {LAZY_STORAGE_ROUTES} from './routes.lazy';
 
