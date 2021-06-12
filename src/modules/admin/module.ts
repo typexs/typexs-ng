@@ -2,7 +2,7 @@ import {NgModule, Provider} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {AdminComponent} from './admin.component';
 import {SystemModulesComponent} from './system/modules/system-modules.component';
-import {NavigatorModule} from '../navigator/module';
+import {NavigatorService, RouterMenuModule} from '@typexs/ng-router-menu';
 import {ADMIN_ROUTES} from './routes';
 import {SystemRoutesComponent} from './system/routes/system-routes.component';
 import {SystemStoragesComponent} from './system/storages/system-storages.component';
@@ -10,7 +10,6 @@ import {SystemConfigComponent} from './system/config/system-config.component';
 import {NgRoutesComponent} from './ng/routes/ng-routes.component';
 import {FormsModule} from '../forms/module';
 import {AppService, BaseModule} from '@typexs/base-ng';
-import {NavigatorService} from '../navigator/navigator.service';
 import {BaseAdminThemeModule} from '../base_admin_theme/base_admin_theme.module';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {TasksModule} from '../tasks/module';
@@ -40,7 +39,7 @@ const PROVIDERS: Provider[] = [];
     CommonModule,
     BaseAdminThemeModule,
     BaseModule.forRoot(),
-    NavigatorModule.forRoot(),
+    RouterMenuModule.forRoot(),
     RouterModule,
     FormsModule.forRoot(),
     TasksModule,

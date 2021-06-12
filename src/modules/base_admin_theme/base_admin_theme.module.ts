@@ -1,6 +1,6 @@
 import {NgModule, Provider} from '@angular/core';
 import {RouterModule} from '@angular/router';
-import {NavigatorModule} from '../navigator/module';
+import {RouterMenuModule} from '@typexs/ng-router-menu';
 import {FormsModule} from '../forms/module';
 import {BaseModule} from '@typexs/base-ng';
 import {BaseAdminThemeComponent} from './base_admin_theme.component';
@@ -28,7 +28,7 @@ const PROVIDERS: Provider[] = [
   ],
   imports: [
     CommonModule,
-    NavigatorModule.forRoot(),
+    RouterMenuModule.forRoot(),
     BaseModule.forRoot(),
     RouterModule,
     FormsModule

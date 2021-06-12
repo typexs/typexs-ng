@@ -12,11 +12,11 @@ import {CommonModule} from '@angular/common';
   exports: [MenuComponent, MenuLinkComponent],
   providers: [NavigatorService]
 })
-export class NavigatorModule {
+export class RouterMenuModule {
 
   static forRoot() {
     return {
-      ngModule: NavigatorModule,
+      ngModule: RouterMenuModule,
       providers: [
         NavigatorService
       ]

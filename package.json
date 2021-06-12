@@ -72,6 +72,7 @@
     "@typexs/base": "^1.5.9",
     "@typexs/base-ng": "file:./packages/base-ng",
     "@typexs/ng": "file:./packages/ng",
+    "@typexs/ng-router-menu": "file:./packages/ng-router-menu",
     "@typexs/schema": "^1.5.4",
     "@typexs/server": "^1.5.3",
     "ag-grid-angular": "^25.3.0",

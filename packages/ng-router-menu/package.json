@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/ng-packagr/package.schema.json",
-  "name": "@typexs/base-ng",
+  "name": "@typexs/ng-router-menu",
   "version": "0.0.0-PLACEHOLDER",
   "description": "Angular for typexs",
   "main": "src/public_api.ts",
@@ -27,12 +27,7 @@
   "dependencies": {
   },
   "devDependencies": {
-    "@typexs/base": "1.5.9",
-    "@typexs/server": "1.5.3",
-    "@typexs/ng": "0.0.0-PLACEHOLDER",
     "@angular/common": "12.0.3",
-    "@angular/core": "12.0.3",
-    "@angular/forms": "12.0.3",
     "@angular/router": "12.0.3",
     "rxjs": "6.6.7"
   }

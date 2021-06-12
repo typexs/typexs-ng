@@ -22,7 +22,7 @@ import {NotificationDemoComponent} from './components/demos/notification/notific
 import {InputDemoComponent} from './components/demos/form-input/input-demo.component';
 import {TablesDemoComponent} from './components/demos/tables/tables-demo.component';
 import {AgGridWrapperComponent} from './addons/ag-grid/ag-grid-wrapper.component';
-import {NavigatorService} from '../navigator/navigator.service';
+import {NavigatorService} from '@typexs/ng-router-menu';
 import {SimpleHtmlTableDemoComponent} from './components/demos/tables/simple-html-table-demo.component';
 import {StorageService} from '../storage/storage.service';
 import {EntityService} from '../entity/entity.service';

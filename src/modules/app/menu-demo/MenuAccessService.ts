@@ -1,7 +1,6 @@
 import {has, snakeCase} from 'lodash';
 import {Injectable} from '@angular/core';
-import {IMenuLinkGuard} from '../../navigator/IMenuLinkGuard';
-import {NavEntry} from '../../navigator/NavEntry';
+import {IMenuLinkGuard, NavEntry} from '@typexs/ng-router-menu';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 
 @Injectable()

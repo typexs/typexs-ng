@@ -50,8 +50,3 @@
 //
 //
 // // navigator module
-// export * from './modules/navigator/module';
-// export * from './modules/navigator/navigator.service';
-// export * from './modules/navigator/IMenuLinkGuard';
-// export * from './modules/navigator/NavEntry';
-// export * from './modules/navigator/INavTreeEntry';

@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component} from '@angular/core';
 import {MenuAccessService} from './MenuAccessService';
-import {NavigatorService} from '../../navigator/navigator.service';
+import {NavigatorService} from '@typexs/ng-router-menu';
 
 
 @Component({
