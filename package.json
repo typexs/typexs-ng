@@ -36,7 +36,7 @@
   "homepage": "https://github.com/typexs/typexs-ng#readme",
   "devDependencies": {
     "@allgemein/moduls": "^1.6.5",
-    "@allgemein/packaging": "^1.2.2",
+    "@allgemein/packaging": "^1.2.3",
     "@allgemein/schema-api": "^1.4.4",
     "@angular-devkit/build-angular": "12.0.3",
     "@angular-devkit/core": "12.0.3",
