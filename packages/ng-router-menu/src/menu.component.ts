@@ -5,7 +5,7 @@ import {INavTreeEntry} from './INavTreeEntry';
 import {NavEntry} from './NavEntry';
 import {IMenuOptions} from './IMenuOptions';
 
-const DEFAULT_OPTIONS: IMenuOptions = {
+export const DEFAULT_OPTIONS: IMenuOptions = {
   label: null,
   base: null,
   group: null,

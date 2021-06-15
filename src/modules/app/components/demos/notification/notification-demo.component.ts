@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NotificationsService} from '../../../../base_admin_theme/components/notifications/notifications.service';
+import {NotificationsService} from '@typexs/ng-theme-base';
 
 
 @Component({

@@ -24,16 +24,16 @@
     "url": "https://gitlab.com/typexs/ng/issues"
   },
   "homepage": "https://gitlab.com/typexs/ng#readme",
-  "dependencies": {
+  "peerDependencies": {
   },
   "devDependencies": {
-    "@typexs/base": "1.5.9",
-    "@typexs/server": "1.5.3",
-    "@typexs/ng": "0.0.0-PLACEHOLDER",
     "@angular/common": "12.0.3",
     "@angular/core": "12.0.3",
     "@angular/forms": "12.0.3",
     "@angular/router": "12.0.3",
-    "rxjs": "6.6.7"
+    "rxjs": "6.6.7",
+    "@typexs/base": "1.5.9",
+    "@typexs/ng": "0.0.0-PLACEHOLDER",
+    "@typexs/server": "1.5.3"
   }
 }

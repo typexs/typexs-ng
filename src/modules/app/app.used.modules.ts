@@ -8,13 +8,13 @@ import {AgGridModule} from 'ag-grid-angular';
 
 import {APP_ROUTES} from './routes';
 
-import {AdminModule} from '../admin/module';
+import {AdminModule} from '@typexs/ng-admin-ui';
 import {RouterMenuModule} from '@typexs/ng-router-menu';
-import {FormsModule} from '../forms/module';
-import {BaseAdminThemeModule} from '../base_admin_theme/base_admin_theme.module';
-import {StorageModule} from '../storage/module';
-import {EntityModule} from '../entity/module';
-import {DistributedStorageModule} from '../distributed_storage/module';
+import {FormsModule} from '@typexs/ng-forms';
+import {BaseAdminThemeModule} from '@typexs/ng-theme-base';
+import {StorageModule} from '@typexs/storage-ng';
+import {EntityModule} from '@typexs/entity-ng';
+import {DistributedStorageModule} from '@typexs/distributed-storage-ng';
 
 
 export const APP_MODULES: Array<Type<any> | ModuleWithProviders<any> | any[]> = [

@@ -2,7 +2,6 @@ import {clone, isArray, isBoolean, isEmpty, isNumber, isObjectLike, isPlainObjec
 import {IQueringService} from './IQueringService';
 import {BehaviorSubject, Observable, of, Subscription} from 'rxjs';
 import {IBuildOptions, IEntityRef, IJsonSchema, JsonSchema, supportsJsonSchemaImport} from '@allgemein/schema-api';
-import {AuthService} from '../auth/auth.service';
 import {IApiCallOptions} from '../../lib/http/IApiCallOptions';
 import {STORAGE_REQUEST_MODE} from './Constants';
 import {Log} from '../../lib/log/Log';
@@ -11,31 +10,32 @@ import {filter, first} from 'rxjs/operators';
 import {EntityResolverService} from '../../services/entity-resolver.service';
 import {IRoutePointer} from '../backend/IRoutePointer';
 import {IQueryServiceOptions} from './IQueryServiceOptions';
-import {BackendService} from '../backend/backend.service';
 import {IAggregateOptions} from './IAggregateOptions';
 import {IFindOptions} from './IFindOptions';
 import {ISaveOptions} from './ISaveOptions';
 import {IUpdateOptions} from './IUpdateOptions';
+import {IBackendClientService} from '../backend/IBackendClientService';
+import {IAuthServiceProvider} from '../auth/IAuthServiceProvider';
 
 
 export abstract class AbstractQueryService implements IQueringService {
 
   protected $isReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  private _backend: BackendService;
+  private _backend: IBackendClientService;
 
   private _entityResolverService: EntityResolverService;
 
-  private _authService: AuthService;
+  private _authService: IAuthServiceProvider;
 
   private options: IQueryServiceOptions;
 
 
-  constructor(backend: BackendService,
-              authService: AuthService,
-              entityResolverService: EntityResolverService,
-              options: IQueryServiceOptions) {
-    // this._registry = registry;
+  constructor(
+    backend: IBackendClientService,
+    authService: IAuthServiceProvider,
+    entityResolverService: EntityResolverService,
+    options: IQueryServiceOptions) {
     this._backend = backend;
     this._authService = authService;
     this._entityResolverService = entityResolverService;
@@ -207,12 +207,15 @@ export abstract class AbstractQueryService implements IQueringService {
   }
 
 
-  buildOptions?(method: STORAGE_REQUEST_MODE,
-                options: any /*IFindOptions*/, buildOptions: IBuildOptions = {}) {
+  buildOptions?(
+    method: STORAGE_REQUEST_MODE,
+    options: any /* IFindOptions*/, buildOptions: IBuildOptions = {}) {
   }
 
-  buildEntity?(method: STORAGE_REQUEST_MODE,
-               entityRef: IEntityRef, entity: any | any[], buildOptions: IBuildOptions = {}) {
+  buildEntity?(
+    method: STORAGE_REQUEST_MODE,
+    entityRef: IEntityRef, entity: any | any[],
+    buildOptions: IBuildOptions = {}) {
     return entity;
   }
 
@@ -249,9 +252,10 @@ export abstract class AbstractQueryService implements IQueringService {
     const buildOptions: IBuildOptions = {};
     this.buildOptions('get', options, buildOptions);
 
-    return this.callApi(this.getRoute('get'), {params: apiParams, query: additinalQuery}, x => {
-      return this.buildEntity('get', entityDef, x, buildOptions);
-    });
+    return this.callApi(this.getRoute('get'), {
+      params: apiParams,
+      query: additinalQuery
+    }, x => this.buildEntity('get', entityDef, x, buildOptions));
   }
 
 
@@ -346,9 +350,11 @@ export abstract class AbstractQueryService implements IQueringService {
     const buildOptions: IBuildOptions = {};
     this.buildOptions('save', options, buildOptions);
 
-    return this.callApi(this.getRoute('save'), {params: apiParams, query: additinalQuery, content: entity}, x => {
-      return this.buildEntity('save', entityDef, x, buildOptions);
-    });
+    return this.callApi(this.getRoute('save'), {
+      params: apiParams,
+      query: additinalQuery,
+      content: entity
+    }, x => this.buildEntity('save', entityDef, x, buildOptions));
   }
 
   /**
@@ -383,9 +389,7 @@ export abstract class AbstractQueryService implements IQueringService {
     return this.callApi(this.getRoute('update'), {
       params: apiParams,
       query: additinalQuery, content: entity
-    }, x => {
-      return this.buildEntity('update', entityDef, x, buildOptions);
-    });
+    }, x => this.buildEntity('update', entityDef, x, buildOptions));
   }
 
   /**
@@ -423,9 +427,11 @@ export abstract class AbstractQueryService implements IQueringService {
     const buildOptions: IBuildOptions = {};
     this.buildOptions('update', options, buildOptions);
 
-    return this.callApi(this.getRoute('update_by_condition'), {params: apiParams, query: additinalQuery, content: update}, x => {
-      return this.buildEntity('update', entityDef, x, buildOptions);
-    });
+    return this.callApi(this.getRoute('update_by_condition'), {
+      params: apiParams,
+      query: additinalQuery,
+      content: update
+    }, x => this.buildEntity('update', entityDef, x, buildOptions));
   }
 
   /**
@@ -448,9 +454,10 @@ export abstract class AbstractQueryService implements IQueringService {
     const buildOptions: IBuildOptions = {};
     this.buildOptions('delete', options, buildOptions);
 
-    return this.callApi(this.getRoute('delete'), {params: apiParams, query: additinalQuery}, x => {
-      return this.buildEntity('delete', entityDef, x, buildOptions);
-    });
+    return this.callApi(this.getRoute('delete'), {
+      params: apiParams,
+      query: additinalQuery
+    }, x => this.buildEntity('delete', entityDef, x, buildOptions));
   }
 
   /**
@@ -481,9 +488,10 @@ export abstract class AbstractQueryService implements IQueringService {
     const buildOptions: IBuildOptions = {};
     this.buildOptions('delete', options, buildOptions);
 
-    return this.callApi(this.getRoute(type), {params: apiParams, query: additinalQuery}, x => {
-      return this.buildEntity('delete', entityDef, x, buildOptions);
-    });
+    return this.callApi(this.getRoute(type), {
+      params: apiParams,
+      query: additinalQuery
+    }, x => this.buildEntity('delete', entityDef, x, buildOptions));
   }
 
 

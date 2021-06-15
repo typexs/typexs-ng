@@ -1,10 +1,9 @@
 import {isEmpty, set} from 'lodash';
 import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {Like, Value} from '@allgemein/expressions';
-import {StorageQueryEmbeddedComponent} from '../../../../storage/query/embedded/storage-query-embedded.component';
+import {StorageQueryEmbeddedComponent, StorageService} from '@typexs/storage-ng';
 import {IEntityRef} from '@allgemein/schema-api';
 import {IDTGridOptions, IQueryParams} from '@typexs/base-ng';
-import {StorageService} from '../../../../storage/storage.service';
 
 
 export class C {

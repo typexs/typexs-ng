@@ -4,7 +4,7 @@ import {IProperty} from '@typexs/schema/libs/registry/IProperty';
 import {Person} from './Person';
 import {Readonly} from '@typexs/ng';
 import {Text} from '@typexs/ng';
-import {EntityOptionsService} from '../../entity/entity-options.service';
+import {EntityOptionsService} from '@typexs/entity-ng';
 
 @Entity()
 export class Book {

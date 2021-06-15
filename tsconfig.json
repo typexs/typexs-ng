@@ -27,7 +27,26 @@
     "typeRoots": [
       "./node_modules/@types"
     ],
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "paths": {
+      "@typexs/base-ng/*": [
+        "./packages/base-ng/src/*",
+        "./packages/base-ng/src"
+      ],
+      "@typexs/ng-forms/*": [
+        "./packages/ng-forms/src/*",
+        "./packages/ng-forms/src"
+      ],
+      "@typexs/storage-ng/*": [
+        "./packages/storage-ng/src/*",
+        "./packages/storage-ng/src"
+      ],
+      "@typexs/ng-router-menu/*": [
+        "./packages/ng-router-menu/src/*",
+        "./packages/ng-router-menu/src"
+      ],
+
+    }
   },
   "exclude": [
     "archive",

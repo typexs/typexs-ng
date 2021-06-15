@@ -3,7 +3,7 @@ import {Property} from '@typexs/schema/libs/decorators/Property';
 import {Entity} from '@typexs/schema/libs/decorators/Entity';
 import {Select} from '@typexs/ng';
 import {Readonly} from '@typexs/ng';
-import {EntityOptionsService} from '../../entity/entity-options.service';
+import {EntityOptionsService} from '@typexs/entity-ng';
 
 
 @Entity()

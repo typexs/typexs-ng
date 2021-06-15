@@ -26,8 +26,11 @@ import {
   SIMPLE_TABLE
 } from './constants';
 import {FormsModule} from '@angular/forms';
+// eslint-disable-next-line max-len
 import {SimpleHtmlCellEntityReferenceRendererComponent} from './datatable/simple-html-table/simple-html-cell-entity-reference-renderer.component';
+// eslint-disable-next-line max-len
 import {SimpleHtmlCellObjectReferenceRendererComponent} from './datatable/simple-html-table/simple-html-cell-object-reference-renderer.component';
+// eslint-disable-next-line max-len
 import {SimpleHtmlCellEntityOperationsRendererComponent} from './datatable/simple-html-table/simple-html-cell-entity-operations-renderer.component';
 import {RouterModule} from '@angular/router';
 import {FreeQueryInputComponent} from './api/querying/free-query/free-query-input.component';

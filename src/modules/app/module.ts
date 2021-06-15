@@ -1,12 +1,10 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {APP_MODULES} from './app.used.modules';
-
-
 import {GroupDemoComponent} from './group-demo.component';
 import {DemosComponent} from './demos.component';
 import {CheckboxMatrixDemoComponent} from './checkbox-matrix-demo/checkbox-matrix-demo.component';
-import {FORM_COMPONENTS} from '../forms/forms.elements';
+import {FORM_COMPONENTS} from '@typexs/ng-forms';
 import {MenuDemoComponent} from './menu-demo/menu-demo.component';
 import {MenuAccessService} from './menu-demo/MenuAccessService';
 import {DummyComponent} from './dummy/dummy.component';
@@ -24,12 +22,12 @@ import {TablesDemoComponent} from './components/demos/tables/tables-demo.compone
 import {AgGridWrapperComponent} from './addons/ag-grid/ag-grid-wrapper.component';
 import {NavigatorService} from '@typexs/ng-router-menu';
 import {SimpleHtmlTableDemoComponent} from './components/demos/tables/simple-html-table-demo.component';
-import {StorageService} from '../storage/storage.service';
-import {EntityService} from '../entity/entity.service';
-import {DistributedStorageService} from '../distributed_storage/services/distributed_storage.service';
+import {StorageService} from '@typexs/storage-ng';
+import {EntityService} from '@typexs/entity-ng';
+import {DistributedStorageService} from '@typexs/distributed-storage-ng';
 import {DataViewComponent} from './dataview/dataview.component';
 import {EmbeddedDistributedStorageComponent} from './components/demos/embedded-distributed-storage/embedded-distributed-storage.component';
-import {UI_ADMIN_LAYOUT} from '../admin/lib/Constants';
+import {UI_ADMIN_LAYOUT} from '@typexs/ng-admin-ui';
 import {EmbeddedStorageDefaultComponent} from './components/demos/embedded-storage/default.component';
 import {EmbeddedStorageOverviewComponent} from './components/demos/embedded-storage/overview.component';
 import {EmbeddedStorageAgGridComponent} from './components/demos/embedded-storage/ag-grid.component';

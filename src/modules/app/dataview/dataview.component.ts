@@ -16,8 +16,8 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import {AbstractQueryService} from '@typexs/base-ng';
-import {StorageService} from '../../storage/storage.service';
-import {EntityService} from '../../entity/entity.service';
+import {StorageService} from '@typexs/storage-ng';
+import {EntityService} from '@typexs/entity-ng';
 import {IEntityRef} from '@allgemein/schema-api';
 import {filter as rFilter, first as rFirst, mergeMap} from 'rxjs/operators';
 
